@@ -1,4 +1,4 @@
 - service: builder
-  command: publish.sh
+  command: ./publish.sh
 
 
