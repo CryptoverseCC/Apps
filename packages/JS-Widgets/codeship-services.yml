@@ -1,0 +1,3 @@
+builder:
+  image: node
+  encrypted_env_file: env.encrypted
