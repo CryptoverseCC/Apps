@@ -1,4 +1,10 @@
-- service: builder
-  command: ./publish.sh
+- type: serial
+  steps:
+    - service: builder
+      command: npm test
+      
+    - service: builder
+      tag: '^(v[0-9]+\.[0-9]+\.[0-9]+)$'
+      command: ./publish.sh
 
 
