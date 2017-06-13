@@ -1,11 +1,12 @@
 import { h, Component } from 'preact';
 
 import './banner.css';
+import Menu from './menu';
 
 export default class Banner extends Component {
 
   static defaultProps = {
-      timeslot: 5,
+    timeslot: 5,
   };
 
   constructor() {
@@ -35,13 +36,13 @@ export default class Banner extends Component {
     }
     return (
       <div class="container">
-        <div class="row">
+        <div class="row header">
           <div class="title">{currentAd.title}</div>
-          <div class="menu-button" onClick={this._onMenuClick}>...</div>
+          <Menu />
         </div>
         <div class="summary">{currentAd.summary}</div>
         <div class="row footer">
-        <div class="link">{currentAd.target}</div>
+          <div class="link">{currentAd.target}</div>
           <div class="probability">Probability: {currentAd.probability}%</div>
           <div class="row arrows">
             <div onClick={this._onPrevClick}>❮</div>
@@ -52,15 +53,11 @@ export default class Banner extends Component {
     );
   }
 
-  _onMenuClick = () => {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-
   _onPrevClick = () => {
     const { ads, currentAd } = this.state;
     const currentIndex = ads.indexOf(currentAd);
     this.setState({
-      currentAd: ads[currentIndex - 1 < 0 ? ads.length -1: currentIndex - 1],
+      currentAd: ads[currentIndex - 1 < 0 ? ads.length - 1 : currentIndex - 1],
     }, () => this._setTimeout());
   };
 
@@ -68,7 +65,7 @@ export default class Banner extends Component {
     const { ads, currentAd } = this.state;
     const currentIndex = ads.indexOf(currentAd);
     this.setState({
-      currentAd: ads[currentIndex + 1 >= ads.length ? 0: currentIndex + 1],
+      currentAd: ads[currentIndex + 1 >= ads.length ? 0 : currentIndex + 1],
     }, () => this._setTimeout());
   };
 
@@ -90,7 +87,7 @@ export default class Banner extends Component {
           const toDistribute = 100 - roundedDownProbabilitiesSum;
           const toRoundUp = roundedDownProbabilities
             .map((p, i) => ([probabilities[i] - p, i]))
-            .sort(([p1], [p2]) =>  p1 - p2)
+            .sort(([p1], [p2]) => p1 - p2)
             .slice(0, toDistribute)
             .reduce((acc, [_, i]) => {
               acc[i] = true;
@@ -103,7 +100,7 @@ export default class Banner extends Component {
 
         return {
           sum: scoreSum,
-          ads: ads.map((ad, i) => Object.assign({ probability: roundedProbabilities[i] }, ad))
+          ads: ads.map((ad, i) => Object.assign({ probability: roundedProbabilities[i] }, ad)),
         };
       });
   }

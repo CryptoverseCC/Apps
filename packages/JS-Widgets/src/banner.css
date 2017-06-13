@@ -11,22 +11,12 @@
 .row {
   display: flex;
 }
-.menu-button {
-  margin-left: auto;
-  padding: 5px;
-  transition: 0.3s;
-  font-size: 20px;
-}
-.menu-button:hover {
-  color: #fff;
-  background-color: #72CA9A;
-}
-.menu-button:active {
-  background-color: #55B99D;
-}
 .title {
   font-weight: bold;
   font-size: 20px;
+}
+.header {
+  justify-content: space-between;
 }
 .footer {
   align-items: flex-end;
@@ -40,14 +30,4 @@
   border-top: 1px;
   border-style: solid;
   border-color: #D7D7D7
-}
-.menu {
-  position: absolute;
-  right: 0;
-  top: 30px;
-  padding: 10px;
-  background-color: #fff;
-  z-index: 2;
-  border: 1px solid #D7D7D7;
-  box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
 }

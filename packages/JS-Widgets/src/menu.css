@@ -1,0 +1,32 @@
+.menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  z-index: 2;
+  background-color: #fff;
+  border: 1px solid #D7D7D7;
+  box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
+}
+.plus {
+  margin: 0.5em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+  border-radius: 99999px;
+  background-color: #72CA9A;
+}
+.plus::after {
+  content: "+";
+  color: #fff;
+}
+
+.menu-item {
+  padding: 10px
+}
+
+.menu-item:hover {
+  background-color: rgba(170, 170, 170, .5);
+}
