@@ -1,0 +1,11 @@
+.RadioButtonGroup-options {
+  display: flex;
+  flex-direction: row;
+}
+
+.RadioButtonGroup-option {
+  display: block!important;
+  /*position: inherit;
+  width: auto;*/
+  /*display: inline-flex;*/
+}
