@@ -1,4 +1,4 @@
 - type: serial
   steps:
     - service: apps
-      command: ./release.sh
+      command: /apps/release.sh
