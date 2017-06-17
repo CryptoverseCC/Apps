@@ -1,6 +1,6 @@
 # widget-configurator
 
-## Instalaction
+### Installation
 `yarn`
 
 ### Development

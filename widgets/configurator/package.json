@@ -2,6 +2,7 @@
   "name": "widget-configurator",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "https://apps.userfeeds.io/widgets/configurator",
   "dependencies": {
     "material-ui": "^0.18.3",
     "react": "^15.6.0",
