@@ -1,12 +1,14 @@
 import React from 'react';
 import { RadioButton, RadioButtonGroup as UIRadioButtonGroup } from 'material-ui/RadioButton';
 
+import Label from './Label';
+
 import './RadioButtonGroup.css';
 
 const RadioButtonGroup = ({ label, name, onChange, options }) => {
   return (
     <div>
-      <h3>{label}</h3>
+      <Label>{label}</Label>
       <UIRadioButtonGroup
         name={name}
         className="RadioButtonGroup-options"
