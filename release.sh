@@ -11,4 +11,4 @@ find . -maxdepth 2 -type d -regex '\./[a-z]+.*' -exec \
 
 git add /apps/release
 git commit -m "Release"
-git subtree push --prefix=release git@github.com:Userfeeds/Apps.git gh-pages
+git subtree push -d --prefix=release git@github.com:Userfeeds/Apps.git gh-pages
