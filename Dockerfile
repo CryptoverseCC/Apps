@@ -9,4 +9,3 @@ RUN npm install yarn
 COPY . /apps
 
 WORKDIR /apps/
-RUN /apps/release.sh
