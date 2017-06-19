@@ -16,4 +16,4 @@ ls -l /apps/release
 git add /apps/release
 git commit -m "Release"
 # http://clontz.org/blog/2014/05/08/git-subtree-push-for-deployment/
-git push origin `git subtree split --prefix release master`:gh-pages --force
+git push origin $(git subtree split --prefix release master):gh-pages --force
