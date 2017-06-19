@@ -18,7 +18,7 @@ class UserfeedsAd extends HTMLElement {
     render(<Banner context={context} algorithm={algorithm} apiKey={apiKey} />, this);
   }
 
-  attributeChangedCallback(attr, oldValue, newValue) { }
+  attributeChangedCallback(_attr, _oldValue, _newValue) { }
 }
 
 window.customElements.define('userfeeds-ad', UserfeedsAd);

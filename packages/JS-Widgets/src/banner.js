@@ -1,6 +1,8 @@
 import { h, Component } from 'preact';
 
 import './banner.css';
+
+import Ad from './components/ad';
 import Menu from './menu';
 
 export default class Banner extends Component {
@@ -30,21 +32,16 @@ export default class Banner extends Component {
       });
   }
 
-  render(_, { fetched, currentAd }) {
+  render({ context, algorithm }, { fetched, currentAd, ads }) {
     if (!fetched) {
       return null;
     }
     return (
       <div class="container">
-        <div class="row header">
-          <div class="title">{currentAd.title}</div>
-          <Menu />
-        </div>
-        <div class="summary">{currentAd.summary}</div>
-        <div class="row footer">
-          <div class="link">{currentAd.target}</div>
-          <div class="probability">Probability: {currentAd.probability}%</div>
-          <div class="row arrows">
+        <Ad ad={currentAd} />
+        <div class="options">
+          <Menu context={context} algorithm={algorithm} ads={ads} />
+          <div class="arrows">
             <div onClick={this._onPrevClick}>❮</div>
             <div onClick={this._onNextClick}>❯</div>
           </div>

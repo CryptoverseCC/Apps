@@ -1,0 +1,26 @@
+.ad-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.header {
+  justify-content: space-between;
+}
+
+.footer {
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.probability {
+  
+}

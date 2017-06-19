@@ -6,10 +6,13 @@
   transition: 0.3s;
   font-size: 20px;
 }
-.button:hover {
+
+.button:not([disabled]):hover {
   color: #fff;
+  cursor: pointer;
   background-color: #72CA9A;
 }
+
 .button:active {
   background-color: #55B99D;
 }

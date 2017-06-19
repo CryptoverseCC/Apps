@@ -1,32 +1,56 @@
 import { h, Component } from 'preact';
 
 import './menu.css';
+
+import If from './components/utils/if';
+import Switch from './components/utils/switch';
+
+import Plus from './components/plus';
 import Button from './components/button';
+
 import AddAdModal from './addAdModal';
+import WidgetDetailsModal from './widgetDetailsModal';
 
 export default class Menu extends Component {
 
-  static defaultProps = {
+  state = {
     web3Available: !!window.web3,
   };
 
-  render({ web3Available }, { isOpen, isModalOpen, posting }) {
+  render({ context, algorithm, ads },
+    { isOpen, isAddAdModalOpen, isWidgetDetailsModalOpen, web3Available }) {
+
     return (
       <div>
         <Button class="button" onClick={this._onMenuClick}>...</Button>
-        { isOpen && <div class="menu">
-            { web3Available
-                ? (<div class="menu-item" onClick={this._onAddClick}>
-                  <i class="plus" /> Create New Ad
-                </div>)
-                : <div class="menu-item">web3 unavailable :-(</div>
-            }
+        <If condition={isOpen}>
+          <div class="menu">
+            <div class="menu-item" onClick={this._onAddAdClick}>
+              <Switch expresion={web3Available}>
+                <Switch.Case condition={true}>
+                  <Plus /> Create New Ad
+                </Switch.Case>
+                <Switch.Case condition={false}>
+                  web3 unavailable :-(
+                </Switch.Case>
+              </Switch>
+            </div>
+            <hr />
+            <div class="menu-item" onClick={this._onDetailsClick}>Widget Details</div>
           </div>
-        }
+        </If>
         <AddAdModal
-          isOpen={isModalOpen}
-          onCloseRequest={this._onModalCloseRequest}
-          onFinish={this._onModalCloseRequest}
+          context={context}
+          isOpen={isAddAdModalOpen}
+          onCloseRequest={this._onAddAdModalCloseRequest}
+          onFinish={this._onAddAdModalCloseRequest}
+        />
+        <WidgetDetailsModal
+          ads={ads}
+          context={context}
+          algorithm={algorithm}
+          isOpen={isWidgetDetailsModalOpen}
+          onCloseRequest={this._onWidgeDetailsModalCloseRequest}
         />
       </div>
     );
@@ -36,11 +60,21 @@ export default class Menu extends Component {
     this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
   };
 
-  _onAddClick = () => {
-    this.setState({ isModalOpen: true, isOpen: false });
+  _onAddAdClick = () => {
+    if (this.state.web3Available) {
+      this.setState({ isAddAdModalOpen: true, isOpen: false });
+    }
   };
 
-  _onModalCloseRequest = () => {
-    this.setState({ isModalOpen: false });
+  _onDetailsClick = () => {
+    this.setState({ isWidgetDetailsModalOpen: true, isOpen: false });
+  };
+
+  _onAddAdModalCloseRequest = () => {
+    this.setState({ isAddAdModalOpen: false });
+  };
+
+  _onWidgeDetailsModalCloseRequest = () => {
+    this.setState({ isWidgetDetailsModalOpen: false });
   };
 }
