@@ -24,6 +24,6 @@ git status
 git remote add destination $REMOTE_REPOSITORY
 git fetch destination
 git reset --hard destination/gh-pages
-git cherry-pick $DHEAD
+git merge $DHEAD
 
 git push $REMOTE_REPOSITORY $DHEAD:gh-pages --force
