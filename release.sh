@@ -11,13 +11,19 @@ ssh -T git@github.com
 
 git status
 
+# Prepare subtree source
 git checkout -b temp
+git add /apps/release/
+git commit -m "Temp"
 
+# Prepare source gh-pages branch
+git checkout -b src
 git remote add destination $REMOTE_REPOSITORY
 git fetch destination
 git reset --hard destination/gh-pages
 
-git add /apps/release
-git commit -m "Apps Release $CI_COMMIT_ID"
+# Add subtree
+git read-tree --prefix=release/ -u temp
+git commit -m "Apps Release $CI_COMMIT_ID $CI_COMMIT_MESSAGE"
 
-git push $REMOTE_REPOSITORY temp:gh-pages --force
+git push $REMOTE_REPOSITORY src:gh-pages --force
