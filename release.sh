@@ -24,9 +24,6 @@ git status
 git remote add destination $REMOTE_REPOSITORY
 git fetch destination
 git reset --hard destination/gh-pages
-
-git log
-
 git cherry-pick $DHEAD
 
 git log
