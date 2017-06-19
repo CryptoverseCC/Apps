@@ -9,21 +9,19 @@ chmod -R 700 $HOME/.ssh
 
 ssh -T git@github.com
 
-git init
-git status
+git clone $REMOTE_REPOSITORY /dest
 
-# Prepare subtree source
-git add /release
-git commit -m "Apps Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID"
-git subtree split --prefix=release/ --branch release
+cd /dest
 
-# Prepare source gh-pages branch
-git checkout -b src
-git remote add destination $REMOTE_REPOSITORY
-git fetch destination
-git reset --hard destination/gh-pages
+git checkout gh-pages
 
-# Add subtree
-git subtree add --prefix=tools/ release
+rm -rf tools
 
-git push $REMOTE_REPOSITORY src:gh-pages --force
+mkdir -p tools
+
+cp -r /release/* tools/
+
+git add tools
+git commit -m "Tools Release"
+
+git push origin gh-pages
