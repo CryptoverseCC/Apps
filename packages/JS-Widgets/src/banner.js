@@ -8,11 +8,12 @@ import Menu from './menu';
 export default class Banner extends Component {
 
   static defaultProps = {
+    size: 'rectangle', // 'rectangle' | 'leaderboard'
     timeslot: 5,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this._timeout = null;
     this.state = {
@@ -32,12 +33,12 @@ export default class Banner extends Component {
       });
   }
 
-  render({ context, algorithm }, { fetched, currentAd, ads }) {
+  render({ context, algorithm, size }, { fetched, currentAd, ads }) {
     if (!fetched) {
       return null;
     }
     return (
-      <div class="container">
+      <div class={`container ${size}`}>
         <Ad ad={currentAd} />
         <div class="options">
           <Menu context={context} algorithm={algorithm} ads={ads} />

@@ -2,6 +2,8 @@ import { h, Component } from 'preact';
 
 import './adDetails.css';
 
+import { checkNetwork } from './utils/ethereum';
+
 import Switch from './components/utils/switch';
 
 import Ad from './components/ad';
@@ -13,18 +15,30 @@ import TextWithLabel from './components/textWithLabel';
 
 export default class AdDetails extends Component {
 
-  state = {
-    bidView: false,
-  };
+  constructor(props) {
+    super(props);
 
-  render({ ad, ads, context }, { bidView }) {
+    const network = props.context.split(':')[0];
+    this.state = {
+      bidView: false,
+      isOnCorrectNetwork: checkNetwork(network),
+    };
+  }
+
+  render({ ad, ads, context }, { bidView, isOnCorrectNetwork }) {
     return (
       <div class="ad-details">
         <Switch expresion={bidView}>
           <Switch.Case condition={false}>
             <div class="header">
               <Label>Ad Preview:</Label>
-              <Button style={{ marginLeft: 'auto' }} onClick={this._onBidClick}>⇈ Bid Ad</Button>
+              <Button
+                style={{ marginLeft: 'auto' }}
+                onClick={this._onBidClick}
+                disabled={!isOnCorrectNetwork}
+              >
+                ⇈ Bid Ad
+              </Button>
             </div>
             <div class="ad-preview">
               <Ad ad={ad} />

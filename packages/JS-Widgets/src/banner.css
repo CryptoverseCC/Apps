@@ -1,9 +1,19 @@
 .container {
-  display: inline-flex;
+  display: flex;
+  justify-content: space-between;
   position: relative;
-  width: 468px;
   border: 1px solid #D7D7D7;
   box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
+}
+
+.container.leaderboard {
+  width: 728px;
+  height: 90px;
+}
+
+.container.rectangle {
+  width: 300px;
+  height: 250px;
 }
 
 .options {

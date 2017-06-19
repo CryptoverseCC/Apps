@@ -12,6 +12,7 @@ export default class BidAd extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       sum: props.ads.reduce((acc, { score }) => acc + score, 0),
       probability: '-',
