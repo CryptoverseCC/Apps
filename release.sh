@@ -13,7 +13,7 @@ git status
 
 # Prepare subtree source
 git checkout -b temp
-git add /apps/release/
+git add /release/
 git commit -m "Temp"
 
 # Prepare source gh-pages branch
@@ -23,7 +23,7 @@ git fetch destination
 git reset --hard destination/gh-pages
 
 # Add subtree
-git read-tree --prefix=/apps/release/ -u temp
+git read-tree --prefix=/release/ -u temp
 git commit -m "Apps Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID"
 
 git push $REMOTE_REPOSITORY src:gh-pages --force
