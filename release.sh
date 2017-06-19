@@ -17,11 +17,20 @@ DHEAD=$(git subtree split --prefix release)
 
 echo "DHEAD $DHEAD"
 
+
+
 git status
 
 git remote add destination $REMOTE_REPOSITORY
 git fetch destination
 git reset --hard destination/gh-pages
+
+git log
+
+git show $DHEAD
+
 git cherry-pick $DHEAD
 
-git push $REMOTE_REPOSITORY $DHEAD:gh-pages --force
+git log
+
+#git push $REMOTE_REPOSITORY $DHEAD:gh-pages --force
