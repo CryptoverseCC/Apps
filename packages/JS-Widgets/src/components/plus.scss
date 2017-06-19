@@ -1,4 +1,4 @@
-.plus {
+.this {
   margin: 0.5em;
   display: inline-flex;
   justify-content: center;
@@ -9,13 +9,13 @@
   border-radius: 99999px;
   background-color: #72CA9A;
   color: #fff;
-}
 
-*:hover > .plus.reverse-on-hover {
-  color: #72CA9A;
-  background-color: #fff;
-}
+  *:hover > &.reverse-on-hover {
+    color: #72CA9A;
+    background-color: #fff;
+  }
 
-.plus::after {
-  content: "+";
+  &::after {
+    content: "+";
+  }
 }

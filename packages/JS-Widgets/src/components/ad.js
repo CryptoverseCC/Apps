@@ -1,15 +1,15 @@
 import { h } from 'preact';
 
-import './ad.css';
+import style from './ad.scss';
 
 const Ad = ({ ad }) => {
   return (
-    <div class="ad-container">
-      <div class="title">{ad.title}</div>
-      <div class="summary">{ad.summary}</div>
-      <div class="row footer">
-        <div class="link">{ad.target}</div>
-        <div class="probability">Probability: {ad.probability}%</div>
+    <div class={style.this}>
+      <div class={style.title}>{ad.title}</div>
+      <div class={style.summary}>{ad.summary}</div>
+      <div class={`row ${style.footer}`}>
+        <div class={style.link}>{ad.target}</div>
+        <div class={style.probability}>Probability: {ad.probability}%</div>
       </div>
     </div>
   );

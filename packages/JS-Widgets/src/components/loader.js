@@ -1,9 +1,9 @@
 import { h } from 'preact';
 
-import './loader.css';
+import style from './loader.scss';
 
 const Loader = () => {
-  return <div class="loader" />;
+  return <div class={style.this} />;
 };
 
 export default Loader;

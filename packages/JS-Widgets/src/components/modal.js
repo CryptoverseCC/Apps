@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import './modal.css';
+import style from './modal.scss';
 
 export default class Modal extends Component {
 
@@ -10,8 +10,8 @@ export default class Modal extends Component {
     }
 
     return (
-      <div class="modal" onClick={this._onOverlayClick}>
-        <div class="content" onClick={this._onContentClick}>
+      <div class={style.this} onClick={this._onOverlayClick}>
+        <div class={style.content} onClick={this._onContentClick}>
           {children}
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import './menu.css';
+import style from './menu.scss';
 
 import If from './components/utils/if';
 import Switch from './components/utils/switch';
@@ -21,11 +21,11 @@ export default class Menu extends Component {
     { isOpen, isAddAdModalOpen, isWidgetDetailsModalOpen, web3Available }) {
 
     return (
-      <div>
-        <Button class="button" onClick={this._onMenuClick}>...</Button>
+      <div class={style.this}>
+        <Button onClick={this._onMenuClick}>...</Button>
         <If condition={isOpen}>
-          <div class="menu">
-            <div class="menu-item" onClick={this._onAddAdClick}>
+          <div class={style.menu}>
+            <div class={style.menuItem} onClick={this._onAddAdClick}>
               <Switch expresion={web3Available}>
                 <Switch.Case condition={true}>
                   <Plus /> Create New Ad
@@ -36,7 +36,7 @@ export default class Menu extends Component {
               </Switch>
             </div>
             <hr />
-            <div class="menu-item" onClick={this._onDetailsClick}>Widget Details</div>
+            <div class={style.menuItem} onClick={this._onDetailsClick}>Widget Details</div>
           </div>
         </If>
         <AddAdModal

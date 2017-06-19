@@ -1,9 +1,14 @@
 import { h, Component } from 'preact';
+import classnames from 'classnames/bind';
 
-import './banner.css';
+import style from './banner.scss';
 
+import Switch from './components/utils/switch';
+import Label from './components/label';
 import Ad from './components/ad';
 import Menu from './menu';
+
+const cx = classnames.bind(style);
 
 export default class Banner extends Component {
 
@@ -18,31 +23,47 @@ export default class Banner extends Component {
     this._timeout = null;
     this.state = {
       fetched: false,
+      noData: false,
     };
   }
 
   componentWillMount() {
     this._fetchAds()
       .then(({ sum, ads }) => {
-        this.setState({
-          sum,
-          ads,
-          fetched: true,
-          currentAd: this._getRandomAd(sum, ads),
-        }, () => this._setTimeout());
+        if (sum === null || ads === null) {
+          this.setState({ fetched: true, noData: true });
+        } else {
+          this.setState({
+            sum,
+            ads,
+            fetched: true,
+            currentAd: this._getRandomAd(sum, ads),
+          }, () => this._setTimeout());
+        }
+      })
+      .catch((error) => {
+        this.setState({ fetched: true, noData: true });
       });
   }
 
-  render({ context, algorithm, size }, { fetched, currentAd, ads }) {
+  render({ context, algorithm, size }, { fetched,  noData, currentAd, ads }) {
     if (!fetched) {
       return null;
     }
+
     return (
-      <div class={`container ${size}`}>
-        <Ad ad={currentAd} />
-        <div class="options">
+      <div class={cx(['this', size])}>
+        <Switch expresion={noData}>
+          <Switch.Case condition={true}>
+            <Label>No ads available</Label>
+          </Switch.Case>
+          <Switch.Case condition={false}>
+            <Ad ad={currentAd} />
+          </Switch.Case>
+        </Switch>
+        <div class={style.options}>
           <Menu context={context} algorithm={algorithm} ads={ads} />
-          <div class="arrows">
+          <div class={style.arrows}>
             <div onClick={this._onPrevClick}>❮</div>
             <div onClick={this._onNextClick}>❯</div>
           </div>
@@ -70,9 +91,13 @@ export default class Banner extends Component {
   _fetchAds() {
     return fetch(
       `https://api.userfeeds.io/beta/api/ranking/${this.props.context}/${this.props.algorithm}/`,
-      { headers: { Authorization: this.props.apiKey } })
+      { headers: { Authorization: '59049c8fdfed920001508e2aafdcb00bdd4c4c7d61ca02ff47080fe3' } }) // ToDo remove
       .then((res) => res.json())
       .then(({ items: ads }) => {
+        if (ads.length === 0) {
+          return { sum: null, ads: null };
+        }
+
         const scoreSum = ads.reduce((acc, { score }) => acc + score, 0);
         const probabilities = ads.map(({ score }) => score / scoreSum * 100);
         const roundedDownProbabilities = probabilities.map((probability) => Math.floor(probability));

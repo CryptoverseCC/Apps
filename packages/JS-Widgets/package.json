@@ -12,11 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "classnames": "^2.2.5",
     "linkstate": "^1.0.1",
     "preact": "^8.1.0"
   },
   "devDependencies": {
     "@webcomponents/custom-elements": "^1.0.0",
+    "autoprefixer": "^7.1.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
@@ -33,6 +35,9 @@
     "eslint-plugin-react": "^7.0.1",
     "eslint-plugin-standard": "^3.0.1",
     "html-webpack-plugin": "^2.28.0",
+    "node-sass": "^4.5.3",
+    "postcss-loader": "^2.0.6",
+    "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"

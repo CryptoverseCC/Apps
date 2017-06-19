@@ -1,8 +1,0 @@
-.add-ad {
-  display: flex;
-  flex-direction: column;
-}
-
-.send-button {
-  align-self: flex-end;
-}

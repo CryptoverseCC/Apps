@@ -1,0 +1,18 @@
+.this {
+  border: none;
+  outline: none;
+  background-color: #fff;
+  padding: 5px;
+  transition: 0.3s;
+  font-size: 20px;
+
+  &:not([disabled]):hover {
+    color: #fff;
+    cursor: pointer;
+    background-color: #72CA9A;
+  }
+
+  &:active {
+    background-color: #55B99D;
+  }
+}

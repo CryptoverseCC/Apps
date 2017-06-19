@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import linkState from 'linkstate';
 
-import './addAd.css';
+import style from './addAd.scss';
 
 import { sendAdClaim } from '../api';
 
@@ -13,12 +13,12 @@ export default class AddAd extends Component {
 
   render(_, { posting }) {
     return (
-      <div class="add-ad">
+      <div class={style.this}>
         <Input placeholder="Title" onInput={linkState(this, 'title')} />
         <Input placeholder="Summary" onInput={linkState(this, 'summary')} />
         <Input placeholder="URL" onInput={linkState(this, 'url')} />
         <Input placeholder="Value" onInput={linkState(this, 'value')} />
-        <div class="send-button">
+        <div class={style.sendButton}>
           { posting
               ? <Loader />
               : <Button onClick={this._onSubmit}>Send</Button>

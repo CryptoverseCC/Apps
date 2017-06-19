@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import './adDetails.css';
+import style from './adDetails.scss';
 
 import { checkNetwork } from './utils/ethereum';
 
@@ -27,10 +27,10 @@ export default class AdDetails extends Component {
 
   render({ ad, ads, context }, { bidView, isOnCorrectNetwork }) {
     return (
-      <div class="ad-details">
+      <div class={style.this}>
         <Switch expresion={bidView}>
           <Switch.Case condition={false}>
-            <div class="header">
+            <div class={style.header}>
               <Label>Ad Preview:</Label>
               <Button
                 style={{ marginLeft: 'auto' }}
@@ -40,10 +40,10 @@ export default class AdDetails extends Component {
                 ⇈ Bid Ad
               </Button>
             </div>
-            <div class="ad-preview">
+            <div class={style.adPreview}>
               <Ad ad={ad} />
             </div>
-            <div class="footer">
+            <div class={style.footer}>
               <TextWithLabel label="Current Ranking Position" text={ads.indexOf(ad) + 1} />
               <TextWithLabel label="Created"><Date date={ad.created_at} /></TextWithLabel>
               <TextWithLabel label="Last bid" text={ad.bids} />

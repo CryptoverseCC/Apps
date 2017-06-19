@@ -1,0 +1,45 @@
+.this {
+  position: relative;
+  margin-bottom: 20px;
+  width: 300px;
+
+  .input {
+    font-size: 1.1em;
+    padding: 10px;
+    width: 280px;
+    border:none;
+    border-bottom:1px solid #999;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .placeholder {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    color:#999;
+    font-size:18px;
+    transition: 0.2s;
+  }
+
+  .input:focus ~ .placeholder, .input:valid ~ .placeholder {
+    color: #5264AE;
+    font-size: 9px;
+    top: -5px;
+  }
+
+  .highlight {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    height: 3px;
+    transition: 0.2s;
+  }
+
+  .input:focus ~ .highlight {
+    border-bottom: 2px solid #5264AE;
+  }
+}

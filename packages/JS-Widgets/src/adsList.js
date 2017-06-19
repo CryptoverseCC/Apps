@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import './adsList.css';
+import style from './adsList.scss';
 
 import AdDetails from './adDetails';
 
@@ -15,9 +15,9 @@ export default class AdsList extends Component {
 
   render({ ads }) {
     return (
-      <div class="ads-list">
+      <div class={style.this}>
         {this._renderHeader()}
-        <div class="content">
+        <div class={style.content}>
           {ads.map(this._renderRow)}
         </div>
       </div>
@@ -26,8 +26,8 @@ export default class AdsList extends Component {
 
   _renderHeader = () => {
     return (
-      <div class="table-header">
-        {this.columns.map(({ name }) => <div class="cell">{name}</div>)}
+      <div class={style.tableHeader}>
+        {this.columns.map(({ name }) => <div class={style.cell}>{name}</div>)}
       </div>
     );
   };
@@ -36,8 +36,8 @@ export default class AdsList extends Component {
     const { activeRow } = this.state;
     const result = [];
     result.push((
-      <div class="table-row" onClick={this._toggleAdDetails.bind(null, index)}>
-        {this.columns.map(({ prop }) => <div class="cell">{ad[prop]}</div>)}
+      <div class={style.tableRow} onClick={this._toggleAdDetails.bind(null, index)}>
+        {this.columns.map(({ prop }) => <div class={style.cell}>{ad[prop]}</div>)}
       </div>
     ));
 

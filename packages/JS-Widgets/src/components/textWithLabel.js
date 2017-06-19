@@ -1,14 +1,14 @@
 import { h } from 'preact';
 
-import './textWithLabel.css';
+import style from './textWithLabel.scss';
 
 import Label from './label';
 
 const TextWithLabel = ({ label, text, children }) => {
   return (
-    <div class="text-with-label">
+    <div class={style.this}>
       <Label>{label}</Label>
-      <p class="text">{text || children}</p>
+      <p class={style.text}>{text || children}</p>
     </div>
   );
 };

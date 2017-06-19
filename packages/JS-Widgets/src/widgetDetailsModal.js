@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import './widgetDetailsModal.css';
+import style from './widgetDetailsModal.scss';
 
 import Switch from './components/utils/switch';
 
@@ -45,8 +45,8 @@ export default class WidgetDetailsModal extends Component {
             </Switch>
           </Button>
         </div>
-        <div class="details">
-          <div class="summary">
+        <div class={style.details}>
+          <div class={style.summary}>
             <TextWithLabel label="Total Earnings" text={totalEarnings} />
             <TextWithLabel label="Max ad slots" text={10} />
             <TextWithLabel label="Algorithm" text={algorithm} />

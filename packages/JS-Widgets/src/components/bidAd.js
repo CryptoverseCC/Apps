@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import './bidAd.css';
+import style from './bidAd.scss';
 
 import { sendAdClaim } from '../api';
 
@@ -21,8 +21,8 @@ export default class BidAd extends Component {
 
   render({ ad, onFinish }, { value, probability }) {
     return (
-      <div class="bid-ad">
-        <div class="input-row">
+      <div class={style.this}>
+        <div class={style.inputRow}>
           <Input
             placeholder="Value"
             value={value}

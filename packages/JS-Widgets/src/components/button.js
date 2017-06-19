@@ -1,9 +1,9 @@
 import { h } from 'preact';
 
-import './button.css';
+import style from './button.scss';
 
 const Button = ({ children, ...restProps }) => {
-  return <button class="button" {...restProps}>{children}</button>;
+  return <button class={style.this} {...restProps}>{children}</button>;
 };
 
 export default Button;
