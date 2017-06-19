@@ -24,6 +24,6 @@ git reset --hard destination/gh-pages
 
 # Add subtree
 git read-tree --prefix=/apps/release/ -u temp
-git commit -m "Apps Release $CI_COMMIT_ID $CI_COMMIT_MESSAGE"
+git commit -m "Apps Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID"
 
 git push $REMOTE_REPOSITORY src:gh-pages --force
