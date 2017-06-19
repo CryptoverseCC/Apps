@@ -27,8 +27,6 @@ git reset --hard destination/gh-pages
 
 git log
 
-git show $DHEAD
-
 git cherry-pick $DHEAD
 
 git log
