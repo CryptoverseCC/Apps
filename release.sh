@@ -26,6 +26,4 @@ git fetch destination
 git reset --hard destination/gh-pages
 git cherry-pick $DHEAD
 
-git log
-
-#git push $REMOTE_REPOSITORY $DHEAD:gh-pages --force
+git push $REMOTE_REPOSITORY $DHEAD:gh-pages --force
