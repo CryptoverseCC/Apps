@@ -22,6 +22,6 @@ mkdir -p tools
 cp -r /release/* tools/
 
 git add tools
-git commit -m "Tools Release"
+git commit -m "Tools Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID"
 
 git push origin gh-pages
