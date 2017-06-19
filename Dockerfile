@@ -11,4 +11,4 @@ COPY . /apps
 WORKDIR /apps/
 
 RUN find . -maxdepth 2 -type d -regex '\./[a-z]+.*' -exec \
-    bash -c "echo '{}' && cd '{}' && [ -f package.json ] && yarn install && yarn build && mkdir -p /apps/release/{} && mv build /apps/release/{}" \;
+    bash -c "echo '{}' && cd '{}' && [ -f package.json ] && yarn install && yarn build && mkdir -p /apps/release/{} && mv build/* /apps/release/{}/" \;
