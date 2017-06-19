@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 
 import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-
-import Highlight from 'react-highlight';
-import 'highlight.js/styles/androidstudio.css';
 
 import './Configurator.css';
 
-import RadioButtonGroup from './RadioButtonGroup';
+import Label from './components/Label';
+import Dropdown from './components/Dropdown';
+import RadioButtonGroup from './components/RadioButtonGroup';
+import Preview from './Preview';
+import Snippet from './Snippet';
 
 const WIDGET_NETWORKS = [
   { value: 'rinkeby', label: 'Rinkeby' },
@@ -40,14 +39,18 @@ export default class Configurator extends Component {
 
   constructor(props) {
     super(props);
+
+    const web3 = window.web3;
+    const userfeedsId = web3 && web3.eth.accounts.length > 0 ? web3.eth.accounts[0] : '';
     this.state = {
-      widgetUserfeedsId: '',
-      widgetSize: WIDGET_SIZES[0].value,
-      widgetType: WIDGET_TYPES[0].value,
-      widgetToken: WIDGET_TOKENS[0].value,
-      widgetNetwork: WIDGET_NETWORKS[0].value,
-      widgetAlgorithm: WIDGET_ALGORITHM[0].value,
-      widgetApiKey: '59049c8fdfed920001508e2aafdcb00bdd4c4c7d61ca02ff47080fe3',
+      widgetSettings: {
+        userfeedsId,
+        size: WIDGET_SIZES[0].value,
+        type: WIDGET_TYPES[0].value,
+        token: WIDGET_TOKENS[0].value,
+        network: WIDGET_NETWORKS[0].value,
+        algorithm: WIDGET_ALGORITHM[0].value,
+      },
     };
   }
 
@@ -67,94 +70,72 @@ export default class Configurator extends Component {
             onChange={this._onWidgetTypeChange}
             options={WIDGET_TYPES}
           />
-          <div>
-            <SelectField
-              floatingLabelText="Network"
-              value={this.state.widgetNetwork}
-              onChange={this._onNetworkChange}
-              className="Configurator-100pro"
-            >
-              { WIDGET_NETWORKS.map(({ label, value }) => (
-                <MenuItem key={value} value={value} primaryText={label} />
-              ))}
-            </SelectField>
-            <TextField
-              hintText="Userfeed ID"
-              floatingLabelText="Userfeed ID"
-              className="Configurator-100pro"
-              onChange={this._onUserfeedIdChange}
-            />
-          </div>
-          <div>
-            <TextField
-              disabled
-              hintText="Authorization token"
-              floatingLabelText="Authorization token"
-              value={this.state.widgetApiKey}
-              className="Configurator-100pro"
-            />
-          </div>
-          <div>
-            <SelectField
-              disabled
-              floatingLabelText="Token"
-              value={WIDGET_TOKENS[0].value}
-              className="Configurator-100pro"
-            >
-              <MenuItem value={WIDGET_TOKENS[0].value} primaryText={WIDGET_TOKENS[0].label} />
-            </SelectField>
-          </div>
-          <div>
-            <SelectField
-              disabled
-              floatingLabelText="Algorithm"
-              value={WIDGET_ALGORITHM[0].value}
-              className="Configurator-100pro"
-            >
-              <MenuItem value={WIDGET_ALGORITHM[0].value} primaryText={WIDGET_ALGORITHM[0].label}/>
-            </SelectField>
-          </div>
-          <div>
-            <h3>Preview</h3>
-            <userfeeds-ad
-              algorithm="internal"
-              context="rinkeby:0xcd73518680ab60ec2253841909d3448bc60f0665"
-              api-key="59049c8fdfed920001508e2aafdcb00bdd4c4c7d61ca02ff47080fe3"
-            >
-            </userfeeds-ad>
-          </div>
-          <h3>Code</h3>
-          <Highlight className='html'>
-            {`
-  <userfeeds-ad
-    size="${this.state.widgetSize}"
-    type="${this.state.widgetType}"
-    context="${this.state.widgetNetwork}:${this.state.widgetUserfeedsId}"
-    algorithm="${this.state.widgetAlgorithm}"
-    api-key="${this.state.widgetApiKey}"
-  >
-  </userfeeds-ad>
-  <script src="https://cdn.jsdelivr.net/npm/@userfeeds/ads"></script>
-              `}
-          </Highlight>
+          <Dropdown
+            label="Network"
+            value={this.state.widgetSettings.network}
+            onChange={this._onNetworkChange}
+            options={WIDGET_NETWORKS}
+          />
+          <TextField
+            hintText="Userfeed ID"
+            floatingLabelText="Userfeed ID"
+            className="Configurator-100pro"
+            value={this.state.widgetSettings.userfeedsId}
+            onChange={this._onUserfeedIdChange}
+          />
+          <Dropdown
+            disabled
+            label="Token"
+            value={WIDGET_TOKENS[0].value}
+            options={WIDGET_TOKENS}
+          />
+          <Dropdown
+            disabled
+            label="Algorithm"
+            value={WIDGET_ALGORITHM[0].value}
+            options={WIDGET_ALGORITHM}
+          />
+          <Preview widgetSettings={this.state.widgetSettings} />
+          <Label>Code</Label>
+          <Snippet widgetSettings={this.state.widgetSettings} />
         </Paper>
       </div>
     );
   }
 
-  _onNetworkChange = (_, widgetNetworkId) => {
-    this.setState({ widgetNetwork: WIDGET_NETWORKS[widgetNetworkId].value });
+  _onNetworkChange = (_, networkId) => {
+    this.setState(({ widgetSettings }) => ({
+      widgetSettings: {
+        ...widgetSettings,
+        network: WIDGET_NETWORKS[networkId].value,
+      },
+    }));
   };
 
-  _onUserfeedIdChange = (_, widgetUserfeedsId) => {
-    this.setState({ widgetUserfeedsId });
+  _onUserfeedIdChange = (_, userfeedsId) => {
+    this.setState(({ widgetSettings }) => ({
+      widgetSettings: {
+        ...widgetSettings,
+        userfeedsId,
+      },
+    }));
   };
 
-  _onWidgetTypeChange = (_, widgetType) => {
-    this.setState({ widgetType });
+  _onWidgetTypeChange = (_, type) => {
+    this.setState(({ widgetSettings }) => ({
+      widgetSettings: {
+        ...widgetSettings,
+        type,
+      },
+    }));
   };
 
-  _onWidgetSizeChange = (_, widgetSize) => {
-    this.setState({ widgetSize });
+  _onWidgetSizeChange = (_, size) => {
+    this.setState(({ widgetSettings }) => ({
+      widgetSettings: {
+        ...widgetSettings,
+        size,
+      },
+    }));
   };
 }
