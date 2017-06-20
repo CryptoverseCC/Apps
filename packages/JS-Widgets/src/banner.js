@@ -37,12 +37,12 @@ export default class Banner extends Component {
           currentAd: this._getRandomAd(sum, ads),
         }, () => this._setTimeout());
       })
-      .catch((error) => {
+      .catch((_error) => {
         this.setState({ fetched: true, noData: true, ads: [], sum: 0 });
       });
   }
 
-  render({ context, algorithm, size }, { fetched,  noData, currentAd, ads }) {
+  render({ context, algorithm, size }, { fetched, noData, currentAd, ads }) {
     if (!fetched) {
       return null;
     }

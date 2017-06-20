@@ -1,9 +1,9 @@
 
 // ToDo unify with utils/ethereum after merge
 const getContractAddress = () => {
-  if (web3.version.network === 3) {
+  if (web3.version.network === '3') {
     return '0xa845c686a696c3d33988917c387d8ab939c66226';
-  } else if (web3.version.network === 4) {
+  } else if (web3.version.network === '4') {
     return '0x0a48ac8263d9d79768d10cf9d7e82a19c49f0002';
   }
 

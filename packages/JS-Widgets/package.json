@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --inline --hot --progress",
     "lint": "eslint .",
     "build": "webpack",
-    "test": "exit 0"
+    "test": "npm run lint"
   },
   "author": "",
   "license": "ISC",
