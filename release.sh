@@ -15,13 +15,13 @@ cd /dest
 
 git checkout gh-pages
 
-rm -rf tools
+rm -rf apps
 
-mkdir -p tools
+mkdir -p apps
 
-cp -r /release/* tools/
+cp -r /release/* apps/
 
-git add tools
+git add apps
 git commit -m "Tools Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID"
 
 git push origin gh-pages
