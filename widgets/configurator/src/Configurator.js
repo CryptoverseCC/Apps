@@ -32,7 +32,7 @@ const WIDGET_TOKENS = [
 ];
 
 const WIDGET_ALGORITHM = [
-  { value: 'internal', label: 'Ad Ether / total ether - time' },
+  { value: 'ads', label: 'Ad Ether / total ether - time' },
 ];
 
 export default class Configurator extends Component {
