@@ -1,6 +1,9 @@
 - type: serial
   steps:
     - service: builder
+      command: npm i
+
+    - service: builder
       command: npm test
 
     - service: builder
