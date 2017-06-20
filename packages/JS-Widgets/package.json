@@ -1,12 +1,13 @@
 {
   "name": "@userfeeds/ads",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
     "start": "webpack-dev-server --inline --hot --progress",
     "lint": "eslint .",
-    "build": "webpack"
+    "build": "webpack",
+    "test": "exit 0"
   },
   "author": "",
   "license": "ISC",
