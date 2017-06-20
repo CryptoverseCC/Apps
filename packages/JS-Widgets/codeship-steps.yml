@@ -2,6 +2,9 @@
   steps:
     - service: builder
       command: npm test
+
+    - service: builder
+      command: npm build
       
     - service: builder
       tag: '^(v[0-9]+\.[0-9]+\.[0-9]+)$'
