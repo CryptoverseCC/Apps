@@ -30,19 +30,15 @@ export default class Banner extends Component {
   componentWillMount() {
     this._fetchAds()
       .then(({ sum, ads }) => {
-        if (sum === null || ads === null) {
-          this.setState({ fetched: true, noData: true });
-        } else {
-          this.setState({
-            sum,
-            ads,
-            fetched: true,
-            currentAd: this._getRandomAd(sum, ads),
-          }, () => this._setTimeout());
-        }
+        this.setState({
+          sum,
+          ads,
+          fetched: true,
+          currentAd: this._getRandomAd(sum, ads),
+        }, () => this._setTimeout());
       })
       .catch((error) => {
-        this.setState({ fetched: true, noData: true });
+        this.setState({ fetched: true, noData: true, ads: [], sum: 0 });
       });
   }
 
@@ -95,7 +91,7 @@ export default class Banner extends Component {
       .then((res) => res.json())
       .then(({ items: ads }) => {
         if (ads.length === 0) {
-          return { sum: null, ads: null };
+          throw new Error('No Data');
         }
 
         const scoreSum = ads.reduce((acc, { score }) => acc + score, 0);
