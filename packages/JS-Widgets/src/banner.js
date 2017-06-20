@@ -85,9 +85,7 @@ export default class Banner extends Component {
   };
 
   _fetchAds() {
-    return fetch(
-      `https://api.userfeeds.io/beta/api/ranking/${this.props.context}/${this.props.algorithm}/`,
-      { headers: { Authorization: '59049c8fdfed920001508e2aafdcb00bdd4c4c7d61ca02ff47080fe3' } }) // ToDo remove
+    return fetch(`https://api.userfeeds.io/ranking/${this.props.context}/${this.props.algorithm}/`)
       .then((res) => res.json())
       .then(({ items: ads }) => {
         if (ads.length === 0) {

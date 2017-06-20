@@ -13,7 +13,7 @@ const getContractAddress = () => {
 export function sendAdClaim(title, summary, target, address, value) {
   return new Promise((resolve) => {
     const claim = {
-      type: ['Ad'],
+      type: ['ad'],
       claim: { target, title, summary },
       credits: [{
         type: 'interface',
