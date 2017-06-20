@@ -22,6 +22,6 @@ mkdir -p apps
 cp -r /release/* apps/
 
 git add apps
-git commit -m "Tools Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID"
+git commit -m "Apps Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID"
 
 git push origin gh-pages
