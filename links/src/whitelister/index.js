@@ -8,14 +8,15 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import AdsList from './AdsList';
+import AdsList from '../components/AdsList';
 
-import './Creator.css';
+import style from './index.scss';
 
 export default class Creator extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       ads: [],
       fetching: false,
@@ -32,10 +33,10 @@ export default class Creator extends Component {
 
   render() {
     return (
-      <div className="Creator-container">
-        <Paper className="Creator-paper">
+      <div className={style.this}>
+        <Paper className={style.paper}>
           <TextField
-            className="Creator-100pro"
+            className={style.input}
             hintText="Userfeed ID"
             floatingLabelText="Userfeed ID"
             value={this.state.context}

@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 
-import './Status.css';
+import style from './index.scss';
 
 export default class Status extends Component {
 
   constructor(props) {
     super(props);
+    const params = (new URL(document.location)).searchParams;
 
-    this.state = queryString.parse(window.location.search);
+    this.state = {
+      widgetcontext: params.get('widgetcontext'),
+      widgetmessage: params.get('widgetmessage'),
+      widgetwhitelist: params.get('widgetwhitelist'),
+    };
   }
 
   render() {
-    let [network, userfeedId] = this.state.widgetcontext.split(':');
+    const [network, userfeedId] = this.state.widgetcontext.split(':');
 
     return (
       <div>
