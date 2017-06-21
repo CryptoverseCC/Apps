@@ -1,0 +1,16 @@
+.Configurator-container {
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Configurator-paper {
+  min-width: 70%;
+  padding: 10px;
+}
+
+.Configurator-100pro {
+  width: 100%!important;
+}
