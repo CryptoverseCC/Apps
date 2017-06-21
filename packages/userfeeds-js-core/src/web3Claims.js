@@ -1,8 +1,10 @@
+const { getCurrentNetworkName } = require('./utils');
 const { abi, getContractAddress } = require('./utils/contract');
 
 function sendClaim(address, claim, value) {
   return new Promise((resolve) => {
-    const contract = web3.eth.contract(abi).at(getContractAddress());
+    const contract = web3.eth.contract(abi)
+      .at(getContractAddress(getCurrentNetworkName()));
 
     contract.post(
       address,
