@@ -1,0 +1,46 @@
+const { abi, getContractAddress } = require('./utils/contract');
+
+function sendClaim(address, claim, value) {
+  return new Promise((resolve) => {
+    const contract = web3.eth.contract(abi).at(getContractAddress());
+
+    contract.post(
+      address,
+      JSON.stringify(claim),
+      { value: web3.toWei(value, 'ether') },
+      resolve,
+    );
+  });
+}
+
+function addAd(address, target, title, summary, value) {
+  const claim = {
+    type: ['ad'],
+    claim: { target, title, summary },
+    credits: [{
+      type: 'interface',
+      value: window.location.href,
+    }],
+  };
+
+  return sendClaim(address, claim, value);
+}
+
+function whitelistAd(address, target) {
+  const claim = {
+    type: ['whitelist'],
+    claim: { target },
+    credits: [{
+      type: 'interface',
+      value: window.location.href,
+    }],
+  };
+
+  return sendClaim(address, claim, 0);
+}
+
+module.exports = {
+  addAd,
+  whitelistAd,
+};
+
