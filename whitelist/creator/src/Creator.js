@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
+import core from '@userfeeds/core';
+
+import debounce from 'lodash.debounce';
+
 import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import AdsList from './AdsList';
 
@@ -8,66 +14,55 @@ import './Creator.css';
 
 export default class Creator extends Component {
 
-  state = {
-    ads: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      ads: [],
+      fetching: false,
+      context: props.context || '',
+      contextFromProps: !!props.context,
+    };
+  }
 
   componentWillMount() {
-    fetch(`https://api.userfeeds.io/ranking/${this.props.context}/ads/`)
-      .then((res) => res.json())
-      .then(({ items: ads }) => this.setState({ ads }));
+    if (this.state.contextFromProps) {
+      this._fetchAds();
+    }
   }
 
   render() {
     return (
       <div className="Creator-container">
         <Paper className="Creator-paper">
+          <TextField
+            hintText="Userfeed ID"
+            floatingLabelText="Userfeed ID"
+            value={this.state.context}
+            onChange={this._onContextChange}
+            disabled={this.state.contextFromProps}
+          />
           <AdsList ads={this.state.ads} onItemClick={this._onAdClick} />
+          {this.state.fetching && <CircularProgress /> }
         </Paper>
       </div>
     );
   }
 
+  _onContextChange = (_, context) => {
+    this.setState({ context });
+    this._fetchAds();
+  };
+
+  _fetchAds = debounce((context) => {
+    this.setState({ fetching: true });
+    fetch(`https://api.userfeeds.io/ranking/${this.state.context}/ads/`)
+      .then((res) => res.json())
+      .then(({ items: ads }) => this.setState({ ads, fetching: false }))
+      .catch(() => this.setState({ fetching: false }));
+  }, 500);
+
   _onAdClick = (ad) => {
-    console.log('_onAdClick');
-    const web3 = window.web3;
-
-    const abi = [{
-      constant: false,
-      inputs: [
-        { name: 'userfeed', type: 'address' },
-        { name: 'data', type: 'string' },
-      ],
-      name: 'post',
-      outputs: [],
-      payable: true,
-      type: 'function',
-    }, {
-      anonymous: false,
-      inputs: [
-        { indexed: false, name: 'sender', type: 'address' },
-        { indexed: false, name: 'userfeed', type: 'address' },
-        { indexed: false, name: 'data', type: 'string' },
-      ],
-      name: 'Claim',
-      type: 'event',
-    }];
-
-    const claim = {
-      type: ['whitelist'],
-      claim: {
-        target: ad.id,
-      },
-      credits: [{
-        type: 'interface',
-        value: window.location.href,
-      }],
-    };
-
-    const contractAddress = '0x0a48ac8263d9d79768d10cf9d7e82a19c49f0002';
-    const contract = web3.eth.contract(abi).at(contractAddress);
-
-    contract.post(ad.id, JSON.stringify(claim), {value: web3.toWei(0, 'ether')}, () => {
-    });
+    const [_, address] = this.context.split(':');
+    core.web3.claims.whitelistAd(address, ad.id);
   };
 }

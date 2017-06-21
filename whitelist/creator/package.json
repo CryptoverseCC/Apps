@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@userfeeds/core": "^0.0.3",
+    "lodash.debounce": "^4.0.8",
     "material-ui": "^0.18.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
