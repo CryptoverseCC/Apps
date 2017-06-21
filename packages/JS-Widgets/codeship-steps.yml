@@ -4,7 +4,7 @@
       command: yarn test
      
     - service: builder
-      tag: '^(v[0-9]+\.[0-9]+\.[0-9]+)$'
+      tag: '^([0-9]+\.[0-9]+\.[0-9]+)$'
       command: ./publish.sh
 
 

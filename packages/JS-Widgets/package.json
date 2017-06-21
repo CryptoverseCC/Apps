@@ -1,6 +1,6 @@
 {
   "name": "@userfeeds/ads",
-  "version": "0.0.10",
+  "version": "${CI_BRANCH}",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
