@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 import './Details.css';
 
-export default class Configurator extends Component {
+export default class Details extends Component {
 
   constructor(props) {
     super(props);
