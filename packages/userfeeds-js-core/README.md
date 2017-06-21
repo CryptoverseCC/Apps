@@ -3,3 +3,4 @@
 - [ ] liner
 - [ ] tests
 - [ ] docs
+- [ ] CI setup
