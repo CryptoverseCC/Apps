@@ -35,6 +35,7 @@ export default class Creator extends Component {
       <div className="Creator-container">
         <Paper className="Creator-paper">
           <TextField
+            className="Creator-100pro"
             hintText="Userfeed ID"
             floatingLabelText="Userfeed ID"
             value={this.state.context}
