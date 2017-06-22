@@ -3,7 +3,7 @@ import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 
-import './Dropdown.css';
+import style from './Dropdown.scss';
 
 const Dropdown = ({ disabled, label, value, onChange, options}) => {
   return (
@@ -12,7 +12,7 @@ const Dropdown = ({ disabled, label, value, onChange, options}) => {
       floatingLabelText={label}
       value={value}
       onChange={onChange}
-      className="Dropdown"
+      className={style.this}
     >
       { options.map(({ label, value }) => (
         <MenuItem key={value} value={value} primaryText={label} />
