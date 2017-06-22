@@ -10,7 +10,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import AdsList from '../components/AdsList';
 
-import style from './index.scss';
+import style from './Whitelist.scss';
 
 export default class Creator extends Component {
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import style from './index.scss';
+import style from './Status.scss';
 
 export default class Status extends Component {
 
@@ -17,6 +17,10 @@ export default class Status extends Component {
   }
 
   render() {
+    if (!this.state.context) {
+      return null;
+    }
+
     const [network, userfeedId] = this.state.context.split(':');
 
     return (
