@@ -1,20 +1,20 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
 } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Status from './status';
-import Whitelister from './whitelister';
+import Whitelist from './whitelist';
 
 const App = () => {
   return (
     <MuiThemeProvider>
       <Router>
         <div>
-          <Route path="/whitelister" component={Whitelister}/>
           <Route path="/status" component={Status}/>
+          <Route path="/whitelist" component={Whitelist}/>
         </div>
       </Router>
     </MuiThemeProvider>

@@ -11,7 +11,12 @@ const Ad = ({ ad, onClick }) => {
         <div>{ad.summary}</div>
       </div>
       <div className={style.button}>
-        <RaisedButton onClick={onClick.bind(null, ad)}>Add to whitelist</RaisedButton>
+        <RaisedButton
+          onClick={onClick.bind(null, ad)}
+          disabled={ad.whitelisted}
+        >
+          Add to whitelist
+        </RaisedButton>
       </div>
     </div>
   );
