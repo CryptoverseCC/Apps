@@ -6,7 +6,7 @@ export default class Status extends Component {
 
   constructor(props) {
     super(props);
-    const params = (new URL(document.location)).searchParams;
+    const params = new URLSearchParams(props.location.search);
 
     this.state = {
       context: params.get('context'),

@@ -17,7 +17,7 @@ export default class Creator extends Component {
   constructor(props) {
     super(props);
 
-    const params = (new URL(window.location)).searchParams;
+    const params = new URLSearchParams(props.location.search);
 
     this.state = {
       ads: [],
