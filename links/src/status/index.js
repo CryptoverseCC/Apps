@@ -9,14 +9,15 @@ export default class Status extends Component {
     const params = (new URL(document.location)).searchParams;
 
     this.state = {
-      widgetcontext: params.get('widgetcontext'),
-      widgetmessage: params.get('widgetmessage'),
-      widgetwhitelist: params.get('widgetwhitelist'),
+      context: params.get('context'),
+      message: params.get('message'),
+      algorithm: params.get('algorithm'),
+      whitelist: params.get('whitelist'),
     };
   }
 
   render() {
-    const [network, userfeedId] = this.state.widgetcontext.split(':');
+    const [network, userfeedId] = this.state.context.split(':');
 
     return (
       <div>
@@ -24,11 +25,11 @@ export default class Status extends Component {
         <ul>
           <li><span>Network: {network}</span></li>
           <li><span>UserfeedID: {userfeedId}</span></li>
-          <li><span>Algorithm: {this.state.widgetalgorithm}</span></li>
-          <li><span>Whitelist: {this.state.widgetwhitelist}</span></li>
+          <li><span>Algorithm: {this.state.algorithm}</span></li>
+          <li><span>Whitelist: {this.state.whitelist}</span></li>
         </ul>
         Publisher message:
-        <p>{this.state.widgetmessage}</p>
+        <p>{this.state.message}</p>
 
         <h1>Link Details:</h1>
         ...
