@@ -16,7 +16,8 @@
     "react-dom": "^15.6.1",
     "react-highlight": "^0.10.0",
     "react-router-dom": "^4.1.1",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
+    "@userfeeds/apps-components": "*"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",
