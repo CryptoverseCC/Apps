@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Label from './components/Label';
+import Label from './Label';
 
 const Preview = ({ widgetSettings }) => {
   return (
