@@ -1,0 +1,16 @@
+.this {
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .paper {
+    width: 70%;
+    padding: 10px;
+  }
+
+  .input {
+    width: 100%!important;
+  }
+}

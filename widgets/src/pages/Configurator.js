@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-import './Configurator.css';
+import style from './Configurator.scss';
 
-import Label from './components/Label';
-import Dropdown from './components/Dropdown';
-import RadioButtonGroup from './components/RadioButtonGroup';
-import Preview from './Preview';
-import Snippet from './Snippet';
+import Label from '../components/Label';
+import Dropdown from '../components/Dropdown';
+import RadioButtonGroup from '../components/RadioButtonGroup';
+import Preview from '../components/Preview';
+import Snippet from '../components/Snippet';
 
 const WIDGET_NETWORKS = [
   { value: 'rinkeby', label: 'Rinkeby' },
@@ -56,8 +56,8 @@ export default class Configurator extends Component {
 
   render() {
     return (
-      <div className="Configurator-container">
-        <Paper className="Configurator-paper">
+      <div className={style.this}>
+        <Paper className={style.paper}>
           <RadioButtonGroup
             label="Widget size"
             name="widgetSize"
@@ -79,7 +79,7 @@ export default class Configurator extends Component {
           <TextField
             hintText="Userfeed ID"
             floatingLabelText="Userfeed ID"
-            className="Configurator-100pro"
+            className={style.input}
             value={this.state.widgetSettings.userfeedsId}
             onChange={this._onUserfeedIdChange}
           />

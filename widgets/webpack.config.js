@@ -9,7 +9,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    publicPath: IS_DEV ? '' : '/apps/links/',
+    publicPath: IS_DEV ? '' : '/apps/widgets/',
     filename: 'bundle.js',
   },
   module: {
@@ -19,6 +19,7 @@ module.exports = {
       loader: 'babel-loader',
     }, {
       test: /\.(css|scss)$/,
+      include: [path.resolve(__dirname, 'src/')],
       use: [
         { loader: 'style-loader' },
         {
@@ -43,6 +44,27 @@ module.exports = {
           options: { sourceMap: true },
         },
       ],
+    }, {
+      test: /\.(css|scss)$/,
+      exclude: [path.resolve(__dirname, 'src/')],
+      use: [
+        { loader: 'style-loader' },
+        {
+          loader: 'css-loader',
+          options: { importLoaders: 1, sourceMap: true },
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true,
+            plugins: () => {
+              autoprefixer({ browsers: ['last 2 versions'] });
+            },
+          },
+        }, {
+          loader: 'sass-loader',
+          options: { sourceMap: true },
+        },
+      ],
     }],
   },
   plugins: [
@@ -52,6 +74,5 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
-    contentBase: './'
   },
 };

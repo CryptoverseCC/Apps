@@ -3,21 +3,21 @@ import { RadioButton, RadioButtonGroup as UIRadioButtonGroup } from 'material-ui
 
 import Label from './Label';
 
-import './RadioButtonGroup.css';
+import style from './RadioButtonGroup.scss';
 
 const RadioButtonGroup = ({ label, name, onChange, options }) => {
   return (
-    <div>
+    <div className={style.this}>
       <Label>{label}</Label>
       <UIRadioButtonGroup
         name={name}
-        className="RadioButtonGroup-options"
+        className={style.options}
         defaultSelected={options[0].value}
         onChange={onChange}
       >
         { options.map(({ value, label, ...extra }) => (
             <RadioButton
-              className="RadioButtonGroup-option"
+              className={style.option}
               key={value}
               value={value}
               label={label}
