@@ -8,7 +8,7 @@ const Ad = ({ ad }) => {
       <div class={style.title}>{ad.title}</div>
       <div class={style.summary}>{ad.summary}</div>
       <div class={`row ${style.footer}`}>
-        <div class={style.link}>{ad.target}</div>
+        <a class={style.link} target="_blank" href={ad.target}>{ad.target}</a>
         <div class={style.probability}>Probability: {ad.probability}%</div>
       </div>
     </div>

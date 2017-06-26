@@ -17,4 +17,15 @@
     align-items: flex-end;
     justify-content: space-between;
   }
+
+  .link {
+
+    &:link {
+      text-decoration: none;
+    }
+
+    &:visited {
+      text-decoration: none;
+    }
+  }
 }
