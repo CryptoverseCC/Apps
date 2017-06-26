@@ -1,5 +1,5 @@
 ## Development instructions:
-- `yarn`
+- [`yarn`](https://yarnpkg.com/en/docs/install)
 - `cd apps/$APP_TO_DEVELOP`
 - `yarn start`
 
