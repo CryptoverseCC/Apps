@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
 
-import style from './bidAd.scss';
+import core from '@userfeeds/core';
 
-import { sendAdClaim } from '../api';
+import style from './bidAd.scss';
 
 import Input from './input';
 import Button from './button';
@@ -67,7 +67,7 @@ export default class BidAd extends Component {
 
     const [_, address] = context.split(':');
 
-    sendAdClaim(title, summary, url, address, value)
+    core.web3.claims.addAd(address, url, title, summary, value)
       .catch((e) => console.log(e))
       .then(this.props.onFinish);
   };

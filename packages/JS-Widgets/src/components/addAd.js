@@ -1,9 +1,9 @@
 import { h, Component } from 'preact';
 import linkState from 'linkstate';
 
-import style from './addAd.scss';
+import core from '@userfeeds/core';
 
-import { sendAdClaim } from '../api';
+import style from './addAd.scss';
 
 import Input from './input';
 import Loader from './loader';
@@ -11,13 +11,36 @@ import Button from './button';
 
 export default class AddAd extends Component {
 
-  render(_, { posting }) {
+  state = {
+    title: '',
+    summary: '',
+    url: '',
+    value: '',
+  };
+
+  render(_, { posting, title, summary, url, value }) {
     return (
       <div class={style.this}>
-        <Input placeholder="Title" onInput={linkState(this, 'title')} />
-        <Input placeholder="Summary" onInput={linkState(this, 'summary')} />
-        <Input placeholder="URL" onInput={linkState(this, 'url')} />
-        <Input placeholder="Value" onInput={linkState(this, 'value')} />
+        <Input
+          placeholder="Title"
+          value={title}
+          onInput={linkState(this, 'title')}
+        />
+        <Input
+          placeholder="Summary"
+          value={summary}
+          onInput={linkState(this, 'summary')}
+        />
+        <Input
+          placeholder="URL"
+          value={url}
+          onInput={linkState(this, 'url')}
+        />
+        <Input
+          placeholder="Value"
+          value={value}
+          onInput={linkState(this, 'value')}
+        />
         <div class={style.sendButton}>
           { posting
               ? <Loader />
@@ -35,7 +58,7 @@ export default class AddAd extends Component {
 
     const [_, address] = context.split(':');
 
-    sendAdClaim(title, summary, url, address, value)
+    core.web3.claims.addAd(address, url, title, summary, value)
       .catch((e) => console.error(e))
       .then(() => {
         this.setState({ posting: false });

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@userfeeds/core": "^0.0.3",
     "classnames": "^2.2.5",
     "linkstate": "^1.0.1",
     "preact": "^8.1.0",
