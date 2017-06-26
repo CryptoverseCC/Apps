@@ -8,7 +8,7 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import AdsList from '../components/AdsList';
+import AdsList from '@userfeeds/apps-components/src/AdsList';
 
 import style from './Whitelist.scss';
 
