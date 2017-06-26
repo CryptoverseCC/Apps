@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "postinstall": "lerna bootstrap --hoist",
+    "lerna": "lerna",
+    "lerna-clean": "lerna clean --yes",
+    "lerna-bootstrap": "lerna bootstrap --hoist"
+  },
   "devDependencies": {
     "lerna": "^2.0.0-rc.5"
   }
