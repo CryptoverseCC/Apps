@@ -8,7 +8,7 @@ export default class Snippet extends Component {
   render() {
     const { widgetSettings } = this.props;
     return (
-      <Highlight className='html'>
+      <Highlight className="html">
         {`
   <userfeeds-ad
     size="${widgetSettings.size}"

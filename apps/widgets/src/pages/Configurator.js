@@ -10,6 +10,7 @@ import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
 import Preview from '@userfeeds/apps-components/src/Preview';
 import Snippet from '@userfeeds/apps-components/src/Snippet';
+import AndroidSnippet from '@userfeeds/apps-components/src/AndroidSnippet';
 
 const WIDGET_NETWORKS = [
   { value: 'rinkeby', label: 'Rinkeby' },
@@ -98,6 +99,8 @@ export default class Configurator extends Component {
           <Preview widgetSettings={this.state.widgetSettings} />
           <Label>Code</Label>
           <Snippet widgetSettings={this.state.widgetSettings} />
+          <Label>Android</Label>
+          <AndroidSnippet widgetSettings={this.state.widgetSettings} />
         </Paper>
       </div>
     );
