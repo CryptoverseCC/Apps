@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "@userfeeds/apps-components",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "material-ui": "^0.18.3",
+    "react-highlight": "^0.10.0"
+  }
+}

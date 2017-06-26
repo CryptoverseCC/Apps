@@ -1,22 +1,25 @@
 {
-  "name": "widgets",
+  "private": true,
+  "name": "links",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --inline --hot --open",
-    "build": "cross-env NODE_ENV=production webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cross-env NODE_ENC=production webpack",
+    "test": "exit 0"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@userfeeds/core": "^0.0.3",
+    "lodash.debounce": "^4.0.8",
     "material-ui": "^0.18.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-highlight": "^0.10.0",
     "react-router-dom": "^4.1.1",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
+    "@userfeeds/apps-components": "*"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

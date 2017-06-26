@@ -15,11 +15,11 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      exclude: /(node_modules)/,
+      exclude: /node_modules/,
       loader: 'babel-loader',
     }, {
       test: /\.(css|scss)$/,
-      include: [path.resolve(__dirname, 'src/')],
+      exclude: /node_modules\/(?!@userfeeds)/,
       use: [
         { loader: 'style-loader' },
         {
@@ -46,7 +46,7 @@ module.exports = {
       ],
     }, {
       test: /\.(css|scss)$/,
-      exclude: [path.resolve(__dirname, 'src/')],
+      include: /node_modules\/(?!@userfeeds)/,
       use: [
         { loader: 'style-loader' },
         {

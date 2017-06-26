@@ -5,11 +5,11 @@ import TextField from 'material-ui/TextField';
 
 import style from './Configurator.scss';
 
-import Label from '../components/Label';
-import Dropdown from '../components/Dropdown';
-import RadioButtonGroup from '../components/RadioButtonGroup';
-import Preview from '../components/Preview';
-import Snippet from '../components/Snippet';
+import Label from '@userfeeds/apps-components/src/Label';
+import Dropdown from '@userfeeds/apps-components/src/Dropdown';
+import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
+import Preview from '@userfeeds/apps-components/src/Preview';
+import Snippet from '@userfeeds/apps-components/src/Snippet';
 
 const WIDGET_NETWORKS = [
   { value: 'rinkeby', label: 'Rinkeby' },
