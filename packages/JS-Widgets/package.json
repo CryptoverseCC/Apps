@@ -14,7 +14,8 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "linkstate": "^1.0.1",
-    "preact": "^8.1.0"
+    "preact": "^8.1.0",
+    "web3": "^0.19.1"
   },
   "devDependencies": {
     "@webcomponents/custom-elements": "^1.0.0",

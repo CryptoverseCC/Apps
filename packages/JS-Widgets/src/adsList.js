@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 
 import style from './adsList.scss';
 
+import web3 from './utils/web3';
 import AdDetails from './adDetails';
 
 export default class AdsList extends Component {
@@ -9,8 +10,8 @@ export default class AdsList extends Component {
   columns = [
     { name: 'Probability', prop: 'probability' },
     { name: 'Ad content', prop: 'summary' },
-    { name: 'Total ETH', prop: 'score' },
-    { name: 'Bids', prop: 'bids' },
+    { name: 'Total ETH', prop: (ad) => web3.fromWei(ad.score, 'ether') },
+    { name: 'Bids', prop: (ad) => ad.bids || 0 },
   ];
 
   render({ ads }) {
@@ -37,7 +38,12 @@ export default class AdsList extends Component {
     const result = [];
     result.push((
       <div class={style.tableRow} onClick={this._toggleAdDetails.bind(null, index)}>
-        {this.columns.map(({ prop }) => <div class={style.cell}>{ad[prop]}</div>)}
+        {this.columns.map(({ prop }) => {
+          if (typeof prop === 'function') {
+            return <div class={style.cell}>{prop(ad)}</div>;
+          }
+          return <div class={style.cell}>{ad[prop]}</div>;
+        })}
       </div>
     ));
 

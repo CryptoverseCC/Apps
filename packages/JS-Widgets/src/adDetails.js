@@ -18,7 +18,7 @@ export default class AdDetails extends Component {
   constructor(props) {
     super(props);
 
-    const network = props.context.split(':')[0];
+    const [network] = props.context.split(':');
     this.state = {
       bidView: false,
       isOnCorrectNetwork: checkNetwork(network),

@@ -104,7 +104,7 @@ export default class Banner extends Component {
           const toDistribute = 100 - roundedDownProbabilitiesSum;
           const toRoundUp = roundedDownProbabilities
             .map((p, i) => ([probabilities[i] - p, i]))
-            .sort(([p1], [p2]) => p1 - p2)
+            .sort(([p1], [p2]) => p2 - p1)
             .slice(0, toDistribute)
             .reduce((acc, [_, i]) => {
               acc[i] = true;

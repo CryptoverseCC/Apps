@@ -4,6 +4,7 @@ import style from './widgetDetailsModal.scss';
 
 import Switch from './components/utils/switch';
 
+import web3 from './utils/web3';
 import Plus from './components/plus';
 import Modal from './components/modal';
 import AddAd from './components/addAd';
@@ -66,9 +67,11 @@ export default class WidgetDetailsModal extends Component {
   }
 
   _calcTotalEarnings = (props) => {
-    this.setState({
-      totalEarnings: props.ads && props.ads.reduce((acc, { score }) => acc + score, 0),
-    });
+    const totalEarnings = props.ads
+      ? props.ads.reduce((acc, { score }) => acc + score, 0)
+      : 0;
+
+    this.setState({ totalEarnings: web3.fromWei(totalEarnings, 'ether') });
   };
 
   _onAddAdClick = () => {
