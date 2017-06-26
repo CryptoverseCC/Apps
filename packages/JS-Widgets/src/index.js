@@ -11,7 +11,7 @@ const positiveValueOrUndefined = (value) => value || undefined;
 class UserfeedsAd extends HTMLElement {
 
   static get observedAttributes() {
-    return ['context', 'algorithm', 'size'];
+    return ['context', 'algorithm', 'size', 'whitelist'];
   }
 
   connectedCallback() {
@@ -27,6 +27,7 @@ class UserfeedsAd extends HTMLElement {
   _renderComponent() {
     const size = this.getAttribute('size');
     const context = this.getAttribute('context');
+    const whitelist = this.getAttribute('whitelist');
     const algorithm = this.getAttribute('algorithm');
 
     this.innerHTML = '';
@@ -34,6 +35,7 @@ class UserfeedsAd extends HTMLElement {
       <Banner
         size={positiveValueOrUndefined(size)}
         context={positiveValueOrUndefined(context)}
+        whitelist={positiveValueOrUndefined(whitelist)}
         algorithm={positiveValueOrUndefined(algorithm)}
       />, this);
   }

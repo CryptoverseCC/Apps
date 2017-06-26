@@ -85,7 +85,9 @@ export default class Banner extends Component {
   };
 
   _fetchAds() {
-    return fetch(`https://api.userfeeds.io/ranking/${this.props.context}/${this.props.algorithm}/`)
+    const baseURL = 'https://api.userfeeds.io/ranking';
+    const { context, algorithm, whitelist = '' } = this.props;
+    return fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`)
       .then((res) => res.json())
       .then(({ items: ads }) => {
         if (ads.length === 0) {
