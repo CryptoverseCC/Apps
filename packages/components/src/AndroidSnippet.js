@@ -5,8 +5,21 @@ import 'highlight.js/styles/androidstudio.css';
 
 export default class AndroidSnippet extends Component {
 
+  state = {
+    latestVersion: '<latest version goes here>',
+  };
+
+  componentWillMount() {
+    fetch('https://cors-anywhere.herokuapp.com/https://search.maven.org/solrsearch/select/?q=g%3Aio.userfeeds.widget+AND+a%3Acore')
+      .then((res) => res.json())
+      .then((json) => {
+        const latestVersion = json.response.docs[0].latestVersion;
+        this.setState({latestVersion});
+      });
+  }
+
   render() {
-    const { widgetSettings } = this.props;
+    const {widgetSettings} = this.props;
     return (
       <div>
         <Highlight className="xml">
@@ -22,9 +35,7 @@ export default class AndroidSnippet extends Component {
         <Highlight className="groovy">
           {`
   dependencies {
-      // find latest version here:
-      // http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.userfeeds.widget%22
-      compile 'io.userfeeds.widget:core:(latest version goes here)'
+      compile 'io.userfeeds.widget:core:${this.state.latestVersion}'
   }
           `}
         </Highlight>
