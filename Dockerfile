@@ -12,6 +12,8 @@ WORKDIR /apps
 
 RUN yarn
 
+RUN yarn test
+
 RUN find apps -maxdepth 1 -type d -regex '\apps/[a-z]+.*' -exec \
     bash -c "echo '{}' && cd '{}' && [ -f package.json ] && yarn build && mkdir -p /release/{} && mv build/* /release/{}/" \;
 
