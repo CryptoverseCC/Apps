@@ -1,3 +1,5 @@
+.idea/
+
 # Logs
 logs
 *.log
@@ -58,4 +60,6 @@ typings/
 .env
 
 env
+
+package-lock.json
 

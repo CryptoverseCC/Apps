@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Highlight from 'react-highlight';
 
 import 'highlight.js/styles/androidstudio.css';
 
-export default class Snippet extends Component {
-
-  render() {
-    const { widgetSettings } = this.props;
-    return (
-      <Highlight className="html">
-        {`
+const Snippet = ({ widgetSettings }) => (
+  <Highlight className="html">
+    {`
   <userfeeds-ad
     size="${widgetSettings.size}"
     type="${widgetSettings.type}"
@@ -19,7 +15,7 @@ export default class Snippet extends Component {
   </userfeeds-ad>
   <script src="https://cdn.jsdelivr.net/npm/@userfeeds/ads"></script>
         `}
-      </Highlight>
-    );
-  }
-}
+  </Highlight>
+);
+
+export default Snippet;

@@ -95,7 +95,7 @@ export default class Creator extends Component {
         return { ...ad, whitelisted };
       });
       this.setState({ ads, fetching: false });
-    } catch(_) {
+    } catch (_) {
       this.setState({ fetching: false });
     }
   }, 500);
