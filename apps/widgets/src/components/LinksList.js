@@ -10,7 +10,13 @@ const ListItem = ({ link, position }) => {
   return (
     <div className={style.link}>
       <LinkPreview link={link} />
-      <div className={style.footer}>
+      <div className={style.row}>
+        <TextWithLabel label="Probability" text={link.probability} />
+        <TextWithLabel label="Total ETH" text={web3.fromWei(link.score)} />
+        <TextWithLabel label="Bids" text={'-'} />
+      </div>
+
+      <div className={style.row}>
         <TextWithLabel label="Current Ranking Position" text={position} />
         <TextWithLabel label="Created" text={'25-05-2017'} />
         <TextWithLabel label="Last bid" text={'26-05-2017'} />

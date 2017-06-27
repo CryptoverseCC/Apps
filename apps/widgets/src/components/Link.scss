@@ -18,7 +18,14 @@
     justify-content: space-between;
   }
 
+  .probability {
+    white-space: nowrap;
+  }
+
   .link {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:link {
       text-decoration: none;
