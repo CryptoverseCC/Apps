@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-import style from './Configurator.scss';
 
 import Label from '@userfeeds/apps-components/src/Label';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
@@ -11,6 +10,8 @@ import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
 import Preview from '@userfeeds/apps-components/src/Preview';
 import Snippet from '@userfeeds/apps-components/src/Snippet';
 import AndroidSnippet from '@userfeeds/apps-components/src/AndroidSnippet';
+
+import style from './Configurator.scss';
 
 const WIDGET_NETWORKS = [
   { value: 'rinkeby', label: 'Rinkeby' },

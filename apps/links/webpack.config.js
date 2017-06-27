@@ -52,6 +52,6 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
-    contentBase: './'
+    contentBase: './',
   },
 };

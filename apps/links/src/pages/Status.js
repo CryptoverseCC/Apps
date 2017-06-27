@@ -24,7 +24,7 @@ export default class Status extends Component {
     const [network, userfeedId] = this.state.context.split(':');
 
     return (
-      <div>
+      <div className={style.this}>
         <h1>Widget Details:</h1>
         <ul>
           <li><span>Network: {network}</span></li>
