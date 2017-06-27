@@ -1,0 +1,31 @@
+.this {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+
+  .title {
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .header {
+    justify-content: space-between;
+  }
+
+  .footer {
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .link {
+
+    &:link {
+      text-decoration: none;
+    }
+
+    &:visited {
+      text-decoration: none;
+    }
+  }
+}

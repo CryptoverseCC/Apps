@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
+
+import WidgetDetails from '../components/WidgetDetails';
+import LinksList from '../components/LinksList';
 
 import style from './Details.scss';
 
@@ -8,28 +13,47 @@ export default class Details extends Component {
     super(props);
     const params = new URLSearchParams(props.location.search);
 
-    this.state = {
-      context: params.get('context'),
-      algorithm: params.get('algorithm'),
-      whitelist: params.get('whitelist'),
-    };
+    const context = params.get('context');
+    const algorithm = params.get('algorithm');
+    const whitelist = params.get('whitelist');
+
+    this.state = { fetching: true, context, algorithm, whitelist };
+
+    const baseURL = 'https://api.userfeeds.io/ranking';
+
+    fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`)
+      .then((res) => res.json())
+      .then(({ items: links }) => {
+        setTimeout(() => this.setState({ fetching: false, links }), 1000);
+      });
   }
 
   render() {
     if (!this.state.context) {
       return null;
     }
-    const [network, userfeedId] = this.state.context.split(':');
+
+    if (this.state.fetching) {
+      return (
+        <div className={style.loader}>
+          <CircularProgress size={80} thickness={5} />
+        </div>
+      );
+    }
+    const { context, algorithm, whitelist, links } = this.state;
 
     return (
       <div className={style.this}>
-        <h1>Widget Details:</h1>
-        <ul>
-          <li><span>Network: {network}</span></li>
-          <li><span>UserfeedID: {userfeedId}</span></li>
-          <li><span>Algorithm: {this.state.algorithm}</span></li>
-          <li><span>Whitelist: {this.state.whitelist}</span></li>
-        </ul>
+        <Paper className={style.paper}>
+          <WidgetDetails
+            context={context}
+            algorithm={algorithm}
+            whitelist={whitelist}
+            links={links}
+          />
+          <hr />
+          <LinksList links={links} />
+        </Paper>
       </div>
     );
   }

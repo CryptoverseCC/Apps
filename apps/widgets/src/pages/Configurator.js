@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-
 import Label from '@userfeeds/apps-components/src/Label';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';

@@ -1,0 +1,17 @@
+.this {
+  display: inline-block;
+
+  & > p {
+    margin: 0;
+  }
+
+  .label {
+    color: #999;
+    font-size: 0.8em;
+  }
+
+  .text {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+}
