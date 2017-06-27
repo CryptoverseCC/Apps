@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --hot --open",
+    "start": "webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "build": "cross-env NODE_ENC=production webpack",
     "test": "exit 0"
   },
