@@ -52,7 +52,7 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
-	disableHostCheck: true,
-    contentBase: './'
+    disableHostCheck: true,
+    contentBase: './',
   },
 };

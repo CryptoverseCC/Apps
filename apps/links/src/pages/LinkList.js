@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import core from '@userfeeds/core';
-
 import debounce from 'lodash.debounce';
 
 import Paper from 'material-ui/Paper';
@@ -24,7 +22,7 @@ export default class Creator extends Component {
       fetching: false,
       context: params.get('context') || '',
       algorithm: params.get('algorithm') || 'links',
-      contextFromParams: params.has('context')
+      contextFromParams: params.has('context'),
     };
   }
 
@@ -55,8 +53,8 @@ export default class Creator extends Component {
             disabled={this.state.whitelistFromParams}
           />
 
-          <LinkList ads={this.state.links} onItemClick={() => {}} />
-          {this.state.fetching && <CircularProgress /> }
+          <LinkList ads={this.state.links} onItemClick={() => { }} />
+          {this.state.fetching && <CircularProgress />}
         </Paper>
       </div>
     );
@@ -68,7 +66,7 @@ export default class Creator extends Component {
   };
 
   _fetchLinks = debounce(async () => {
-    const { context, algorithm } = this.state;
+    const { context } = this.state;
 
     this.setState({ fetching: true });
 
@@ -76,16 +74,16 @@ export default class Creator extends Component {
 
     try {
       const allLinksList = fetch(`${baseURL}/${context}/linklist/`)
-        .then((res) => res.json());      
+        .then((res) => res.json());
 
       const [allLinks] = await Promise.resolve(allLinksList);
 
-      this.setState({ links, fetching: false });
+      this.setState({ links: allLinks, fetching: false });
 
       return allLinks;
-      
-    } catch(_) {
+    } catch (_) {
       this.setState({ fetching: false });
+      return null;
     }
   }, 500);
 

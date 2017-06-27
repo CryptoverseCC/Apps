@@ -7,6 +7,7 @@ module.exports = {
   },
   rules: {
     'no-shadow': 0,
+    'linebreak-style': 0,
     'no-underscore-dangle': 0,
     'arrow-parens': ['error', 'always'],
     'no-unused-vars': ['error', {
