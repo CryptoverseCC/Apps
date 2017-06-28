@@ -14,12 +14,12 @@ export default class AndroidSnippet extends Component {
       .then((res) => res.json())
       .then((json) => {
         const latestVersion = json.response.docs[0].latestVersion;
-        this.setState({latestVersion});
+        this.setState({ latestVersion });
       });
   }
 
   render() {
-    const {widgetSettings} = this.props;
+    const { widgetSettings } = this.props;
     return (
       <div>
         <Highlight className="xml">
