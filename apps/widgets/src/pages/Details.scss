@@ -4,8 +4,40 @@
   justify-content: center;
 
   .paper {
-    width: 80vw;
+    min-width: 80vw;
     padding: 10px;
+
+    @media screen and (max-width: 900px) {
+      width: 100vw;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+
+    @media screen and (max-width: 900px) {
+      flex-direction: column;
+    }
+  }
+
+  .header {
+    display: flex;
+    border-bottom: 1px solid #999;
+  }
+
+  .details {
+    max-width: 200px;
+    border: none;
+    border-right: 1px solid #999;
+
+    @media screen and (max-width: 900px) {
+      border: none;
+      border-bottom: 1px solid #999;
+      flex-direction: row;
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
   }
 }
 

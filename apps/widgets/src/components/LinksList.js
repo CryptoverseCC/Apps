@@ -1,42 +1,67 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
-
-import LinkPreview from '../components/Link';
+import LinkDetails from '../components/LinkDetails';
 
 import style from './LinksList.scss';
 
-const ListItem = ({ link, position }) => {
-  return (
-    <div className={style.link}>
-      <LinkPreview link={link} />
-      <div className={style.row}>
-        <TextWithLabel label="Probability" text={link.probability} />
-        <TextWithLabel label="Total ETH" text={web3.fromWei(link.score)} />
-        <TextWithLabel label="Bids" text={'-'} />
-      </div>
+const columns = [
+  { name: 'Probability', prop: 'probability' },
+  { name: 'Ad content', prop: 'summary' },
+  { name: 'Total ETH', prop: (ad) => web3.fromWei(ad.score, 'ether') },
+  { name: 'Bids', prop: (ad) => ad.bids || 0 },
+];
 
-      <div className={style.row}>
-        <TextWithLabel label="Current Ranking Position" text={position} />
-        <TextWithLabel label="Created" text={'25-05-2017'} />
-        <TextWithLabel label="Last bid" text={'26-05-2017'} />
+export default class LinksList extends Component {
+
+  state = {
+    activeRow: null,
+  };
+
+  render() {
+    const { links } = this.props;
+    return (
+      <div className={style.this}>
+        {this._renderHeader()}
+        <div className={style.content}>
+          { links.map(this._renderRow)}
+        </div>
       </div>
+    );
+  }
+
+  _renderHeader = () => (
+    <div className={style.tableHeader}>
+      {columns.map(({ name }) => <div key={name} className={style.cell}>{name}</div>)}
     </div>
   );
-};
 
-const LinksList = ({ links }) => {
-  return (
-    <div className={style.this}>
-      { links.map((link, index) => (
-        <ListItem
-          key={index + link.target}
-          link={link}
-          position={index + 1}
-        />
-      ))}
-    </div>
-  );
-};
+  _renderRow = (link, position) => {
+    const result = [(
+      <div
+        key={position + link.target}
+        className={style.tableRow}
+        onClick={() => this._onRowClick(position)}
+      >
+        { columns.map(({ prop }) => {
+          if (typeof prop === 'function') {
+            return <div key={prop} className={style.cell}>{prop(link)}</div>;
+          }
+          return <div key={prop} className={style.cell}>{link[prop]}</div>;
+        })}
+      </div>
+    )];
 
-export default LinksList;
+    if (position === this.state.activeRow) {
+      result.push(<LinkDetails link={link} position={position} />);
+    }
+
+    return result;
+  };
+
+  _onRowClick = (index) => this.setState(({ activeRow }) => {
+    if (index === activeRow) {
+      return { activeRow: null };
+    }
+    return { activeRow: index };
+  });
+}

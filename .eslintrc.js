@@ -5,8 +5,13 @@ module.exports = {
     browser: true,
     node: true,
   },
+  globals: {
+    web3: false,
+  },
   rules: {
     'no-shadow': 0,
+    'no-return-assign': 0,
+    'no-confusing-arrow': 0,
     'no-underscore-dangle': 0,
     'arrow-parens': ['error', 'always'],
     'no-unused-vars': ['error', {
@@ -25,5 +30,6 @@ module.exports = {
         'everything-else',
       ],
     }],
+    'jsx-a11y/no-static-element-interactions': 0,
   },
 };

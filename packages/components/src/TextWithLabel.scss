@@ -1,5 +1,6 @@
 .this {
   display: inline-block;
+  max-width: 100%;
 
   & > p {
     margin: 0;
@@ -11,7 +12,10 @@
   }
 
   .text {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
