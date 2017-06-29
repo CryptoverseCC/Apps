@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Highlight from 'react-highlight';
 
 import 'highlight.js/styles/androidstudio.css';
 
-export default class AndroidSnippet extends Component {
+export default class AndroidSnippet extends PureComponent {
 
   state = {
     latestVersion: '<latest version goes here>',
