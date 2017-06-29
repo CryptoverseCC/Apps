@@ -20,12 +20,13 @@ export default class Details extends Component {
 
     const context = params.get('context');
     const algorithm = params.get('algorithm');
-    const whitelist = params.get('whitelist');
+    const whitelist = params.get('whitelist') || '';
 
     this.state = { context, algorithm, whitelist, fetching: true, isModalOpen: false };
 
     this._fetchAds(context, algorithm, whitelist)
-      .then(({ links, _sum }) => {
+      .catch(() => ({ links: [] }))
+      .then(({ links }) => {
         setTimeout(() => this.setState({
           links,
           fetching: false,
