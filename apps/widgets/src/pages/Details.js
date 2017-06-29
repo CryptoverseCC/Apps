@@ -92,7 +92,7 @@ export default class Details extends Component {
     const { context, algorithm, whitelist } = this.state;
 
     const baseUrl = 'https://userfeeds.io/';
-    const path = 'apps/widgets/#/details/';
+    const path = 'apps/links/#/whitelist/';
 
     const contextQP = `?context=${context}`;
     const algorithmQP = `&algorithm=${algorithm}`;
