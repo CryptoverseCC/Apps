@@ -11,13 +11,16 @@ import Button from './components/button';
 import AddAdModal from './addAdModal';
 import WidgetDetailsModal from './widgetDetailsModal';
 
+import { checkNetwork, checkCurrentAccount } from './utils/ethereum';
+import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
+
 export default class Menu extends Component {
 
   state = {
     web3Available: !!window.web3,
   };
 
-  render({ context, algorithm, ads },
+  render({ context, algorithm, whitelist, ads },
     { isOpen, isAddAdModalOpen, isWidgetDetailsModalOpen, web3Available }) {
 
     return (
@@ -35,6 +38,12 @@ export default class Menu extends Component {
                 </Switch.Case>
               </Switch>
             </div>
+            <If condition={web3Available && whitelist}>
+              <hr />
+              <div class={style.menuItem} onClick={this._onWhitelistClick}>
+                Whitelist
+              </div>
+            </If>
             <hr />
             <div class={style.menuItem} onClick={this._onDetailsClick}>Widget Details</div>
           </div>
@@ -49,7 +58,9 @@ export default class Menu extends Component {
           ads={ads}
           context={context}
           algorithm={algorithm}
+          whitelist={whitelist}
           isOpen={isWidgetDetailsModalOpen}
+          web3Available={web3Available}
           onCloseRequest={this._onWidgeDetailsModalCloseRequest}
         />
       </div>
@@ -63,6 +74,16 @@ export default class Menu extends Component {
   _onAddAdClick = () => {
     if (this.state.web3Available) {
       this.setState({ isAddAdModalOpen: true, isOpen: false });
+    }
+  };
+
+  _onWhitelistClick = () => {
+    this.setState({ isOpen: false });
+    const [network, account] = this.props.whitelist.split(':');
+    if (checkNetwork(network) && checkCurrentAccount(account)) {
+      openUserfeedsUrl('apps/links/#/whitelist/', this.props);
+    } else {
+      window.alert('Please change your current network and address to ' + this.props.whitelist);
     }
   };
 

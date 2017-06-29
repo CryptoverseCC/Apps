@@ -42,7 +42,7 @@ export default class Banner extends Component {
       });
   }
 
-  render({ context, algorithm, size }, { fetched, noData, currentAd, ads }) {
+  render({ context, algorithm, whitelist, size }, { fetched, noData, currentAd, ads }) {
     if (!fetched) {
       return null;
     }
@@ -58,7 +58,7 @@ export default class Banner extends Component {
           </Switch.Case>
         </Switch>
         <div class={style.options}>
-          <Menu context={context} algorithm={algorithm} ads={ads} />
+          <Menu context={context} algorithm={algorithm} whitelist={whitelist} ads={ads} />
           <div class={style.arrows}>
             <div onClick={this._onPrevClick}>❮</div>
             <div onClick={this._onNextClick}>❯</div>

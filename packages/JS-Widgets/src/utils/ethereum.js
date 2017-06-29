@@ -12,3 +12,10 @@ export const checkNetwork = (expectedNetwork) => {
 
   return networkMapping[web3.version.network] === expectedNetwork;
 };
+
+export const checkCurrentAccount = (expectedAccount) => {
+  if (!web3) {
+    return false;
+  }
+  return web3.eth.accounts[0] === expectedAccount;
+};

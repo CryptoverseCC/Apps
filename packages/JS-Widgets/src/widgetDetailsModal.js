@@ -13,6 +13,9 @@ import TextWithLabel from './components/textWithLabel';
 
 import AdsList from './adsList';
 
+import { checkNetwork, checkCurrentAccount } from './utils/ethereum';
+import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
+
 export default class WidgetDetailsModal extends Component {
 
   constructor(props) {
@@ -27,18 +30,41 @@ export default class WidgetDetailsModal extends Component {
     this._calcTotalEarnings(newProps);
   }
 
-  render({ isOpen, onCloseRequest, context, ads, algorithm }, { totalEarnings, viewType }) {
+  render({ isOpen, web3Available, onCloseRequest, context, ads, algorithm, whitelist }, { totalEarnings, viewType }) {
     return (
       <Modal isOpen={isOpen} onCloseRequest={onCloseRequest}>
         <div class="row">
+          <Button
+            hidden={viewType !== 'details'}
+            onClick={this._onOpenInSeparateWindowClick}
+          >
+            Open in<br />
+            separate<br />
+            window
+          </Button>
           <TextWithLabel label="Userfeeds address" text={context} />
           <Button
             style={{marginLeft: 'auto'}}
+            hidden={!web3Available || !whitelist || viewType !== 'details'}
+            onClick={this._onWhitelistClick}
+          >
+            Whitelist
+          </Button>
+          <Button
+            style={{marginLeft: 'auto'}}
+            disabled={!web3Available}
             onClick={this._onAddAdClick}
           >
             <Switch expresion={viewType}>
               <Switch.Case condition="details">
-                <Plus reverseOnHover />  New Ad
+                <Switch expresion={web3Available}>
+                  <Switch.Case condition={true}>
+                    <Plus reverseOnHover />  New Ad
+                  </Switch.Case>
+                  <Switch.Case condition={false}>
+                    MetaMask not available (o:
+                  </Switch.Case>
+                </Switch>
               </Switch.Case>
               <Switch.Case condition="addAd">
                 Cancel
@@ -72,6 +98,19 @@ export default class WidgetDetailsModal extends Component {
       : 0;
 
     this.setState({ totalEarnings: web3.fromWei(totalEarnings, 'ether') });
+  };
+
+  _onOpenInSeparateWindowClick = () => {
+    openUserfeedsUrl('apps/widgets/#/details/', this.props);
+  };
+
+  _onWhitelistClick = () => {
+    const [network, account] = this.props.whitelist.split(':');
+    if (checkNetwork(network) && checkCurrentAccount(account)) {
+      openUserfeedsUrl('apps/links/#/whitelist/', this.props);
+    } else {
+      window.alert('Please change your current network and address to ' + this.props.whitelist);
+    }
   };
 
   _onAddAdClick = () => {
