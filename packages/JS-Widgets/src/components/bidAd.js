@@ -62,12 +62,12 @@ export default class BidAd extends Component {
 
   _onSendCick = () => {
     const { context } = this.props;
-    const { title, summary, url } = this.props.ad;
+    const { title, summary, target } = this.props.ad;
     const { value } = this.state;
 
     const [_, address] = context.split(':');
 
-    core.web3.claims.addAd(address, url, title, summary, value)
+    core.web3.claims.addAd(address, target, title, summary, value)
       .catch((e) => console.log(e))
       .then(this.props.onFinish);
   };
