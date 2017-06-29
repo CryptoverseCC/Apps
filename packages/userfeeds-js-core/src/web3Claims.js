@@ -2,7 +2,7 @@ const { getCurrentNetworkName } = require('./utils');
 const { abi, getContractAddress } = require('./utils/contract');
 
 function sendClaim(address, claim, value) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const contract = web3.eth.contract(abi)
       .at(getContractAddress(getCurrentNetworkName()));
 
@@ -10,7 +10,12 @@ function sendClaim(address, claim, value) {
       address,
       JSON.stringify(claim),
       { value: web3.toWei(value, 'ether') },
-      resolve,
+      (errror) => {
+        if (errror) {
+          return reject(errror);
+        }
+        return resolve();
+      },
     );
   });
 }
