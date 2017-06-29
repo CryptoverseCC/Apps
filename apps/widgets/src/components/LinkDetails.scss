@@ -1,5 +1,23 @@
 .this {
   padding: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .row {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .input {
+    width: 50%!important;
+  }
+
+  .bid {
+    position: absolute;
+    right: 0;
+    top: 10px;
+  }
 
   .footer {
     margin-top: 10px;

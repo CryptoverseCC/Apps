@@ -52,7 +52,11 @@ export default class Details extends Component {
         <Paper className={style.paper}>
           <div className={style.header}>
             <TextWithLabel label="Userfeeds address" text={context} />
-            <RaisedButton label="Whitelist" style={{ marginLeft: 'auto' }} />
+            <RaisedButton
+              label="Whitelist"
+              onTouchTap={this._gotoWhitelist}
+              style={{ marginLeft: 'auto' }}
+            />
             <RaisedButton label="Add link" onTouchTap={this._onAddLink} />
           </div>
           <div className={style.content}>
@@ -63,7 +67,7 @@ export default class Details extends Component {
               whitelist={whitelist}
               links={links}
             />
-            <LinksList links={links} />
+            <LinksList links={links} context={context} />
           </div>
         </Paper>
         <AddLinkDialog
@@ -81,6 +85,18 @@ export default class Details extends Component {
 
   _onModalCloseRequest = () => {
     this.setState({ isModalOpen: false });
+  };
+
+  _gotoWhitelist = () => {
+    const { context, algorithm, whitelist } = this.state;
+
+    const baseUrl = 'https://userfeeds.io/';
+    const path = 'apps/widgets/#/details/';
+
+    const contextQP = `?context=${context}`;
+    const algorithmQP = `&algorithm=${algorithm}`;
+    const whitelistQP = whitelist ? `&whitelist=${whitelist}` : '';
+    window.open(baseUrl + path + contextQP + algorithmQP + whitelistQP, '_blank');
   };
 
   _fetchAds = (context, algorithm, whitelist) => {

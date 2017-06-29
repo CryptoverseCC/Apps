@@ -52,7 +52,14 @@ export default class LinksList extends Component {
     )];
 
     if (position === this.state.activeRow) {
-      result.push(<LinkDetails link={link} position={position} />);
+      result.push((
+        <LinkDetails
+          context={this.props.context}
+          link={link}
+          links={this.props.links}
+          position={position}
+        />
+      ));
     }
 
     return result;
