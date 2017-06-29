@@ -15,8 +15,8 @@ export default class Status extends Component {
 
     this.state = {
       linkId,
-      context, 
-      algorithm, 
+      context,
+      algorithm,
       whitelist,
       publisherNote: params.get('publisherNote'),
       fetching: true,
@@ -34,7 +34,6 @@ export default class Status extends Component {
       return null;
     }
 
-    const [network, userfeedId] = this.state.context.split(':');
     const { link } = this.state;
     return (
       <div className={style.this}>
@@ -60,15 +59,15 @@ export default class Status extends Component {
         .then((res) => res.json())
         .then(this._calculateProbability);
 
-      const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest, whitelistedLinksRequest]);
-
+      const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest,
+        whitelistedLinksRequest]);
       const links = allLinks.items.map((link) => {
         const whitelisted = whitelistedLinks.items.find((a) => link.id === a.id);
 
-        return { 
-          ...link, 
-          whitelisted: !!whitelisted, 
-          probability: !!whitelisted ? whitelisted.probability : '-',
+        return {
+          ...link,
+          whitelisted: !!whitelisted,
+          probability: whitelisted ? whitelisted.probability : '-',
         };
       });
 
