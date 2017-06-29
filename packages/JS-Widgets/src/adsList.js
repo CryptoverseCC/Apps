@@ -48,7 +48,7 @@ export default class AdsList extends Component {
     ));
 
     if (activeRow === index) {
-      result.push(<AdDetails ad={ad} ads={this.props.ads} context={this.props.context} />);
+      result.push(<AdDetails ad={ad} ads={this.props.ads} context={this.props.context} onShowThankYouRequest={this.props.onShowThankYouRequest} />);
     }
 
     return result;

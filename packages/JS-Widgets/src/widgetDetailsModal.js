@@ -30,7 +30,7 @@ export default class WidgetDetailsModal extends Component {
     this._calcTotalEarnings(newProps);
   }
 
-  render({ isOpen, web3Available, onCloseRequest, context, ads, algorithm, whitelist }, { totalEarnings, viewType }) {
+  render({ isOpen, web3Available, onCloseRequest, onShowThankYouRequest, context, ads, algorithm, whitelist }, { totalEarnings, viewType }) {
     return (
       <Modal isOpen={isOpen} onCloseRequest={onCloseRequest}>
         <div class="row">
@@ -75,16 +75,16 @@ export default class WidgetDetailsModal extends Component {
         <div class={style.details}>
           <div class={style.summary}>
             <TextWithLabel label="Total Earnings" text={totalEarnings} />
-            <TextWithLabel label="Max ad slots" text={10} />
+            <TextWithLabel label="Max ad slots" text="10 (hardcode)" />
             <TextWithLabel label="Algorithm" text={algorithm} />
-            <TextWithLabel label="Feed type" text="Text" />
+            <TextWithLabel label="Feed type" text="Text (hardcode)" />
           </div>
           <Switch expresion={viewType}>
             <Switch.Case condition="details">
-              <AdsList ads={ads} context={context} />
+              <AdsList ads={ads} context={context} onShowThankYouRequest={onShowThankYouRequest} />
             </Switch.Case>
             <Switch.Case condition="addAd">
-              <AddAd context={context} onFinish={this._onAdAdded} />
+              <AddAd context={context} onSuccess={this._onAdAdded} onError={this._onAdNotAdded} />
             </Switch.Case>
           </Switch>
         </div>
@@ -118,6 +118,11 @@ export default class WidgetDetailsModal extends Component {
   };
 
   _onAdAdded = () => {
+    this.setState({ viewType: 'details' });
+    this.props.onShowThankYouRequest();
+  };
+
+  _onAdNotAdded = () => {
     this.setState({ viewType: 'details' });
   };
 }

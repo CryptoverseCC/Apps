@@ -37,7 +37,7 @@ export default class BidAd extends Component {
         <Button
           disabled={probability === '-'}
           style={{ marginLeft: 'auto' }}
-          onClick={this._onSendCick}
+          onClick={this._onSendClick}
         >
           Send
         </Button>
@@ -60,7 +60,7 @@ export default class BidAd extends Component {
     }
   };
 
-  _onSendCick = () => {
+  _onSendClick = () => {
     const { context } = this.props;
     const { title, summary, target } = this.props.ad;
     const { value } = this.state;
@@ -68,7 +68,10 @@ export default class BidAd extends Component {
     const [_, address] = context.split(':');
 
     core.web3.claims.addAd(address, target, title, summary, value)
-      .catch((e) => console.log(e))
-      .then(this.props.onFinish);
+      .then(this.props.onSuccess)
+      .catch((e) => {
+        console.log(e);
+        this.props.onError();
+      });
   };
 }

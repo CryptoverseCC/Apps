@@ -29,6 +29,7 @@ class UserfeedsAd extends HTMLElement {
     const context = this.getAttribute('context');
     const whitelist = this.getAttribute('whitelist');
     const algorithm = this.getAttribute('algorithm');
+    const publisherNote = this.getAttribute('publisher-note');
 
     this.innerHTML = '';
     this.instance = render(
@@ -37,6 +38,7 @@ class UserfeedsAd extends HTMLElement {
         context={positiveValueOrUndefined(context)}
         whitelist={positiveValueOrUndefined(whitelist)}
         algorithm={positiveValueOrUndefined(algorithm)}
+        publisherNote={positiveValueOrUndefined(publisherNote)}
       />, this);
   }
 }

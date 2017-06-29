@@ -10,6 +10,7 @@ import Button from './components/button';
 
 import AddAdModal from './addAdModal';
 import WidgetDetailsModal from './widgetDetailsModal';
+import ThankYouModal from './thankYouModal';
 
 import { checkNetwork, checkCurrentAccount } from './utils/ethereum';
 import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
@@ -20,8 +21,8 @@ export default class Menu extends Component {
     web3Available: !!window.web3,
   };
 
-  render({ context, algorithm, whitelist, ads },
-    { isOpen, isAddAdModalOpen, isWidgetDetailsModalOpen, web3Available }) {
+  render({ context, algorithm, whitelist, publisherNote, ads },
+    { isOpen, isAddAdModalOpen, isWidgetDetailsModalOpen, isThankYouModalOpen, web3Available }) {
 
     return (
       <div class={style.this}>
@@ -51,8 +52,9 @@ export default class Menu extends Component {
         <AddAdModal
           context={context}
           isOpen={isAddAdModalOpen}
-          onCloseRequest={this._onAddAdModalCloseRequest}
-          onFinish={this._onAddAdModalCloseRequest}
+          onCloseRequest={this._onAddAdModalDismiss}
+          onSuccess={this._onAddAdModalSuccess}
+          onError={this._onAddAdModalError}
         />
         <WidgetDetailsModal
           ads={ads}
@@ -62,6 +64,15 @@ export default class Menu extends Component {
           isOpen={isWidgetDetailsModalOpen}
           web3Available={web3Available}
           onCloseRequest={this._onWidgeDetailsModalCloseRequest}
+          onShowThankYouRequest={this._onShowThankYouRequest}
+        />
+        <ThankYouModal
+          context={context}
+          algorithm={algorithm}
+          whitelist={whitelist}
+          publisherNote={publisherNote}
+          isOpen={isThankYouModalOpen}
+          onCloseRequest={this._onThankYouModalCloseRequest}
         />
       </div>
     );
@@ -91,11 +102,27 @@ export default class Menu extends Component {
     this.setState({ isWidgetDetailsModalOpen: true, isOpen: false });
   };
 
-  _onAddAdModalCloseRequest = () => {
+  _onAddAdModalSuccess = () => {
+    this.setState({ isAddAdModalOpen: false, isThankYouModalOpen: true });
+  };
+
+  _onAddAdModalError = () => {
+    this.setState({ isAddAdModalOpen: false });
+  };
+
+  _onAddAdModalDismiss = () => {
     this.setState({ isAddAdModalOpen: false });
   };
 
   _onWidgeDetailsModalCloseRequest = () => {
     this.setState({ isWidgetDetailsModalOpen: false });
+  };
+
+  _onShowThankYouRequest = () => {
+    this.setState({ isWidgetDetailsModalOpen: false, isThankYouModalOpen: true });
+  };
+
+  _onThankYouModalCloseRequest = () => {
+    this.setState({ isThankYouModalOpen: false });
   };
 }

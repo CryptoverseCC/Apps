@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@userfeeds/core@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.3.tgz#303de4d6a9acef315873c199f40843aea1d9d124"
+"@userfeeds/core@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.4.tgz#151c294ce316207070e105109bfca6167a4001b5"
 
 "@webcomponents/custom-elements@^1.0.0":
   version "1.0.0"

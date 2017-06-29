@@ -50,15 +50,20 @@ export default class AdDetails extends Component {
             </div>
           </Switch.Case>
           <Switch.Case condition={true}>
-            <BidAd ad={ad} ads={ads} context={context} onFinish={this._onBidFinish} />
+            <BidAd ad={ad} ads={ads} context={context} onSuccess={this._onBidSuccess} onError={this._onBidError} />
           </Switch.Case>
         </Switch>
       </div>
     );
   }
 
-  _onBidFinish = () => {
-    this.setState({ bindView: false });
+  _onBidSuccess = () => {
+    this.props.onShowThankYouRequest();
+    this.setState({ bidView: false });
+  };
+
+  _onBidError = () => {
+    this.setState({ bidView: false });
   };
 
   _onBidClick = () => {
