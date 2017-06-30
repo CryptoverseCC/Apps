@@ -10,11 +10,11 @@ function sendClaim(address, claim, value) {
       address,
       JSON.stringify(claim),
       { value: web3.toWei(value, 'ether') },
-      (errror) => {
+      (errror, result) => {
         if (errror) {
           return reject(errror);
         }
-        return resolve();
+        return resolve(result);
       },
     );
   });
