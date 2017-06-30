@@ -11,7 +11,7 @@ const positiveValueOrUndefined = (value) => value || undefined;
 class UserfeedsAd extends HTMLElement {
 
   static get observedAttributes() {
-    return ['context', 'algorithm', 'size', 'whitelist'];
+    return ['context', 'algorithm', 'size', 'whitelist', 'publisher-note'];
   }
 
   connectedCallback() {
