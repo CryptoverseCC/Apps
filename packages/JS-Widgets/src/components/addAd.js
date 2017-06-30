@@ -59,9 +59,9 @@ export default class AddAd extends Component {
     const [_, address] = context.split(':');
 
     core.web3.claims.addAd(address, url, title, summary, value)
-      .then(() => {
+      .then((linkId) => {
         this.setState({ posting: false });
-        this.props.onSuccess();
+        this.props.onSuccess(linkId);
       })
       .catch((e) => {
         console.warn(e);

@@ -22,7 +22,7 @@ export default class Menu extends Component {
   };
 
   render({ context, algorithm, whitelist, publisherNote, ads },
-    { isOpen, isAddAdModalOpen, isWidgetDetailsModalOpen, isThankYouModalOpen, web3Available }) {
+    { isOpen, isAddAdModalOpen, isWidgetDetailsModalOpen, isThankYouModalOpen, linkId, web3Available }) {
 
     return (
       <div class={style.this}>
@@ -61,6 +61,7 @@ export default class Menu extends Component {
           context={context}
           algorithm={algorithm}
           whitelist={whitelist}
+          publisherNote={publisherNote}
           isOpen={isWidgetDetailsModalOpen}
           web3Available={web3Available}
           onCloseRequest={this._onWidgeDetailsModalCloseRequest}
@@ -71,6 +72,7 @@ export default class Menu extends Component {
           algorithm={algorithm}
           whitelist={whitelist}
           publisherNote={publisherNote}
+          linkId={linkId}
           isOpen={isThankYouModalOpen}
           onCloseRequest={this._onThankYouModalCloseRequest}
         />
@@ -102,8 +104,8 @@ export default class Menu extends Component {
     this.setState({ isWidgetDetailsModalOpen: true, isOpen: false });
   };
 
-  _onAddAdModalSuccess = () => {
-    this.setState({ isAddAdModalOpen: false, isThankYouModalOpen: true });
+  _onAddAdModalSuccess = (linkId) => {
+    this.setState({ isAddAdModalOpen: false, isThankYouModalOpen: true, linkId });
   };
 
   _onAddAdModalError = () => {
@@ -118,8 +120,8 @@ export default class Menu extends Component {
     this.setState({ isWidgetDetailsModalOpen: false });
   };
 
-  _onShowThankYouRequest = () => {
-    this.setState({ isWidgetDetailsModalOpen: false, isThankYouModalOpen: true });
+  _onShowThankYouRequest = (linkId) => {
+    this.setState({ isWidgetDetailsModalOpen: false, isThankYouModalOpen: true, linkId });
   };
 
   _onThankYouModalCloseRequest = () => {

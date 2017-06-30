@@ -117,9 +117,9 @@ export default class WidgetDetailsModal extends Component {
     this.setState(({ viewType }) => ({ viewType: viewType === 'addAd' ? 'details' : 'addAd' }));
   };
 
-  _onAdAdded = () => {
+  _onAdAdded = (linkId) => {
     this.setState({ viewType: 'details' });
-    this.props.onShowThankYouRequest();
+    this.props.onShowThankYouRequest(linkId);
   };
 
   _onAdNotAdded = () => {

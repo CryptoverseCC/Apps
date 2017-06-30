@@ -57,8 +57,8 @@ export default class AdDetails extends Component {
     );
   }
 
-  _onBidSuccess = () => {
-    this.props.onShowThankYouRequest();
+  _onBidSuccess = (linkId) => {
+    this.props.onShowThankYouRequest(linkId);
     this.setState({ bidView: false });
   };
 
