@@ -29,6 +29,8 @@ export default class AndroidSnippet extends PureComponent {
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       userfeeds:context="${widgetSettings.network}:${widgetSettings.userfeedsId}"
+      userfeeds:whitelist="${widgetSettings.network}:${widgetSettings.whitelistId}"
+      userfeeds:publisherNote="${widgetSettings.publisherNote}"
       userfeeds:algorithm="${widgetSettings.algorithm}"/>
           `}
         </Highlight>
