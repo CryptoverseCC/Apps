@@ -10,6 +10,8 @@ const Snippet = ({ widgetSettings }) => (
     size="${widgetSettings.size}"
     type="${widgetSettings.type}"
     context="${widgetSettings.network}:${widgetSettings.userfeedsId}"
+    whitelist="${widgetSettings.network}:${widgetSettings.whitelistId}"
+    publisher-note="${widgetSettings.publisherNote}"
     algorithm="${widgetSettings.algorithm}"
   >
   </userfeeds-ad>

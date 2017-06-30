@@ -9,6 +9,8 @@ const Preview = ({ widgetSettings }) => (
       size={widgetSettings.size}
       algorithm={widgetSettings.algorithm}
       context={`${widgetSettings.network}:${widgetSettings.userfeedsId}`}
+      whitelist={`${widgetSettings.network}:${widgetSettings.whitelistId}`}
+      publisherNote={`${widgetSettings.publisherNote}`}
     />
   </div>
 );
