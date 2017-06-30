@@ -9,6 +9,7 @@ export default class AdsList extends Component {
 
   columns = [
     { name: 'Probability', prop: 'probability' },
+    { name: 'Title', prop: 'title' },
     { name: 'Ad content', prop: 'summary' },
     { name: 'Total ETH', prop: (ad) => web3.fromWei(ad.score, 'ether') },
     { name: 'Bids', prop: (ad) => ad.bids || 0 },
