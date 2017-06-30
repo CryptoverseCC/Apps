@@ -19,13 +19,22 @@ export default class Status extends Component {
       algorithm,
       whitelist,
       publisherNote: params.get('publisherNote'),
-      fetching: true,
     };
 
     this._fetchLinks(context, algorithm, whitelist)
-      .then((links) => {
-        const link = links.find((l) => l.id === linkId);
-        this.setState({ link, fetching: false });
+      .then(this._findLinkById(linkId))
+      .then((link) => {
+        if (!link) {
+          const setTimeoutForFetch = () => {
+            setTimeout(() => {
+              this._fetchLinks(context, algorithm, whitelist)
+                .then(this._findLinkById(linkId))
+                .then((link) => !link && setTimeoutForFetch());
+            }, 5000);
+          };
+
+          setTimeoutForFetch();
+        }
       });
   }
 
@@ -39,6 +48,14 @@ export default class Status extends Component {
       <div className={style.this}>
         <h1>Link Status:</h1>
         <span><b>Publisher message:</b> {this.state.publisherNote}</span>
+        { !link && (
+          <p className={style.waiting}>
+            Waiting
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </p>
+          )}
         { link && (
           <div>
             <p>Whitelisted = {link.whitelisted ? 'true' : 'false'}</p>
@@ -75,6 +92,13 @@ export default class Status extends Component {
     } catch (_) {
       return [];
     }
+  };
+
+  _findLinkById = (linkId) => (links) => {
+    const link = links.find((l) => l.id === linkId);
+    this.setState({ link });
+
+    return link;
   };
 
   _calculateProbability = ({ items: links }) => {
