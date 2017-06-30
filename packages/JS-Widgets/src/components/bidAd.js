@@ -50,10 +50,12 @@ export default class BidAd extends Component {
 
     const { ad } = this.props;
     const { sum } = this.state;
-    const value = parseFloat(event.target.value);
+    const valueInEth = parseFloat(event.target.value);
 
-    if (value) {
-      const probability = ((ad.score + value) / (sum + value) * 100).toFixed(2);
+    if (valueInEth) {
+      const valueInWei = parseFloat(web3.toWei(valueInEth, 'ether'));
+      let rawProbability = (ad.score + valueInWei) / (sum + valueInWei);
+      const probability = (100 * rawProbability).toFixed(2);
       this.setState({ probability });
     } else {
       this.setState({ probability: '-' });
