@@ -7,6 +7,8 @@ const Ad = ({ ad, onClick }) => (
   <div className={style.row}>
     <div>
       <div>URL: <a href={ad.target}>{ad.target}</a></div>
+      <div>score: {web3.fromWei(ad.score, 'ether')}</div>
+      <div>{ad.title}</div>
       <div>{ad.summary}</div>
     </div>
     <div className={style.button}>
