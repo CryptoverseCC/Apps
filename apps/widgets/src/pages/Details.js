@@ -89,15 +89,16 @@ export default class Details extends Component {
   };
 
   _gotoWhitelist = () => {
-    const { context, algorithm, whitelist } = this.state;
+    const { context, algorithm, whitelist, publisherNote } = this.state;
 
     const baseUrl = 'https://userfeeds.io/';
     const path = 'apps/links/#/whitelist/';
 
-    const contextQP = `?context=${context}`;
-    const algorithmQP = `&algorithm=${algorithm}`;
-    const whitelistQP = whitelist ? `&whitelist=${whitelist}` : '';
-    window.open(baseUrl + path + contextQP + algorithmQP + whitelistQP, '_blank');
+    const contextQP = `?context=${encodeURIComponent(context)}`;
+    const algorithmQP = `&algorithm=${encodeURIComponent(algorithm)}`;
+    const whitelistQP = whitelist ? `&whitelist=${encodeURIComponent(whitelist)}` : '';
+    const publisherNoteQP = publisherNote ? `&publisherNote=${encodeURIComponent(publisherNote)}` : '';
+    window.open(baseUrl + path + contextQP + algorithmQP + whitelistQP + publisherNoteQP, '_blank');
   };
 
   _fetchAds = (context, algorithm, whitelist) => {
