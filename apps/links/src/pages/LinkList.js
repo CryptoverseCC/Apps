@@ -55,18 +55,14 @@ export default class Creator extends Component {
     this.setState({ context });
     this._fetchLinks();
   };
-
   _fetchLinks = debounce(async () => {
     const { context } = this.state;
 
     this.setState({ fetching: true });
-    // https://192.168.99.100/api/ranking/ethereum/claims/?context=rinkeby:0x6bcc5c98e98fc98f91667d4b79cf96ad3bd43155&type=link
-    // const fetch_url = 'https://api.userfeeds.io/ranking/ethereum/claims';
-    // const fetch_url = `http://0.0.0.0:5000/${context}/claims/?type=ad`;
-    const fetch_url = 'https://192.168.99.100/api/ranking/ethereum/claims';
+    const fetchUrl = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allLinksRequest = fetch(fetch_url)
+      const allLinksRequest = fetch(`${fetchUrl}/${context}/claims/?type=ad`)
         .then((res) => res.json());
 
       const [allLinks] = await Promise.all([allLinksRequest]);
