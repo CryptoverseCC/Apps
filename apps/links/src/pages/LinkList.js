@@ -44,7 +44,7 @@ export default class Creator extends Component {
             onChange={this._onContextChange}
             disabled={this.state.contextFromParams}
           />
-          <LinkList ads={this.state.links} onItemClick={() => { }} />
+          <LinkList links={this.state.links} onItemClick={() => { }} />
           {this.state.fetching && <CircularProgress />}
         </Paper>
       </div>
@@ -61,16 +61,17 @@ export default class Creator extends Component {
 
     this.setState({ fetching: true });
     // https://192.168.99.100/api/ranking/ethereum/claims/?context=rinkeby:0x6bcc5c98e98fc98f91667d4b79cf96ad3bd43155&type=link
-    // const baseURL = 'https://api.userfeeds.io/ranking/ethereum/claims';
-    const baseURL = 'https://192.168.99.100/api/ranking/ethereum/claims';
+    // const fetch_url = 'https://api.userfeeds.io/ranking/ethereum/claims';
+    // const fetch_url = `http://0.0.0.0:5000/${context}/claims/?type=ad`;
+    const fetch_url = 'https://192.168.99.100/api/ranking/ethereum/claims';
 
     try {
-      const allLinksList = fetch(`${baseURL}/${context}&type=link`)
+      const allLinksRequest = fetch(fetch_url)
         .then((res) => res.json());
 
-      const [allLinks] = await Promise.resolve(allLinksList);
+      const [allLinks] = await Promise.all([allLinksRequest]);
 
-      this.setState({ links: allLinks, fetching: false });
+      this.setState({ links: allLinks.items, fetching: false });
 
       return allLinks;
     } catch (_) {

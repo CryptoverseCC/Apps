@@ -14,7 +14,7 @@ const Link = ({ link, _onClick }) => (
 
 const LinkList = ({ links = [], onItemClick = () => { } }) => (
   <div className={style.this}>
-    {links.map((ad) => (<Link key={ad.id} ad={ad} onClick={onItemClick} />))}
+    {links.map((link) => (<Link key={link.id} link={link} onClick={onItemClick} />))}
   </div>
 );
 
