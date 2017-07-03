@@ -13,7 +13,6 @@ import TextWithLabel from './components/textWithLabel';
 
 import AdsList from './adsList';
 
-import { checkNetwork, checkCurrentAccount } from './utils/ethereum';
 import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
 
 export default class WidgetDetailsModal extends Component {
@@ -105,12 +104,7 @@ export default class WidgetDetailsModal extends Component {
   };
 
   _onWhitelistClick = () => {
-    const [network, account] = this.props.whitelist.split(':');
-    if (checkNetwork(network) && checkCurrentAccount(account)) {
-      openUserfeedsUrl('apps/links/#/whitelist/', this.props);
-    } else {
-      window.alert('Please change your current network and address to ' + this.props.whitelist);
-    }
+    openUserfeedsUrl('apps/links/#/whitelist/', this.props);
   };
 
   _onAddAdClick = () => {

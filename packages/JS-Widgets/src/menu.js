@@ -12,7 +12,6 @@ import AddAdModal from './addAdModal';
 import WidgetDetailsModal from './widgetDetailsModal';
 import ThankYouModal from './thankYouModal';
 
-import { checkNetwork, checkCurrentAccount } from './utils/ethereum';
 import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
 
 export default class Menu extends Component {
@@ -92,12 +91,7 @@ export default class Menu extends Component {
 
   _onWhitelistClick = () => {
     this.setState({ isOpen: false });
-    const [network, account] = this.props.whitelist.split(':');
-    if (checkNetwork(network) && checkCurrentAccount(account)) {
-      openUserfeedsUrl('apps/links/#/whitelist/', this.props);
-    } else {
-      window.alert('Please change your current network and address to ' + this.props.whitelist);
-    }
+    openUserfeedsUrl('apps/links/#/whitelist/', this.props);
   };
 
   _onDetailsClick = () => {
