@@ -3,7 +3,7 @@ import React from 'react';
 
 import style from './LinkList.scss';
 
-const Link = ({ link, onClick }) => (
+const Link = ({ link, _onClick }) => (
   <div className={style.row}>
     <div>
       <div>URL: <a href={link.target}>{link.target}</a></div>

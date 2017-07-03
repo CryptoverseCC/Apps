@@ -38,21 +38,12 @@ export default class Creator extends Component {
         <Paper className={style.paper}>
           <TextField
             className={style.input}
-            hintText="Userfeed ID"
-            floatingLabelText="Userfeed ID"
+            hintText="Advertiser ID"
+            floatingLabelText="Advertiser ID"
             value={this.state.context}
             onChange={this._onContextChange}
             disabled={this.state.contextFromParams}
           />
-          <TextField
-            className={style.input}
-            hintText="Whitelist ID"
-            floatingLabelText="Whitelist ID"
-            value={this.state.whitelist}
-            onChange={this._onWhitelistChange}
-            disabled={this.state.whitelistFromParams}
-          />
-
           <LinkList ads={this.state.links} onItemClick={() => { }} />
           {this.state.fetching && <CircularProgress />}
         </Paper>
@@ -69,11 +60,12 @@ export default class Creator extends Component {
     const { context } = this.state;
 
     this.setState({ fetching: true });
-
-    const baseURL = 'https://api.userfeeds.io/ranking';
+    // https://192.168.99.100/api/ranking/ethereum/claims/?context=rinkeby:0x6bcc5c98e98fc98f91667d4b79cf96ad3bd43155&type=link
+    // const baseURL = 'https://api.userfeeds.io/ranking/ethereum/claims';
+    const baseURL = 'https://192.168.99.100/api/ranking/ethereum/claims';
 
     try {
-      const allLinksList = fetch(`${baseURL}/${context}/linklist/`)
+      const allLinksList = fetch(`${baseURL}/${context}&type=link`)
         .then((res) => res.json());
 
       const [allLinks] = await Promise.resolve(allLinksList);
