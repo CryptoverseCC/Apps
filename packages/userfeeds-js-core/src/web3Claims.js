@@ -22,7 +22,7 @@ function sendClaim(address, claim, value) {
 
 function addAd(address, target, title, summary, value) {
   const claim = {
-    type: ['ad'],
+    type: ['link'],
     claim: { target, title, summary },
     credits: [{
       type: 'interface',
