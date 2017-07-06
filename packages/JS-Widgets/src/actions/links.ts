@@ -16,8 +16,9 @@ export const fetchLinks = () => async (dispatch, getState) => {
   dispatch(fetchLinksActions.started(undefined));
 
   const baseURL = 'https://api.userfeeds.io/ranking';
+  const queryParams = whitelist ? `?whitelist=${whitelist}` : '';
   try {
-    const { items: links }: { items: ILink[] } = await fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`).then((res) => res.json())
+    const { items: links }: { items: ILink[] } = await fetch(`${baseURL}/${context}/${algorithm}/${queryParams}`).then((res) => res.json())
     if (links.length === 0) {
       return dispatch(fetchLinksActions.done({ params: undefined, result: [] }));
     }
