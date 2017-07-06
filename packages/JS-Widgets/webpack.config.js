@@ -1,27 +1,32 @@
 const path = require('path');
+const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'build'),
     publicPath: '/',
     filename: 'bundle.js',
   },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+  },
   module: {
     loaders: [{
-      test: /\.jsx?$/,
+      test: /\.tsx?$/,
       exclude: /(node_modules)/,
-      loader: 'babel-loader',
+      loader: 'awesome-typescript-loader',
     }, {
       test: /\.scss$/,
       use: [
         { loader: 'style-loader' },
         {
-          loader: 'css-loader',
+          loader: 'typings-for-css-modules-loader',
           options: {
+            namedExport: true,
             modules: true,
             importLoaders: 1,
             sourceMap: true,
@@ -46,6 +51,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'index.html',
+    }),
+    new webpack.WatchIgnorePlugin([
+      /scss\.d\.ts$/
+    ]),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || 'development',
     }),
   ],
 };

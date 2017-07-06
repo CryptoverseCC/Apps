@@ -61,3 +61,5 @@ typings/
 .env
 
 build
+
+*.scss.d.ts
