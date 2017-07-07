@@ -15,7 +15,7 @@ const Snippet = ({ widgetSettings }) => (
     algorithm="${widgetSettings.algorithm}"
   >
   </userfeeds-ad>
-  <script src="https://cdn.jsdelivr.net/npm/@userfeeds/ads"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@userfeeds/widgets@latest"></script>
         `}
   </Highlight>
 );
