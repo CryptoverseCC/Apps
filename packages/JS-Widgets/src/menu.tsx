@@ -78,7 +78,7 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
 
   _onWhitelistClick = () => {
     this.setState({ isOpen: false });
-    window.alert('Please change your current network and address to ' + this.props.whitelist);
+    openUserfeedsUrl('apps/links/#/whitelist/', this.props);
   }
 
   _onAddLinkClick = () => {
