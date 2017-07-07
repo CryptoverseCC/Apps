@@ -1,10 +1,19 @@
 .self {
   
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+  }
+
   .menu {
     position: absolute;
     top: 30px;
     right: 0;
-    z-index: 2;
+    z-index: 3;
     background-color: #fff;
     border: 1px solid #D7D7D7;
     box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);

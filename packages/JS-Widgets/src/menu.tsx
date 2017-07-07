@@ -45,17 +45,18 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
 
     return (
       <div class={style.self}>
-        <Button onClick={this._onMenuClick}>...</Button>
+        <Button onClick={this._toggleMenu}>...</Button>
         <If condition={isOpen}>
+          <div class={style.menuOverlay} onClick={this._toggleMenu} />
           <div class={style.menu}>
             <div class={style.menuItem} onClick={this._onAddLinkClick}>
               <Switch expresion={web3Available}>
                 <Switch.Case condition>
                   <Plus /> Create New Link
-                </Switch.Case>
-                <Switch.Case condition={false}>
+              </Switch.Case>
+              <Switch.Case condition={false}>
                   web3 unavailable :-(
-                </Switch.Case>
+              </Switch.Case>
               </Switch>
             </div>
             <If condition={web3Available}>
@@ -72,7 +73,7 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
     );
   }
 
-  _onMenuClick = () => {
+  _toggleMenu = () => {
     this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
   }
 
