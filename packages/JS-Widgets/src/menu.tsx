@@ -38,7 +38,7 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
 
   state = {
     isOpen: false,
-    web3Available: !!web3,
+    web3Available: !!window.web3,
   };
 
   render(_, { isOpen, web3Available }: IMenuState) {
