@@ -39,12 +39,12 @@ class UserfeedsLink extends HTMLElement {
     this.innerHTML = '';
 
     const initialState = {
+      algorithm,
+      context,
+      publisherNote,
       size,
       timeslot,
-      context,
       whitelist,
-      algorithm,
-      publisherNote,
     };
 
     this.instance = render((

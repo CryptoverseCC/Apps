@@ -15,7 +15,7 @@ export default class Switch extends Component<ISwitchProps, {}> {
       return children[0];
     }
     return <div>{children}</div>;
-  };
+  }
 
   render({ expresion, children }) {
     const child = children.find((c) => c.nodeName === Switch.Case &&

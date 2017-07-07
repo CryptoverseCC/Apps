@@ -2,19 +2,20 @@ import { h, Component } from 'preact';
 
 import * as core from '@userfeeds/core';
 
-import * as style from './bidLink.scss';
+import { ILink } from '../types';
 
 import Input from './input';
 import Button from './button';
 import TextWithLabel from './textWithLabel';
 
+import * as style from './bidLink.scss';
+
 interface IBidLinkProps {
-  link: any;
-  links: Array<any>;
+  link: ILink;
+  links: ILink[];
   context: string;
   onSuccess?(linkId: string): void;
-  onFinish?(): void;
-  onError?(): void;
+  onError?(e: any): void;
 }
 
 interface IBidLinkState {
@@ -34,7 +35,7 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
     };
   }
 
-  render({ link, onFinish }: IBidLinkProps, { value, probability }: IBidLinkState) {
+  render({ link }: IBidLinkProps, { value, probability }: IBidLinkState) {
     return (
       <div class={style.self}>
         <div class={style.inputRow}>
@@ -69,13 +70,13 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
 
     if (valueInEth) {
       const valueInWei = parseFloat(web3.toWei(valueInEth, 'ether'));
-      let rawProbability = (link.score + valueInWei) / (sum + valueInWei);
+      const rawProbability = (link.score + valueInWei) / (sum + valueInWei);
       const probability = (100 * rawProbability).toFixed(2);
       this.setState({ probability });
     } else {
       this.setState({ probability: '-' });
     }
-  };
+  }
 
   _onSendClick = () => {
     const { context } = this.props;
@@ -87,10 +88,9 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
     core.web3.claims.addAd(address, target, title, summary, value)
       .then(this.props.onSuccess)
       .catch((e) => {
-        console.log(e);
         if (this.props.onError) {
-          this.props.onError();
+          this.props.onError(e);
         }
       });
-  };
+  }
 }

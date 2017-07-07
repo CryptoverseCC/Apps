@@ -14,7 +14,7 @@ const mapsStateToProps = ({ widget }: IRootState) => ({
 const mapDispatchToProps = (dispatch) => ({
   onSuccess: (linkId: string) => dispatch(modalActions.open({
     modalName: 'thankYou',
-    modalProps: { linkId }
+    modalProps: { linkId },
   })),
   onError: () => dispatch(modalActions.close()),
 });

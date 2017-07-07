@@ -5,9 +5,9 @@
   "main": "build/bundle.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --progress --open",
-    "lint": "exit 0",
+    "lint": "tslint -c tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "build": "cross-env NODE_ENV=production webpack || exit 0",
-    "test": "npm run lint"
+    "test": "yarn lint"
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +36,8 @@
     "postcss-loader": "^2.0.6",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
+    "tslint": "^5.5.0",
+    "tslint-react": "^3.0.0",
     "typescript": "^2.4.1",
     "typings-for-css-modules-loader": "^1.5.0",
     "webpack": "^2.6.1",

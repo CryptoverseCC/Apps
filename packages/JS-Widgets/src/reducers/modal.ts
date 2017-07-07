@@ -6,7 +6,7 @@ import { modalActions } from '../actions/modal';
 export interface IModalState {
   modalName?: string;
   modalProps?: any;
-};
+}
 
 const initialState: IModalState = {};
 

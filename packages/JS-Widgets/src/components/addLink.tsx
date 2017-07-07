@@ -3,11 +3,11 @@ import linkState from 'linkstate';
 
 import * as core from '@userfeeds/core';
 
-import * as style from  './addLink.scss';
-
 import Input from './input';
 import Loader from './loader';
 import Button from './button';
+
+import * as style from './addLink.scss';
 
 interface IAddLinkProps {
   context: string;
@@ -78,8 +78,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         this.props.onSuccess(linkId);
       })
       .catch((e) => {
-        console.warn(e);
         this.props.onError();
       });
-  };
+  }
 }

@@ -15,11 +15,12 @@ const mapStateToProps = ({ widget }: IRootState) => ({
   ...widget,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onClose: (widgetState: IWidgetState) => {
-    openUserfeedsUrl('apps/links/#/status/', widgetState);
+const mapDispatchToProps = (dispatch, { linkId }: { linkId: string; }) => ({
+  onClose: () => dispatch((_, getState) => {
+    const { widget } = getState();
+    openUserfeedsUrl('apps/links/#/status/', { linkId, ...widget });
     dispatch(modalActions.close());
-  },
+  }),
 });
 
 const State2Props = returntypeof(mapStateToProps);
@@ -28,12 +29,12 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 type IThankYouModalProps = typeof State2Props & typeof Dispatch2Props & { linkId: string; };
 
 const ThankYouModal = (props: IThankYouModalProps) => {
-  const { onClose, ...widgetProps } = props;
+  const { onClose, publisherNote } = props;
 
   return (
     <div>
-      <TextWithLabel label="Publisher note" text={widgetProps.publisherNote} />
-      <Button onClick={() => onClose(widgetProps)}>Link Status</Button>
+      <TextWithLabel label="Publisher note" text={publisherNote} />
+      <Button onClick={onClose}>Link Status</Button>
     </div>
   );
 };

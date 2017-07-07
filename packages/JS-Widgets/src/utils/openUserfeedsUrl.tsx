@@ -1,6 +1,8 @@
 
 // ToDo fix arguments type
-export const openUserfeedsUrl = (path, { context, algorithm, whitelist, publisherNote, linkId }: { [key: string]: any; }) => {
+export const openUserfeedsUrl = (
+  path,
+  { context, algorithm, whitelist, publisherNote, linkId }: { [key: string]: any; }) => {
   const baseUrl = 'https://userfeeds.io/';
   const contextQP = `?context=${encodeURIComponent(context)}`;
   const algorithmQP = `&algorithm=${encodeURIComponent(algorithm)}`;

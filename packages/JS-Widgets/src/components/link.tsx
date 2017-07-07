@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 import { ILink } from '../types';
 
-import * as style from  './link.scss';
+import * as style from './link.scss';
 
 interface ILinkProps {
   link: ILink;

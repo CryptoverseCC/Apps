@@ -1,6 +1,6 @@
 import { h } from 'preact';
 
-import * as style from  './input.scss';
+import * as style from './input.scss';
 
 const Input = ({ placeholder, ...restProps }) => {
   return (

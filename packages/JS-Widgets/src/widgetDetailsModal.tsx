@@ -3,8 +3,8 @@ import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import { IRootState } from './reducers';
-import { modalActions } from './actions/modal';
 import { ILink } from './types';
+import { modalActions } from './actions/modal';
 
 import Switch from './components/utils/switch';
 
@@ -33,7 +33,7 @@ const mapStateToProps = ({ links, widget }: IRootState) => ({
 const mapDispatchToProps = (dispatch) => ({
   showThankYouModal: (linkId: string) => dispatch(modalActions.open({
     modalName: 'thankYou',
-    modalProps: { linkId }
+    modalProps: { linkId },
   })),
 });
 
@@ -58,7 +58,8 @@ export default class WidgetDetailsModal extends Component<IWidgetDetailsModalPro
     this._calcTotalEarnings(newProps.links);
   }
 
-  render({ context, links, algorithm, whitelist, web3Available = true }: IWidgetDetailsModalProps,
+  render(
+    { context, links, algorithm, whitelist, web3Available = true }: IWidgetDetailsModalProps,
     { totalEarnings, viewType }: IWidgetDetailsModalState) {
     return (
       <div>
@@ -87,7 +88,7 @@ export default class WidgetDetailsModal extends Component<IWidgetDetailsModalPro
             <Switch expresion={viewType}>
               <Switch.Case condition="details">
                 <Switch expresion={web3Available}>
-                  <Switch.Case condition={true}>
+                  <Switch.Case condition>
                     <Plus reverseOnHover />  New Link
                   </Switch.Case>
                   <Switch.Case condition={false}>
@@ -127,26 +128,26 @@ export default class WidgetDetailsModal extends Component<IWidgetDetailsModalPro
       : 0;
 
     this.setState({ totalEarnings: web3.fromWei(totalEarnings, 'ether') });
-  };
+  }
 
   _onOpenInSeparateWindowClick = () => {
     openUserfeedsUrl('apps/widgets/#/details/', this.props);
-  };
+  }
 
   _onWhitelistClick = () => {
     openUserfeedsUrl('apps/links/#/whitelist/', this.props);
-  };
+  }
 
   _onAddLinkClick = () => {
     this.setState(({ viewType }) => ({ viewType: viewType === 'addLink' ? 'details' : 'addLink' }));
-  };
+  }
 
   _onLinkAdded = (linkId) => {
     this.setState({ viewType: 'details' });
     this.props.showThankYouModal(linkId);
-  };
+  }
 
   _onLinkNotAdded = () => {
     this.setState({ viewType: 'details' });
-  };
+  }
 }

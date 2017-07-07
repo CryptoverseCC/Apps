@@ -65,7 +65,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     return (
       <div class={cx(['self', size])}>
         <Switch expresion={fetched && !!currentLink}>
-          <Switch.Case condition={true}>
+          <Switch.Case condition>
             <Link link={currentLink} />
           </Switch.Case>
           <Switch.Case condition={false}>
@@ -92,7 +92,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     this.setState({
       currentLink: links[currentIndex - 1 < 0 ? links.length - 1 : currentIndex - 1],
     }, () => this._setTimeout(this.props.links));
-  };
+  }
 
   _onNextClick = () => {
     const { links } = this.props;
@@ -102,7 +102,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     this.setState({
       currentLink: links[currentIndex + 1 >= links.length ? 0 : currentIndex + 1],
     }, () => this._setTimeout(this.props.links));
-  };
+  }
 
   _setTimeout(links) {
     if (this._timeout) {

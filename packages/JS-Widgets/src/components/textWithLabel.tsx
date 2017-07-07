@@ -1,6 +1,6 @@
 import { h, FunctionalComponent } from 'preact';
 
-import * as style from  './textWithLabel.scss';
+import * as style from './textWithLabel.scss';
 
 import Label from './label';
 

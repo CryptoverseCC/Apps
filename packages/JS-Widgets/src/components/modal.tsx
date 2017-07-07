@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import * as style from  './modal.scss';
+import * as style from './modal.scss';
 
 interface IModalProps {
   isOpen: boolean;
@@ -32,5 +32,5 @@ export default class Modal extends Component<IModalProps, {}> {
 
   _onContentClick = (event) => {
     event.stopPropagation();
-  };
+  }
 }

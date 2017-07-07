@@ -17,7 +17,7 @@ const ModalMapping = {
   widgetDetails: WidgetDetailsModal,
 };
 
-const mapStateToProps = ({ modal } : IRootState) => ({ modal: modal });
+const mapStateToProps = ({ modal }: IRootState) => ({ modal });
 const mapDispatchToProps = (dispatch) => ({
   closeModal: () => dispatch(modalActions.close()),
 });
@@ -33,7 +33,7 @@ const RootModal = ({ modal, closeModal }: IRootModalProps) => {
 
   const ModalBody = ModalMapping[modal.modalName];
   const props = modal.modalProps || {};
-  
+
   return (
     <Modal isOpen onCloseRequest={closeModal}>
       <ModalBody {...props} />

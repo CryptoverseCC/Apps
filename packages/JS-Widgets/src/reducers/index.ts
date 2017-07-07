@@ -5,9 +5,9 @@ import widget, { IWidgetState } from './widget';
 import modal, { IModalState } from './modal';
 
 export interface IRootState {
-  links: ILinksState,
-  widget: IWidgetState,
-  modal: IModalState,
+  links: ILinksState;
+  widget: IWidgetState;
+  modal: IModalState;
 }
 
 export { ILinksState } from './links';

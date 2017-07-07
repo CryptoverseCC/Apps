@@ -1,6 +1,7 @@
 
 import { actionCreatorFactory } from 'typescript-fsa';
 
+import { IRootState } from '../reducers';
 import { ILink } from '../types';
 
 const acf = actionCreatorFactory('links');
@@ -11,14 +12,15 @@ export const fetchLinksActions = acf.async<
   { reason: any }
   >('FETCH_LINKS');
 
-export const fetchLinks = () => async (dispatch, getState) => {
+export const fetchLinks = () => async (dispatch, getState: () => IRootState) => {
   const { widget: { context, algorithm, whitelist } } = getState();
   dispatch(fetchLinksActions.started(undefined));
 
   const baseURL = 'https://api.userfeeds.io/ranking';
   const queryParams = whitelist ? `?whitelist=${whitelist}` : '';
   try {
-    const { items: links }: { items: ILink[] } = await fetch(`${baseURL}/${context}/${algorithm}/${queryParams}`).then((res) => res.json())
+    const { items: links }: { items: ILink[] } =
+      await fetch(`${baseURL}/${context}/${algorithm}/${queryParams}`).then((res) => res.json());
     if (links.length === 0) {
       return dispatch(fetchLinksActions.done({ params: undefined, result: [] }));
     }
@@ -52,4 +54,3 @@ export const fetchLinks = () => async (dispatch, getState) => {
     dispatch(fetchLinksActions.failed(e));
   }
 };
-

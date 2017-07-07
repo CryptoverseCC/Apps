@@ -5,7 +5,7 @@ import { ILink } from './types';
 import web3 from './utils/web3';
 import LinkDetails from './linkDetails';
 
-import * as style from  './linksList.scss';
+import * as style from './linksList.scss';
 
 interface ILinksListProps {
   links: ILink[];
@@ -44,7 +44,7 @@ export default class LinksList extends Component<ILinksListProps, ILinksListStat
         {this.columns.map(({ name }) => <div class={style.cell}>{name}</div>)}
       </div>
     );
-  };
+  }
 
   _renderRow = (link: ILink, index) => {
     const { activeRow } = this.state;
@@ -61,11 +61,17 @@ export default class LinksList extends Component<ILinksListProps, ILinksListStat
     ));
 
     if (activeRow === index) {
-      result.push(<LinkDetails link={link} links={this.props.links} context={this.props.context} onShowThankYouRequest={this.props.onShowThankYouRequest} />);
+      result.push((
+        <LinkDetails
+          link={link}
+          links={this.props.links}
+          context={this.props.context}
+          onShowThankYouRequest={this.props.onShowThankYouRequest}
+        />));
     }
 
     return result;
-  };
+  }
 
   _toggleLinkDetails = (index) => {
     // ToDo TS should throws error
@@ -75,5 +81,5 @@ export default class LinksList extends Component<ILinksListProps, ILinksListStat
       }
       return { activeRow: index };
     });
-  };
+  }
 }

@@ -2,6 +2,8 @@ import { h, Component } from 'preact';
 
 import { checkNetwork } from './utils/ethereum';
 
+import { ILink } from './types';
+
 import Switch from './components/utils/switch';
 
 import Link from './components/link';
@@ -11,11 +13,11 @@ import Label from './components/label';
 import Button from './components/button';
 import TextWithLabel from './components/textWithLabel';
 
-import * as style from  './linkDetails.scss';
+import * as style from './linkDetails.scss';
 
 interface ILinkDetailsProps {
-  link: any;
-  links: Array<any>;
+  link: ILink;
+  links: ILink[];
   context: string;
   onShowThankYouRequest?(linkId: string): void;
 }
@@ -61,8 +63,14 @@ export default class LinkDetails extends Component<ILinkDetailsProps, ILinkDetai
               <TextWithLabel label="Last bid" text={link.bids} />
             </div>
           </Switch.Case>
-          <Switch.Case condition={true}>
-            <BidLink link={link} links={links} context={context} onSuccess={this._onBidSuccess} onError={this._onBidError} />
+          <Switch.Case condition>
+            <BidLink
+              link={link}
+              links={links}
+              context={context}
+              onSuccess={this._onBidSuccess}
+              onError={this._onBidError}
+            />
           </Switch.Case>
         </Switch>
       </div>
@@ -74,13 +82,13 @@ export default class LinkDetails extends Component<ILinkDetailsProps, ILinkDetai
       this.props.onShowThankYouRequest(linkId);
     }
     this.setState({ bidView: false });
-  };
+  }
 
   _onBidError = () => {
     this.setState({ bidView: false });
-  };
+  }
 
   _onBidClick = () => {
     this.setState(({ bidView }) => ({ bidView: !bidView }));
-  };
+  }
 }

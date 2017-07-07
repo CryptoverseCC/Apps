@@ -1,9 +1,8 @@
-const networkMapping = {
-  '1': 'ethereum',
-  '3': 'ropsten',
-  '4': 'rinkeby',
-  '42': 'kovan',
-};
+const networkMapping = new Map<string, string>();
+networkMapping.set('1', 'ethereum');
+networkMapping.set('3', 'ropsten');
+networkMapping.set('4', 'rinkeby');
+networkMapping.set('42', 'kovan');
 
 export const checkNetwork = (expectedNetwork) => {
   if (!web3) {

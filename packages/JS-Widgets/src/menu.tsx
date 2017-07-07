@@ -13,7 +13,7 @@ import Button from './components/button';
 
 import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
 
-import * as style from  './menu.scss';
+import * as style from './menu.scss';
 
 interface IMenuState {
   isOpen: boolean;
@@ -50,7 +50,7 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
           <div class={style.menu}>
             <div class={style.menuItem} onClick={this._onAddLinkClick}>
               <Switch expresion={web3Available}>
-                <Switch.Case condition={true}>
+                <Switch.Case condition>
                   <Plus /> Create New Link
                 </Switch.Case>
                 <Switch.Case condition={false}>
@@ -74,22 +74,22 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
 
   _onMenuClick = () => {
     this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
-  };
+  }
 
   _onWhitelistClick = () => {
     this.setState({ isOpen: false });
     window.alert('Please change your current network and address to ' + this.props.whitelist);
-  };
+  }
 
   _onAddLinkClick = () => {
     if (this.state.web3Available) {
       this.setState({ isOpen: false });
       this.props.openAddLink();
     }
-  };
+  }
 
   _onDetailsClick = () => {
     this.setState({ isOpen: false });
     this.props.openWidgetDetails();
-  };
+  }
 }
