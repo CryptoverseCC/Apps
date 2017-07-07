@@ -1,5 +1,5 @@
 {
-  "name": "@userfeeds/ads",
+  "name": "@userfeeds/widgets",
   "version": "${CI_BRANCH}",
   "description": "",
   "main": "build/bundle.js",
