@@ -5,11 +5,9 @@ const {
   getContractAddress,
 } = require('./utils/contract');
 
-function sendClaim(address, claim, value) {
-  const payable = value !== undefined;
-  const abi = payable ? payableAbi : notpayableAbi;
-  const contract = web3.eth.contract(abi)
-    .at(getContractAddress(getCurrentNetworkName(), payable));
+function sendPayableClaim(address, claim, value) {
+  const contract = web3.eth.contract(payableAbi)
+    .at(getContractAddress(getCurrentNetworkName(), true));
 
   return new Promise((resolve, reject) => {
     contract.post(
@@ -26,7 +24,35 @@ function sendClaim(address, claim, value) {
   });
 }
 
+function sendNotpayableClaim(address, claim) {
+  const contract = web3.eth.contract(payableAbi)
+    .at(getContractAddress(getCurrentNetworkName(), false));
+
+  return new Promise((resolve, reject) => {
+    contract.post(
+      address,
+      JSON.stringify(claim),
+      (errror, result) => {
+        if (errror) {
+          return reject(errror);
+        }
+        return resolve(result);
+      },
+    );
+  });
+}
+
+function sendClaim(address, claim, value) {
+  const payable = value !== undefined;
+
+  return payable
+    ? sendPayableClaim(address, claim, value)
+    : sendNotpayableClaim(address, claim);
+}
+
 module.exports = {
   sendClaim,
+  sendPayableClaim,
+  sendNotpayableClaim,
 };
 
