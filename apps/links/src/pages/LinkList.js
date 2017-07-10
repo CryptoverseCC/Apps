@@ -62,7 +62,7 @@ export default class Creator extends Component {
     const fetchUrl = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allLinksRequest = fetch(`${fetchUrl}/${context}/claims/?type=ad`)
+      const allLinksRequest = fetch(`${fetchUrl}/${context}/authored/?type=link`)
         .then((res) => res.json());
 
       const [allLinks] = await Promise.all([allLinksRequest]);
@@ -75,9 +75,4 @@ export default class Creator extends Component {
       return null;
     }
   }, 500);
-
-  // _onAdClick = (ad) => {
-  //   const [_, address] = this.state.whitelist.split(':');
-  //   core.web3.claims.whitelistAd(address, ad.id);
-  // };
 }

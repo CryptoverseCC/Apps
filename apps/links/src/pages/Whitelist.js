@@ -20,10 +20,10 @@ export default class Creator extends Component {
     const params = new URLSearchParams(props.location.search);
 
     this.state = {
-      ads: [],
+      links: [],
       fetching: false,
       context: params.get('context') || '',
-      algorithm: params.get('algorithm') || 'ads',
+      algorithm: params.get('algorithm') || 'links',
       whitelist: params.get('whitelist') || '',
       contextFromParams: params.has('context'),
       whitelistFromParams: params.has('whitelist'),
@@ -32,7 +32,7 @@ export default class Creator extends Component {
 
   componentWillMount() {
     if (this.state.contextFromParams) {
-      this._fetchAds();
+      this._fetchLinks();
     }
   }
 
@@ -57,7 +57,7 @@ export default class Creator extends Component {
             disabled={this.state.whitelistFromParams}
           />
 
-          <AdsList ads={this.state.ads} onItemClick={this._onAdClick} />
+          <AdsList links={this.state.links} onItemClick={this._onLinkClick} />
           {this.state.fetching && <CircularProgress />}
         </Paper>
       </div>
@@ -66,15 +66,15 @@ export default class Creator extends Component {
 
   _onContextChange = (_, context) => {
     this.setState({ context });
-    this._fetchAds();
+    this._fetchLinks();
   };
 
   _onWhitelistChange = (_, whitelist) => {
     this.setState({ whitelist });
-    this._fetchAds();
+    this._fetchLinks();
   };
 
-  _fetchAds = debounce(async () => {
+  _fetchLinks = debounce(async () => {
     const { context, algorithm, whitelist } = this.state;
 
     this.setState({ fetching: true });
@@ -82,28 +82,31 @@ export default class Creator extends Component {
     const baseURL = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allAdsRequest = fetch(`${baseURL}/${context}/${algorithm}/`)
+      const allLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/`)
         .then((res) => res.json());
-      const whitelistedAdsRequest = fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`)
+      const whitelistedLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`)
         .then((res) => res.json());
 
-      const [allAds, whitelistedAds] = await Promise.all([allAdsRequest, whitelistedAdsRequest]);
+      const [allLinks, whitelistedLinks] = await Promise.all([
+        allLinksRequest,
+        whitelistedLinksRequest,
+      ]);
 
-      const ads = allAds.items.map((ad) => {
-        const whitelisted = !!whitelistedAds.items.find((a) => ad.id === a.id);
+      const links = allLinks.items.map((link) => {
+        const whitelisted = !!whitelistedLinks.items.find((a) => link.id === a.id);
 
-        return { ...ad, whitelisted };
+        return { ...link, whitelisted };
       });
-      this.setState({ ads, fetching: false });
+      this.setState({ links, fetching: false });
     } catch (_) {
       this.setState({ fetching: false });
     }
   }, 500);
 
-  _onAdClick = (ad) => {
+  _onLinkClick = (link) => {
     const [_, address] = this.state.whitelist.split(':');
     const claim = {
-      claim: { target: `userfeeds:claim:${ad.id}` },
+      claim: { target: `userfeeds:claim:${link.id}` },
       credits: [{
         type: 'interface',
         value: window.location.href,
