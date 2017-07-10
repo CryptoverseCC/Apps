@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@userfeeds/core@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.7.tgz#57b66072440acdfe6ccc5a2faeea5538e226c67b"
+"@userfeeds/core@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.8.tgz#7f761d182529811f1cb3d132ae6604e3fa3137f3"
 
 JSONStream@^1.0.4:
   version "1.3.1"
