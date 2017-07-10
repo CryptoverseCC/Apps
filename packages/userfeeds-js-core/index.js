@@ -1,7 +1,7 @@
 
 module.exports = {
-  web3: {
-    claims: require('./src/web3Claims'),
-    utils: require('./src/utils'),
+  ethereum: {
+    claims: require('./src/ethereumClaims'),
   },
+  utils: require('./src/utils'),
 };
