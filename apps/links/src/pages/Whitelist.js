@@ -103,8 +103,7 @@ export default class Creator extends Component {
   _onAdClick = (ad) => {
     const [_, address] = this.state.whitelist.split(':');
     const claim = {
-      type: ['whitelist'],
-      claim: { target: ad.id },
+      claim: { target: `userfeeds:claim:${ad.id}` },
       credits: [{
         type: 'interface',
         value: window.location.href,
