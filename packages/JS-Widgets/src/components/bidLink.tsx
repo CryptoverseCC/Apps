@@ -85,7 +85,16 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
 
     const [_, address] = context.split(':');
 
-    core.web3.claims.addAd(address, target, title, summary, value)
+    const claim = {
+      type: ['link'],
+      claim: { target, title, summary },
+      credits: [{
+        type: 'interface',
+        value: window.location.href,
+      }],
+    };
+
+    core.web3.claims.sendClaim(address, claim, value)
       .then(this.props.onSuccess)
       .catch((e) => {
         if (this.props.onError) {

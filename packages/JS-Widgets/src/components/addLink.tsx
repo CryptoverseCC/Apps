@@ -56,9 +56,9 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           onInput={linkState(this, 'value')}
         />
         <div class={style.sendButton}>
-          { posting
-              ? <Loader />
-              : <Button onClick={this._onSubmit}>Send</Button>
+          {posting
+            ? <Loader />
+            : <Button onClick={this._onSubmit}>Send</Button>
           }
         </div>
       </div>
@@ -72,7 +72,16 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
     const [_, address] = context.split(':');
 
-    core.web3.claims.addAd(address, url, title, summary, value)
+    const claim = {
+      type: ['link'],
+      claim: { target: url, title, summary },
+      credits: [{
+        type: 'interface',
+        value: window.location.href,
+      }],
+    };
+
+    core.web3.claims.sendClaim(address, claim, value)
       .then((linkId) => {
         this.setState({ posting: false });
         this.props.onSuccess(linkId);
