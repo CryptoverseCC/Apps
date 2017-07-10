@@ -10,6 +10,7 @@ module.exports = {
   },
   rules: {
     'no-shadow': 0,
+    'linebreak-style': 0,
     'no-return-assign': 0,
     'no-confusing-arrow': 0,
     'no-underscore-dangle': 0,

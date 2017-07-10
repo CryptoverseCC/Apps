@@ -63,3 +63,5 @@ env
 
 package-lock.json
 
+.vscode
+
