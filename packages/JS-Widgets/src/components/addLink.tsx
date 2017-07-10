@@ -81,7 +81,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       }],
     };
 
-    core.web3.claims.sendClaim(address, claim, value)
+    core.ethereum.claims.sendClaim(address, claim, value)
       .then((linkId) => {
         this.setState({ posting: false });
         this.props.onSuccess(linkId);

@@ -94,7 +94,7 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
       }],
     };
 
-    core.web3.claims.sendClaim(address, claim, value)
+    core.ethereum.claims.sendClaim(address, claim, value)
       .then(this.props.onSuccess)
       .catch((e) => {
         if (this.props.onError) {
