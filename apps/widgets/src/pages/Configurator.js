@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-
 import Label from '@userfeeds/apps-components/src/Label';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
@@ -47,6 +46,8 @@ export default class Configurator extends Component {
     this.state = {
       widgetSettings: {
         userfeedsId,
+        whitelistId: userfeedsId,
+        publisherNote: '',
         size: WIDGET_SIZES[0].value,
         type: WIDGET_TYPES[0].value,
         token: WIDGET_TOKENS[0].value,
@@ -85,6 +86,20 @@ export default class Configurator extends Component {
             value={this.state.widgetSettings.userfeedsId}
             onChange={this._onUserfeedIdChange}
           />
+          <TextField
+            hintText="Whitelist ID"
+            floatingLabelText="Whitelist ID"
+            className={style.input}
+            value={this.state.widgetSettings.whitelistId}
+            onChange={this._onWhitelistIdChange}
+          />
+          <TextField
+            hintText="Publisher Note"
+            floatingLabelText="Publisher Note"
+            className={style.input}
+            value={this.state.widgetSettings.publisherNote}
+            onChange={this._onPublisherNoteChange}
+          />
           <Dropdown
             disabled
             label="Token"
@@ -116,30 +131,18 @@ export default class Configurator extends Component {
     }));
   };
 
-  _onUserfeedIdChange = (_, userfeedsId) => {
+  _handleChange = (name) => (_, value) => {
     this.setState(({ widgetSettings }) => ({
       widgetSettings: {
         ...widgetSettings,
-        userfeedsId,
+        [name]: value,
       },
     }));
   };
 
-  _onWidgetTypeChange = (_, type) => {
-    this.setState(({ widgetSettings }) => ({
-      widgetSettings: {
-        ...widgetSettings,
-        type,
-      },
-    }));
-  };
-
-  _onWidgetSizeChange = (_, size) => {
-    this.setState(({ widgetSettings }) => ({
-      widgetSettings: {
-        ...widgetSettings,
-        size,
-      },
-    }));
-  };
+  _onWidgetTypeChange = this._handleChange('type');
+  _onWidgetSizeChange = this._handleChange('size');
+  _onUserfeedIdChange = this._handleChange('userfeedsId');
+  _onWhitelistIdChange = this._handleChange('whitelistId');
+  _onPublisherNoteChange = this._handleChange('publisherNote');
 }

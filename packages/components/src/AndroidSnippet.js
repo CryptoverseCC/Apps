@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Highlight from 'react-highlight';
 
 import 'highlight.js/styles/androidstudio.css';
 
-export default class AndroidSnippet extends Component {
+export default class AndroidSnippet extends PureComponent {
 
   state = {
     latestVersion: '<latest version goes here>',
@@ -14,12 +14,12 @@ export default class AndroidSnippet extends Component {
       .then((res) => res.json())
       .then((json) => {
         const latestVersion = json.response.docs[0].latestVersion;
-        this.setState({latestVersion});
+        this.setState({ latestVersion });
       });
   }
 
   render() {
-    const {widgetSettings} = this.props;
+    const { widgetSettings } = this.props;
     return (
       <div>
         <Highlight className="xml">
@@ -29,6 +29,8 @@ export default class AndroidSnippet extends Component {
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       userfeeds:context="${widgetSettings.network}:${widgetSettings.userfeedsId}"
+      userfeeds:whitelist="${widgetSettings.network}:${widgetSettings.whitelistId}"
+      userfeeds:publisherNote="${widgetSettings.publisherNote}"
       userfeeds:algorithm="${widgetSettings.algorithm}"/>
           `}
         </Highlight>

@@ -58,7 +58,7 @@ export default class Creator extends Component {
           />
 
           <AdsList ads={this.state.ads} onItemClick={this._onAdClick} />
-          {this.state.fetching && <CircularProgress /> }
+          {this.state.fetching && <CircularProgress />}
         </Paper>
       </div>
     );
@@ -102,6 +102,15 @@ export default class Creator extends Component {
 
   _onAdClick = (ad) => {
     const [_, address] = this.state.whitelist.split(':');
-    core.web3.claims.whitelistAd(address, ad.id);
+    const claim = {
+      type: ['whitelist'],
+      claim: { target: ad.id },
+      credits: [{
+        type: 'interface',
+        value: window.location.href,
+      }],
+    };
+
+    core.ethereum.claims.sendClaim(address, claim);
   };
 }
