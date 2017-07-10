@@ -80,14 +80,13 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _onSendClick = () => {
     const { context } = this.props;
-    const { title, summary, target } = this.props.link;
+    const { id } = this.props.link;
     const { value } = this.state;
 
     const [_, address] = context.split(':');
 
     const claim = {
-      type: ['link'],
-      claim: { target, title, summary },
+      claim: { target: `userfeeds:claim:${id}` },
       credits: [{
         type: 'interface',
         value: window.location.href,
