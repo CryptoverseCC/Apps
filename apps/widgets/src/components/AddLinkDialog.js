@@ -64,12 +64,21 @@ export default class AddLinkDialog extends Component {
   _onSend = () => {
     this.setState({ posting: true });
     const [_, address] = this.props.context.split(':');
-    const url = this.url.getValue();
+    const target = this.url.getValue();
     const title = this.title.getValue();
     const summary = this.summary.getValue();
     const value = this.value.getValue();
 
-    core.web3.claims.addAd(address, url, title, summary, value)
+    const claim = {
+      type: ['link'],
+      claim: { target, title, summary },
+      credits: [{
+        type: 'interface',
+        value: window.location.href,
+      }],
+    };
+
+    core.ethereum.claims.sendClaim(address, claim, value)
       .catch((e) => console.error(e))
       .then(() => {
         this.setState({ posting: false });

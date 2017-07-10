@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/core": "^0.0.3",
+    "@userfeeds/core": "^0.0.7",
     "@userfeeds/apps-components": "*",
     "classnames": "~2.2.5",
     "material-ui": "^0.18.3",

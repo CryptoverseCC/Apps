@@ -89,7 +89,16 @@ export default class LinkDetails extends Component {
 
     const [_, address] = context.split(':');
 
-    core.web3.claims.addAd(address, target, title, summary, value)
+    const claim = {
+      type: ['link'],
+      claim: { target, title, summary },
+      credits: [{
+        type: 'interface',
+        value: window.location.href,
+      }],
+    };
+
+    core.ethereum.claims.sendClaim(address, claim, value)
       .catch((e) => console.log(e))
       .then(() => this.setState({ bidding: false }));
   };
