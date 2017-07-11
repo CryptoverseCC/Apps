@@ -6,7 +6,7 @@ const payableContractAddressMapping = {
 
 const notpayableContractAddressMapping = {
   ropsten: '0x5c3fe6b94b57c1e294000403340f12f083e71b83',
-  rinkeby: '0xfebca0fb2827a130db6b48887bf8a9bd32fe10d3',
+  rinkeby: '0x09dcdf34e0c28b106fdfe51009cb71ae92bf8bbc',
 };
 
 function getContractAddress(networkName, payable = true) {
