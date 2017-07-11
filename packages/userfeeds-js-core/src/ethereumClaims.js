@@ -30,7 +30,6 @@ function sendNotpayableClaim(address, claim) {
 
   return new Promise((resolve, reject) => {
     contract.post(
-      address,
       JSON.stringify(claim),
       (errror, result) => {
         if (errror) {
