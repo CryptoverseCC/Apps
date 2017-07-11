@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/core": "^0.0.8",
+    "@userfeeds/core": "^0.0.9",
     "lodash.debounce": "^4.0.8",
     "material-ui": "^0.18.3",
     "react": "^15.6.1",
