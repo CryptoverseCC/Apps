@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/core": "^0.0.10",
+    "@userfeeds/core": "^0.0.11",
     "material-ui": "^0.18.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
