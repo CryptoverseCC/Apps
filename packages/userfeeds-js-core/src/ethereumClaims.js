@@ -25,7 +25,7 @@ function sendPayableClaim(address, claim, value) {
 }
 
 function sendNotpayableClaim(address, claim) {
-  const contract = web3.eth.contract(payableAbi)
+  const contract = web3.eth.contract(notpayableAbi)
     .at(getContractAddress(getCurrentNetworkName(), false));
 
   return new Promise((resolve, reject) => {
