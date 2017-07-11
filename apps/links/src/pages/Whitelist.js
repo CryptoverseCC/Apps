@@ -57,7 +57,7 @@ export default class Creator extends Component {
             disabled={this.state.whitelistFromParams}
           />
 
-          <AdsList links={this.state.links} onItemClick={this._onLinkClick} />
+          <AdsList ads={this.state.links} onItemClick={this._onLinkClick} />
           {this.state.fetching && <CircularProgress />}
         </Paper>
       </div>
