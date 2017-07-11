@@ -47,10 +47,19 @@ class UserfeedsLink extends HTMLElement {
       whitelist,
     };
 
-    this.instance = render((
-      <Provider store={getStore(initialState)}>
-        <Banner />
-      </Provider>), this);
+    const store = getStore(initialState);
+    const init = () => {
+      this.instance = render((
+        <Provider store={store}>
+          <Banner />
+        </Provider>), this, this.instance);
+    };
+
+    if (module.hot) {
+      module.hot.accept('./banner', () => requestAnimationFrame(init));
+    }
+
+    init();
   }
 }
 
