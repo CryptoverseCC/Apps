@@ -6,9 +6,9 @@
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.0.tgz#f2312039e780bdf89d7d4102a26ec11de5ec58aa"
 
-"@userfeeds/core@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.7.tgz#57b66072440acdfe6ccc5a2faeea5538e226c67b"
+"@userfeeds/core@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.10.tgz#aff2b769086229fe88bda47c50cff58be2aa2531"
 
 "@webcomponents/custom-elements@^1.0.0":
   version "1.0.0"
