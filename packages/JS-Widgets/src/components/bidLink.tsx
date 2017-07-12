@@ -86,7 +86,7 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
     const [_, address] = context.split(':');
 
     const claim = {
-      claim: { target: `userfeeds:claim:${id}` },
+      claim: { target: id },
       credits: [{
         type: 'interface',
         value: window.location.href,
