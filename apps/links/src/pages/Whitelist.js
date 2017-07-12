@@ -106,7 +106,7 @@ export default class Creator extends Component {
   _onLinkClick = (link) => {
     const [_, address] = this.state.whitelist.split(':');
     const claim = {
-      claim: { target: `userfeeds:claim:${link.id}` },
+      claim: { target: link.id },
       credits: [{
         type: 'interface',
         value: window.location.href,
