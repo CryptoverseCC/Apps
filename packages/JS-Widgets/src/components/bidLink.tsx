@@ -4,6 +4,7 @@ import * as core from '@userfeeds/core';
 
 import { ILink } from '../types';
 
+import If from './utils/if';
 import Input from './input';
 import Button from './button';
 import TextWithLabel from './textWithLabel';
@@ -19,6 +20,7 @@ interface IBidLinkProps {
 }
 
 interface IBidLinkState {
+  visible: boolean;
   sum: number;
   value?: string;
   probability: string;
@@ -30,35 +32,50 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
     super(props);
 
     this.state = {
+      visible: false,
       sum: props.links.reduce((acc, { score }) => acc + score, 0),
       probability: '-',
     };
   }
 
-  render({ link }: IBidLinkProps, { value, probability }: IBidLinkState) {
+  render({ link }: IBidLinkProps, { visible, value, probability }: IBidLinkState) {
     return (
       <div class={style.self}>
-        <div class={style.inputRow}>
-          <Input
-            placeholder="Value"
-            value={value}
-            onInput={this._onValueChange}
-          />
-          <p>=</p>
-          <TextWithLabel
-            label="Estimated Probability"
-            text={`${probability} %`}
-          />
-        </div>
-        <Button
-          disabled={probability === '-'}
-          style={{ marginLeft: 'auto' }}
-          onClick={this._onSendClick}
-        >
-          Send
-        </Button>
+        <Button onClick={this._onBid} style={{ marginLeft: '20px' }}>Bid</Button>
+        <If condition={visible}>
+          <div class={style.overlay} onClick={this._onOverlayClick} />
+          <div class={style.form}>
+            <div class={style.inputRow}>
+              <Input
+                placeholder="Value"
+                value={value}
+                onInput={this._onValueChange}
+              />
+              <p>=</p>
+              <TextWithLabel
+                label="Estimated Probability"
+                text={`${probability} %`}
+              />
+            </div>
+            <Button
+              disabled={probability === '-'}
+              style={{ marginLeft: 'auto' }}
+              onClick={this._onSendClick}
+            >
+              Send
+            </Button>
+          </div>
+        </If>
       </div>
     );
+  }
+
+  _onBid = () => {
+    this.setState({ visible: true });
+  }
+
+  _onOverlayClick = () => {
+    this.setState({ visible: false });
   }
 
   _onValueChange = (event) => {
@@ -94,11 +111,18 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
     };
 
     core.ethereum.claims.sendClaim(address, claim, value)
-      .then(this.props.onSuccess)
+      .then((transactionId: string) => {
+        if (this.props.onSuccess) {
+          this.props.onSuccess(transactionId);
+        }
+      })
       .catch((e) => {
         if (this.props.onError) {
           this.props.onError(e);
         }
+      })
+      .then(() => {
+        this.setState({ visible: false });
       });
   }
 }

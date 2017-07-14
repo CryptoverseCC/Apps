@@ -9,10 +9,14 @@ import { modalActions } from './actions/modal';
 import Switch from './components/utils/switch';
 
 import web3 from './utils/web3';
+
+import WidgetSummary from './components/widgetSummary';
 import Plus from './components/plus';
+import Paper from './components/paper';
 import AddLink from './components/addLink';
 import Button from './components/button';
 import TextWithLabel from './components/textWithLabel';
+import AddNewLinkButton from './components/addNewLinkButton';
 
 import LinksList from './linksList';
 
@@ -20,13 +24,44 @@ import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
 
 import * as style from './widgetDetailsModal.scss';
 
+const ComponentMapping = {
+  'AddLink': ({ context, onSuccess, onError }) => (
+    <Paper style={{ alignSelf: 'center', marginLeft: '10%', padding: '10px' }}>
+      <AddLink context={context} onSuccess={onSuccess} onError={onError} />
+    </Paper>
+  ),
+  'Userfeeds': ({ context, allLinks }: IWidgetDetailsModalProps) => (
+    <UserfeedAddressInfo context={context} linksNumber={allLinks.length} />
+  ),
+  'Specification': ({ size }: IWidgetDetailsModalProps) => (
+    <WidgetSpecification size={size} />
+  ),
+  'Links.Slots': ({ links, context }: IWidgetDetailsModalProps) => (
+    <Paper style={{ width: '95%', marginTop: '20px' }}>
+      <LinksList links={links} context={context} />
+    </Paper>
+  ),
+  'Links.Whitelist': ({ links, context }: IWidgetDetailsModalProps) => (
+    <Paper style={{ width: '95%', marginTop: '20px' }}>
+      <LinksList links={links} context={context} />
+    </Paper>
+  ),
+  'Links.Algorithm': ({ allLinks, context }: IWidgetDetailsModalProps) => (
+    <Paper style={{ width: '95%', marginTop: '20px' }}>
+      <LinksList links={allLinks} context={context} showProbability={false} />
+    </Paper>
+  ),
+};
+
+type ViewType = keyof typeof ComponentMapping;
+
 interface IWidgetDetailsModalState {
-  viewType: 'details' | 'addLink';
-  totalEarnings: number;
+  viewType: ViewType;
 }
 
 const mapStateToProps = ({ links, widget }: IRootState) => ({
   links: links.links,
+  allLinks: links.allLinks,
   ...widget,
 });
 
@@ -48,86 +83,29 @@ export default class WidgetDetailsModal extends Component<IWidgetDetailsModalPro
   constructor(props: IWidgetDetailsModalProps) {
     super(props);
     this.state = {
-      totalEarnings: 0,
-      viewType: 'details',
+      viewType: 'Userfeeds',
     };
-    this._calcTotalEarnings(props.links);
-  }
-
-  componentWillReceiveProps(newProps: IWidgetDetailsModalProps) {
-    this._calcTotalEarnings(newProps.links);
   }
 
   render(
-    { context, links, algorithm, whitelist, web3Available = true }: IWidgetDetailsModalProps,
-    { totalEarnings, viewType }: IWidgetDetailsModalState) {
+    { context, links, algorithm, whitelist }: IWidgetDetailsModalProps,
+    { viewType }: IWidgetDetailsModalState) {
+
+    const DetailsComponent = ComponentMapping[viewType];
+
     return (
-      <div>
-        <div class="row">
-          <Button
-            hidden={viewType !== 'details'}
-            onClick={this._onOpenInSeparateWindowClick}
-          >
-            Open in<br />
-            separate<br />
-            window
-          </Button>
-          <TextWithLabel label="Userfeeds address" text={context} />
-          <Button
-            style={{ marginLeft: 'auto' }}
-            hidden={!web3Available || !whitelist || viewType !== 'details'}
-            onClick={this._onWhitelistClick}
-          >
-            Whitelist
-          </Button>
-          <Button
-            style={{ marginLeft: 'auto' }}
-            disabled={!web3Available}
-            onClick={this._onAddLinkClick}
-          >
-            <Switch expresion={viewType}>
-              <Switch.Case condition="details">
-                <Switch expresion={web3Available}>
-                  <Switch.Case condition>
-                    <Plus reverseOnHover />  New Link
-                  </Switch.Case>
-                  <Switch.Case condition={false}>
-                    MetaMask not available (o:
-                  </Switch.Case>
-                </Switch>
-              </Switch.Case>
-              <Switch.Case condition="addLink">
-                Cancel
-              </Switch.Case>
-            </Switch>
-          </Button>
-        </div>
+      <div class={style.self}>
+        <WidgetSummary onAddClick={this._onAddLinkClick} />
         <div class={style.details}>
-          <div class={style.summary}>
-            <TextWithLabel label="Total Earnings" text={totalEarnings} />
-            <TextWithLabel label="Max ad slots" text="10 (hardcode)" />
-            <TextWithLabel label="Algorithm" text={algorithm} />
-            <TextWithLabel label="Feed type" text="Text (hardcode)" />
-          </div>
-          <Switch expresion={viewType}>
-            <Switch.Case condition="details">
-              <LinksList links={links} context={context} />
-            </Switch.Case>
-            <Switch.Case condition="addLink">
-              <AddLink context={context} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
-            </Switch.Case>
-          </Switch>
+          <SideMenu activeItem={this.state.viewType} onItemClick={this._menuItemClicked} />
+          <DetailsComponent {...this.props} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
         </div>
       </div>
     );
   }
 
-  _calcTotalEarnings = (links: ILink[]) => {
-    const totalEarnings = links
-      ? links.reduce((acc, { score }) => acc + score, 0)
-      : 0;
-
-    this.setState({ totalEarnings: web3.fromWei(totalEarnings, 'ether') });
+  _menuItemClicked = (name: ViewType) => {
+    this.setState({ viewType: name });
   }
 
   _onOpenInSeparateWindowClick = () => {
@@ -139,15 +117,115 @@ export default class WidgetDetailsModal extends Component<IWidgetDetailsModalPro
   }
 
   _onAddLinkClick = () => {
-    this.setState(({ viewType }) => ({ viewType: viewType === 'addLink' ? 'details' : 'addLink' }));
+    this.setState({ viewType: 'AddLink' });
   }
 
   _onLinkAdded = (linkId) => {
-    this.setState({ viewType: 'details' });
     this.props.showThankYouModal(linkId);
   }
 
   _onLinkNotAdded = () => {
-    this.setState({ viewType: 'details' });
+    this.setState({ viewType: 'Links.Slots' });
   }
 }
+
+interface IWidgetSpecificationProps {
+  size: string;
+}
+
+const WidgetSpecification = ({ size }: IWidgetSpecificationProps) => (
+  <div style={{ flex: 1, padding: '10px' }}>
+    <h2>Widget Specification</h2>
+    <div class="row" style={{ justifyContent: 'space-between' }}>
+      <Paper style={{ width: '45%' }}>
+        <TextWithLabel label="SIZE" text={size} />
+      </Paper>
+      <Paper style={{ width: '45%' }}>
+        <TextWithLabel label="TYPE" text="Text" />
+      </Paper>
+    </div>
+  </div>
+);
+
+interface IUserfeedAddressInfoProps {
+  context: string;
+  linksNumber: number;
+}
+
+const UserfeedAddressInfo = ({ context, linksNumber }: IUserfeedAddressInfoProps) => {
+  const [network, address] = context.split(':');
+  const etherscanUrl = `https://${network}.etherscan.io/address/${address}`;
+
+  return (
+    <div style={{ flex: 1, padding: '10px' }}>
+      <h2>Userfeeds Address</h2>
+      <div class="row" style={{ justifyContent: 'space-between' }}>
+        <Paper style={{ width: '45%' }}>
+          <TextWithLabel label="TOTAL NUMBER OF LINKS" text={linksNumber} />
+        </Paper>
+        <Paper style={{ width: '45%' }}>
+          <TextWithLabel label="ETHERSCAN">
+            <a href={etherscanUrl} target="_blank"> See it on Etherscan</a>
+          </TextWithLabel>
+        </Paper>
+      </div>
+    </div>
+  );
+};
+
+interface ISideMenuProps {
+  activeItem: ViewType;
+  onItemClick(name: ViewType): void;
+}
+
+const SideMenu = ({ activeItem, onItemClick }: ISideMenuProps) => {
+  const notify = (name: ViewType) => (event: MouseEvent) => {
+    onItemClick(name);
+    event.stopImmediatePropagation();
+  };
+
+  return (
+    <div class={style.summary}>
+      <ul class={style.sideMenu}>
+        <li
+          class={activeItem.startsWith('Links') ? style.active : ''}
+          onClick={notify('Links.Slots')}
+        >
+          Links
+          <ul class={style.subMenu}>
+            <li
+              class={activeItem === 'Links.Slots' ? style.active : ''}
+              onClick={notify('Links.Slots')}
+            >
+              Slots(10)
+            </li>
+            <li
+              class={activeItem === 'Links.Whitelist' ? style.active : ''}
+              onClick={notify('Links.Whitelist')}
+            >
+              Whitelist
+            </li>
+            <li
+              class={activeItem === 'Links.Algorithm' ? style.active : ''}
+              onClick={notify('Links.Algorithm')}
+            >
+              Algorithm
+            </li>
+          </ul>
+        </li>
+        <li
+          class={activeItem === 'Specification' ? style.active : ''}
+          onClick={notify('Specification')}
+        >
+          Widget Specification
+        </li>
+        <li
+          class={activeItem === 'Userfeeds' ? style.active : ''}
+          onClick={notify('Userfeeds')}
+        >
+          Userfeeds
+        </li>
+      </ul>
+    </div>
+  );
+};

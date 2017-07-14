@@ -1,0 +1,19 @@
+.self {
+  padding: 10px;
+  position: relative;
+  box-shadow: 0px 1px 5px 0px #999;
+
+  .boxes {
+    margin-top: 20px;
+    justify-content: space-around;
+    border-top: 2px solid #F7F8F9;
+
+    &>* {
+        border-right: 2px solid #F7F8F9;
+    }
+
+    &>*:last-child {
+        border: none;
+    }
+  }
+}

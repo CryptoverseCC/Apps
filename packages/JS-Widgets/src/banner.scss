@@ -1,5 +1,6 @@
 .self {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   position: relative;
   border: 1px solid #D7D7D7;
@@ -17,18 +18,26 @@
 
   .options {
     display: flex;
-    flex-direction: column;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    flex-direction: row;
+    background-color: #325DFF;
     justify-content: space-between;
     align-items: flex-end;
+  }
+
+  &:hover > .options {
+    max-height: 100px;
+    transition: max-height 0.5s ease-in;
+    opacity: 1;
   }
 
   .arrows {
     display: flex;
     cursor: pointer;
+    color: #fff;
     padding: 3px;
-    border-left: 1px;
-    border-top: 1px;
-    border-style: solid;
-    border-color: #D7D7D7
   }
 }

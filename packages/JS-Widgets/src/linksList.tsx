@@ -3,6 +3,9 @@ import { h, Component } from 'preact';
 import { ILink } from './types';
 
 import web3 from './utils/web3';
+import Link from './components/link';
+import BidLink from './components/bidLink';
+import Button from './components/button';
 import LinkDetails from './linkDetails';
 
 import * as style from './linksList.scss';
@@ -10,22 +13,43 @@ import * as style from './linksList.scss';
 interface ILinksListProps {
   links: ILink[];
   context: string;
-  onShowThankYouRequest?(linkId: string): void;
+  showProbability?: boolean;
 }
 
-interface ILinksListState {
-  activeRow: number;
-}
+export default class LinksList extends Component<ILinksListProps, {}> {
 
-export default class LinksList extends Component<ILinksListProps, ILinksListState> {
+  constructor(props: ILinksListProps) {
+    super(props);
+    const { showProbability = true } = props;
 
-  columns = [
-    { name: 'Probability', prop: 'probability' },
-    { name: 'Title', prop: 'title' },
-    { name: 'Link content', prop: 'summary' },
-    { name: 'Total ETH', prop: (link) => web3.fromWei(link.score, 'ether') },
-    { name: 'Bids', prop: (link) => link.bids || 0 },
-  ];
+    // ToDo make it better
+    if (showProbability) {
+      this.columns = [
+        { name: 'NO', prop: (_, index) => index + 1 },
+        { name: 'Probability', prop: 'probability' },
+        { name: 'Content', prop: (link) => <Link link={link} showProbability={false} />, style: { flexGrow: 0.7 } },
+        { name: 'Current Score [Eth]', prop: (link) => web3.fromWei(link.score, 'ether').substr(0, 5) },
+        { name: 'Bids', prop: (link) => (
+          <span>
+            {link.bids || 0}
+            <BidLink context={this.props.context} link={link} links={this.props.links} />
+          </span>
+        )},
+      ];
+    } else {
+      this.columns = [
+        { name: 'NO', prop: (_, index) => index + 1 },
+        { name: 'Content', prop: (link) => <Link link={link} showProbability={false} />, style: { flexGrow: 0.7 } },
+        { name: 'Current Score [Eth]', prop: (link) => web3.fromWei(link.score, 'ether').substr(0, 5) },
+        { name: 'Bids', prop: (link) => (
+          <span>
+            {link.bids || 0}
+            <BidLink context={this.props.context} link={link} links={this.props.links} />
+          </span>
+        )},
+      ];
+    }
+  }
 
   render({ links }: ILinksListProps) {
     return (
@@ -41,45 +65,24 @@ export default class LinksList extends Component<ILinksListProps, ILinksListStat
   _renderHeader = () => {
     return (
       <div class={style.tableHeader}>
-        {this.columns.map(({ name }) => <div class={style.cell}>{name}</div>)}
+        {this.columns.map(({ name, style: extraStyle }) => <div class={style.cell} style={extraStyle}>{name}</div>)}
       </div>
     );
   }
 
   _renderRow = (link: ILink, index) => {
-    const { activeRow } = this.state;
     const result: JSX.Element[] = [];
     result.push((
-      <div class={style.tableRow} onClick={this._toggleLinkDetails.bind(null, index)}>
-        {this.columns.map(({ prop }) => {
+      <div class={style.tableRow}>
+        {this.columns.map(({ prop, style: extraStyle }) => {
           if (typeof prop === 'function') {
-            return <div class={style.cell}>{prop(link)}</div>;
+            return <div class={style.cell} style={extraStyle}>{prop(link, index)}</div>;
           }
-          return <div class={style.cell}>{link[prop]}</div>;
+          return <div class={style.cell} style={extraStyle}>{link[prop]}</div>;
         })}
       </div>
     ));
 
-    if (activeRow === index) {
-      result.push((
-        <LinkDetails
-          link={link}
-          links={this.props.links}
-          context={this.props.context}
-          onShowThankYouRequest={this.props.onShowThankYouRequest}
-        />));
-    }
-
     return result;
-  }
-
-  _toggleLinkDetails = (index) => {
-    // ToDo TS should throws error
-    this.setState(({ activeRow }) => {
-      if (activeRow === index) {
-        return { activeRow: null };
-      }
-      return { activeRow: index };
-    });
   }
 }

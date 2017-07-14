@@ -73,11 +73,11 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
           </Switch.Case>
         </Switch>
         <div class={style.options}>
-          <Menu />
           <div class={style.arrows}>
             <div onClick={this._onPrevClick}>❮</div>
             <div onClick={this._onNextClick}>❯</div>
           </div>
+          <Menu />
         </div>
         <RootModal />
       </div>

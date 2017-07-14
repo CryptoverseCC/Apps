@@ -1,18 +1,18 @@
 .self {
   border: none;
   outline: none;
-  background-color: #fff;
-  padding: 5px;
+  background-color: #325DFF;
+  border-radius: 0.5em;
   transition: 0.3s;
-  font-size: 20px;
+  font-size: 1em;
+  color: #fff;
 
   &:not([disabled]):hover {
-    color: #fff;
     cursor: pointer;
-    background-color: #72CA9A;
+    background-color: #325DFF;
   }
 
   &:active {
-    background-color: #55B99D;
+    background-color: #325DFF;
   }
 }
