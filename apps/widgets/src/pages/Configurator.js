@@ -33,7 +33,7 @@ const WIDGET_TOKENS = [
 ];
 
 const WIDGET_ALGORITHM = [
-  { value: 'ads', label: 'Ad Ether / total ether - time' },
+  { value: 'links', label: 'Ad Ether / total ether - time' },
 ];
 
 export default class Configurator extends Component {
