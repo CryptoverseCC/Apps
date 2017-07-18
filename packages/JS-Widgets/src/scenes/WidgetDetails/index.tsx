@@ -5,6 +5,7 @@ import { returntypeof } from 'react-redux-typescript';
 import { IRootState } from '../../reducers';
 import { ILink } from '../../types';
 import { modalActions } from '../../actions/modal';
+import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
 
 import web3 from '../../utils/web3';
 
@@ -60,11 +61,17 @@ interface IWidgetDetailsState {
   viewType: ViewType;
 }
 
-const mapStateToProps = ({ links, widget }: IRootState) => ({
-  links: links.links,
-  allLinks: links.allLinks,
-  ...widget,
-});
+const mapStateToProps = (state: IRootState) => {
+  const { links, widget } = state;
+
+  return {
+    links: visibleLinks(state),
+    allLinks: links.allLinks,
+    allLinksCount: allLinksCount(state),
+    whitelistedLinksCount: whitelistedLinksCount(state),
+    ...widget,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   showThankYouModal: (linkId: string) => dispatch(modalActions.open({
@@ -89,7 +96,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   render(
-    { context, links, algorithm, whitelist }: IWidgetDetailsProps,
+    { context, links, algorithm, whitelist, slots, whitelistedLinksCount }: IWidgetDetailsProps,
     { viewType }: IWidgetDetailsState) {
 
     const DetailsComponent = ComponentsMapping[viewType];
@@ -98,7 +105,12 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
       <div class={style.self}>
         <WidgetSummary onAddClick={this._onAddLinkClick} />
         <div class={style.details}>
-          <SideMenu activeItem={this.state.viewType} onItemClick={this._menuItemClicked} />
+          <SideMenu
+            slots={slots}
+            whitelistedLinksCount={whitelistedLinksCount}
+            activeItem={this.state.viewType}
+            onItemClick={this._menuItemClicked}
+          />
           <DetailsComponent {...this.props} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
         </div>
       </div>

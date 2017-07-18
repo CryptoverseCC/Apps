@@ -13,7 +13,7 @@ const positiveValueOrUndefined = (value: string) => value || undefined;
 class UserfeedsLink extends HTMLElement {
 
   static get observedAttributes() {
-    return ['context', 'algorithm', 'size', 'whitelist', 'publisher-note'];
+    return ['context', 'algorithm', 'size', 'whitelist', 'publisher-note', 'slots'];
   }
 
   instance: Element;
@@ -33,6 +33,7 @@ class UserfeedsLink extends HTMLElement {
     const timeslot = this.getAttribute('timeslot') || 5;
     const context = this.getAttribute('context');
     const whitelist = this.getAttribute('whitelist');
+    const slots = this.getAttribute('slots') || 10;
     const algorithm = this.getAttribute('algorithm');
     const publisherNote = this.getAttribute('publisher-note');
 
@@ -45,6 +46,7 @@ class UserfeedsLink extends HTMLElement {
       size,
       timeslot,
       whitelist,
+      slots,
     };
 
     const store = getStore(initialState);

@@ -6,9 +6,10 @@ type leaderboard = 'leaderboard';
 export interface IWidgetState {
   context: string;
   algorithm: string;
-  size?: TWidgetSize;
+  size: TWidgetSize;
   whitelist?: string;
-  timeslot?: number;
+  slots: number;
+  timeslot: number;
   publisherNote?: string;
 }
 

@@ -5,11 +5,13 @@ import { ViewType } from '../';
 import * as style from './sideMenu.scss';
 
 interface ISideMenuProps {
+  slots: number;
+  whitelistedLinksCount: number;
   activeItem: ViewType;
   onItemClick(name: ViewType): void;
 }
 
-const SideMenu = ({ activeItem, onItemClick }: ISideMenuProps) => {
+const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount }: ISideMenuProps) => {
   const notify = (name: ViewType) => (event: MouseEvent) => {
     onItemClick(name);
     event.stopImmediatePropagation();
@@ -27,13 +29,13 @@ const SideMenu = ({ activeItem, onItemClick }: ISideMenuProps) => {
             class={activeItem === 'Links.Slots' ? style.active : ''}
             onClick={notify('Links.Slots')}
           >
-            Slots(10)
+            Slots({slots})
           </li>
           <li
             class={activeItem === 'Links.Whitelist' ? style.active : ''}
             onClick={notify('Links.Whitelist')}
           >
-            Whitelist
+            Whitelist({whitelistedLinksCount})
           </li>
           <li
             class={activeItem === 'Links.Algorithm' ? style.active : ''}

@@ -6,6 +6,7 @@ import { returntypeof } from 'react-redux-typescript';
 import { ILink } from '../../types';
 import { IRootState } from '../../reducers';
 import { fetchLinks } from '../../actions/links';
+import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
 import Label from '../../components/Label';
@@ -18,12 +19,16 @@ import * as style from './banner.scss';
 
 const cx = classnames.bind(style);
 
-const mapStateToProps = ({ links, widget }: IRootState) => ({
-  fetched: links.fetched,
-  links: links.links,
-  size: widget.size,
-  timeslot: widget.timeslot,
-});
+const mapStateToProps = (state: IRootState) => {
+  const { links, widget } = state;
+
+  return {
+    fetched: links.fetched,
+    links: visibleLinks(state),
+    size: widget.size,
+    timeslot: widget.timeslot,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   fetchLinks(): void {
