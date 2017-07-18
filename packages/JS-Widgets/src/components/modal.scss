@@ -1,3 +1,5 @@
+@import '../styles/colors';
+
 .self {
   position: fixed;
   display: flex;
@@ -8,13 +10,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(50, 52, 57, 0.7);
+  background-color: rgba($tuna, 0.7);
 
    & > .content {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: $white;
     border-radius: 0.2em;
-    box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 1px 0px rgba($black, 0.2);
   }
 }

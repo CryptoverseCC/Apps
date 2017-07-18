@@ -2,10 +2,10 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { IRootState } from './reducers';
-import { modalActions } from './actions/modal';
+import { IRootState } from '../../reducers';
+import { modalActions } from '../../actions/modal';
 
-import AddLink from './components/addLink';
+import AddLink from '../../components/AddLink';
 
 const mapsStateToProps = ({ widget }: IRootState) => ({
   context: widget.context,

@@ -1,3 +1,4 @@
+import { TWidgetSize } from '../types';
 
 type rectangle = 'rectangle';
 type leaderboard = 'leaderboard';
@@ -5,7 +6,7 @@ type leaderboard = 'leaderboard';
 export interface IWidgetState {
   context: string;
   algorithm: string;
-  size?: rectangle | leaderboard;
+  size?: TWidgetSize;
   whitelist?: string;
   timeslot?: number;
   publisherNote?: string;

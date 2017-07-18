@@ -2,7 +2,7 @@ import { h, FunctionalComponent } from 'preact';
 
 import * as style from './textWithLabel.scss';
 
-import Label from './label';
+import Label from './Label';
 
 interface ITextWithLabelProps {
   label: string;

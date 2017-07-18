@@ -2,16 +2,15 @@ import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { IRootState } from './reducers';
-import { modalActions } from './actions/modal';
+import { IRootState } from '../../../reducers';
+import { modalActions } from '../../../actions/modal';
 
-import If from './components/utils/if';
-import Switch from './components/utils/switch';
+import If from '../../../components/utils/If';
+import Switch from '../../../components/utils/Switch';
 
-import Plus from './components/plus';
-import Button from './components/button';
+import Button from '../../../components/Button';
 
-import { openUserfeedsUrl } from './utils/openUserfeedsUrl';
+import { openUserfeedsUrl } from '../../../utils/openUserfeedsUrl';
 
 import * as style from './menu.scss';
 
@@ -52,7 +51,7 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
             <div class={style.menuItem} onClick={this._onAddLinkClick}>
               <Switch expresion={web3Available}>
                 <Switch.Case condition>
-                  <Plus /> Create New Link
+                  Create New Link
               </Switch.Case>
               <Switch.Case condition={false}>
                   web3 unavailable :-(

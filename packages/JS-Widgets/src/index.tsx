@@ -4,7 +4,7 @@ import { Provider } from 'preact-redux';
 
 import getStore from './store';
 
-import Banner from './banner';
+import Banner from './scenes/Banner';
 
 import './styles/all.scss';
 
@@ -55,9 +55,9 @@ class UserfeedsLink extends HTMLElement {
         </Provider>), this, this.instance);
     };
 
-    if (module.hot) {
-      module.hot.accept('./banner', () => requestAnimationFrame(init));
-    }
+    // if (process.env.NODE_ENV === 'development' && module.hot) {
+    //   module.hot.accept('./banner', () => requestAnimationFrame(init));
+    // }
 
     init();
   }

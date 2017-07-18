@@ -3,9 +3,9 @@ import linkState from 'linkstate';
 
 import * as core from '@userfeeds/core';
 
-import Input from './input';
-import Loader from './loader';
-import Button from './button';
+import Input from './Input';
+import Loader from './Loader';
+import Button from './Button';
 
 import * as style from './addLink.scss';
 

@@ -1,18 +1,20 @@
+@import '../styles/colors';
+
 .self {
   border: none;
   outline: none;
-  background-color: #325DFF;
+  background-color: $dodger-blue;
   border-radius: 0.5em;
   transition: 0.3s;
   font-size: 1em;
-  color: #fff;
+  color: $white;
 
   &:not([disabled]):hover {
     cursor: pointer;
-    background-color: #325DFF;
+    background-color: $dodger-blue;
   }
 
   &:active {
-    background-color: #325DFF;
+    background-color: $dodger-blue;
   }
 }

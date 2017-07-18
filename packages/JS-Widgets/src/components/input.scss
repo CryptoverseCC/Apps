@@ -1,3 +1,5 @@
+@import '../styles/colors';
+
 .self {
   position: relative;
   margin-bottom: 20px;
@@ -8,7 +10,7 @@
     padding: 10px;
     width: 280px;
     border:none;
-    border-bottom:1px solid #999;
+    border-bottom:1px solid $dusty-gray;
 
     &:focus {
       outline: none;
@@ -19,13 +21,13 @@
     position: absolute;
     left: 10px;
     top: 5px;
-    color:#999;
+    color: $dusty-gray;
     font-size:18px;
     transition: 0.2s;
   }
 
   .input:focus ~ .placeholder, .input:valid ~ .placeholder {
-    color: #5264AE;
+    color: $dodger-blue;
     font-size: 9px;
     top: -5px;
   }
@@ -40,6 +42,6 @@
   }
 
   .input:focus ~ .highlight {
-    border-bottom: 2px solid #5264AE;
+    border-bottom: 2px solid $dodger-blue;
   }
 }

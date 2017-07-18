@@ -2,5 +2,17 @@
 :global(.row) {
   display: flex;
   flex-direction: row;
+}
+
+:global(.column) {
+  display: flex;
+  flex-direction: column;
+}
+
+:global(.center) {
   align-items: center;
+}
+
+:global(.space-betweek) {
+  justify-content: space-between;
 }

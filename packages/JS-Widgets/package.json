@@ -15,7 +15,7 @@
     "@userfeeds/core": "^0.0.11",
     "classnames": "^2.2.5",
     "linkstate": "^1.0.1",
-    "preact": "~8.1.0",
+    "preact": "~8.2.1",
     "preact-redux": "^2.0.2",
     "react-redux-typescript": "^2.3.0",
     "redux": "^3.7.1",

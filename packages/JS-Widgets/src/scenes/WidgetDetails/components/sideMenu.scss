@@ -1,0 +1,34 @@
+@import '../../../styles/colors';
+
+.self {
+  list-style: none;
+  min-width: 200px;
+
+  li {
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+
+  & > li.active {
+    color: $dodger-blue;
+  }
+
+  & > li:hover {
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
+.sub-menu {
+  list-style: none;
+  font-weight: normal;
+  color: $black;
+  
+  & > li:hover {
+    font-weight: bold;
+  }
+
+  & > li.active {
+    color: $dodger-blue;
+  }
+}

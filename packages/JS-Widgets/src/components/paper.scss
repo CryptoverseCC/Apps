@@ -1,4 +1,6 @@
+@import '../styles/colors';
+
 .self {
-  background-color: #fff;
-  box-shadow: 1px 1px 5px 0px #999;
+  background-color: $white;
+  box-shadow: 1px 1px 5px 0px $dusty-gray;
 }

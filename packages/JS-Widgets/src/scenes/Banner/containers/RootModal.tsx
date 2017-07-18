@@ -2,19 +2,19 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { IRootState } from './reducers';
-import { modalActions } from './actions/modal';
+import { IRootState } from '../../../reducers';
+import { modalActions } from '../../../actions/modal';
 
-import AddLinkModal from './addLinkModal';
-import ThankYouModal from './thankYouModal';
-import WidgetDetailsModal from './widgetDetailsModal';
+import AddLink from '../../AddLink';
+import ThankYou from '../..//ThankYou';
+import WidgetDetails from '../../WidgetDetails';
 
-import Modal from './components/modal';
+import Modal from '../../../components/Modal';
 
 const ModalMapping = {
-  addLink: AddLinkModal,
-  thankYou: ThankYouModal,
-  widgetDetails: WidgetDetailsModal,
+  addLink: AddLink,
+  thankYou: ThankYou,
+  widgetDetails: WidgetDetails,
 };
 
 const mapStateToProps = ({ modal }: IRootState) => ({ modal });

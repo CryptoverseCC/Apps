@@ -3,16 +3,16 @@ import { connect } from 'preact-redux';
 import * as classnames from 'classnames/bind';
 import { returntypeof } from 'react-redux-typescript';
 
-import { ILink } from './types';
-import { IRootState } from './reducers';
-import { fetchLinks } from './actions/links';
+import { ILink } from '../../types';
+import { IRootState } from '../../reducers';
+import { fetchLinks } from '../../actions/links';
 
-import Switch from './components/utils/switch';
-import Label from './components/label';
-import Link from './components/link';
+import Switch from '../../components/utils/Switch';
+import Label from '../../components/Label';
+import Link from '../../components/Link';
 
-import Menu from './menu';
-import RootModal from './rootModal';
+import Menu from './containers/Menu';
+import RootModal from './containers/RootModal';
 
 import * as style from './banner.scss';
 

@@ -1,8 +1,8 @@
 import { h } from 'preact';
 
-import Button from './button';
-import EthereumLogo from './ethereumLogo';
-import TextWithLabel from './textWithLabel';
+import Button from '../../../components/Button';
+import EthereumLogo from '../../../components/EthereumLogo';
+import TextWithLabel from '../../../components/TextWithLabel';
 
 import * as style from './widgetSummary.scss';
 

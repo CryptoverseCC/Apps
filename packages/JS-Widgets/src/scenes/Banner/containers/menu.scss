@@ -1,3 +1,5 @@
+@import '../../../styles/colors';
+
 .self {
   
   .menu-overlay {
@@ -14,9 +16,9 @@
     top: 30px;
     right: 0;
     z-index: 3;
-    background-color: #fff;
-    border: 1px solid #D7D7D7;
-    box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
+    background-color: $white;
+    border: 1px solid $alto;
+    box-shadow: 1px 1px 1px 0px rgba($black, 0.2);
   }
 
   .menu-item {
@@ -25,6 +27,6 @@
   }
 
   .menu-item:hover {
-    background-color: rgba(170, 170, 170, .5);
+    background-color: rgba($silver-chalice, .5);
   }
 }
