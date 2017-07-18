@@ -7,6 +7,7 @@ import web3 from '../../../utils/web3';
 import Link from '../../../components/Link';
 import BidLink from '../../../components/BidLink';
 import Button from '../../../components/Button';
+import Paper from '../../../components/Paper';
 
 import * as style from './linksList.scss';
 
@@ -52,14 +53,14 @@ export default class LinksList extends Component<ILinksListProps, {}> {
 
   render({ links }: ILinksListProps) {
     return (
-      <div class={style.self}>
+      <Paper class={style.self}>
         <table class={style.table}>
           {this._renderHeader()}
           <tbody>
             {links.map(this._renderRow)}
           </tbody>
         </table>
-      </div>
+      </Paper>
     );
   }
 

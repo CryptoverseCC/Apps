@@ -39,19 +39,13 @@ const ComponentsMapping = {
     <WidgetSpecification size={size} />
   ),
   'Links.Slots': ({ links, context }: IWidgetDetailsProps) => (
-    <Paper style={{ width: '100%', marginTop: '20px', marginRight: '20px' }}>
-      <LinksList links={links} context={context} />
-    </Paper>
+    <LinksList links={links} context={context} />
   ),
   'Links.Whitelist': ({ whitelistedLinks, context }: IWidgetDetailsProps) => (
-    <Paper style={{ width: '100%', marginTop: '20px', marginRight: '20px' }}>
-      <LinksList links={whitelistedLinks} context={context} />
-    </Paper>
+    <LinksList links={whitelistedLinks} context={context} />
   ),
   'Links.Algorithm': ({ allLinks, context }: IWidgetDetailsProps) => (
-    <Paper style={{ width: '100%', marginTop: '20px', marginRight: '20px' }}>
-      <LinksList links={allLinks} context={context} showProbability={false} />
-    </Paper>
+    <LinksList links={allLinks} context={context} showProbability={false} />
   ),
 };
 

@@ -3,6 +3,8 @@ import { h } from 'preact';
 import Paper from '../../../components/Paper';
 import TextWithLabel from '../../../components/TextWithLabel';
 
+import * as style from './userfeedsAddressInfo.scss';
+
 interface IUserfeedsAddressInfoProps {
   context: string;
   linksNumber: number;
@@ -13,13 +15,12 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
   const etherscanUrl = `https://${network}.etherscan.io/address/${address}`;
 
   return (
-    <div style={{ flex: 1, padding: '10px' }}>
-      <h2>Userfeeds Address</h2>
+    <div class={style.self}>
       <div class="row" style={{ justifyContent: 'space-between' }}>
-        <Paper style={{ width: '45%' }}>
+        <Paper style={{ flex: 1, marginRight: '10px' }}>
           <TextWithLabel label="TOTAL NUMBER OF LINKS" text={linksNumber} />
         </Paper>
-        <Paper style={{ width: '45%' }}>
+        <Paper style={{ flex: 1, marginLeft: '10px' }}>
           <TextWithLabel label="ETHERSCAN">
             <a href={etherscanUrl} target="_blank"> See it on Etherscan</a>
           </TextWithLabel>
