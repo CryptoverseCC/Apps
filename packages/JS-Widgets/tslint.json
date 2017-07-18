@@ -13,7 +13,8 @@
       "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
       "jsx-no-multiline-js": [false],
       "object-literal-sort-keys": [false],
-      "no-var-requires": false
+      "no-var-requires": false,
+      "no-shadowed-variable": false
     },
     "rulesDirectory": []
 }

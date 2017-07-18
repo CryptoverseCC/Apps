@@ -7,11 +7,12 @@ import * as style from './sideMenu.scss';
 interface ISideMenuProps {
   slots: number;
   whitelistedLinksCount: number;
+  allLinksCount: number;
   activeItem: ViewType;
   onItemClick(name: ViewType): void;
 }
 
-const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount }: ISideMenuProps) => {
+const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
   const notify = (name: ViewType) => (event: MouseEvent) => {
     onItemClick(name);
     event.stopImmediatePropagation();
@@ -41,7 +42,7 @@ const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount }: ISi
             class={activeItem === 'Links.Algorithm' ? style.active : ''}
             onClick={notify('Links.Algorithm')}
           >
-            Algorithm
+            Algorithm({allLinksCount})
           </li>
         </ul>
       </li>

@@ -7,15 +7,15 @@
 
   .boxes {
     margin-top: 20px;
-    justify-content: space-around;
     border-top: 2px solid $alto;
 
-    &>* {
-        border-right: 2px solid $alto;
+    &>.box {
+      flex: 1;
+      border-right: 2px solid $alto;
     }
 
-    &>*:last-child {
-        border: none;
+    &>.box:last-child {
+      border: none;
     }
   }
 }

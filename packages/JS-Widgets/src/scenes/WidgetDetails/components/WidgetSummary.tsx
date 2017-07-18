@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import * as classnames from 'classnames';
 
 import Button from '../../../components/Button';
 import EthereumLogo from '../../../components/EthereumLogo';
@@ -25,11 +26,11 @@ const WidgetSummary = ({ onAddClick }: IWidgetSummaryProps) => (
         ⊕ Add New Link
       </Button>
     </div>
-    <div class={`${style.boxes} row`}>
-      <TextWithLabel label="Impressions" text="20000 monthly" />
-      <TextWithLabel label="Source Domain" text="http://userfeeds.io" />
-      <TextWithLabel label="Contact" text="spam@userfeeds.io" />
-      <TextWithLabel label="Valid till" text="05/06/2018" />
+    <div class={classnames(style.boxes, 'row')}>
+      <TextWithLabel class={style.box} label="Impressions" text="20000 monthly" />
+      <TextWithLabel class={style.box} label="Source Domain" text="http://userfeeds.io" />
+      <TextWithLabel class={style.box} label="Contact" text="spam@userfeeds.io" />
+      <TextWithLabel class={style.box} label="Valid till" text="05/06/2018" />
     </div>
   </div>
 );

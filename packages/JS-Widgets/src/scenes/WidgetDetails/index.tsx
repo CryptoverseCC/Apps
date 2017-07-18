@@ -32,24 +32,24 @@ const ComponentsMapping = {
       <AddLink context={context} onSuccess={onSuccess} onError={onError} />
     </Paper>
   ),
-  'Userfeeds': ({ context, allLinks }: IWidgetDetailsProps) => (
-    <UserfeedAddressInfo context={context} linksNumber={allLinks.length} />
+  'Userfeeds': ({ context, allLinksCount }: IWidgetDetailsProps) => (
+    <UserfeedAddressInfo context={context} linksNumber={allLinksCount} />
   ),
   'Specification': ({ size }: IWidgetDetailsProps) => (
     <WidgetSpecification size={size} />
   ),
   'Links.Slots': ({ links, context }: IWidgetDetailsProps) => (
-    <Paper style={{ width: '95%', marginTop: '20px' }}>
+    <Paper style={{ width: '100%', marginTop: '20px', marginRight: '20px' }}>
       <LinksList links={links} context={context} />
     </Paper>
   ),
-  'Links.Whitelist': ({ links, context }: IWidgetDetailsProps) => (
-    <Paper style={{ width: '95%', marginTop: '20px' }}>
-      <LinksList links={links} context={context} />
+  'Links.Whitelist': ({ whitelistedLinks, context }: IWidgetDetailsProps) => (
+    <Paper style={{ width: '100%', marginTop: '20px', marginRight: '20px' }}>
+      <LinksList links={whitelistedLinks} context={context} />
     </Paper>
   ),
   'Links.Algorithm': ({ allLinks, context }: IWidgetDetailsProps) => (
-    <Paper style={{ width: '95%', marginTop: '20px' }}>
+    <Paper style={{ width: '100%', marginTop: '20px', marginRight: '20px' }}>
       <LinksList links={allLinks} context={context} showProbability={false} />
     </Paper>
   ),
@@ -66,6 +66,7 @@ const mapStateToProps = (state: IRootState) => {
 
   return {
     links: visibleLinks(state),
+    whitelistedLinks: state.links.links,
     allLinks: links.allLinks,
     allLinksCount: allLinksCount(state),
     whitelistedLinksCount: whitelistedLinksCount(state),
@@ -96,7 +97,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   render(
-    { context, links, algorithm, whitelist, slots, whitelistedLinksCount }: IWidgetDetailsProps,
+    { context, links, algorithm, whitelist, slots, whitelistedLinksCount, allLinksCount }: IWidgetDetailsProps,
     { viewType }: IWidgetDetailsState) {
 
     const DetailsComponent = ComponentsMapping[viewType];
@@ -108,6 +109,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
           <SideMenu
             slots={slots}
             whitelistedLinksCount={whitelistedLinksCount}
+            allLinksCount={allLinksCount}
             activeItem={this.state.viewType}
             onItemClick={this._menuItemClicked}
           />
