@@ -1,0 +1,11 @@
+.self {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .paper-container {
+    margin-top: 20px;
+    padding: 10px;
+  }
+}

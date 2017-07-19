@@ -11,11 +11,10 @@ import web3 from '../../utils/web3';
 
 import Switch from '../../components/utils/Switch';
 
-import Paper from '../../components/Paper';
-import AddLink from '../../components/AddLink';
 import Button from '../../components/Button';
 import TextWithLabel from '../../components/TextWithLabel';
 
+import AddLink from './components/AddLink';
 import SideMenu from './components/SideMenu';
 import LinksList from './components/LinksList';
 import WidgetSummary from './components/WidgetSummary';
@@ -28,9 +27,7 @@ import * as style from './style.scss';
 
 const ComponentsMapping = {
   'AddLink': ({ context, onSuccess, onError }) => (
-    <Paper style={{ alignSelf: 'center', marginLeft: '10%', padding: '10px' }}>
-      <AddLink context={context} onSuccess={onSuccess} onError={onError} />
-    </Paper>
+    <AddLink context={context} onSuccess={onSuccess} onError={onError} />
   ),
   'Userfeeds': ({ context, allLinksCount }: IWidgetDetailsProps) => (
     <UserfeedAddressInfo context={context} linksNumber={allLinksCount} />
