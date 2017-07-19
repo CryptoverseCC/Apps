@@ -8,6 +8,7 @@ import { modalActions } from '../../../actions/modal';
 import If from '../../../components/utils/If';
 import Switch from '../../../components/utils/Switch';
 
+import Icon from '../../../components/Icon';
 import Button from '../../../components/Button';
 
 import { openUserfeedsUrl } from '../../../utils/openUserfeedsUrl';
@@ -44,7 +45,7 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
 
     return (
       <div class={style.self}>
-        <Button onClick={this._toggleMenu}>...</Button>
+        <Button onClick={this._toggleMenu}><Icon name="ellipses" /></Button>
         <If condition={isOpen}>
           <div class={style.menuOverlay} onClick={this._toggleMenu} />
           <div class={style.menu}>

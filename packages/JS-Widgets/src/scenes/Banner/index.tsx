@@ -11,6 +11,7 @@ import { visibleLinks } from '../../selectors/links';
 import Switch from '../../components/utils/Switch';
 import Label from '../../components/Label';
 import Link from '../../components/Link';
+import Icon from '../../components/Icon';
 
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';
@@ -79,8 +80,8 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         </Switch>
         <div class={style.options}>
           <div class={style.arrows}>
-            <div onClick={this._onPrevClick}>❮</div>
-            <div onClick={this._onNextClick}>❯</div>
+            <div onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
+            <div onClick={this._onNextClick}><Icon name="chevron-right" /></div>
           </div>
           <Menu />
         </div>
