@@ -21,6 +21,7 @@ module.exports = {
       loader: 'awesome-typescript-loader',
     }, {
       test: /\.scss$/,
+      exclude: /(node_modules)/,
       use: [
         { loader: 'style-loader' },
         {
@@ -43,12 +44,47 @@ module.exports = {
           },
         }, {
           loader: 'sass-loader',
-          options: { sourceMap: true },
+          options: {
+            sourceMap: true,
+          },
         },
       ],
     }, {
-      test: /\.(png|jpg|gif)$/,
+      test: /\.(css|scss)$/,
+      include: /(node_modules)/,
+      use: [
+        { loader: 'style-loader' },
+        {
+          loader: 'css-loader',
+          options: {
+            importLoaders: 1,
+            sourceMap: true,
+          },
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true,
+            plugins: () => {
+              autoprefixer({ browsers: ['last 2 versions'] });
+            },
+          },
+        }, {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true,
+          },
+        },
+      ],
+    }, {
+      test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
       loader: 'url-loader',
+    }, {
+      test: /\.svg$/,
+      loader: 'svg-inline-loader',
+      options: {
+        removeTags: true,
+        removeSVGTagAttrs: true,
+      },
     }],
   },
   plugins: [

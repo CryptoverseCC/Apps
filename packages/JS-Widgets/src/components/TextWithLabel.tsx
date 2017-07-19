@@ -6,7 +6,7 @@ import * as style from './textWithLabel.scss';
 import Label from './Label';
 
 interface ITextWithLabelProps {
-  label: string;
+  label: string |JSX.Element;
   text?: string | number;
   class?: string;
 }
