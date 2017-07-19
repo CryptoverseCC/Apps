@@ -10,9 +10,10 @@ import * as style from './widgetSummary.scss';
 
 interface IWidgetSummaryProps {
   onAddClick(): void;
+  onOpenInSeparateWindow(): void;
 }
 
-const WidgetSummary = ({ onAddClick }: IWidgetSummaryProps) => (
+const WidgetSummary = ({ onAddClick, onOpenInSeparateWindow }: IWidgetSummaryProps) => (
   <div class={style.self}>
     <div class="row">
       <EthereumLogo />
@@ -20,6 +21,9 @@ const WidgetSummary = ({ onAddClick }: IWidgetSummaryProps) => (
         <h2>Title of the widget</h2>
         <p>Place to describe widget</p>
       </div>
+      <button onClick={onOpenInSeparateWindow} class={style.openInNewWindow}>
+        <Icon name="external-link"/> New window
+      </button>
       <Button
         style={{ marginLeft: 'auto', padding: '0.5em' }}
         onClick={onAddClick}

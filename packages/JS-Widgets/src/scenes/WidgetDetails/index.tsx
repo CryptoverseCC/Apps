@@ -98,7 +98,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
 
     return (
       <div class={style.self}>
-        <WidgetSummary onAddClick={this._onAddLinkClick} />
+        <WidgetSummary onAddClick={this._onAddLinkClick} onOpenInSeparateWindow={this._onOpenInSeparateWindowClick} />
         <div class={style.details}>
           <SideMenu
             slots={slots}

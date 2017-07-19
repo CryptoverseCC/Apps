@@ -18,4 +18,18 @@
       border: none;
     }
   }
+
+  .open-in-new-window {
+    margin-left: 20px;
+    outline: none;
+    color: $dusty-gray;
+    background-color: $white;
+    border-radius: 0.5em;
+    border: 1px solid $dusty-gray;
+
+    &:hover {
+      color: $black;
+      border-color: $black;
+    }
+  }
 }
