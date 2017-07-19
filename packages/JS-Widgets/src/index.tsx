@@ -1,4 +1,6 @@
+import 'typeface-pt-sans';
 import '@webcomponents/custom-elements';
+
 import { h, render } from 'preact';
 import { Provider } from 'preact-redux';
 

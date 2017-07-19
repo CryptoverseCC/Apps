@@ -4039,6 +4039,10 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
+typeface-pt-sans@^0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/typeface-pt-sans/-/typeface-pt-sans-0.0.31.tgz#016582543f474744f74a3e75bdb7ebac60dd79a2"
+
 typescript-fsa@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/typescript-fsa/-/typescript-fsa-2.3.1.tgz#e0f94f316aa3ea9b3a3ada10fbfeec4287c952b0"
