@@ -118,10 +118,6 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
     openUserfeedsUrl('apps/widgets/#/details/', this.props);
   }
 
-  _onWhitelistClick = () => {
-    openUserfeedsUrl('apps/links/#/whitelist/', this.props);
-  }
-
   _onAddLinkClick = () => {
     this.setState({ viewType: 'AddLink' });
   }
