@@ -39,7 +39,7 @@ const ComponentsMapping = {
     <LinksList links={links} context={context} />
   ),
   'Links.Whitelist': ({ whitelistedLinks, context }: IWidgetDetailsProps) => (
-    <LinksList links={whitelistedLinks} context={context} />
+    <LinksList links={whitelistedLinks} context={context} showProbability={false} />
   ),
   'Links.Algorithm': ({ allLinks, context }: IWidgetDetailsProps) => (
     <LinksList links={allLinks} context={context} showProbability={false} />

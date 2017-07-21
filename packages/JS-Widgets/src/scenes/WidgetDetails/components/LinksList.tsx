@@ -25,7 +25,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     prop: (_, index) => index + 1,
   }, {
     name: 'Probability',
-    prop: (link: ILink) => `${link.probability}%`,
+    prop: (link: ILink) => typeof link.probability === 'number' ? `${link.probability}%` : '-',
   }, {
     name: 'Content',
     prop: (link: ILink) => <Link link={link} showProbability={false} />,
