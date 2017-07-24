@@ -8,8 +8,15 @@ const allLinks = ({ links }: IRootState) => links.allLinks;
 
 export const visibleLinks = createSelector(
   whitelistedLinks,
+  allLinks,
   ({ widget }: IRootState) => widget.slots,
-  (links, slots) => calculateProbabilities(links.slice(0, slots)),
+  (whitelistedLinks, allLinks, slots) => {
+    if (whitelistedLinks) {
+      return calculateProbabilities(whitelistedLinks.slice(0, slots);
+    }
+
+    return calculateProbabilities(allLinks.slice(0, slots);
+  }),
 );
 
 export const whitelistedLinksCount = createSelector(
