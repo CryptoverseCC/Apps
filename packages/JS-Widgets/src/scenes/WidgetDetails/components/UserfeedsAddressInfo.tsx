@@ -32,4 +32,3 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
 };
 
 export default UserfeedsAddressInfo;
-
