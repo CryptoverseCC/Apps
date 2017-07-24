@@ -5,6 +5,7 @@ import { h, render } from 'preact';
 import { Provider } from 'preact-redux';
 
 import getStore from './store';
+import { updateWidgetSettings } from './actions/widget';
 
 import Banner from './scenes/Banner';
 
@@ -19,18 +20,37 @@ class UserfeedsLink extends HTMLElement {
   }
 
   instance: Element;
+  storeInstance: { dispatch(any): void; };
 
   connectedCallback() {
     this._renderComponent();
   }
 
   attributeChangedCallback(_attr, _oldValue, _newValue) {
-    if (this.instance) {
-      this._renderComponent();
+    if (this.storeInstance) {
+      this._updateStore();
     }
   }
 
   _renderComponent() {
+    this.innerHTML = '';
+
+    this.storeInstance = getStore(this._argsToState());
+
+    this.instance = render((
+      <Provider store={this.storeInstance}>
+        <Banner />
+      </Provider>), this);
+    // if (process.env.NODE_ENV === 'development' && module.hot) {
+    //   module.hot.accept('./banner', () => requestAnimationFrame(init));
+    // }
+  }
+
+  _updateStore() {
+    this.storeInstance.dispatch(updateWidgetSettings(this._argsToState()));
+  }
+
+  _argsToState() {
     const size = this.getAttribute('size') || 'rectangle';
     const timeslot = this.getAttribute('timeslot') || 5;
     const context = this.getAttribute('context');
@@ -39,9 +59,7 @@ class UserfeedsLink extends HTMLElement {
     const algorithm = this.getAttribute('algorithm');
     const publisherNote = this.getAttribute('publisher-note');
 
-    this.innerHTML = '';
-
-    const initialState = {
+    return {
       algorithm,
       context,
       publisherNote,
@@ -50,20 +68,6 @@ class UserfeedsLink extends HTMLElement {
       whitelist,
       slots,
     };
-
-    const store = getStore(initialState);
-    const init = () => {
-      this.instance = render((
-        <Provider store={store}>
-          <Banner />
-        </Provider>), this, this.instance);
-    };
-
-    // if (process.env.NODE_ENV === 'development' && module.hot) {
-    //   module.hot.accept('./banner', () => requestAnimationFrame(init));
-    // }
-
-    init();
   }
 }
 

@@ -1,4 +1,8 @@
+import { Action } from 'redux';
+import { isType } from 'typescript-fsa';
+
 import { TWidgetSize } from '../types';
+import { widgetActions } from '../actions/widget';
 
 type rectangle = 'rectangle';
 type leaderboard = 'leaderboard';
@@ -15,6 +19,10 @@ export interface IWidgetState {
 
 const initialState = {};
 
-export default function widget(state: IWidgetState = initialState): IWidgetState {
+export default function widget(state: IWidgetState = initialState, action: Action): IWidgetState {
+  if (isType(action, widgetActions.update)) {
+    return action.payload;
+  }
+
   return state;
 }
