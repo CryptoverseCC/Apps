@@ -2,16 +2,20 @@
 
 .self {
   position: relative;
-  margin-bottom: 20px;
-  width: 300px;
+  margin-bottom: 30px;
+  width: 280px;
+  font-family:'PT Sans';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
 
   .input {
-    font-size: 1.1em;
+    font-size: 15px;
     padding: 10px;
-    width: 280px;
-    border:none;
-    border-bottom:1px solid $dusty-gray;
-
+    width: 250px;
+    background-color:$aqua-haze;
+    border:1px solid $alto;
+    border-radius:3px;
     &:focus {
       outline: none;
     }
@@ -19,29 +23,22 @@
 
   .placeholder {
     position: absolute;
-    left: 10px;
-    top: 5px;
+    top:10px;
+    left:5px;
     color: $dusty-gray;
-    font-size:18px;
+    font-size:15px;
     transition: 0.2s;
   }
 
   .input:focus ~ .placeholder, .input:valid ~ .placeholder {
-    color: $dodger-blue;
-    font-size: 9px;
-    top: -5px;
+    color: $black;
+    font-size: 11px;
+    top: -16px;
+    left:0px;
   }
 
-  .highlight {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 300px;
-    height: 3px;
-    transition: 0.2s;
-  }
-
-  .input:focus ~ .highlight {
-    border-bottom: 2px solid $dodger-blue;
+  .input:focus {
+    border: 1px solid $dodger-blue;
+    background-color:$white;
   }
 }
