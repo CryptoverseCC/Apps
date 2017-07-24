@@ -1,9 +1,12 @@
+@import '../styles/colors';
+
+
 .self {
   padding: 1em;
 
   .text {
-    margin: 0;
-    font-size: 1em;
-    font-weight: bold;
+    margin-top:15px;
+    font-size: 15px;
+    color:$black;
   }
 }

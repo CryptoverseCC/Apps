@@ -1,7 +1,7 @@
 @import '../../styles/colors';
 
 .self {
-  width: 80vw;
+  width: 70vw;
   height: 80vh;
   display: flex;
   flex-direction: column;
@@ -13,5 +13,6 @@
     display: flex;
     background-color: $aqua-haze;
     flex: 1;
+    border-radius:3px;
   }
 }

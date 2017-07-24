@@ -1,10 +1,9 @@
 @import '../../../styles/colors';
 
 .self {
-  margin-top: 20px;
-  margin-right: 20px;
   width: 100%;
   overflow-y: scroll;
+  border-radius:3px;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -26,11 +25,33 @@
   .table {
     width: 100%;
     text-align: left;
+    padding:0 20px 20px 20px;
   }
 
   .table-header {
-    font-size: 0.8em;
+    font-size: 12px;
+    letter-spacing:2px;
+    font-family:'PT Sans';
+    font-weight:700;
+    line-height:5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     color: $dusty-gray;
     text-transform: uppercase;
   }
+
+  td {
+    font-size:15px;
+    color:$black;
+    font-family:'PT Sans';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight:700;
+    line-height:1.5;
+  }
+
+  tbody tr {
+    height:100px;
+  }
+
 }

@@ -77,7 +77,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   _renderRow = (link: ILink, index) => {
     return (
       <tr>
-        {this.columns.map(({ prop }) => <td>{prop(link, index)}</td>)}
+        {this.columns.map(({ prop }) => <td valign="top">{prop(link, index)}</td>)}
       </tr>
     );
   }

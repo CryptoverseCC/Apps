@@ -1,17 +1,20 @@
 @import '../../../styles/colors';
 
 .self {
-  padding: 10px;
+  padding-top: 10px;
+  padding-left:10px;
+  padding-right:10px;
   position: relative;
-  box-shadow: 0px 1px 5px 0px $dusty-gray;
+  height:150px;
+  box-shadow: 0px 5px 20px 0px $shadow;
 
   .boxes {
     margin-top: 20px;
-    border-top: 2px solid $alto;
+    border-top: 1px solid $alto;
 
     &>.box {
       flex: 1;
-      border-right: 2px solid $alto;
+      border-right: 1px solid $alto;
     }
 
     &>.box:last-child {
@@ -22,14 +25,15 @@
   .open-in-new-window {
     margin-left: 20px;
     outline: none;
+    height:30px;
+    padding:5px 15px;
     color: $dusty-gray;
     background-color: $white;
-    border-radius: 0.5em;
-    border: 1px solid $dusty-gray;
+    border-radius: 3px;
+    border: 1px solid $alto;
 
     &:hover {
-      color: $black;
-      border-color: $black;
+      border-color: $dusty-gray;
     }
   }
 }

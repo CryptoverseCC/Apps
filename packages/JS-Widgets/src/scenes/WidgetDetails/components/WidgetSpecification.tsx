@@ -14,15 +14,15 @@ interface IWidgetSpecificationProps {
 const WidgetSpecification = ({ size }: IWidgetSpecificationProps) => (
   <div class={style.self}>
     <div class="row" style={{ justifyContent: 'space-between' }}>
-      <Paper style={{ flex: 1, marginRight: '10px' }}>
-        <TextWithLabel label="SIZE" text={size} />
+      <Paper style={{ flex: 1, marginRight: '15px' }}>
+        <TextWithLabel label="Size" text={size} />
       </Paper>
-      <Paper style={{ flex: 1, marginLeft: '10px' }}>
-        <TextWithLabel label="TYPE" text="Text" />
+      <Paper style={{ flex: 1, marginLeft: '15px' }}>
+        <TextWithLabel label="Type" text="Text" />
       </Paper>
     </div>
-    <Paper style={{ marginTop: '10px' }}>
-      <TextWithLabel label="ALGORITHM">
+    <Paper>
+      <TextWithLabel label="Algorithm">
         Text
       </TextWithLabel>
     </Paper>

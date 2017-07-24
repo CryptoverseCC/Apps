@@ -13,10 +13,10 @@
   background-color: rgba($tuna, 0.7);
 
    & > .content {
+  border-radius:3px;
     display: flex;
     flex-direction: column;
     background-color: $white;
-    border-radius: 0.2em;
     box-shadow: 1px 1px 1px 0px rgba($black, 0.2);
   }
 }

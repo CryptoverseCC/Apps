@@ -1,8 +1,32 @@
-$black: rgb(0, 0, 0);
+$black: rgb(27,36,55);
 $white: rgb(255, 255, 255);
-$alto: rgb(215, 215, 215);
+
+
 $tuna: rgb(50, 52, 57);
-$dodger-blue: rgb(50, 93, 255);
-$aqua-haze: rgb(243, 246, 248);
+
 $silver-chalice: rgb(170, 170, 170);
-$dusty-gray: rgb(153, 153, 153);
+
+
+/* Labels, paragraphs */ 
+$dusty-gray: rgb(137, 147, 159);
+
+/* Background for details */
+$aqua-haze: rgb(245, 247, 250);
+
+/* Borders */ 
+$alto: rgb(238, 241, 242);
+
+/* Main blue, buttons links */
+$dodger-blue: rgb(38, 63, 255);
+/* Light blue */
+$light-blue:rgb(207,217,250);
+
+
+/* Shadow */
+$shadow: rgba(19,38,110,0.08);
+
+/* Blue button shadow */
+$shadow-button: rgba(50,93,255,0.45);
+
+/* Shadow for SecondaryButton */
+$shadow-secondary: rgba(184,188,206,0.5);

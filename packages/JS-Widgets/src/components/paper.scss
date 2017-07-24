@@ -1,6 +1,9 @@
 @import '../styles/colors';
 
 .self {
+  flex:1;
   background-color: $white;
-  box-shadow: 1px 1px 5px 0px $dusty-gray;
+  box-shadow: 0px 5px 20px 0px $shadow;
+  margin-top:30px;
+  margin-right:30px;
 }

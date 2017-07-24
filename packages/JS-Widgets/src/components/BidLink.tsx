@@ -6,7 +6,7 @@ import { ILink } from '../types';
 
 import If from './utils/If';
 import Input from './Input';
-import Button from './Button';
+import Button from './ButtonSecondary';
 import TextWithLabel from './TextWithLabel';
 
 import * as style from './bidLink.scss';
@@ -45,7 +45,7 @@ export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
   render({ link }: IBidLinkProps, { visible, value, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
     return (
       <div ref={this._onButtonRef} class={style.self}>
-        <Button onClick={this._onBid} style={{ marginLeft: '20px' }}>Boost</Button>
+        <Button onClick={this._onBid}>Boost</Button>
         <If condition={visible}>
           <div class={style.overlay} onClick={this._onOverlayClick} />
           <div ref={this._onFormRef} class={style.form} style={{ top: formTop, left: formLeft, opacity: formOpacity }}>

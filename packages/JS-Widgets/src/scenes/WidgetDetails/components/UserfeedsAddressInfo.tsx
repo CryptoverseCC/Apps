@@ -18,11 +18,11 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
   return (
     <div class={style.self}>
       <div class="row" style={{ justifyContent: 'space-between' }}>
-        <Paper style={{ flex: 1, marginRight: '10px' }}>
-          <TextWithLabel label="TOTAL NUMBER OF LINKS" text={linksNumber} />
+        <Paper style={{ flex: 1, marginRight: '15px' }}>
+          <TextWithLabel label="Total number of links" text={linksNumber} />
         </Paper>
-        <Paper style={{ flex: 1, marginLeft: '10px' }}>
-          <TextWithLabel label="ETHERSCAN">
+        <Paper style={{ flex: 1, marginLeft: '15px' }}>
+          <TextWithLabel label="Etherscan">
             <a href={etherscanUrl} target="_blank"><Icon name="external-link" /> See it on Etherscan</a>
           </TextWithLabel>
         </Paper>
@@ -32,3 +32,4 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
 };
 
 export default UserfeedsAddressInfo;
+
