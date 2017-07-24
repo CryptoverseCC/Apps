@@ -32,7 +32,14 @@ export const allLinksCount = createSelector(
 // ToDo rething function name
 const calculateProbabilities = (links: ILink[]): ILink[] => {
   const scoreSum = links.reduce((acc, { score }) => acc + score, 0);
-  const probabilities = links.map(({ score }) => score / scoreSum * 100);
+
+  let probabilities;
+  if (scoreSum !== 0) {
+    probabilities = links.map(({ score }) => score / scoreSum * 100);
+  } else {
+    probabilities = links.map(({ score }) => 1 / links.length * 100);
+  }
+
   const roundedDownProbabilities = probabilities.map((probability) => Math.floor(probability));
   const roundedDownProbabilitiesSum = roundedDownProbabilities.reduce((acc, probability) => acc + probability, 0);
 

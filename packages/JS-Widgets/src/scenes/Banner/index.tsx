@@ -125,6 +125,10 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   _getRandomLink(links: ILink[]) {
     let randomScore = Math.random() * links.reduce((acc, { score }) => acc + score, 0);
 
+    if (randomScore === 0) {
+      return links[Math.round(Math.random() * (links.length - 1))];
+    }
+
     return links.find(({ score }) => {
       randomScore -= score;
       return randomScore < 0;
