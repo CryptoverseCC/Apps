@@ -9,13 +9,13 @@ const allLinks = ({ links }: IRootState) => links.allLinks;
 export const visibleLinks = createSelector(
   whitelistedLinks,
   allLinks,
-  ({ widget }: IRootState) => widget.slots,
-  (whitelistedLinks, allLinks, slots) => {
-    if (whitelistedLinks) {
-      return calculateProbabilities(whitelistedLinks.slice(0, slots));
+  ({ widget }: IRootState) => widget,
+  (whitelistedLinks, allLinks, widget) => {
+    if (widget.whitelist !== '') {
+      return calculateProbabilities(whitelistedLinks.slice(0, widget.slots));
     }
 
-    return calculateProbabilities(allLinks.slice(0, slots));
+    return calculateProbabilities(allLinks.slice(0, widget.slots));
   },
 );
 
