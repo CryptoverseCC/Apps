@@ -1,13 +1,14 @@
 @import '../../styles/colors';
 
 .self {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-family: 'PT Sans', sans-serif;
   position: relative;
+  overflow: hidden;
+  font-family: 'PT Sans', sans-serif;
   border: 1px solid $alto;
   box-shadow: 1px 1px 1px 0px rgba($black, 0.2);
+
+  $initial_menu_height: 5px;
+  $menu_height: 60px;
 
   &.leaderboard {
     width: 728px;
@@ -19,22 +20,31 @@
     height: 250px;
   }
 
-  .options {
+  .container {
+    min-width: 100%;
+    min-height: calc(100% - #{$initial_menu_height});
+    position: relative;
+    z-index: 1;
     display: flex;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
+    flex-direction: column;
+    background-color: $white;
     transition: max-height 0.2s ease-out;
-    flex-direction: row;
-    background-color: $dodger-blue;
-    justify-content: space-between;
-    align-items: flex-end;
+  }
+ 
+  &:hover > .container {
+    transform: translateY(-$menu_height + $initial_menu_height);
   }
 
-  &:hover > .options {
-    max-height: 100px;
-    transition: max-height 0.5s ease-in;
-    opacity: 1;
+  .options {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-height: $menu_height;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: $dodger-blue;
   }
 
   .arrows {

@@ -12,9 +12,7 @@
   }
 
   .menu {
-    position: absolute;
-    top: 30px;
-    right: 0;
+    position: fixed;
     z-index: 3;
     background-color: $white;
     border: 1px solid $alto;

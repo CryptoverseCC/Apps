@@ -70,14 +70,16 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
     return (
       <div class={cx(['self', size])}>
-        <Switch expresion={fetched && !!currentLink}>
-          <Switch.Case condition>
-            <Link link={currentLink} />
-          </Switch.Case>
-          <Switch.Case condition={false}>
-            <Label>No ads available</Label>
-          </Switch.Case>
-        </Switch>
+        <div class={style.container}>
+          <Switch expresion={fetched && !!currentLink}>
+            <Switch.Case condition>
+              <Link link={currentLink} />
+            </Switch.Case>
+            <Switch.Case condition={false}>
+              <Label>No ads available</Label>
+            </Switch.Case>
+          </Switch>
+        </div>
         <div class={style.options}>
           <div class={style.arrows}>
             <div onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
