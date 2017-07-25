@@ -10,8 +10,10 @@ interface ILinkProps {
 }
 
 const Link = ({ link, showProbability = true }: ILinkProps) => {
+  const openTargetUrl = () => window.open(link.target, '_blank');
+
   return (
-    <div class={style.self}>
+    <div class={style.self} onClick={openTargetUrl}>
       <div class={style.title}>{link.title}</div>
       <div>{link.summary}</div>
       <div class={`row ${style.footer}`}>

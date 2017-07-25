@@ -21,7 +21,7 @@
 
   .container {
     min-width: 100%;
-    min-height: calc(100% - #{$initial_menu_height});
+    min-height: calc(100% - #{$menu_height});
     position: relative;
     z-index: 1;
     display: flex;
@@ -30,8 +30,14 @@
     transition: all 0.2s ease;
   }
  
-  &:hover > .container {
-    transform: translateY(-$menu_height + $initial_menu_height);
+  @media (hover: hover) {
+    .container {
+      min-height: calc(100% - #{$initial_menu_height});
+    }
+
+    &:hover > .container {
+      transform: translateY(-$menu_height + $initial_menu_height);
+    }
   }
 
   .options {
