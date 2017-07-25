@@ -14,17 +14,33 @@
   .menu {
     position: fixed;
     z-index: 3;
+    border-radius:3px;
+    padding:10px;
     background-color: $white;
     border: 1px solid $alto;
-    box-shadow: 1px 1px 1px 0px rgba($black, 0.2);
+    box-shadow: 0px 5px 25px 0px $shadow;
   }
 
   .menu-item {
-    padding: 10px;
+    padding: 20px;
     cursor: pointer;
   }
 
+  .know-more{
+    outline:0;
+    color:$dodger-blue;
+    background-color:transparent;
+    margin-right:20px;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-weight:700;
+    border:0;
+    margin-bottom:3px;
+  }
+
+
   .menu-item:hover {
-    background-color: rgba($silver-chalice, .5);
+    background-color: $alto;
   }
 }

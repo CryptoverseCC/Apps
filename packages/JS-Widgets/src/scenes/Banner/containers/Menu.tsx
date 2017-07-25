@@ -45,7 +45,7 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
 
     return (
       <div class={style.self}>
-        <Button onClick={this._toggleMenu}><Icon name="ellipses" /></Button>
+        <Button class={style.knowMore} onClick={this._toggleMenu}>See more<Icon name="chevron-bottom" /></Button>
         <If condition={isOpen}>
           <div class={style.menuOverlay} onClick={this._toggleMenu} />
           <div class={style.menu}>
@@ -55,17 +55,15 @@ export default class Menu extends Component<IMenuProps, IMenuState> {
                   Create New Link
               </Switch.Case>
               <Switch.Case condition={false}>
-                  web3 unavailable :-(
+                  web3 unavailable 😟
               </Switch.Case>
               </Switch>
             </div>
             <If condition={web3Available}>
-              <hr />
               <div class={style.menuItem} onClick={this._onWhitelistClick}>
                 Whitelist
               </div>
             </If>
-            <hr />
             <div class={style.menuItem} onClick={this._onDetailsClick}>Widget Details</div>
           </div>
         </If>

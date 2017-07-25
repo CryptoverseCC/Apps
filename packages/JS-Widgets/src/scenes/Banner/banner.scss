@@ -5,10 +5,9 @@
   overflow: hidden;
   font-family: 'PT Sans', sans-serif;
   border: 1px solid $alto;
-  box-shadow: 1px 1px 1px 0px rgba($black, 0.2);
 
-  $initial_menu_height: 5px;
-  $menu_height: 60px;
+  $initial_menu_height: 2px;
+  $menu_height: 30px;
 
   &.leaderboard {
     width: 728px;
@@ -28,7 +27,7 @@
     display: flex;
     flex-direction: column;
     background-color: $white;
-    transition: max-height 0.2s ease-out;
+    transition: all 0.2s ease;
   }
  
   &:hover > .container {
@@ -39,18 +38,21 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    max-height: $menu_height;
+    height: $menu_height;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    background-color: $dodger-blue;
+    background-color: $alto;
+    box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
+
   }
 
   .arrows {
     display: flex;
     cursor: pointer;
-    color: $white;
-    padding: 3px;
+    color: $dusty-gray;
+    margin-left:20px;
+    transform: scale(0.75);
   }
 }

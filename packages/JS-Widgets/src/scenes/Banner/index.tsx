@@ -82,7 +82,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         </div>
         <div class={style.options}>
           <div class={style.arrows}>
-            <div onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
+            <div style="padding-right:10px;" onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
             <div onClick={this._onNextClick}><Icon name="chevron-right" /></div>
           </div>
           <Menu />
