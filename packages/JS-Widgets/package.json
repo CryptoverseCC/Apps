@@ -19,6 +19,7 @@
     "open-iconic": "^1.1.1",
     "preact": "~8.2.1",
     "preact-redux": "^2.0.2",
+    "qrious": "^4.0.2",
     "react-redux-typescript": "^2.3.0",
     "redux": "^3.7.1",
     "redux-logger": "^3.0.6",

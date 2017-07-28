@@ -1,4 +1,21 @@
 .self {
   flex: 1;
   padding: 10px;
+
+  .qr {
+    position: relative;
+    width: 20px;
+    height: 20px;
+
+    .canvas {
+      width: 100%;
+      height: 100%;
+
+      &:hover {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+      }
+    }
+  }
 }

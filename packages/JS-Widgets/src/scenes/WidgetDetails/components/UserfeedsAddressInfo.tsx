@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import * as QRious from 'qrious';
 
 import Icon from '../../../components/Icon';
 import Paper from '../../../components/Paper';
@@ -10,6 +11,13 @@ interface IUserfeedsAddressInfoProps {
   context: string;
   linksNumber: number;
 }
+
+const renderQR = (context, ref) => {
+  const qr = new QRious({
+    element: ref,
+    value: context,
+  });
+};
 
 const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoProps) => {
   const [network, address] = context.split(':');
@@ -27,6 +35,16 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
           </TextWithLabel>
         </Paper>
       </div>
+      <Paper>
+        <TextWithLabel label="Userfeed address">
+          <div class="row">
+            {context}
+            <div class={style.qr}>
+              <canvas class={style.canvas} ref={renderQR.bind(null, context)} />
+            </div>
+          </div>
+        </TextWithLabel>
+      </Paper>
     </div>
   );
 };
