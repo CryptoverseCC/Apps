@@ -1,6 +1,7 @@
 import { h } from 'preact';
 
 import { ViewType } from '../';
+
 import Pill from '../../../components/Pill';
 
 import * as style from './sideMenu.scss';
