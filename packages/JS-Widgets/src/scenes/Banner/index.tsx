@@ -9,6 +9,7 @@ import { fetchLinks } from '../../actions/links';
 import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
+import EthereumLogo from '../../components/EthereumLogo';
 import Label from '../../components/Label';
 import Link from '../../components/Link';
 import Icon from '../../components/Icon';
@@ -43,13 +44,16 @@ type IBannerProps = typeof State2Props & typeof Dispatch2Props;
 
 interface IBannerState {
   currentLink?: ILink;
+  optionsOpen: boolean;
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Banner extends Component<IBannerProps, IBannerState> {
 
   _timeout: number | null = null;
-  state: IBannerState = {};
+  state: IBannerState = {
+    optionsOpen: false,
+  };
 
   constructor(props: IBannerProps) {
     super(props);
@@ -63,13 +67,27 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     }
   }
 
-  render({ links, size, fetched }: IBannerProps, { currentLink }: IBannerState) {
+  render({ links, size, fetched }: IBannerProps, { currentLink, optionsOpen }: IBannerState) {
     if (!fetched) {
       return <div />;
     }
 
     return (
-      <div class={cx(['self', size])}>
+      <div class={cx(['self', size])} onMouseLeave={this._onInfoLeave}>
+        <div
+          class={style.info}
+          onMouseEnter={this._onInfoEnter}
+          onClick={this._onInfoEnter}
+        >
+          <EthereumLogo class={style.icon} />
+        </div>
+        <div class={cx('options', { open: optionsOpen })}>
+          <div class={style.arrows}>
+            <div style="padding-right:10px;" onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
+            <div onClick={this._onNextClick}><Icon name="chevron-right" /></div>
+          </div>
+          <Menu />
+        </div>
         <div class={style.container}>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
@@ -80,16 +98,17 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
             </Switch.Case>
           </Switch>
         </div>
-        <div class={style.options}>
-          <div class={style.arrows}>
-            <div style="padding-right:10px;" onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
-            <div onClick={this._onNextClick}><Icon name="chevron-right" /></div>
-          </div>
-          <Menu />
-        </div>
         <RootModal />
       </div>
     );
+  }
+
+  _onInfoEnter = () => {
+    this.setState({ optionsOpen: true });
+  }
+
+  _onInfoLeave = () => {
+    setTimeout(() => this.setState({ optionsOpen: false }), 2000);
   }
 
   _onPrevClick = () => {

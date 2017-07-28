@@ -16,7 +16,7 @@ interface IWidgetSummaryProps {
 const WidgetSummary = ({ onAddClick, onOpenInSeparateWindow }: IWidgetSummaryProps) => (
   <div class={style.self}>
     <div class="row">
-      <EthereumLogo />
+      <EthereumLogo class={style.logo}/>
       <div>
         <h2>Title of the widget</h2>
         <p>Place to describe widget</p>

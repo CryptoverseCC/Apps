@@ -21,7 +21,7 @@
 
   .container {
     min-width: 100%;
-    min-height: calc(100% - #{$menu_height});
+    min-height: calc(100% - #{$initial_menu_height});
     position: relative;
     z-index: 1;
     display: flex;
@@ -29,15 +29,25 @@
     background-color: $white;
     transition: all 0.2s ease;
   }
- 
-  @media (hover: hover) {
-    .container {
-      min-height: calc(100% - #{$initial_menu_height});
+
+  .info {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
     }
 
-    &:hover > .container {
-      transform: translateY(-$menu_height + $initial_menu_height);
+    .icon {
+      width: 32px;
     }
+  }
+
+  .options.open+.container {
+    transform: translateY(-$menu_height + $initial_menu_height);
   }
 
   .options {
