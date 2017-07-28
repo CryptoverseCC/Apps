@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  z-index: 2147483647; // max possible value
   top: 0;
   left: 0;
   width: 100%;
@@ -13,10 +13,10 @@
   background-color: rgba($black, 0.85);
 
   & > .content {
-    border-radius:3px;
+    border-radius: 3px;
     display: flex;
     flex-direction: column;
     background-color: $white;
-    box-shadow:0 30px 80px $shadow-modal;
+    box-shadow: 0 30px 80px $shadow-modal;
   }
 }
