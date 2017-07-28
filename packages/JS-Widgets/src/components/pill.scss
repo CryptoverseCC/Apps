@@ -1,0 +1,11 @@
+@import '../styles/colors';
+
+.self {
+  background-color: $dodger-blue;
+  border-radius: 0.5em;
+  color: white;
+  vertical-align: super;
+  padding: 0.01em 0.5em 0.01em 0.5em;
+  font-size: 0.8em;
+  font-weight: bold;
+}

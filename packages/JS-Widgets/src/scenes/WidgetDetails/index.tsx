@@ -29,7 +29,7 @@ const ComponentsMapping = {
   'AddLink': ({ context, onSuccess, onError }) => (
     <AddLink context={context} onSuccess={onSuccess} onError={onError} />
   ),
-  'Userfeeds': ({ context, allLinksCount }: IWidgetDetailsProps) => (
+  'Userfeed': ({ context, allLinksCount }: IWidgetDetailsProps) => (
     <UserfeedAddressInfo context={context} linksNumber={allLinksCount} />
   ),
   'Specification': ({ size }: IWidgetDetailsProps) => (
@@ -83,7 +83,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   constructor(props: IWidgetDetailsProps) {
     super(props);
     this.state = {
-      viewType: 'Userfeeds',
+      viewType: 'Userfeed',
     };
   }
 

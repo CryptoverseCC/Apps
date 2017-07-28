@@ -1,6 +1,7 @@
 import { h } from 'preact';
 
 import { ViewType } from '../';
+import Pill from '../../../components/Pill';
 
 import * as style from './sideMenu.scss';
 
@@ -25,19 +26,19 @@ const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount, allLi
           class={activeItem === 'Links.Slots' ? style.active : ''}
           onClick={notify('Links.Slots')}
         >
-          Slots({slots})
+          Slots <Pill>{slots}</Pill>
         </li>
         <li
           class={activeItem === 'Links.Whitelist' ? style.active : ''}
           onClick={notify('Links.Whitelist')}
         >
-          Whitelist({whitelistedLinksCount})
+          Whitelist <Pill>{whitelistedLinksCount}</Pill>
         </li>
         <li
           class={activeItem === 'Links.Algorithm' ? style.active : ''}
           onClick={notify('Links.Algorithm')}
         >
-          Algorithm({allLinksCount})
+          Algorithm <Pill>{allLinksCount}</Pill>
         </li>
       </ul>
       <li
@@ -47,10 +48,10 @@ const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount, allLi
         Widget Specification
       </li>
       <li
-        class={activeItem === 'Userfeeds' ? style.active : ''}
-        onClick={notify('Userfeeds')}
+        class={activeItem === 'Userfeed' ? style.active : ''}
+        onClick={notify('Userfeed')}
       >
-        Userfeeds
+        Userfeed
       </li>
     </ul>
   );
