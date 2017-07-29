@@ -108,7 +108,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   }
 
   _onInfoLeave = () => {
-    setTimeout(() => this.setState({ optionsOpen: false }), 2000);
+    setTimeout(() => this.setState({ optionsOpen: false }), 200);
   }
 
   _onPrevClick = () => {
