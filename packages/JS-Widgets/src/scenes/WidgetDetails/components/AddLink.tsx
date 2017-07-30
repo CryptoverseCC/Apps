@@ -7,7 +7,7 @@ import * as style from './addLink.scss';
 
 interface IAddLinkProps {
   context: string;
-  onSuccess(): void;
+  onSuccess(linkId: string): void;
   onError(): void;
 }
 

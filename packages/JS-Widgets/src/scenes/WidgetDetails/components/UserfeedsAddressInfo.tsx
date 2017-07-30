@@ -10,6 +10,7 @@ import * as style from './userfeedsAddressInfo.scss';
 interface IUserfeedsAddressInfoProps {
   context: string;
   linksNumber: number;
+  ref?(ref: any): void;
 }
 
 const renderQR = (context, ref) => {
@@ -25,6 +26,7 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
 
   return (
     <div class={style.self}>
+      <h2>Userfeed Address</h2>
       <div class="row" style={{ justifyContent: 'space-between' }}>
         <Paper style={{ flex: 1, marginRight: '15px' }}>
           <TextWithLabel label="Total number of links" text={linksNumber} />

@@ -5,16 +5,21 @@ import { ILink } from '../../../types';
 import web3 from '../../../utils/web3';
 
 import Link from '../../../components/Link';
-import BidLink from '../../../components/BidLink';
-import Button from '../../../components/Button';
 import Paper from '../../../components/Paper';
+import Button from '../../../components/Button';
+import BidLink from '../../../components/BidLink';
 
 import * as style from './linksList.scss';
 
 interface ILinksListProps {
+  label: string;
   links: ILink[];
   context: string;
   showProbability?: boolean;
+}
+
+interface ILinksListState {
+  maxRows: number;
 }
 
 export default class LinksList extends Component<ILinksListProps, {}> {
@@ -42,6 +47,10 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     ),
   }];
 
+  state = {
+    maxRows: 5,
+  };
+
   constructor(props: ILinksListProps) {
     super(props);
     const { showProbability = true } = props;
@@ -51,16 +60,20 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     }
   }
 
-  render({ links }: ILinksListProps) {
+  render({ label, links }: ILinksListProps, { maxRows }: ILinksListState) {
     return (
-      <Paper class={style.self}>
-        <table class={style.table}>
-          {this._renderHeader()}
-          <tbody>
-            {links.map(this._renderRow)}
-          </tbody>
-        </table>
-      </Paper>
+      <div class={style.self}>
+        <h2>{label}</h2>
+        <Paper>
+          <table class={style.table}>
+            {this._renderHeader()}
+            <tbody>
+              {links.slice(0, maxRows).map(this._renderRow)}
+              {this._renderLoadMore()}
+            </tbody>
+          </table>
+        </Paper>
+      </div>
     );
   }
 
@@ -80,5 +93,21 @@ export default class LinksList extends Component<ILinksListProps, {}> {
         {this.columns.map(({ prop }) => <td valign="top">{prop(link, index)}</td>)}
       </tr>
     );
+  }
+
+  _renderLoadMore = () => {
+    if (this.state.maxRows < this.props.links.length) {
+      return (
+        <tr class={style.loadMore} onClick={this._onLoadMore}>
+          <td colSpan={this.columns.length}>Load More</td>
+        </tr>
+      );
+    }
+
+    return null;
+  }
+
+  _onLoadMore = () => {
+    this.setState({ maxRows: this.state.maxRows * 2 });
   }
 }

@@ -1,5 +1,5 @@
 .self {
-  flex: 1;
+  height: 100%;
   padding: 10px;
 
   .qr {
@@ -13,8 +13,8 @@
 
       &:hover {
         position: absolute;
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
       }
     }
   }

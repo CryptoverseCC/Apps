@@ -1,6 +1,6 @@
 import { h } from 'preact';
 
-import { ViewType } from '../';
+import { TViewType } from '../';
 
 import Pill from '../../../components/Pill';
 
@@ -10,12 +10,12 @@ interface ISideMenuProps {
   slots: number;
   whitelistedLinksCount: number;
   allLinksCount: number;
-  activeItem: ViewType;
-  onItemClick(name: ViewType): void;
+  activeItem: TViewType;
+  onItemClick(name: TViewType): void;
 }
 
 const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
-  const notify = (name: ViewType) => (event: MouseEvent) => {
+  const notify = (name: TViewType) => (event: MouseEvent) => {
     onItemClick(name);
     event.stopImmediatePropagation();
   };

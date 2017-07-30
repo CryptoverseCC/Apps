@@ -3,7 +3,7 @@ import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import { IRootState } from '../../reducers';
-import { ILink } from '../../types';
+import { ILink, TWidgetSize } from '../../types';
 import { modalActions } from '../../actions/modal';
 import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
 
@@ -12,44 +12,23 @@ import web3 from '../../utils/web3';
 import Switch from '../../components/utils/Switch';
 
 import Button from '../../components/Button';
+import Paper from '../../components/Paper';
 import TextWithLabel from '../../components/TextWithLabel';
 
 import AddLink from './components/AddLink';
 import SideMenu from './components/SideMenu';
-import LinksList from './components/LinksList';
+import DetailsList from './components/DetailsList';
 import WidgetSummary from './components/WidgetSummary';
-import WidgetSpecification from './components/WidgetSpecification';
-import UserfeedAddressInfo from './components/UserfeedsAddressInfo';
 
 import { openUserfeedsUrl } from '../../utils/openUserfeedsUrl';
 
-import * as style from './style.scss';
+import * as style from './widgetDetails.scss';
 
-const ComponentsMapping = {
-  'AddLink': ({ context, onSuccess, onError }) => (
-    <AddLink context={context} onSuccess={onSuccess} onError={onError} />
-  ),
-  'Userfeed': ({ context, allLinksCount }: IWidgetDetailsProps) => (
-    <UserfeedAddressInfo context={context} linksNumber={allLinksCount} />
-  ),
-  'Specification': ({ size }: IWidgetDetailsProps) => (
-    <WidgetSpecification size={size} />
-  ),
-  'Links.Slots': ({ links, context }: IWidgetDetailsProps) => (
-    <LinksList links={links} context={context} />
-  ),
-  'Links.Whitelist': ({ whitelistedLinks, context }: IWidgetDetailsProps) => (
-    <LinksList links={whitelistedLinks} context={context} showProbability={false} />
-  ),
-  'Links.Algorithm': ({ allLinks, context }: IWidgetDetailsProps) => (
-    <LinksList links={allLinks} context={context} showProbability={false} />
-  ),
-};
-
-export type ViewType = keyof typeof ComponentsMapping;
+export type TViewType = 'AddLink'| 'Userfeed' | 'Specification' | 'Links.Algorithm'
+  | 'Links.Whitelist' | 'Links.Slots';
 
 interface IWidgetDetailsState {
-  viewType: ViewType;
+  viewType: TViewType;
 }
 
 const mapStateToProps = (state: IRootState) => {
@@ -80,6 +59,8 @@ type IWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props;
 @connect(mapStateToProps, mapDispatchToProps)
 export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidgetDetailsState> {
 
+  detailsListCmp: DetailsList;
+
   constructor(props: IWidgetDetailsProps) {
     super(props);
     this.state = {
@@ -88,10 +69,9 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   render(
-    { context, links, algorithm, whitelist, slots, whitelistedLinksCount, allLinksCount }: IWidgetDetailsProps,
+    { context, size, whitelistedLinks, allLinks, links, algorithm,
+      whitelist, slots, whitelistedLinksCount, allLinksCount }: IWidgetDetailsProps,
     { viewType }: IWidgetDetailsState) {
-
-    const DetailsComponent = ComponentsMapping[viewType];
 
     return (
       <div class={style.self}>
@@ -104,13 +84,36 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
             activeItem={this.state.viewType}
             onItemClick={this._menuItemClicked}
           />
-          <DetailsComponent {...this.props} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
+          <Switch expresion={viewType === 'AddLink'}>
+            <Switch.Case condition>
+              <AddLink context={context} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
+            </Switch.Case>
+            <Switch.Case condition={false}>
+              <DetailsList
+                initialView="Userfeed"
+                scrolledTo={this._onScrolledTo}
+                ref={this._onDetailsListRef}
+                context={context}
+                size={size}
+                links={links}
+                whitelistedLinks={whitelistedLinks}
+                allLinks={allLinks}
+                allLinksCount={allLinksCount}
+              />
+            </Switch.Case>
+          </Switch>
         </div>
       </div>
     );
   }
 
-  _menuItemClicked = (name: ViewType) => {
+  _menuItemClicked = (name: TViewType) => {
+    this.setState({ viewType: name }, () => {
+      this.detailsListCmp.scrollTo(name);
+    });
+  }
+
+  _onScrolledTo = (name: TViewType) => {
     this.setState({ viewType: name });
   }
 
@@ -129,4 +132,6 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   _onLinkNotAdded = () => {
     this.setState({ viewType: 'Links.Slots' });
   }
+
+  _onDetailsListRef = (ref) => this.detailsListCmp = ref;
 }
