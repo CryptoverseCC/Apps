@@ -4,12 +4,14 @@ import * as core from '@userfeeds/core';
 
 import { ILink } from '../types';
 
+import web3 from '../utils/web3';
+
 import If from './utils/If';
 import Input from './Input';
 import Button from './ButtonSecondary';
 import TextWithLabel from './TextWithLabel';
 
-import * as style from './bidLink.scss';
+import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
   link: ILink;
@@ -29,7 +31,7 @@ interface IBidLinkState {
   formOpacity?: number;
 }
 
-export default class BidLink extends Component<IBidLinkProps, IBidLinkState> {
+export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _buttonRef: Element;
   constructor(props: IBidLinkProps) {

@@ -7,7 +7,7 @@ import web3 from '../../../utils/web3';
 import Link from '../../../components/Link';
 import Paper from '../../../components/Paper';
 import Button from '../../../components/Button';
-import BidLink from '../../../components/BidLink';
+import BoostLink from '../../../components/BoostLink';
 
 import * as style from './linksList.scss';
 
@@ -42,7 +42,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     prop: (link: ILink) => (
       <span>
         {link.group_count || 0}
-        <BidLink context={this.props.context} link={link} links={this.props.links} />
+        <BoostLink context={this.props.context} link={link} links={this.props.links} />
       </span>
     ),
   }];
