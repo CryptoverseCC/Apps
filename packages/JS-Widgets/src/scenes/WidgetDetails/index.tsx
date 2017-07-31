@@ -24,7 +24,7 @@ import { openUserfeedsUrl } from '../../utils/openUserfeedsUrl';
 
 import * as style from './widgetDetails.scss';
 
-export type TViewType = 'AddLink'| 'Userfeed' | 'Specification' | 'Links.Algorithm'
+export type TViewType = 'AddLink' | 'Userfeed' | 'Specification' | 'Links.Algorithm'
   | 'Links.Whitelist' | 'Links.Slots';
 
 interface IWidgetDetailsState {
@@ -64,7 +64,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   constructor(props: IWidgetDetailsProps) {
     super(props);
     this.state = {
-      viewType: 'Userfeed',
+      viewType: 'Links.Slots',
     };
   }
 
