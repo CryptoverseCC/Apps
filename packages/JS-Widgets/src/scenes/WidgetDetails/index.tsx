@@ -90,7 +90,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
             </Switch.Case>
             <Switch.Case condition={false}>
               <DetailsList
-                initialView="Userfeed"
+                initialView={viewType}
                 scrolledTo={this._onScrolledTo}
                 ref={this._onDetailsListRef}
                 context={context}

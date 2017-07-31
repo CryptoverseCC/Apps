@@ -12,8 +12,9 @@
 
   .details {
     display: flex;
-    background-color: $aqua-haze;
     flex: 1;
-    border-radius:3px;
+    min-height: 0; // For lovely firefox
+    background-color: $aqua-haze;
+    border-radius: 3px;
   }
 }

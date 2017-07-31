@@ -49,12 +49,14 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
         />
         <LinksList
           label="Whitelist"
+          showProbability={false}
           context={context}
           links={whitelistedLinks}
           ref={this._onRef('Links.Whitelist')}
         />
         <LinksList
           label="Algorithm"
+          showProbability={false}
           context={context}
           links={allLinks}
           ref={this._onRef('Links.Algorithm')}

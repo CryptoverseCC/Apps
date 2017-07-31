@@ -2,10 +2,10 @@
 
 .self {
   padding-top: 10px;
-  padding-left:10px;
-  padding-right:10px;
+  padding-left: 10px;
+  padding-right: 10px;
   position: relative;
-  height:150px;
+  min-height: 150px;
   box-shadow: 0px 5px 20px 0px $shadow;
 
   .boxes {
