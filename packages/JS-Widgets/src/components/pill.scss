@@ -1,17 +1,12 @@
 @import '../styles/colors';
 
 .self {
-  color: $dodger-blue;
-  background-color: $light-blue;
-  border-radius: 1em;
-  vertical-align: super;
-  padding: 0.1em 0.5em 0.1em 0.5em;
+  line-height: 1.2em;
   font-size: 0.8em;
-  font-family:'PT Sans';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align:center;
-  letter-spacing:0.01em;
-  font-weight:700;
-  box-shadow:0px 5px 12px $shadow-secondary;
+  font-weight: bold;
+  color: $dusty-gray;
+  border-radius: 20px;
+  border: 1px solid $dusty-gray;
+  margin-left: 0.2em;
+  padding: 0.15em 0.8em;
 }

@@ -63,7 +63,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   render({ label, links }: ILinksListProps, { maxRows }: ILinksListState) {
     return (
       <div class={style.self}>
-        <h2>{label}</h2>
+        <h2 class={style.label}>{label}</h2>
         <Paper>
           <table class={style.table}>
             {this._renderHeader()}

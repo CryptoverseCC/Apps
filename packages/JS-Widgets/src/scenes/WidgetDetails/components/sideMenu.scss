@@ -3,7 +3,7 @@
 .self {
   list-style: none;
   min-width: 200px;
-  max-width:250px;
+  max-width: 250px;
 
   li {
     padding-top: 1em;
@@ -12,12 +12,12 @@
 
   & > li.active {
     color: $dodger-blue;
-    font-size:22px;
+    font-size: 22px;
   }
 
   & > li:hover {
     cursor: pointer;
-    color:$dodger-blue;
+    color: $dodger-blue;
   }
 }
 
@@ -25,14 +25,14 @@
   list-style: none;
   font-weight: normal;
   color: $black;
-  padding-left:10px;
+  padding-left: 10px;
   
   & > li:hover {
-    color:$dodger-blue;
+    color: $dodger-blue;
   }
 
   & > li.active {
     color: $dodger-blue;
-   font-size:22px;
+   font-size: 22px;
   }
 }
