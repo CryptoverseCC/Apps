@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import * as classnames from 'classnames';
-import 'open-iconic/font/css/open-iconic.min.css';
+import 'open-iconic/font/css/open-iconic.scss';
 
 import * as style from './icon.scss';
 

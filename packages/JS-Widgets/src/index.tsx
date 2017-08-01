@@ -32,7 +32,13 @@ class UserfeedsLink extends HTMLElement {
   }
 
   _renderComponent() {
-    this.innerHTML = '';
+    // Only in version 0.0.57 for demo purpose
+    // const shadowRoot = this.attachShadow({ mode: 'open' });
+    // shadowRoot.innerHTML = `
+    //   <style>@import "https://cdn.jsdelivr.net/npm/@userfeeds/widgets@0.0.57/build/styles.css";</style>
+    //   <div id="root"></div>
+    // `;
+    // </Provider>), shadowRoot.querySelector('#root'));
 
     this.storeInstance = getStore(this._argsToState());
 
@@ -40,6 +46,7 @@ class UserfeedsLink extends HTMLElement {
       <Provider store={this.storeInstance}>
         <Banner />
       </Provider>), this);
+
     // if (process.env.NODE_ENV === 'development' && module.hot) {
     //   module.hot.accept('./banner', () => requestAnimationFrame(init));
     // }

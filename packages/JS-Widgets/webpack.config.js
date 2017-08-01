@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -22,9 +23,8 @@ module.exports = {
     }, {
       test: /\.scss$/,
       exclude: /(node_modules)/,
-      use: [
-        { loader: 'style-loader' },
-        {
+      use: ExtractTextPlugin.extract({
+        use: [{
           loader: 'typings-for-css-modules-loader',
           options: {
             namedExport: true,
@@ -47,37 +47,20 @@ module.exports = {
           options: {
             sourceMap: true,
           },
-        },
-      ],
+        }],
+      }),
     }, {
       test: /\.(css|scss)$/,
       include: /(node_modules)/,
-      use: [
-        { loader: 'style-loader' },
-        {
-          loader: 'css-loader',
-          options: {
-            importLoaders: 1,
-            sourceMap: true,
-          },
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true,
-            plugins: () => {
-              autoprefixer({ browsers: ['last 2 versions'] });
-            },
-          },
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-          },
-        },
-      ],
+      use: ExtractTextPlugin.extract({
+        use: ['css-loader', 'sass-loader'],
+      }),
     }, {
-      test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+      test: /\.(png|jpg|gif)$/,
       loader: 'url-loader',
+    }, {
+      test: /\.(woff|ttf|eot|svg|otf)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
+      loader: 'url-loader?limit=100000',
     }, {
       test: /\.svg$/,
       loader: 'svg-inline-loader',
@@ -88,6 +71,7 @@ module.exports = {
     }],
   },
   plugins: [
+    new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       template: 'index.html',
     }),
