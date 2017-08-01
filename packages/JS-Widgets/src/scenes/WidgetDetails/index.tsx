@@ -69,13 +69,20 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   render(
-    { context, size, whitelistedLinks, allLinks, links, algorithm,
-      whitelist, slots, whitelistedLinksCount, allLinksCount }: IWidgetDetailsProps,
+    { context, size, whitelistedLinks, allLinks, links, algorithm, impression, title, description,
+      publisherNote, whitelist, slots, whitelistedLinksCount, allLinksCount }: IWidgetDetailsProps,
     { viewType }: IWidgetDetailsState) {
 
     return (
       <div class={style.self}>
-        <WidgetSummary onAddClick={this._onAddLinkClick} onOpenInSeparateWindow={this._onOpenInSeparateWindowClick} />
+        <WidgetSummary
+          title={title}
+          description={description}
+          publisherNote={publisherNote}
+          impression={impression}
+          onAddClick={this._onAddLinkClick}
+          onOpenInSeparateWindow={this._onOpenInSeparateWindowClick}
+        />
         <div class={style.details}>
           <SideMenu
             slots={slots}

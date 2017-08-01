@@ -15,6 +15,9 @@ export interface IWidgetState {
   slots: number;
   timeslot: number;
   publisherNote?: string;
+  title: string;
+  description: string;
+  impression: string;
 }
 
 const initialState = {};

@@ -9,21 +9,28 @@ import TextWithLabel from '../../../components/TextWithLabel';
 import * as style from './widgetSummary.scss';
 
 interface IWidgetSummaryProps {
+  title: string;
+  description: string;
+  impression: string;
+  publisherNote: string;
   onAddClick(): void;
   onOpenInSeparateWindow(): void;
 }
 
-const WidgetSummary = ({ onAddClick, onOpenInSeparateWindow }: IWidgetSummaryProps) => (
+const WidgetSummary = ({ title, description, publisherNote, impression, onAddClick,
+  onOpenInSeparateWindow }: IWidgetSummaryProps) => (
   <div class={style.self}>
     <div class="row">
       <EthereumLogo class={style.logo}/>
       <div>
-        <h2>Title of the widget</h2>
-        <p>Place to describe widget</p>
+        <div class="row">
+          <h2>{title}</h2>
+          <button onClick={onOpenInSeparateWindow} class={style.openInNewWindow}>
+            <Icon name="external-link"/> New window
+          </button>
+        </div>
+        <p>{description}</p>
       </div>
-      <button onClick={onOpenInSeparateWindow} class={style.openInNewWindow}>
-        <Icon name="external-link"/> New window
-      </button>
       <Button
         style={{ marginLeft: 'auto', padding: '0.5em' }}
         onClick={onAddClick}
@@ -35,22 +42,22 @@ const WidgetSummary = ({ onAddClick, onOpenInSeparateWindow }: IWidgetSummaryPro
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="eye" /> Impressions</span>}
-        text="20000 monthly"
+        text={impression}
       />
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="link-intact" /> Source Domain</span>}
-        text="http://userfeeds.io"
+        text="http://userfeeds.io(HC)"
       />
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="envelope-open" /> Contact</span>}
-        text="spam@userfeeds.io"
+        text={publisherNote}
       />
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="calendar" /> Valid till</span>}
-        text="05/06/2018"
+        text="05/06/2018(HC)"
       />
     </div>
   </div>
