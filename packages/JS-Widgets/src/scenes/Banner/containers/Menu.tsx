@@ -18,7 +18,7 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 type TMenuProps = typeof Dispatch2Props;
 
 const Menu = ({ openWidgetDetails }) => (
-  <Button class={style.self} onClick={openWidgetDetails}>See more<Icon name="chevron-bottom" /></Button>
+  <Button class={style.self} onClick={openWidgetDetails}>See more <Icon name="external-link" /></Button>
 );
 
 export default connect(null, mapDispatchToProps)(Menu);

@@ -1,19 +1,28 @@
+@import '../styles/colors';
+
 .self {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
   min-width: 75%;
-  flex-grow: 1;
   font-weight: 300;
 
+  &.clickable {
+    cursor: pointer;
+  }
+
   .title {
+    color: $dodger-blue;
+    padding-bottom: 15px;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 1.2em;
   }
 
   .header {
     justify-content: space-between;
+  }
+
+  .summary {
+    color: $emperor;
   }
 
   .footer {
@@ -21,14 +30,13 @@
     justify-content: space-between;
   }
 
-  .probability {
-    white-space: nowrap;
-  }
-
   .link {
+    display: block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: $camarone;
+    font-size: 0.8em;
 
     &:link {
       text-decoration: none;

@@ -33,7 +33,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     prop: (link: ILink) => typeof link.probability === 'number' ? `${link.probability}%` : '-',
   }, {
     name: 'Content',
-    prop: (link: ILink) => <Link link={link} showProbability={false} />,
+    prop: (link: ILink) => <Link link={link} />,
   }, {
     name: 'Current Score',
     prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),

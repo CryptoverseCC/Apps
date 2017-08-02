@@ -32,15 +32,7 @@ class UserfeedsLink extends HTMLElement {
   }
 
   _renderComponent() {
-    // Only in version 0.0.57 for demo purpose
-    // const shadowRoot = this.attachShadow({ mode: 'open' });
-    // shadowRoot.innerHTML = `
-    //   <style>@import "https://cdn.jsdelivr.net/npm/@userfeeds/widgets@0.0.57/build/styles.css";</style>
-    //   <div id="root"></div>
-    // `;
-    // </Provider>), shadowRoot.querySelector('#root'));
     this.innerHTML = `<div class="${style.root}"></div>`;
-
     this.storeInstance = getStore(this._argsToState());
 
     this.instance = render((

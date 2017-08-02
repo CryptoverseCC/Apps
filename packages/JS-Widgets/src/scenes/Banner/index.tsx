@@ -87,11 +87,12 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
             <div onClick={this._onNextClick}><Icon name="chevron-right" /></div>
           </div>
           <Menu />
+          <div />
         </div>
         <div class={style.container}>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
-              <Link link={currentLink} />
+              <Link clickable link={currentLink} />
             </Switch.Case>
             <Switch.Case condition={false}>
               <Label>No ads available</Label>

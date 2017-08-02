@@ -1,25 +1,25 @@
 import { h } from 'preact';
+import * as classnames from 'classnames/bind';
 
 import { ILink } from '../types';
 
 import * as style from './link.scss';
 
+const cx = classnames.bind(style);
+
 interface ILinkProps {
   link: ILink;
-  showProbability: boolean;
+  clickable?: boolean;
 }
 
-const Link = ({ link, showProbability = true }: ILinkProps) => {
-  const openTargetUrl = () => window.open(link.target, '_blank');
+const Link = ({ link, clickable = false }: ILinkProps) => {
+  const openTargetUrl = () => clickable && window.open(link.target, '_blank');
 
   return (
-    <div class={style.self} onClick={openTargetUrl}>
+    <div class={cx('self', { clickable })} onClick={openTargetUrl}>
       <div class={style.title}>{link.title}</div>
-      <div>{link.summary}</div>
-      <div class={`row ${style.footer}`}>
-        <a class={style.link} target="_blank" href={link.target}>{link.target}</a>
-        {showProbability && <div class={style.probability}>Probability: {link.probability}%</div>}
-      </div>
+      <div class={style.summary}>{link.summary}</div>
+      <a class={style.link} target="_blank" href={link.target}>{link.target}</a>
     </div>
   );
 };
