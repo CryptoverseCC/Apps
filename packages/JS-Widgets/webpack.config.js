@@ -23,38 +23,38 @@ module.exports = {
     }, {
       test: /\.scss$/,
       exclude: /(node_modules)/,
-      use: ExtractTextPlugin.extract({
-        use: [{
-          loader: 'typings-for-css-modules-loader',
-          options: {
-            namedExport: true,
-            modules: true,
-            importLoaders: 1,
-            sourceMap: true,
-            camelCase: true,
-            localIdentName: '[name]__[local]--[hash:base64:5]',
-          },
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true,
-            plugins: () => ([
-              autoprefixer({ browsers: ['last 2 versions'] }),
-            ]),
-          },
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-          },
-        }],
-      }),
+      use: [{
+        loader: 'style-loader',
+      }, {
+        loader: 'typings-for-css-modules-loader',
+        options: {
+          namedExport: true,
+          modules: true,
+          importLoaders: 1,
+          sourceMap: true,
+          camelCase: true,
+          localIdentName: '[name]__[local]--[hash:base64:5]',
+        },
+      }, {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true,
+          plugins: () => ([
+            autoprefixer({ browsers: ['last 2 versions'] }),
+          ]),
+        },
+      }, {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+        },
+      }],
     }, {
       test: /\.(css|scss)$/,
       include: /(node_modules)/,
-      use: ExtractTextPlugin.extract({
-        use: ['css-loader', 'sass-loader'],
-      }),
+      // use: ExtractTextPlugin.extract({
+      use: ['style-loader', 'css-loader', 'sass-loader'],
+      // }),
     }, {
       test: /\.(png|jpg|gif)$/,
       loader: 'url-loader',
@@ -71,7 +71,7 @@ module.exports = {
     }],
   },
   plugins: [
-    new ExtractTextPlugin('styles.css'),
+    // new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       template: 'index.html',
     }),

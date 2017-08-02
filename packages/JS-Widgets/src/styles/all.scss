@@ -1,36 +1,39 @@
-@import './flex';
 @import '../styles/colors';
 
-* {
-  transition: all 200ms ease-in-out;
-}
+.root {
+  @import './flex';
 
+  all: initial;
 
-::-moz-selection { /* Code for Firefox */
-    color: white;
-    background: $dodger-blue;
-}
+  * {
+    transition: all 200ms ease-in-out;
+  }
 
-::selection {
-    color: white; 
-    background: $dodger-blue;
-}
+  ::-moz-selection { /* Code for Firefox */
+      color: white;
+      background: $dodger-blue;
+  }
 
+  ::selection {
+      color: white;
+      background: $dodger-blue;
+  }
 
-h1, h2, h3, h4, p {
-  margin: 0;
-  font-family: 'PT Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  h1, h2, h3, h4, p {
+    margin: 0;
+    font-family: 'PT Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-h2 {
-  font-size:22px;
-  font-weight:300;
-  color:$black;
-}
+  h2 {
+    font-size:22px;
+    font-weight:300;
+    color:$black;
+  }
 
-p {
-  font-size:15px;
-  color:$dusty-gray;
+  p {
+    font-size:15px;
+    color:$dusty-gray;
+  }
 }

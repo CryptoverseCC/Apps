@@ -8,7 +8,7 @@ import { updateWidgetSettings } from './actions/widget';
 
 import Banner from './scenes/Banner';
 
-import './styles/all.scss';
+import * as style from './styles/all.scss';
 
 const positiveValueOrUndefined = (value: string) => value || undefined;
 
@@ -39,13 +39,14 @@ class UserfeedsLink extends HTMLElement {
     //   <div id="root"></div>
     // `;
     // </Provider>), shadowRoot.querySelector('#root'));
+    this.innerHTML = `<div class="${style.root}"></div>`;
 
     this.storeInstance = getStore(this._argsToState());
 
     this.instance = render((
       <Provider store={this.storeInstance}>
         <Banner />
-      </Provider>), this);
+      </Provider>), this.querySelector(`.${style.root}`));
 
     // if (process.env.NODE_ENV === 'development' && module.hot) {
     //   module.hot.accept('./banner', () => requestAnimationFrame(init));
