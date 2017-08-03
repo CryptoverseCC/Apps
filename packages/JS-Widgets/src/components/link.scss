@@ -52,12 +52,12 @@
   .summary {
     color: $emperor;
 
-    &.lines3 {
-      @include multiLineEllipsis($lineHeight: 1em, $lineCount: 3, $bgColor: white);
+    &.lines2 {
+      @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 2, $bgColor: white);
     }
 
     &.lines8 {
-      @include multiLineEllipsis($lineHeight: 1em, $lineCount: 8, $bgColor: white);
+      @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 8, $bgColor: white);
     }
   }
 

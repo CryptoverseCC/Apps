@@ -13,9 +13,9 @@ interface ILinkProps {
   clickable?: boolean;
 }
 
-const Link = ({ link, lines = 3, clickable = false }: ILinkProps) => {
-  if (!(lines === 3 || lines === 8)) {
-    throw new Error('Only 3 and 8 lines links are available');
+const Link = ({ link, lines = 2, clickable = false }: ILinkProps) => {
+  if (!(lines === 2 || lines === 8)) {
+    throw new Error('Only 2 and 8 lines links are available');
   }
 
   const openTargetUrl = () => clickable && window.open(link.target, '_blank');
@@ -23,7 +23,7 @@ const Link = ({ link, lines = 3, clickable = false }: ILinkProps) => {
   return (
     <div class={cx('self', { clickable })} onClick={openTargetUrl}>
       <div class={style.title}>{link.title}</div>
-      <div class={cx('summary', { lines3: lines === 3, lines8: lines === 8 })}>{link.summary}</div>
+      <div class={cx('summary', { lines2: lines === 2, lines8: lines === 8 })}>{link.summary}</div>
       <a class={style.link} target="_blank" href={link.target}>{link.target}</a>
     </div>
   );

@@ -20,8 +20,9 @@
   }
 
   .container {
-    width: 100%;
+    width: calc(100% - 20px);
     height: 100%;
+    padding: 0 10px 0 10px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -46,10 +47,6 @@
     }
   }
 
-  .options.open {
-    z-index: 1;
-  }
-
   .options {
     position: absolute;
     top: 0;
@@ -57,21 +54,38 @@
     height: $menu_height;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-end;
     background-color: $alto;
     box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
+    
+    &.open {
+      z-index: 1;
+    }
   }
 
   .arrows {
+    position: absolute;
+    left: 0;
     display: flex;
-    cursor: pointer;
     color: $dusty-gray;
-    margin-left:20px;
     transform: scale(0.75);
 
-    div:hover {
-      color: $tuna;
+    .arrow {
+      padding: 0;
+      cursor: pointer;
+
+      &.left {
+        padding-right: 1em;
+      }
+
+      &.right {
+        padding-left: 1em;
+      }
+
+      &:hover {
+        color: $tuna;
+      }
     }
   }
 }

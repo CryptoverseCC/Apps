@@ -10,6 +10,7 @@ import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
 import EthereumLogo from '../../components/EthereumLogo';
+import Tooltip from '../../components/Tooltip';
 import Label from '../../components/Label';
 import Link from '../../components/Link';
 import Icon from '../../components/Icon';
@@ -83,8 +84,9 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         </div>
         <div class={cx('options', { open: optionsOpen })}>
           <div class={style.arrows}>
-            <div style="padding-right:10px;" onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
-            <div onClick={this._onNextClick}><Icon name="chevron-right" /></div>
+            <div class={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
+            <Tooltip text="Link probability">{currentLink && `${currentLink.probability}%`}</Tooltip>
+            <div class={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="chevron-right" /></div>
           </div>
           <Menu />
           <div />
@@ -92,7 +94,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         <div class={style.container}>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
-              <Link clickable link={currentLink} lines={size === 'rectangle' ? 8 : 3} />
+              <Link clickable link={currentLink} lines={size === 'rectangle' ? 8 : 2} />
             </Switch.Case>
             <Switch.Case condition={false}>
               <Label>No ads available</Label>

@@ -57,7 +57,7 @@ class UserfeedsLink extends HTMLElement {
     const slots = this.getAttribute('slots') || 10;
     const algorithm = this.getAttribute('algorithm');
     const publisherNote = this.getAttribute('contact-method');
-    const title = this.getAttribute('title');
+    const title = this.getAttribute('widget-title');
     const description = this.getAttribute('description');
     const impression = this.getAttribute('impression');
 
