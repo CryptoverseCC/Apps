@@ -34,6 +34,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   }, {
     name: 'Content',
     prop: (link: ILink) => <Link link={link} />,
+    style: { maxWidth: '200px' },
   }, {
     name: 'Current Score',
     prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),
@@ -90,7 +91,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   _renderRow = (link: ILink, index) => {
     return (
       <tr>
-        {this.columns.map(({ prop }) => <td valign="top">{prop(link, index)}</td>)}
+        {this.columns.map(({ prop, style }) => <td valign="top" style={style}>{prop(link, index)}</td>)}
       </tr>
     );
   }

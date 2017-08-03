@@ -1,5 +1,31 @@
 @import '../styles/colors';
 
+/* mixin for multiline */
+@mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
+  overflow: hidden;
+  position: relative;
+  line-height: $lineHeight;
+  max-height: $lineHeight * $lineCount;
+  text-align: justify;
+
+  &:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: $bgColor;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background-color: $bgColor;
+  }
+}
+
 .self {
   display: flex;
   flex-direction: column;
@@ -11,8 +37,10 @@
   }
 
   .title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: $dodger-blue;
-    padding-bottom: 15px;
     font-weight: 700;
     font-size: 1.2em;
   }
@@ -23,6 +51,14 @@
 
   .summary {
     color: $emperor;
+
+    &.lines3 {
+      @include multiLineEllipsis($lineHeight: 1em, $lineCount: 3, $bgColor: white);
+    }
+
+    &.lines8 {
+      @include multiLineEllipsis($lineHeight: 1em, $lineCount: 8, $bgColor: white);
+    }
   }
 
   .footer {
@@ -37,6 +73,7 @@
     text-overflow: ellipsis;
     color: $camarone;
     font-size: 0.8em;
+    flex-shrink: 0;
 
     &:link {
       text-decoration: none;

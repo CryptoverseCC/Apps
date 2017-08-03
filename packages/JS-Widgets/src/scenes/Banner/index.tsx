@@ -92,7 +92,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         <div class={style.container}>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
-              <Link clickable link={currentLink} />
+              <Link clickable link={currentLink} lines={size === 'rectangle' ? 8 : 3} />
             </Switch.Case>
             <Switch.Case condition={false}>
               <Label>No ads available</Label>
