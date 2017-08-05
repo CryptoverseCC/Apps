@@ -91,10 +91,10 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
           <Menu />
           <div />
         </div>
-        <div class={style.container}>
+        <div class={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
-              <Link clickable link={currentLink} lines={size === 'rectangle' ? 8 : 2} />
+              <Link link={currentLink} lines={size === 'rectangle' ? 8 : 2} />
             </Switch.Case>
             <Switch.Case condition={false}>
               <Label>No ads available</Label>
@@ -112,6 +112,12 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
   _onInfoLeave = () => {
     setTimeout(() => this.setState({ optionsOpen: false }), 200);
+  }
+
+  _openTargetUrl = () => {
+    if (this.state.currentLink) {
+      window.open(this.state.currentLink.target, '_blank');
+    }
   }
 
   _onPrevClick = () => {

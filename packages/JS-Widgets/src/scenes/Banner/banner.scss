@@ -21,15 +21,20 @@
   }
 
   .container {
-    width: calc(100% - 20px);
-    height: 100%;
     padding: 0 10px 0 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - #{$initial_menu_height});
+    z-index: 1;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     background-color: $white;
     transition: all 0.2s ease;
+
+    &.clickable {
+      cursor: pointer;
+    }
   }
 
   .info {
@@ -57,12 +62,13 @@
     flex-direction: row;
     justify-content: center;
     align-items: flex-end;
-    
-    &.open {
-      z-index: 1;
-      background-color: $alto;
-      box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
-    }
+    background-color: $alto;
+    box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
+  }
+
+  .options.open~.container {
+    height: calc(100% - #{$menu_height});
+    transform: translateY(#{$menu_height - $initial_menu_height});
   }
 
   .probability {
