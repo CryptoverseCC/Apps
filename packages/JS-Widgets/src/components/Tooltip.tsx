@@ -6,10 +6,10 @@ import * as style from './tooltip.scss';
 interface ITooltipProps {
   text: string;
   children: JSX.Element;
-  className?: string;
+  class?: string;
 }
 
-const Tooltip = ({ className, text, children }: ITooltipProps) => (
+const Tooltip = ({ class: className, text, children }: ITooltipProps) => (
   <div class={classnames(style.self, className)}>
     {children}
     <div class={style.text}>{text}</div>

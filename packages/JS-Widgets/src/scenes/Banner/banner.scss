@@ -65,6 +65,11 @@
     }
   }
 
+  .probability {
+    min-width: 3em;
+    text-align: center;
+  }
+
   .arrows {
     position: absolute;
     left: 0;
@@ -77,11 +82,11 @@
       cursor: pointer;
 
       &.left {
-        padding-right: 1em;
+        padding-right: 0.5em;
       }
 
       &.right {
-        padding-left: 1em;
+        padding-left: 0.5em;
       }
 
       &:hover {

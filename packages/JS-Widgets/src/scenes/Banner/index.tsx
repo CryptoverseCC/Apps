@@ -85,7 +85,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         <div class={cx('options', { open: optionsOpen })}>
           <div class={style.arrows}>
             <div class={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
-            <Tooltip text="Link probability">{currentLink && `${currentLink.probability}%`}</Tooltip>
+            <Tooltip class={style.probability} text="Link probability">{currentLink && `${currentLink.probability}%`}</Tooltip>
             <div class={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="chevron-right" /></div>
           </div>
           <Menu />
