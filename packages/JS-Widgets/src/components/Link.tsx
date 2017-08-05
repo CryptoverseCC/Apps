@@ -13,6 +13,8 @@ interface ILinkProps {
   clickable?: boolean;
 }
 
+const stopPropagation = (e) => e.stopPropagation();
+
 const Link = ({ link, lines = 2, clickable = false }: ILinkProps) => {
   if (!(lines === 2 || lines === 8)) {
     throw new Error('Only 2 and 8 lines links are available');
@@ -24,7 +26,14 @@ const Link = ({ link, lines = 2, clickable = false }: ILinkProps) => {
     <div class={cx('self', { clickable })} onClick={openTargetUrl}>
       <div class={style.title}>{link.title}</div>
       <div class={cx('summary', { lines2: lines === 2, lines8: lines === 8 })}>{link.summary}</div>
-      <a class={style.link} target="_blank" href={link.target}>{link.target}</a>
+      <a
+        class={style.link}
+        target="_blank"
+        href={link.target}
+        onClick={stopPropagation}
+      >
+        {link.target}
+      </a>
     </div>
   );
 };
