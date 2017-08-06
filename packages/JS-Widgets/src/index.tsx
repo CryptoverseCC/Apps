@@ -10,8 +10,6 @@ import Banner from './scenes/Banner';
 
 import * as style from './styles/all.scss';
 
-const positiveValueOrUndefined = (value: string) => value || undefined;
-
 class UserfeedsLink extends HTMLElement {
 
   static get observedAttributes() {

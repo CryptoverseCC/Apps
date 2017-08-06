@@ -12,6 +12,10 @@ import UserfeedAddressInfo from './UserfeedsAddressInfo';
 import * as style from './detailsList.scss';
 
 interface IAllLinkProps {
+  web3Enabled: {
+    enabled: boolean;
+    reason?: string;
+  };
   initialView: TViewType;
   context: string;
   size: TWidgetSize;
@@ -37,7 +41,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   render() {
-    const { context, size, links, whitelistedLinks, allLinks, allLinksCount } = this.props;
+    const { web3Enabled, context, size, links, whitelistedLinks, allLinks, allLinksCount } = this.props;
 
     return (
       <div class={style.self} onScroll={this._onScroll}>
@@ -45,6 +49,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           label="Slots"
           context={context}
           links={links}
+          boostDisabled={!web3Enabled.enabled}
           ref={this._onRef('Links.Slots')}
         />
         <LinksList
@@ -52,6 +57,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           showProbability={false}
           context={context}
           links={whitelistedLinks}
+          boostDisabled={!web3Enabled.enabled}
           ref={this._onRef('Links.Whitelist')}
         />
         <LinksList
@@ -59,6 +65,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           showProbability={false}
           context={context}
           links={allLinks}
+          boostDisabled={!web3Enabled.enabled}
           ref={this._onRef('Links.Algorithm')}
         />
         <WidgetSpecification

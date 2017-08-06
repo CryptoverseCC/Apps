@@ -8,6 +8,10 @@
   min-height: 150px;
   box-shadow: 0px 5px 20px 0px $shadow;
 
+  .add-button {
+    padding: 0.5em;
+  }
+
   .boxes {
     margin-top: 20px;
     border-top: 1px solid $alto;

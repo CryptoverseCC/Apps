@@ -15,6 +15,7 @@ interface ILinksListProps {
   label: string;
   links: ILink[];
   context: string;
+  boostDisabled: boolean;
   showProbability?: boolean;
 }
 
@@ -43,7 +44,12 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     prop: (link: ILink) => (
       <span>
         {link.group_count || 0}
-        <BoostLink context={this.props.context} link={link} links={this.props.links} />
+        <BoostLink
+          disabled={this.props.boostDisabled}
+          context={this.props.context}
+          link={link}
+          links={this.props.links}
+        />
       </span>
     ),
   }];

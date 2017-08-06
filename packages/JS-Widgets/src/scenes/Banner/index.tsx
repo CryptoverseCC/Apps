@@ -6,6 +6,7 @@ import { returntypeof } from 'react-redux-typescript';
 import { ILink } from '../../types';
 import { IRootState } from '../../reducers';
 import { fetchLinks } from '../../actions/links';
+import { observeInjectedWeb3 } from '../../actions/web3';
 import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
@@ -37,6 +38,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchLinks(): void {
     dispatch(fetchLinks());
   },
+  observeWeb3(): void {
+    dispatch(observeInjectedWeb3());
+  },
 });
 
 const State2Props = returntypeof(mapStateToProps);
@@ -58,6 +62,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
   constructor(props: IBannerProps) {
     super(props);
+    props.observeWeb3();
     props.fetchLinks();
   }
 
@@ -85,7 +90,9 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         <div class={cx('options', { open: optionsOpen })}>
           <div class={style.arrows}>
             <div class={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
-            <Tooltip class={style.probability} text="Link probability">{currentLink && `${currentLink.probability}%`}</Tooltip>
+            <Tooltip class={style.probability} text="Link probability">
+              {currentLink && `${currentLink.probability}%`}
+            </Tooltip>
             <div class={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="chevron-right" /></div>
           </div>
           <Menu />

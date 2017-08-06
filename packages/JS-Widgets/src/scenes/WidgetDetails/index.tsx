@@ -5,9 +5,8 @@ import { returntypeof } from 'react-redux-typescript';
 import { IRootState } from '../../reducers';
 import { ILink, TWidgetSize } from '../../types';
 import { modalActions } from '../../actions/modal';
+import { web3Enabled } from '../../selectors/web3';
 import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
-
-import web3 from '../../utils/web3';
 
 import Switch from '../../components/utils/Switch';
 
@@ -35,12 +34,13 @@ const mapStateToProps = (state: IRootState) => {
   const { links, widget } = state;
 
   return {
+    web3Enabled: web3Enabled(state),
+    widgetSettings: widget,
     links: visibleLinks(state),
     whitelistedLinks: state.links.links,
     allLinks: links.allLinks,
     allLinksCount: allLinksCount(state),
     whitelistedLinksCount: whitelistedLinksCount(state),
-    ...widget,
   };
 };
 
@@ -69,23 +69,21 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   render(
-    { context, size, whitelistedLinks, allLinks, links, algorithm, impression, title, description,
-      publisherNote, whitelist, slots, whitelistedLinksCount, allLinksCount }: IWidgetDetailsProps,
+    { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount }
+    : IWidgetDetailsProps,
     { viewType }: IWidgetDetailsState) {
 
     return (
       <div class={style.self}>
         <WidgetSummary
-          title={title}
-          description={description}
-          publisherNote={publisherNote}
-          impression={impression}
+          widgetSettings={widgetSettings}
+          web3Enabled={web3Enabled}
           onAddClick={this._onAddLinkClick}
           onOpenInSeparateWindow={this._onOpenInSeparateWindowClick}
         />
         <div class={style.details}>
           <SideMenu
-            slots={slots}
+            slots={widgetSettings.slots}
             whitelistedLinksCount={whitelistedLinksCount}
             allLinksCount={allLinksCount}
             activeItem={this.state.viewType}
@@ -93,15 +91,16 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
           />
           <Switch expresion={viewType === 'AddLink'}>
             <Switch.Case condition>
-              <AddLink context={context} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
+              <AddLink context={widgetSettings.context} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
             </Switch.Case>
             <Switch.Case condition={false}>
               <DetailsList
+                web3Enabled={web3Enabled}
                 initialView={viewType}
                 scrolledTo={this._onScrolledTo}
                 ref={this._onDetailsListRef}
-                context={context}
-                size={size}
+                context={widgetSettings.context}
+                size={widgetSettings.size}
                 links={links}
                 whitelistedLinks={whitelistedLinks}
                 allLinks={allLinks}
@@ -125,7 +124,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   _onOpenInSeparateWindowClick = () => {
-    openUserfeedsUrl('apps/widgets/#/details/', this.props);
+    openUserfeedsUrl('apps/widgets/#/details/', this.props.widgetSettings);
   }
 
   _onAddLinkClick = () => {

@@ -1,48 +1,50 @@
 import { h } from 'preact';
 import * as classnames from 'classnames';
 
+import { IWidgetState } from '../../../reducers/widget';
+
 import Icon from '../../../components/Icon';
 import Button from '../../../components/Button';
+import Tooltip from '../../../components/Tooltip';
 import EthereumLogo from '../../../components/EthereumLogo';
 import TextWithLabel from '../../../components/TextWithLabel';
 
 import * as style from './widgetSummary.scss';
 
 interface IWidgetSummaryProps {
-  title: string;
-  description: string;
-  impression: string;
-  publisherNote: string;
+  web3Enabled: {
+    enabled: boolean;
+    reason?: string;
+  };
+  widgetSettings: IWidgetState;
   onAddClick(): void;
   onOpenInSeparateWindow(): void;
 }
 
-const WidgetSummary = ({ title, description, publisherNote, impression, onAddClick,
-  onOpenInSeparateWindow }: IWidgetSummaryProps) => (
+const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSeparateWindow }: IWidgetSummaryProps) => (
   <div class={style.self}>
     <div class="row">
-      <EthereumLogo class={style.logo}/>
+      <EthereumLogo class={style.logo} />
       <div>
         <div class="row">
-          <h2>{title}</h2>
+          <h2>{widgetSettings.title}</h2>
           <button onClick={onOpenInSeparateWindow} class={style.openInNewWindow}>
-            <Icon name="external-link"/> New window
-          </button>
+            <Icon name="external-link" /> New window
+            </button>
         </div>
-        <p>{description}</p>
+        <p>{widgetSettings.description}</p>
       </div>
-      <Button
-        style={{ marginLeft: 'auto', padding: '0.5em' }}
-        onClick={onAddClick}
-      >
-        ⊕ Add New Link
-      </Button>
+      <Tooltip text={web3Enabled.reason} style={{ marginLeft: 'auto' }}>
+        <Button class={style.addButton} disabled={!web3Enabled.enabled} onClick={onAddClick}>
+          ⊕ Add New Link
+        </Button>
+      </Tooltip>
     </div>
     <div class={classnames(style.boxes, 'row')}>
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="eye" /> Impressions</span>}
-        text={impression}
+        text={widgetSettings.impression}
       />
       <TextWithLabel
         class={style.box}
@@ -52,7 +54,7 @@ const WidgetSummary = ({ title, description, publisherNote, impression, onAddCli
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="envelope-open" /> Contact</span>}
-        text={publisherNote}
+        text={widgetSettings.publisherNote}
       />
       <TextWithLabel
         class={style.box}

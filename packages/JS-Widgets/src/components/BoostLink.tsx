@@ -14,6 +14,7 @@ import TextWithLabel from './TextWithLabel';
 import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
+  disabled?: boolean;
   link: ILink;
   links: ILink[];
   context: string;
@@ -44,10 +45,11 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     };
   }
 
-  render({ link }: IBidLinkProps, { visible, value, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
+  render({ link, disabled }: IBidLinkProps,
+         { visible, value, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
     return (
       <div ref={this._onButtonRef} class={style.self}>
-        <Button onClick={this._onBid}>Boost</Button>
+        <Button disabled={disabled} onClick={this._onBid}>Boost</Button>
         <If condition={visible}>
           <div class={style.overlay} onClick={this._onOverlayClick} />
           <div ref={this._onFormRef} class={style.form} style={{ top: formTop, left: formLeft, opacity: formOpacity }}>

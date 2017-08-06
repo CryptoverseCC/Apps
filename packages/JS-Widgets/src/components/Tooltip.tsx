@@ -4,15 +4,16 @@ import * as classnames from 'classnames';
 import * as style from './tooltip.scss';
 
 interface ITooltipProps {
-  text: string;
+  text?: string;
   children: JSX.Element;
   class?: string;
+  style?: string | { [key: string]: number | string };
 }
 
-const Tooltip = ({ class: className, text, children }: ITooltipProps) => (
-  <div class={classnames(style.self, className)}>
+const Tooltip = ({ class: className, style: externalStyle, text, children }: ITooltipProps) => (
+  <div style={externalStyle} class={classnames(style.self, className)}>
     {children}
-    <div class={style.text}>{text}</div>
+    {text && <div class={style.text}>{text}</div>}
   </div>
 );
 

@@ -14,6 +14,11 @@
   color: $white;
   padding:13px 25px !important;
 
+  &:disabled {
+    background-color: $dusty-gray;
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 
   &:not([disabled]):hover {
     cursor: pointer;

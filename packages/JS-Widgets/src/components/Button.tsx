@@ -1,14 +1,12 @@
 import { h, FunctionalComponent } from 'preact';
-import * as classnames from 'classnames/bind';
+import * as classnames from 'classnames';
 
 import * as style from './button.scss';
 
-const cx = classnames.bind(style);
-
 const Button: FunctionalComponent<JSX.HTMLAttributes> = (props) => {
-  const { class: className } = props;
+  const { class: className, ...restProps } = props;
 
-  return <button class={cx('self', className)} {...props} />;
+  return <button class={classnames(style.self, className)} {...restProps} />;
 };
 
 export default Button;
