@@ -8,7 +8,7 @@ export const openUserfeedsUrl = (
   const algorithmQP = `&algorithm=${encodeURIComponent(algorithm)}`;
   const whitelistQP = whitelist ? `&whitelist=${encodeURIComponent(whitelist)}` : '';
   const publisherNoteQP = publisherNote ? `&publisherNote=${encodeURIComponent(publisherNote)}` : '';
-  const linkIdQP = linkId ? `&linkId=${encodeURIComponent(linkId)}` : '';
+  const linkIdQP = linkId ? `&linkId=claim:${encodeURIComponent(linkId)}` : '';
 
   window.open(baseUrl + path + contextQP + algorithmQP + whitelistQP + publisherNoteQP + linkIdQP, '_blank');
 };
