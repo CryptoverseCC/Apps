@@ -5,7 +5,7 @@ import * as style from './tooltip.scss';
 
 interface ITooltipProps {
   text?: string;
-  children: JSX.Element;
+  children?: JSX.Element;
   class?: string;
   style?: string | { [key: string]: number | string };
 }

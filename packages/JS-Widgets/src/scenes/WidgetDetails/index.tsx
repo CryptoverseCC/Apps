@@ -4,6 +4,8 @@ import { returntypeof } from 'react-redux-typescript';
 
 import { IRootState } from '../../reducers';
 import { ILink, TWidgetSize } from '../../types';
+
+import { openToast, TToastType } from '../../actions/toast';
 import { modalActions } from '../../actions/modal';
 import { web3Enabled } from '../../selectors/web3';
 import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
@@ -49,6 +51,9 @@ const mapDispatchToProps = (dispatch) => ({
     modalName: 'thankYou',
     modalProps: { linkId },
   })),
+  openToast(message: string, type?: TToastType) {
+    dispatch(openToast(message, type));
+  },
 });
 
 const State2Props = returntypeof(mapStateToProps);
@@ -105,6 +110,8 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
                 whitelistedLinks={whitelistedLinks}
                 allLinks={allLinks}
                 allLinksCount={allLinksCount}
+                onBoostSuccess={this._onBoostSuccess}
+                onBoostError={this._onBoostError}
               />
             </Switch.Case>
           </Switch>
@@ -136,7 +143,16 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   _onLinkNotAdded = () => {
+    this.props.openToast('Transation rejected');
     this.setState({ viewType: 'Links.Slots' });
+  }
+
+  _onBoostSuccess = () => {
+    this.props.openToast('Link boosted 💪', 'success');
+  }
+
+  _onBoostError = () => {
+    this.props.openToast('Transation rejected');
   }
 
   _onDetailsListRef = (ref) => this.detailsListCmp = ref;

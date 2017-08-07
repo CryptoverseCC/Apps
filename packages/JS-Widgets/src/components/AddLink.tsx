@@ -11,7 +11,7 @@ import * as style from './addLink.scss';
 interface IAddLinkProps {
   context: string;
   onSuccess(linkId: string): void;
-  onError(): void;
+  onError(error: any): void;
 }
 
 interface IAddLinkState {
@@ -114,7 +114,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         [name]: this._validate(name, value),
       },
     });
-  };
+  }
 
   _validate = (name, value) => {
     if (!rules[name]) {
@@ -123,7 +123,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     const validationResult = rules[name].map((r) => r(name, value)).filter((v) => !!v);
 
     return validationResult[0];
-  };
+  }
 
   _validateAll = () => {
     const errors = ['title', 'summary', 'url', 'value']
@@ -161,8 +161,8 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         this.setState({ posting: false });
         this.props.onSuccess(linkId);
       })
-      .catch((e) => {
-        this.props.onError();
+      .catch((e: Error) => {
+        this.props.onError(e.message);
       });
   }
 }

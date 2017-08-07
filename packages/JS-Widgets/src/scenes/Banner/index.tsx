@@ -18,6 +18,7 @@ import Icon from '../../components/Icon';
 
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';
+import RootToast from './containers/RootToast';
 
 import * as style from './banner.scss';
 
@@ -109,6 +110,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
           </Switch>
         </div>
         <RootModal />
+        <RootToast />
       </div>
     );
   }

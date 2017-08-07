@@ -35,6 +35,7 @@ interface IBidLinkState {
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _buttonRef: Element;
+
   constructor(props: IBidLinkProps) {
     super(props);
 
@@ -49,7 +50,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
          { visible, value, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
     return (
       <div ref={this._onButtonRef} class={style.self}>
-        <Button disabled={disabled} onClick={this._onBid}>Boost</Button>
+        <Button disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
         <If condition={visible}>
           <div class={style.overlay} onClick={this._onOverlayClick} />
           <div ref={this._onFormRef} class={style.form} style={{ top: formTop, left: formLeft, opacity: formOpacity }}>
@@ -113,7 +114,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     });
   }
 
-  _onBid = () => {
+  _onBoostClick = () => {
     this.setState({ visible: true, formOpacity: 0 });
   }
 

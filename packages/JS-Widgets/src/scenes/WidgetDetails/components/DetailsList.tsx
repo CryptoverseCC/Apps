@@ -23,6 +23,8 @@ interface IAllLinkProps {
   whitelistedLinks: ILink[];
   allLinks: ILink[];
   allLinksCount: number;
+  onBoostSuccess?: (transationId: string) => void;
+  onBoostError?: (error: any) => void;
   scrolledTo(to: TViewType): void;
 }
 
@@ -41,7 +43,8 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   render() {
-    const { web3Enabled, context, size, links, whitelistedLinks, allLinks, allLinksCount } = this.props;
+    const { web3Enabled, context, size, links, whitelistedLinks, allLinks, allLinksCount,
+      onBoostError, onBoostSuccess } = this.props;
 
     return (
       <div class={style.self} onScroll={this._onScroll}>
@@ -50,6 +53,8 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           context={context}
           links={links}
           boostDisabled={!web3Enabled.enabled}
+          onBoostSuccess={onBoostSuccess}
+          onBoostError={onBoostError}
           ref={this._onRef('Links.Slots')}
         />
         <LinksList
@@ -58,6 +63,8 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           context={context}
           links={whitelistedLinks}
           boostDisabled={!web3Enabled.enabled}
+          onBoostSuccess={onBoostSuccess}
+          onBoostError={onBoostError}
           ref={this._onRef('Links.Whitelist')}
         />
         <LinksList
@@ -65,6 +72,8 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           showProbability={false}
           context={context}
           links={allLinks}
+          onBoostSuccess={onBoostSuccess}
+          onBoostError={onBoostError}
           boostDisabled={!web3Enabled.enabled}
           ref={this._onRef('Links.Algorithm')}
         />

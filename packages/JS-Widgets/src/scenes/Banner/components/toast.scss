@@ -1,0 +1,29 @@
+@import '../../../styles/colors';
+
+.self {
+  color: $white;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: flex-start;
+
+  &.failure {
+    background-color: $red;
+  }
+
+  &.success {
+    background-color: $camarone;
+  }
+
+  .ex {
+    // color: black;
+    opacity: 0.4;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
