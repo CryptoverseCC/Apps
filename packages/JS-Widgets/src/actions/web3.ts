@@ -14,9 +14,9 @@ export const web3Actions = {
 export const observeInjectedWeb3 = () => (dispatch) => {
   const check = () => {
     dispatch(web3Actions.updateAvailability({
-      available: !!web3, // web3.currentProvider.isMetaMask
-      unlocked: !!web3 && web3.eth.accounts.length > 0,
-      network: web3 ? core.utils.getCurrentNetworkName() : undefined,
+      available: !!window.web3, // web3.currentProvider.isMetaMask
+      unlocked: !!window.web3 && web3.eth.accounts.length > 0,
+      network: window.web3 ? core.utils.getCurrentNetworkName() : undefined,
     }));
   };
 
