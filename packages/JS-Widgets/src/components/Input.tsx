@@ -1,13 +1,21 @@
-import { h } from 'preact';
+import { h, FunctionalComponent } from 'preact';
+import * as classnames from 'classnames/bind';
 
 import * as style from './input.scss';
 
-const Input = ({ placeholder, ...restProps }) => {
+const cx = classnames.bind(style);
+
+interface IInputProps {
+  placeholder: string;
+  errorMessage?: string;
+}
+
+const Input: FunctionalComponent<IInputProps & JSX.HTMLAttributes> = ({ placeholder, errorMessage, ...restProps }) => {
   return (
-    <div class={style.self}>
+    <div class={cx('self', { invalid: !!errorMessage })}>
       <input class={style.input} required {...restProps} />
       <span class={style.placeholder}>{placeholder}</span>
-      <span class={style.highlight} />
+      {errorMessage && <span class={style.error}>{errorMessage}</span>}
     </div>
   );
 };

@@ -7,7 +7,7 @@
   font-family:'PT Sans';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  transition: none!important; // ToDo make something with it
 
   .input {
     font-size: 15px;
@@ -29,6 +29,14 @@
     }
   }
 
+  &.invalid {
+    margin-bottom: calc(30px - 1em);
+  }
+
+  &.invalid > .input {
+    box-shadow: 0 0 5px 1px $red;
+  }
+
   .placeholder {
     position: absolute;
     top: 10px;
@@ -43,5 +51,12 @@
     font-size: 11px;
     top: -16px;
     left: 0px;
+  }
+
+  .error {
+    color: $red;
+    height: 1em;
+    font-size: 0.8em;
+    font-weight: 600;
   }
 }
