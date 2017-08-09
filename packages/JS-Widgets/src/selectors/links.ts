@@ -1,4 +1,10 @@
-import { createSelector } from 'reselect';
+import { createSelectorCreator } from 'reselect';
+import * as memoize from 'lodash/memoize';
+
+const hashFunction = (...args) => args.reduce((acc, val) => acc + '-' + JSON.stringify(val), '');
+
+// ToDo optimize this?
+const createSelector = createSelectorCreator(memoize, hashFunction);
 
 import { IRootState } from '../reducers';
 import { ILink } from '../types';
