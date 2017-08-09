@@ -1,0 +1,20 @@
+@import '../../../styles/colors';
+
+.self {
+  position: absolute;
+  left: 0;
+  font-size: 0.8em;
+  cursor: pointer;
+  color: $dusty-gray;
+  opacity: 0.4;
+  padding: 0.5em;
+  border-style: solid;
+  border-color: $dusty-gray;
+  border-left: none;
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
+
+  &:hover {
+    opacity: 1;
+  }
+}

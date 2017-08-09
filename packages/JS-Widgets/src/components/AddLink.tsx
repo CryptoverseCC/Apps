@@ -2,16 +2,24 @@ import { h, Component } from 'preact';
 
 import * as core from '@userfeeds/core';
 
+import { ILink } from '../types';
+
 import Input from './Input';
 import Loader from './Loader';
 import Button from './Button';
+import Tooltip from './Tooltip';
 
 import * as style from './addLink.scss';
 
 interface IAddLinkProps {
   context: string;
+  web3State: {
+    enabled: boolean;
+    reason?: string;
+  };
   onSuccess(linkId: string): void;
   onError(error: any): void;
+  onChange?: (link: ILink) => void;
 }
 
 interface IAddLinkState {
@@ -45,12 +53,19 @@ const rules = {
   title: [R.required, R.maxLength(35)],
   summary: [R.required, R.maxLength(70)],
   url: [R.required, R.value((v: string) => httpRegExp.test(v), 'Have to be valid url')],
-  value: [R.required, R.number, R.value((v: number) => v > 0, 'Have to be positive value')],
+  value: [R.required, R.number, R.value((v: number) => v > 0, 'Cannot be negative'),
+    R.value((v: string) => {
+      const dotIndex = v.indexOf('.');
+      if (dotIndex !== -1) {
+        return v.length - 1 - dotIndex <= 18;
+      }
+      return true;
+    }, 'Invalid value')],
 };
 
 export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
-  state = {
+  state: IAddLinkState = {
     title: '',
     summary: '',
     url: '',
@@ -58,7 +73,9 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     errors: {},
   };
 
-  render(_, { posting, title, summary, url, value, errors }) {
+  render(
+    { web3State }: IAddLinkProps,
+    { posting, title, summary, url, value, errors }: IAddLinkState) {
     return (
       <div class={style.self}>
         <Input
@@ -89,7 +106,6 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           placeholder="Value"
           value={value}
           name="value"
-          type="number"
           errorMessage={errors.value}
           onBlur={this._onInputEvent}
           onInput={this._onInputEvent}
@@ -97,7 +113,11 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         <div class={style.sendButton}>
           {posting
             ? <Loader />
-            : <Button onClick={this._onSubmit}>Send</Button>
+            : (
+                <Tooltip text={web3State.reason}>
+                  <Button disabled={!web3State.enabled} onClick={this._onSubmit}>Send</Button>
+                </Tooltip>
+              )
           }
         </div>
       </div>
@@ -113,6 +133,10 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         ...this.state.errors,
         [name]: this._validate(name, value),
       },
+    }, () => {
+      if (this.props.onChange) {
+        this.props.onChange(this.state);
+      }
     });
   }
 
@@ -158,11 +182,11 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
     core.ethereum.claims.sendClaim(address, claim, value)
       .then((linkId) => {
-        this.setState({ posting: false });
         this.props.onSuccess(linkId);
       })
       .catch((e: Error) => {
         this.props.onError(e.message);
-      });
+      })
+      .then(() => this.setState({ posting: false }));
   }
 }

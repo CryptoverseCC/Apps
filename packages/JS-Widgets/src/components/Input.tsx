@@ -1,4 +1,4 @@
-import { h, FunctionalComponent } from 'preact';
+import { h, Component } from 'preact';
 import * as classnames from 'classnames/bind';
 
 import * as style from './input.scss';
@@ -10,14 +10,27 @@ interface IInputProps {
   errorMessage?: string;
 }
 
-const Input: FunctionalComponent<IInputProps & JSX.HTMLAttributes> = ({ placeholder, errorMessage, ...restProps }) => {
-  return (
-    <div class={cx('self', { invalid: !!errorMessage })}>
-      <input class={style.input} required {...restProps} />
-      <span class={style.placeholder}>{placeholder}</span>
-      {errorMessage && <span class={style.error}>{errorMessage}</span>}
-    </div>
-  );
-};
+export default class Input extends Component<IInputProps & JSX.HTMLAttributes, {}> {
 
-export default Input;
+  input: {
+    focus(): void;
+  } | undefined;
+
+  render({ placeholder, errorMessage, ...restProps }) {
+    return (
+      <div class={cx('self', { invalid: !!errorMessage })}>
+        <input class={style.input} ref={this._onInputRef} required {...restProps} />
+        <span class={style.placeholder} onClick={this._onPlaceholderClick}>{placeholder}</span>
+        {errorMessage && <span class={style.error}>{errorMessage}</span>}
+      </div>
+    );
+  }
+
+  _onInputRef = (ref) => this.input = ref;
+
+  _onPlaceholderClick = () => {
+    if (this.input) {
+      this.input.focus();
+    }
+  }
+}

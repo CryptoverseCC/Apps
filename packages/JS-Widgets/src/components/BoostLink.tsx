@@ -8,6 +8,7 @@ import web3 from '../utils/web3';
 
 import If from './utils/If';
 import Input from './Input';
+import Tooltip from './Tooltip';
 import Button from './ButtonSecondary';
 import TextWithLabel from './TextWithLabel';
 
@@ -15,6 +16,7 @@ import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
   disabled?: boolean;
+  disabledReason?: string;
   link: ILink;
   links: ILink[];
   context: string;
@@ -46,11 +48,13 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     };
   }
 
-  render({ link, disabled }: IBidLinkProps,
+  render({ link, disabled, disabledReason }: IBidLinkProps,
          { visible, value, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
     return (
       <div ref={this._onButtonRef} class={style.self}>
-        <Button disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
+        <Tooltip text={disabledReason}>
+          <Button disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
+        </Tooltip>
         <If condition={visible}>
           <div class={style.overlay} onClick={this._onOverlayClick} />
           <div ref={this._onFormRef} class={style.form} style={{ top: formTop, left: formLeft, opacity: formOpacity }}>

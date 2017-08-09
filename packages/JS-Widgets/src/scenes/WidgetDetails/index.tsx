@@ -16,7 +16,6 @@ import Button from '../../components/Button';
 import Paper from '../../components/Paper';
 import TextWithLabel from '../../components/TextWithLabel';
 
-import AddLink from './components/AddLink';
 import SideMenu from './components/SideMenu';
 import DetailsList from './components/DetailsList';
 import WidgetSummary from './components/WidgetSummary';
@@ -25,7 +24,7 @@ import { openUserfeedsUrl } from '../../utils/openUserfeedsUrl';
 
 import * as style from './widgetDetails.scss';
 
-export type TViewType = 'AddLink' | 'Userfeed' | 'Specification' | 'Links.Algorithm'
+export type TViewType = 'Userfeed' | 'Specification' | 'Links.Algorithm'
   | 'Links.Whitelist' | 'Links.Slots';
 
 interface IWidgetDetailsState {
@@ -47,9 +46,8 @@ const mapStateToProps = (state: IRootState) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showThankYouModal: (linkId: string) => dispatch(modalActions.open({
-    modalName: 'thankYou',
-    modalProps: { linkId },
+  showAddLinkModal: () => dispatch(modalActions.open({
+    modalName: 'addLink',
   })),
   openToast(message: string, type?: TToastType) {
     dispatch(openToast(message, type));
@@ -94,27 +92,20 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
             activeItem={this.state.viewType}
             onItemClick={this._menuItemClicked}
           />
-          <Switch expresion={viewType === 'AddLink'}>
-            <Switch.Case condition>
-              <AddLink context={widgetSettings.context} onSuccess={this._onLinkAdded} onError={this._onLinkNotAdded} />
-            </Switch.Case>
-            <Switch.Case condition={false}>
-              <DetailsList
-                web3Enabled={web3Enabled}
-                initialView={viewType}
-                scrolledTo={this._onScrolledTo}
-                ref={this._onDetailsListRef}
-                context={widgetSettings.context}
-                size={widgetSettings.size}
-                links={links}
-                whitelistedLinks={whitelistedLinks}
-                allLinks={allLinks}
-                allLinksCount={allLinksCount}
-                onBoostSuccess={this._onBoostSuccess}
-                onBoostError={this._onBoostError}
-              />
-            </Switch.Case>
-          </Switch>
+          <DetailsList
+            web3Enabled={web3Enabled}
+            initialView={viewType}
+            scrolledTo={this._onScrolledTo}
+            ref={this._onDetailsListRef}
+            context={widgetSettings.context}
+            size={widgetSettings.size}
+            links={links}
+            whitelistedLinks={whitelistedLinks}
+            allLinks={allLinks}
+            allLinksCount={allLinksCount}
+            onBoostSuccess={this._onBoostSuccess}
+            onBoostError={this._onBoostError}
+          />
         </div>
       </div>
     );
@@ -135,16 +126,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
   }
 
   _onAddLinkClick = () => {
-    this.setState({ viewType: 'AddLink' });
-  }
-
-  _onLinkAdded = (linkId) => {
-    this.props.showThankYouModal(linkId);
-  }
-
-  _onLinkNotAdded = () => {
-    this.props.openToast('Transation rejected');
-    this.setState({ viewType: 'Links.Slots' });
+    this.props.showAddLinkModal();
   }
 
   _onBoostSuccess = () => {

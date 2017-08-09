@@ -6,14 +6,12 @@ import { IRootState } from '../../../reducers';
 import { modalActions } from '../../../actions/modal';
 
 import AddLink from '../../AddLink';
-import ThankYou from '../..//ThankYou';
 import WidgetDetails from '../../WidgetDetails';
 
 import Modal from '../../../components/Modal';
 
 const ModalMapping = {
   addLink: AddLink,
-  thankYou: ThankYou,
   widgetDetails: WidgetDetails,
 };
 

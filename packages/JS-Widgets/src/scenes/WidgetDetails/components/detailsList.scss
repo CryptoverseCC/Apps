@@ -2,7 +2,8 @@
 
 .self {
   overflow-y: scroll;
-  width: 100%;
+  padding-right: 10px;
+  width: calc(100% - 10px);
     
   &::-webkit-scrollbar {
     width: 6px;

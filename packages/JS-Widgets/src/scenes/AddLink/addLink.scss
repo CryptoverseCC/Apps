@@ -1,0 +1,34 @@
+@import '../../styles/colors';
+
+.self {
+  display: flex;
+  min-width: 600px;
+  min-height: 50vh;
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  .header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .body {
+    padding: 10px;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    background-color: $aqua-haze;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .form {
+    padding: 10px;
+  }
+}
