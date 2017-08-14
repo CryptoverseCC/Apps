@@ -54,12 +54,12 @@ const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSepara
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="envelope-open" /> Contact</span>}
-        text={widgetSettings.publisherNote}
+        text={widgetSettings.publisherNote || '-'}
       />
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="calendar" /> Valid till</span>}
-        text={widgetSettings.tillDate}
+        text={widgetSettings.tillDate || '-'}
       />
     </div>
   </div>
