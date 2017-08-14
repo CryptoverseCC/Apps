@@ -98,6 +98,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
             scrolledTo={this._onScrolledTo}
             ref={this._onDetailsListRef}
             context={widgetSettings.context}
+            hasWhitelist={!!widgetSettings.whitelist}
             size={widgetSettings.size}
             links={links}
             whitelistedLinks={whitelistedLinks}

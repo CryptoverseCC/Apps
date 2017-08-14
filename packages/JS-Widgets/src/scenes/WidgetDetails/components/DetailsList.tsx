@@ -8,6 +8,7 @@ import { TViewType } from '../';
 import LinksList from './LinksList';
 import WidgetSpecification from './WidgetSpecification';
 import UserfeedAddressInfo from './UserfeedsAddressInfo';
+import AlgorithmListOrPlaceholder from './AlgorithmListOrPlaceholder';
 
 import * as style from './detailsList.scss';
 
@@ -18,6 +19,7 @@ interface IAllLinkProps {
   };
   initialView: TViewType;
   context: string;
+  hasWhitelist: boolean;
   size: TWidgetSize;
   links: ILink[];
   whitelistedLinks: ILink[];
@@ -43,7 +45,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   render() {
-    const { web3Enabled, context, size, links, whitelistedLinks, allLinks, allLinksCount,
+    const { web3Enabled, context, size, links, hasWhitelist, whitelistedLinks, allLinks, allLinksCount,
       onBoostError, onBoostSuccess } = this.props;
 
     return (
@@ -69,7 +71,8 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           onBoostError={onBoostError}
           ref={this._onRef('Links.Whitelist')}
         />
-        <LinksList
+        <AlgorithmListOrPlaceholder
+          condition={!hasWhitelist}
           label="Algorithm"
           showProbability={false}
           context={context}
