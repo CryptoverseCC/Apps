@@ -49,7 +49,7 @@ const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSepara
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="link-intact" /> Source Domain</span>}
-        text="http://userfeeds.io(HC)"
+        text={widgetSettings.location}
       />
       <TextWithLabel
         class={style.box}
@@ -59,7 +59,7 @@ const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSepara
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="calendar" /> Valid till</span>}
-        text="05/06/2018(HC)"
+        text={widgetSettings.tillDate}
       />
     </div>
   </div>

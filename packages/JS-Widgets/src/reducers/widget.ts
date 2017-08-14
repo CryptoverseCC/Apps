@@ -18,6 +18,8 @@ export interface IWidgetState {
   title: string;
   description: string;
   impression: string;
+  location: string;
+  tillDate: string;
 }
 
 const initialState = {};

@@ -31,7 +31,10 @@ class UserfeedsLink extends HTMLElement {
 
   _renderComponent() {
     this.innerHTML = `<div class="${style.root}"></div>`;
-    this.storeInstance = getStore(this._argsToState());
+    this.storeInstance = getStore({
+      ...this._argsToState(),
+      location: window.location.href,
+    });
 
     this.instance = render((
       <Provider store={this.storeInstance}>
@@ -58,6 +61,7 @@ class UserfeedsLink extends HTMLElement {
     const title = this.getAttribute('widget-title');
     const description = this.getAttribute('description');
     const impression = this.getAttribute('impression');
+    const tillDate = this.getAttribute('till-date');
 
     return {
       algorithm,
@@ -70,6 +74,7 @@ class UserfeedsLink extends HTMLElement {
       title,
       description,
       impression,
+      tillDate,
     };
   }
 }
