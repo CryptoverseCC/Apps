@@ -43,7 +43,7 @@ const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSepara
     <div class={classnames(style.boxes, 'row')}>
       <TextWithLabel
         class={style.box}
-        label={<span><Icon name="eye" /> Impressions</span>}
+        label={<span><Icon name="eye" /> Impressions per day</span>}
         text={widgetSettings.impression}
       />
       <TextWithLabel

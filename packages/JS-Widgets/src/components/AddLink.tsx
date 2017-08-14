@@ -53,7 +53,7 @@ const rules = {
   title: [R.required, R.maxLength(35)],
   summary: [R.required, R.maxLength(70)],
   url: [R.required, R.value((v: string) => httpRegExp.test(v), 'Have to be valid url')],
-  value: [R.required, R.number, R.value((v: number) => v > 0, 'Cannot be negative'),
+  value: [R.required, R.number, R.value((v: number) => v >= 0, 'Cannot be negative'),
     R.value((v: string) => {
       const dotIndex = v.indexOf('.');
       if (dotIndex !== -1) {
