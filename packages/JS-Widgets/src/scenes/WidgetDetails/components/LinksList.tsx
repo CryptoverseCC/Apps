@@ -16,6 +16,7 @@ interface ILinksListProps {
   links: ILink[];
   context: string;
   boostDisabled: boolean;
+  boostDisabledReason?: string;
   onBoostSuccess?: (transationId: string) => void;
   onBoostError?: (error: any) => void;
   showProbability?: boolean;
@@ -48,6 +49,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
         {link.group_count || 0}
         <BoostLink
           disabled={this.props.boostDisabled}
+          disabledReason={this.props.boostDisabledReason}
           context={this.props.context}
           onSuccess={this.props.onBoostSuccess}
           onError={this.props.onBoostError}

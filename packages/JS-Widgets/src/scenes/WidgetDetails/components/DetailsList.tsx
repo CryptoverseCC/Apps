@@ -53,6 +53,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           context={context}
           links={links}
           boostDisabled={!web3Enabled.enabled}
+          boostDisabledReason={web3Enabled.reason}
           onBoostSuccess={onBoostSuccess}
           onBoostError={onBoostError}
           ref={this._onRef('Links.Slots')}
@@ -63,6 +64,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           context={context}
           links={whitelistedLinks}
           boostDisabled={!web3Enabled.enabled}
+          boostDisabledReason={web3Enabled.reason}
           onBoostSuccess={onBoostSuccess}
           onBoostError={onBoostError}
           ref={this._onRef('Links.Whitelist')}
@@ -72,9 +74,10 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           showProbability={false}
           context={context}
           links={allLinks}
+          boostDisabled={!web3Enabled.enabled}
+          boostDisabledReason={web3Enabled.reason}
           onBoostSuccess={onBoostSuccess}
           onBoostError={onBoostError}
-          boostDisabled={!web3Enabled.enabled}
           ref={this._onRef('Links.Algorithm')}
         />
         <WidgetSpecification
