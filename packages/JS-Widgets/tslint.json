@@ -15,7 +15,8 @@
       "object-literal-sort-keys": [false],
       "no-var-requires": false,
       "no-shadowed-variable": false,
-      "member-ordering": [false]
+      "member-ordering": [false],
+      "no-console": [true, "log", "error"]
     },
     "rulesDirectory": []
 }

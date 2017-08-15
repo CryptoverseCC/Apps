@@ -11,7 +11,7 @@ import Banner from './scenes/Banner';
 import * as style from './styles/all.scss';
 
 if (process.env.NODE_ENV !== 'development') {
-  console.log(`Loaded @userfeeds/widgets@${VERSION}`);
+  console.info(`Loaded @userfeeds/widgets@${VERSION}`);
 }
 
 class UserfeedsLink extends HTMLElement {
