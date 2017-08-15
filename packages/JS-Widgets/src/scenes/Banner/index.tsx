@@ -63,6 +63,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
   constructor(props: IBannerProps) {
     super(props);
+
     props.observeWeb3();
     props.fetchLinks();
   }

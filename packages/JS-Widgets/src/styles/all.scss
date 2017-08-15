@@ -9,13 +9,8 @@
     transition: all 200ms ease-in-out;
   }
 
-  ::-moz-selection { /* Code for Firefox */
-      color: white;
-      background: $dodger-blue;
-  }
-
   ::selection {
-      color: white;
+      color: $white;
       background: $dodger-blue;
   }
 
@@ -27,13 +22,13 @@
   }
 
   h2 {
-    font-size:22px;
-    font-weight:300;
-    color:$black;
+    font-size: 22px;
+    font-weight: 300;
+    color: $black;
   }
 
   p {
-    font-size:15px;
-    color:$dusty-gray;
+    font-size: 15px;
+    color: $dusty-gray;
   }
 }

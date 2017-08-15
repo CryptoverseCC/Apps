@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
+const safeImportant = require('postcss-safe-important');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -41,6 +42,7 @@ module.exports = {
           sourceMap: true,
           plugins: () => ([
             autoprefixer({ browsers: ['last 2 versions'] }),
+            safeImportant(),
           ]),
         },
       }, {
@@ -80,6 +82,7 @@ module.exports = {
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || 'development',
+      VERSION: JSON.stringify(require('./package.json').version),
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),

@@ -4066,6 +4066,12 @@ postcss-reduce-transforms@^1.0.3:
     postcss "^5.0.8"
     postcss-value-parser "^3.0.1"
 
+postcss-safe-important@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/postcss-safe-important/-/postcss-safe-important-1.0.4.tgz#7faf89afe6630023e5fab2f267113db69ef3874d"
+  dependencies:
+    postcss "^5.0.10"
+
 postcss-selector-parser@^2.0.0, postcss-selector-parser@^2.2.2:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-2.2.3.tgz#f9437788606c3c9acee16ffe8d8b16297f27bb90"
