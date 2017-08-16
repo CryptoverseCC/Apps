@@ -15,7 +15,8 @@ interface ISideMenuProps {
   onItemClick(name: TViewType): void;
 }
 
-const SideMenu = ({ activeItem, onItemClick, hasWhitelist, slots, whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
+const SideMenu = ({ activeItem, onItemClick, hasWhitelist, slots,
+  whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
   const notify = (name: TViewType) => (event: MouseEvent) => {
     onItemClick(name);
     event.stopImmediatePropagation();
