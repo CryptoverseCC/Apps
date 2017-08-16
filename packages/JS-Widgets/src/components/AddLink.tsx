@@ -4,6 +4,8 @@ import * as core from '@userfeeds/core';
 
 import { ILink } from '../types';
 
+import web3 from '../utils/web3';
+
 import Input from './Input';
 import Loader from './Loader';
 import Button from './Button';
@@ -180,7 +182,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       }],
     };
 
-    core.ethereum.claims.sendClaim(address, claim, value)
+    core.ethereum.claims.sendClaim(web3, address, claim, value)
       .then((linkId) => {
         this.props.onSuccess(linkId);
       })

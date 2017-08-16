@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/core": "0.0.14",
+    "@userfeeds/core": "0.0.17",
     "classnames": "^2.2.5",
     "lodash": "~4.17.4",
     "open-iconic": "^1.1.1",

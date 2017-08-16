@@ -41,9 +41,9 @@
   version "20.0.4"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-20.0.4.tgz#91e2c76fbe90b3a719b5d689958f0495f005beb9"
 
-"@userfeeds/core@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.14.tgz#eba8c61d7e490779f8369264ef6234ba0eebe703"
+"@userfeeds/core@0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@userfeeds/core/-/core-0.0.17.tgz#edad8f3493e103a208cd5918b9039b899354f956"
 
 "@webcomponents/custom-elements@^1.0.0":
   version "1.0.0"

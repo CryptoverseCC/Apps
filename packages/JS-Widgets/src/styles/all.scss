@@ -14,14 +14,60 @@
     background: $dodger-blue;
   }
 
-  h1, h2, h3, h4, p, a, span, img {
+  h1, h2, h3, h4, p, a, span, img, div, ul, li, table, thead, tbody, th, tr, td {
     /* no important */
     all: unset;
   }
 
-  div, table, ul, li, thead, tbody, th, tr, td {
+  div {
     /* no important */
-    background: unset;
+    display: block;
+  }
+
+  ul, li {
+    /* no important */
+    display: block;
+    list-style-type: disc;
+  }
+
+  table {
+    /* no important */
+    display: table;
+    border-collapse: separate;
+  }
+
+  thead {
+    /* no important */
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  tbody {
+    /* no important */
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  tr {
+    /* no important */
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+  }
+
+  th {
+    /* no important */
+    font-weight: bold;
+    vertical-align: inherit;
+    display: table-cell;
+  }
+
+  td {
+    /* no important */
+    vertical-align: top;
+    display: table-cell;
   }
 
   h1, h2, h3, h4, p {
