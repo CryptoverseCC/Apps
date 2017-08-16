@@ -11,10 +11,11 @@ interface ISideMenuProps {
   whitelistedLinksCount: number;
   allLinksCount: number;
   activeItem: TViewType;
+  hasWhitelist: boolean;
   onItemClick(name: TViewType): void;
 }
 
-const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
+const SideMenu = ({ activeItem, onItemClick, hasWhitelist, slots, whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
   const notify = (name: TViewType) => (event: MouseEvent) => {
     onItemClick(name);
     event.stopImmediatePropagation();
@@ -35,12 +36,14 @@ const SideMenu = ({ activeItem, onItemClick, slots, whitelistedLinksCount, allLi
         >
           Whitelist <Pill>{whitelistedLinksCount}</Pill>
         </li>
-        <li
-          class={activeItem === 'Links.Algorithm' ? style.active : ''}
-          onClick={notify('Links.Algorithm')}
-        >
-          Algorithm <Pill>{allLinksCount}</Pill>
-        </li>
+        { !hasWhitelist && (
+          <li
+            class={activeItem === 'Links.Algorithm' ? style.active : ''}
+            onClick={notify('Links.Algorithm')}
+          >
+            Algorithm <Pill>{allLinksCount}</Pill>
+          </li>
+        )}
       </ul>
       <li
         class={activeItem === 'Specification' ? style.active : ''}

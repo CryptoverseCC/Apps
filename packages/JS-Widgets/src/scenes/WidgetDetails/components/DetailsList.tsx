@@ -8,7 +8,6 @@ import { TViewType } from '../';
 import LinksList from './LinksList';
 import WidgetSpecification from './WidgetSpecification';
 import UserfeedAddressInfo from './UserfeedsAddressInfo';
-import AlgorithmListOrPlaceholder from './AlgorithmListOrPlaceholder';
 
 import * as style from './detailsList.scss';
 
@@ -71,18 +70,19 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           onBoostError={onBoostError}
           ref={this._onRef('Links.Whitelist')}
         />
-        <AlgorithmListOrPlaceholder
-          condition={!hasWhitelist}
-          label="Algorithm"
-          showProbability={false}
-          context={context}
-          links={allLinks}
-          boostDisabled={!web3Enabled.enabled}
-          boostDisabledReason={web3Enabled.reason}
-          onBoostSuccess={onBoostSuccess}
-          onBoostError={onBoostError}
-          ref={this._onRef('Links.Algorithm')}
-        />
+        { !hasWhitelist && (
+          <LinksList
+            label="Algorithm"
+            showProbability={false}
+            context={context}
+            links={allLinks}
+            boostDisabled={!web3Enabled.enabled}
+            boostDisabledReason={web3Enabled.reason}
+            onBoostSuccess={onBoostSuccess}
+            onBoostError={onBoostError}
+            ref={this._onRef('Links.Algorithm')}
+          />
+        )}
         <WidgetSpecification
           size={size}
           ref={this._onRef('Specification')}

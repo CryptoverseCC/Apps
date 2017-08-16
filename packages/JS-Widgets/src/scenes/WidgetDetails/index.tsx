@@ -88,6 +88,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
           <SideMenu
             slots={widgetSettings.slots}
             whitelistedLinksCount={whitelistedLinksCount}
+            hasWhitelist={!!widgetSettings.whitelist}
             allLinksCount={allLinksCount}
             activeItem={this.state.viewType}
             onItemClick={this._menuItemClicked}
