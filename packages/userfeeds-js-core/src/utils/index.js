@@ -6,12 +6,20 @@ const networkMapping = {
   '42': 'kovan',
 };
 
-function getCurrentNetworkName() {
-  if (!web3) {
-    throw new Error('web3 not available');
-  }
+function getCurrentNetworkName(web3Instance) {
+  return new Promise((resolve, reject) => {
+    if (!web3Instance.isConnected()) {
+      return reject(new Error('web3 not available'));
+    }
 
-  return networkMapping[web3.version.network];
+    web3Instance.version.getNetwork((error, networkId) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(networkMapping[networkId]);
+    })
+  });
 }
 
 module.exports = {
