@@ -8,6 +8,10 @@ const networkMapping = {
 
 function getCurrentNetworkName(web3Instance) {
   return new Promise((resolve, reject) => {
+    if (!web3Instance.isConnected()) {
+      return resolve(undefined);
+    }
+
     web3Instance.version.getNetwork((error, networkId) => {
       if (error) {
         return reject(error);
