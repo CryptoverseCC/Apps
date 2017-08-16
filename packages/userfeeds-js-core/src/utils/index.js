@@ -18,11 +18,28 @@ function getCurrentNetworkName(web3Instance) {
       }
 
       resolve(networkMapping[networkId]);
-    })
+    });
+  });
+}
+
+function getAccounts(web3Instance) {
+  return new Promise((resolve, reject) => {
+    if (!web3Instance.isConnected()) {
+      return resolve(undefined);
+    }
+
+    web3Instance.eth.getAccounts((error, accounts = []) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(accounts);
+    });
   });
 }
 
 module.exports = {
+  getAccounts,
   getCurrentNetworkName,
 };
 

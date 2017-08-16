@@ -1,53 +1,54 @@
-const { getCurrentNetworkName } = require('./utils');
+const { getCurrentNetworkName, getAccounts } = require('./utils');
 const {
   payableAbi,
   notpayableAbi,
   getContractAddress,
 } = require('./utils/contract');
 
-function sendPayableClaim(web3Instance, address, claim, value) {
-  return getCurrentNetworkName(web3Instance)
-    .then((networkName) => {
-      const contract = web3Instance.eth.contract(payableAbi)
-        .at(getContractAddress(networkName, true));
+async function sendPayableClaim(web3Instance, address, claim, value) {
+  const networkName = await getCurrentNetworkName(web3Instance);
+  const [from] = await getAccounts(web3Instance);
 
-      return new Promise((resolve, reject) => {
-        contract.post(
-          address,
-          JSON.stringify(claim),
-          { value: web3Instance.toWei(value, 'ether') },
-          (errror, result) => {
-            if (errror) {
-              return reject(errror);
-            }
-            return resolve(result);
-          },
-        );
-      });
-    });
+  const contract = web3Instance.eth.contract(payableAbi)
+    .at(getContractAddress(networkName, true));
+
+  return new Promise((resolve, reject) => {
+    contract.post(
+      address,
+      JSON.stringify(claim),
+      { from, value: web3Instance.toWei(value, 'ether') },
+      (errror, result) => {
+        if (errror) {
+          return reject(errror);
+        }
+        return resolve(result);
+      },
+    );
+  });
 }
 
-function sendNotpayableClaim(web3Instance, address, claim) {
-  return getCurrentNetworkName(web3Instance)
-    .then((networkName) => {
-      const contract = web3Instance.eth.contract(notpayableAbi)
-        .at(getContractAddress(networkName, false));
+async function sendNotpayableClaim(web3Instance, address, claim) {
+  const networkName = await getCurrentNetworkName(web3Instance)
+  const [from] = await getAccounts(web3Instance);
 
-      return new Promise((resolve, reject) => {
-        contract.post(
-          JSON.stringify(claim),
-          (errror, result) => {
-            if (errror) {
-              return reject(errror);
-            }
-            return resolve(result);
-          },
-        );
-      });
-    });
+  const contract = web3Instance.eth.contract(notpayableAbi)
+    .at(getContractAddress(networkName, false));
+
+  return new Promise((resolve, reject) => {
+    contract.post(
+      JSON.stringify(claim),
+      { from },
+      (errror, result) => {
+        if (errror) {
+          return reject(errror);
+        }
+        return resolve(result);
+      },
+    );
+  });
 }
 
-function sendClaim(web3Instance,address, claim, value) {
+function sendClaim(web3Instance, address, claim, value) {
   const payable = value !== undefined;
 
   return payable
