@@ -47,12 +47,12 @@ function sendNotpayableClaim(web3Instance, address, claim) {
     });
 }
 
-function sendClaim(address, claim, value) {
+function sendClaim(web3Instance,address, claim, value) {
   const payable = value !== undefined;
 
   return payable
-    ? sendPayableClaim(address, claim, value)
-    : sendNotpayableClaim(address, claim);
+    ? sendPayableClaim(web3Instance, address, claim, value)
+    : sendNotpayableClaim(web3Instance, address, claim);
 }
 
 module.exports = {
