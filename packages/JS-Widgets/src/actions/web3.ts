@@ -4,6 +4,8 @@ import * as isEqual from 'lodash/isEqual';
 
 import { IRootState } from '../reducers';
 
+import web3 from '../utils/web3';
+
 const acf = actionCreatorFactory('web3');
 
 export const web3Actions = {
@@ -16,17 +18,20 @@ export const web3Actions = {
 
 export const observeInjectedWeb3 = () => (dispatch, getState: () => IRootState) => {
   const check = () => {
-    const currentState = {
-      available: !!window.web3, // web3.currentProvider.isMetaMask
-      unlocked: !!window.web3 && web3.eth.accounts.length > 0,
-      network: window.web3 ? core.utils.getCurrentNetworkName() : undefined,
-    };
+    web3.eth.getAccounts(async (error, accounts = []) => {
+      const networkName = await core.utils.getCurrentNetworkName(web3);
+      const currentState = {
+        available: !!web3.isConnected(),
+        unlocked: accounts.length > 0,
+        network: networkName,
+      };
 
-    const { web3: lastState } = getState();
+      const { web3: lastState } = getState();
 
-    if (!isEqual(currentState, lastState)) {
-      dispatch(web3Actions.updateAvailability(currentState));
-    }
+      if (!isEqual(currentState, lastState)) {
+        dispatch(web3Actions.updateAvailability(currentState));
+      }
+    });
   };
 
   setInterval(check, 1000);

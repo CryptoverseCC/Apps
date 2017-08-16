@@ -54,9 +54,7 @@ module.exports = {
     }, {
       test: /\.(css|scss)$/,
       include: /(node_modules)/,
-      // use: ExtractTextPlugin.extract({
       use: ['style-loader', 'css-loader', 'sass-loader'],
-      // }),
     }, {
       test: /\.(png|jpg|gif)$/,
       loader: 'url-loader',
@@ -73,7 +71,6 @@ module.exports = {
     }],
   },
   plugins: [
-    // new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       template: 'index.html',
     }),

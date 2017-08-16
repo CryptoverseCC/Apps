@@ -10,12 +10,22 @@
   }
 
   ::selection {
-      color: $white;
-      background: $dodger-blue;
+    color: $white;
+    background: $dodger-blue;
+  }
+
+  h1, h2, h3, h4, p, a, span, img {
+    /* no important */
+    all: unset;
+  }
+
+  div, table, ul, li, thead, tbody, th, tr, td {
+    /* no important */
+    background: unset;
   }
 
   h1, h2, h3, h4, p {
-    margin: 0;
+    display: block;
     font-family: 'PT Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

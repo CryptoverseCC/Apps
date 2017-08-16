@@ -8,6 +8,8 @@ ADD . /module
 WORKDIR /module
 
 RUN yarn
-RUN echo "~~~~~Building version: $CI_BRANCH~~~~~"
-RUN envsub package.json package.json
+
+RUN CI_BRANCH=`git describe --tags` envsub package.json package.json
+RUN cat package.json
+
 RUN yarn build
