@@ -37,8 +37,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     prop: (link: ILink) => typeof link.probability === 'number' ? `${link.probability}%` : '-',
   }, {
     name: 'Content',
-    prop: (link: ILink) => <Link link={link} />,
-    style: { maxWidth: '200px' },
+    prop: (link: ILink) => <Link style={{ maxWidth: '200px' }} link={link} />,
   }, {
     name: 'Current Score',
     prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),
@@ -103,7 +102,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   _renderRow = (link: ILink, index) => {
     return (
       <tr>
-        {this.columns.map(({ prop, style }) => <td valign="top" style={style}>{prop(link, index)}</td>)}
+        {this.columns.map(({ prop }) => <td valign="top">{prop(link, index)}</td>)}
       </tr>
     );
   }

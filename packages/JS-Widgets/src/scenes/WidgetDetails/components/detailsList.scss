@@ -1,6 +1,7 @@
 @import '../../../styles/colors';
 
 .self {
+  overflow-x: hidden;
   overflow-y: scroll;
   padding-right: 10px;
   width: calc(100% - 10px);
