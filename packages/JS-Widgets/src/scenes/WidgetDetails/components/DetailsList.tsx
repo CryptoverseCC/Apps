@@ -101,15 +101,23 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   _onScroll = throttle((e) => {
-    const scrollTop = e.target.scrollTop;
-    const [closedView] = Object.entries(this.refs)
-      .map(([key, ref]) => ([key, scrollTop - ref.base.offsetTop]))
-      .reduce((acc, item) => {
-        if (Math.abs(item[1]) < acc[1]) {
-          return item;
-        }
-        return acc;
-      }, [null, Number.MAX_SAFE_INTEGER]);
+    const viewport = {
+      top: e.target.scrollTop,
+      bottom: e.target.scrollTop + e.target.offsetHeight,
+    };
+
+    const visibleSections = Object.entries(this.refs)
+      .filter(([, ref]) => {
+        const bounds = {
+          top: ref.base.offsetTop,
+          bottom: ref.base.offsetTop + ref.base.offsetHeight,
+        };
+
+        return ((bounds.top <= viewport.bottom) && (bounds.bottom >= viewport.top));
+      })
+      .map(([name]) => name);
+
+    const closedView = visibleSections[visibleSections.length - 1];
     this.props.scrolledTo(closedView);
   }, 100, { leading: false });
 }
