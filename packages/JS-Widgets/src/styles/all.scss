@@ -15,7 +15,7 @@
     background: $dodger-blue;
   }
 
-  h1, h2, h3, h4, p, a, span, img, div, ul, li, table, thead, tbody, th, tr, td {
+  h1, h2, h3, h4, p, a, button, span, img, div, ul, li, table, thead, tbody, th, tr, td {
     /* no important */
     all: unset;
   }
@@ -71,7 +71,7 @@
     display: table-cell;
   }
 
-  h1, h2, h3, h4, p {
+  h1, h2, h3, h4, p, button {
     display: block;
     font-family: 'PT Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
