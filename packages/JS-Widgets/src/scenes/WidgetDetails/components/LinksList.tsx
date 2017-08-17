@@ -44,7 +44,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   }, {
     name: 'Bids',
     prop: (link: ILink) => (
-      <span>
+      <div class={style.boostCell}>
         {link.group_count || 0}
         <BoostLink
           disabled={this.props.boostDisabled}
@@ -55,7 +55,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
           link={link}
           links={this.props.links}
         />
-      </span>
+      </div>
     ),
   }];
 
