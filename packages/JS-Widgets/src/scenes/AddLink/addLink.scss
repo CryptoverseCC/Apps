@@ -28,6 +28,17 @@
     justify-content: space-between;
   }
 
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .preview {
+    flex: 0;
+    padding: 10px;
+  }
+
   .form {
     padding: 10px;
   }

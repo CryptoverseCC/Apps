@@ -27,12 +27,12 @@ interface IAddLinkProps {
 interface IAddLinkState {
   title: string;
   summary: string;
-  url: string;
+  target: string;
   value: string;
   errors: {
     title?: string;
     summary?: string;
-    url?: string;
+    target?: string;
     value?: string;
   };
   posting?: boolean;
@@ -54,7 +54,7 @@ const httpRegExp = /^https?:\/\//;
 const rules = {
   title: [R.required, R.maxLength(35)],
   summary: [R.required, R.maxLength(70)],
-  url: [R.required, R.value((v: string) => httpRegExp.test(v), 'Have to be valid url')],
+  target: [R.required, R.value((v: string) => httpRegExp.test(v), 'Have to be valid url')],
   value: [R.required, R.number, R.value((v: number) => v >= 0, 'Cannot be negative'),
     R.value((v: string) => {
       const dotIndex = v.indexOf('.');
@@ -70,14 +70,14 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
   state: IAddLinkState = {
     title: '',
     summary: '',
-    url: '',
+    target: '',
     value: '',
     errors: {},
   };
 
   render(
     { web3State }: IAddLinkProps,
-    { posting, title, summary, url, value, errors }: IAddLinkState) {
+    { posting, title, summary, target, value, errors }: IAddLinkState) {
     return (
       <div class={style.self}>
         <Input
@@ -98,9 +98,9 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         />
         <Input
           placeholder="URL"
-          name="url"
-          value={url}
-          errorMessage={errors.url}
+          name="target"
+          value={target}
+          errorMessage={errors.target}
           onBlur={this._onInputEvent}
           onInput={this._onInputEvent}
         />
@@ -152,7 +152,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
   }
 
   _validateAll = () => {
-    const errors = ['title', 'summary', 'url', 'value']
+    const errors = ['title', 'summary', 'target', 'value']
       .map((name) => ({ [name]: this._validate(name, this.state[name])}))
       .reduce((acc, r) => ({ ...acc, ...r}), {});
 
@@ -168,14 +168,14 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     }
 
     const { context } = this.props;
-    const { title, summary, url, value } = this.state;
+    const { title, summary, target, value } = this.state;
     this.setState({ posting: true });
 
     const [_, address] = context.split(':');
 
     const claim = {
       type: ['link'],
-      claim: { target: url, title, summary },
+      claim: { target, title, summary },
       credits: [{
         type: 'interface',
         value: window.location.href,

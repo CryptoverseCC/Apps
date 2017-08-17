@@ -10,6 +10,7 @@ import { openToast, TToastType } from '../../actions/toast';
 
 import Switch from '../../components/utils/Switch';
 
+import Link from '../../components/Link';
 import Paper from '../../components/Paper';
 import AddLink from '../../components/AddLink';
 
@@ -43,15 +44,22 @@ type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props;
 
 interface IAddLinkModalState {
   step: 'form' | 'congratulations';
-  link?: ILink;
+  link: ILink;
   linkId?: string;
 }
+
+const DEFAULT_LINK = {
+  title: 'Title',
+  summary: 'Summary',
+  target: 'http://url',
+};
 
 @connect(mapsStateToProps, mapDispatchToProps)
 export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
 
   state: IAddLinkModalState = {
     step: 'form',
+    link: DEFAULT_LINK,
   };
 
   render({ widgetSettings, web3State }: TAddLinkModalProps, { step, link, linkId }: IAddLinkModalState) {
@@ -63,29 +71,38 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
         </div>
         <div class={style.body}>
           <Steps activeStep={step} />
-          <Paper class={style.form}>
-            <Switch expresion={step}>
-              <Switch.Case condition="form">
-                <AddLink
-                  context={widgetSettings.context}
-                  web3State={web3State}
-                  onChange={this._onFormEdit}
-                  onSuccess={this._onSuccess}
-                  onError={this._onError}
-                />
-              </Switch.Case>
-              <Switch.Case condition="congratulations">
-                <Congratulations linkId={linkId} widgetSettings={widgetSettings} />
-              </Switch.Case>
-            </Switch>
-          </Paper>
+          <div class={style.content}>
+            <Paper class={style.preview}>
+              <Link link={link} />
+            </Paper>
+            <Paper class={style.form}>
+              <Switch expresion={step}>
+                <Switch.Case condition="form">
+                  <AddLink
+                    context={widgetSettings.context}
+                    web3State={web3State}
+                    onChange={this._onFormEdit}
+                    onSuccess={this._onSuccess}
+                    onError={this._onError}
+                  />
+                </Switch.Case>
+                <Switch.Case condition="congratulations">
+                  <Congratulations linkId={linkId} widgetSettings={widgetSettings} />
+                </Switch.Case>
+              </Switch>
+            </Paper>
+          </div>
         </div>
       </div>
     );
   }
 
   _onFormEdit = (link: ILink) => {
-    this.setState({ link });
+    const notEmptyProperties = Object.entries(link)
+      .filter(([, value]) => !!value)
+      .reduce((acc, [k, v]) => ({ ...acc, [k]: v}), {});
+
+    this.setState({ link: { ...DEFAULT_LINK, ...notEmptyProperties }});
   }
 
   _onSuccess = (linkId) => {

@@ -48,7 +48,7 @@ const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSepara
       />
       <TextWithLabel
         class={style.box}
-        label={<span><Icon name="link-intact" /> Source Domain</span>}
+        label={<span><Icon name="link-intact" /> Widget location</span>}
         text={widgetSettings.location}
       />
       <TextWithLabel
