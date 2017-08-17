@@ -16,10 +16,10 @@
 
   .table-header {
     font-size: 12px;
-    letter-spacing:2px;
-    font-family:'PT Sans';
-    font-weight:700;
-    line-height:5;
+    letter-spacing: 2px;
+    font-family: 'PT Sans';
+    font-weight: 700;
+    line-height: 5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: $dusty-gray;
@@ -27,13 +27,13 @@
   }
 
   td {
-    font-size:15px;
-    color:$black;
-    font-family:'PT Sans';
+    font-size: 15px;
+    color: $black;
+    font-family: 'PT Sans';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-weight:700;
-    line-height:1.5;
+    font-weight: 700;
+    line-height: 1.5;
   }
 
   .boost-cell {

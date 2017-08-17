@@ -10,7 +10,12 @@ interface IIconProps {
 }
 
 const Icon = ({ name, class: className, ...restProps }: IIconProps & JSX.HTMLAttributes) => (
-  <span class={classnames(className, 'oi')} data-glyph={name} title={name} aria-hidden="true" {...restProps} />
+  <span
+    class={classnames(className, 'oi', style.self)}
+    data-glyph={name}
+    aria-hidden="true"
+    {...restProps}
+  />
 );
 
 export default Icon;

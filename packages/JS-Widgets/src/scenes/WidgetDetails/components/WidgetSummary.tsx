@@ -23,7 +23,7 @@ interface IWidgetSummaryProps {
 
 const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSeparateWindow }: IWidgetSummaryProps) => (
   <div class={style.self}>
-    <div class="row">
+    <div class={classnames(style.header, 'row')}>
       <EthereumLogo class={style.logo} />
       <div>
         <div class="row">
