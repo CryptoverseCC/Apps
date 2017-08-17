@@ -111,5 +111,5 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
         return acc;
       }, [null, Number.MAX_SAFE_INTEGER]);
     this.props.scrolledTo(closedView);
-  }, 100);
+  }, 100, { leading: false });
 }
