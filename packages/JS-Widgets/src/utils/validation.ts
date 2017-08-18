@@ -10,7 +10,7 @@ export const R = {
     (name, value) => validator(value) ? '' : reason,
 };
 
-type TValidationFunc = (value: any) => string | undefined;
+type TValidationFunc = (name: string, value: any) => string | undefined;
 
 export const validate = (rules: TValidationFunc[] | undefined, value: any): string | undefined => {
   if (!rules) {

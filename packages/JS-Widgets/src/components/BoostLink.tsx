@@ -36,7 +36,7 @@ interface IBidLinkState {
   formOpacity?: number;
 }
 
-const valueValidationRules = [R.required, R.number, R.value((v: number) => v >= 0, 'Cannot be negative'),
+const valueValidationRules = [R.required, R.number, R.value((v: number) => v > 0, 'Have to be positive value'),
   R.value((v: string) => {
     const dotIndex = v.indexOf('.');
     if (dotIndex !== -1) {
