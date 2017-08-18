@@ -4,6 +4,7 @@ import * as core from '@userfeeds/core';
 
 import { ILink } from '../types';
 
+import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
 import Input from './Input';
@@ -37,17 +38,6 @@ interface IAddLinkState {
   };
   posting?: boolean;
 }
-
-const R = {
-  required: (name, value) =>
-    value.toString().trim() ? '' : `Field ${name} is required`,
-  maxLength: (n: number) =>
-    (name, value: string) => value.length <= n ? '' : `${name} have to be shorter than ${n} characters`,
-  number: (name, value) =>
-    !isNaN(parseFloat(value)) && isFinite(value) ? '' : `${name} have to be number`,
-  value: (validator: (v: number | string) => boolean, reason: string) =>
-    (name, value) => validator(value) ? '' : reason,
-};
 
 const httpRegExp = /^https?:\/\//;
 
@@ -133,7 +123,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       [name]: value,
       errors: {
         ...this.state.errors,
-        [name]: this._validate(name, value),
+        [name]: validate(rules[name], value),
       },
     }, () => {
       if (this.props.onChange) {
@@ -142,18 +132,9 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     });
   }
 
-  _validate = (name, value) => {
-    if (!rules[name]) {
-      return undefined;
-    }
-    const validationResult = rules[name].map((r) => r(name, value)).filter((v) => !!v);
-
-    return validationResult[0];
-  }
-
   _validateAll = () => {
     const errors = ['title', 'summary', 'target', 'value']
-      .map((name) => ({ [name]: this._validate(name, this.state[name])}))
+      .map((name) => ({ [name]: validate(rules[name], this.state[name])}))
       .reduce((acc, r) => ({ ...acc, ...r}), {});
 
     return errors;

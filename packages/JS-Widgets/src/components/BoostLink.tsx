@@ -4,6 +4,7 @@ import * as core from '@userfeeds/core';
 
 import { ILink } from '../types';
 
+import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
 import If from './utils/If';
@@ -28,11 +29,21 @@ interface IBidLinkState {
   visible: boolean;
   sum: number;
   value?: string;
+  validationError?: string;
   probability: string;
   formTop?: number;
   formLeft?: number;
   formOpacity?: number;
 }
+
+const valueValidationRules = [R.required, R.number, R.value((v: number) => v >= 0, 'Cannot be negative'),
+  R.value((v: string) => {
+    const dotIndex = v.indexOf('.');
+    if (dotIndex !== -1) {
+      return v.length - 1 - dotIndex <= 18;
+    }
+    return true;
+  }, 'Invalid value')];
 
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
@@ -49,7 +60,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   }
 
   render({ link, disabled, disabledReason }: IBidLinkProps,
-         { visible, value, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
+         { visible, value, validationError, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
     return (
       <div ref={this._onButtonRef} class={style.self}>
         <Tooltip text={disabledReason}>
@@ -63,6 +74,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                 placeholder="Value"
                 value={value}
                 onInput={this._onValueChange}
+                errorMessage={validationError}
               />
               <p class={style.equalSign}>=</p>
               <Input
@@ -72,7 +84,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               />
             </div>
             <Button
-              disabled={probability === '-'}
+              disabled={!!validationError}
               style={{ marginLeft: 'auto' }}
               onClick={this._onSendClick}
             >
@@ -132,15 +144,17 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
     const { link } = this.props;
     const { sum } = this.state;
-    const valueInEth = parseFloat(event.target.value);
 
-    if (valueInEth) {
+    const validationError = validate(valueValidationRules, event.target.value);
+
+    if (!validationError) {
+      const valueInEth = parseFloat(event.target.value);
       const valueInWei = parseFloat(web3.toWei(valueInEth, 'ether'));
       const rawProbability = (link.score + valueInWei) / (sum + valueInWei);
       const probability = (100 * rawProbability).toFixed(2);
-      this.setState({ probability });
+      this.setState({ probability, validationError });
     } else {
-      this.setState({ probability: '-' });
+      this.setState({ probability: '-', validationError });
     }
   }
 
