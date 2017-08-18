@@ -39,12 +39,17 @@ interface IAddLinkState {
   posting?: boolean;
 }
 
-const httpRegExp = /^https?:\/\//;
+const httpwwwRegExp = /^https?:\/\/www\./;
+const urlRegExp = /^https?:\/\/www\.[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
 const rules = {
   title: [R.required, R.maxLength(35)],
   summary: [R.required, R.maxLength(70)],
-  target: [R.required, R.value((v: string) => httpRegExp.test(v), 'Have to be valid url')],
+  target: [
+    R.required,
+    R.value((v: string) => httpwwwRegExp.test(v), 'Have to start with http(s)://www.'),
+    R.value((v: string) => urlRegExp.test(v), 'Have to be valid url'),
+  ],
   value: [R.required, R.number, R.value((v: number) => v >= 0, 'Cannot be negative'),
     R.value((v: string) => {
       const dotIndex = v.indexOf('.');
@@ -60,7 +65,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
   state: IAddLinkState = {
     title: '',
     summary: '',
-    target: '',
+    target: 'http://www.',
     value: '',
     errors: {},
   };
