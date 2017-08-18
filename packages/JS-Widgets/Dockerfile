@@ -9,7 +9,7 @@ WORKDIR /module
 
 RUN yarn
 
-RUN CI_BRANCH=`git describe --tags` envsub package.json package.json
+RUN CI_BRANCH=`git tag --points-at HEAD | grep -E "[0-9]+\.[0-9]+*\.[0-9]+"` envsub package.json package.json
 RUN cat package.json
 
 RUN yarn build

@@ -6,5 +6,3 @@
      
     - service: builder
       command: ./publish.sh
-
-
