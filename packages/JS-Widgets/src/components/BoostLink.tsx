@@ -64,10 +64,11 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                 value={value}
                 onInput={this._onValueChange}
               />
-              <p>=</p>
-              <TextWithLabel
-                label="Estimated Probability"
-                text={`${probability} %`}
+              <p class={style.equalSign}>=</p>
+              <Input
+                placeholder="Estimated Probability"
+                disabled
+                value={`${probability} %`}
               />
             </div>
             <Button

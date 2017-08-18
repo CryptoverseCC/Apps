@@ -46,7 +46,7 @@
     transition: 0.2s;
   }
 
-  .input:focus ~ .placeholder, .input:valid ~ .placeholder {
+  .input:focus ~ .placeholder, .input:valid ~ .placeholder, .input:disabled ~ .placeholder {
     color: $black;
     font-size: 11px;
     top: -16px;
