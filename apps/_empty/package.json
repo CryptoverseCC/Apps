@@ -13,27 +13,26 @@
   "license": "ISC",
   "dependencies": {
     "@userfeeds/core": "^0.0.11",
-    "material-ui": "^0.18.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-router-dom": "^4.1.1",
+    "react-router-dom": "^4.1.2",
     "react-tap-event-plugin": "^2.0.1",
     "@userfeeds/apps-components": "*"
   },
   "devDependencies": {
-    "autoprefixer": "^7.1.1",
+    "autoprefixer": "^7.1.2",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
-    "html-webpack-plugin": "^2.28.0",
+    "html-webpack-plugin": "^2.29.0",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
-    "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.5.0"
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.6.1"
   }
 }

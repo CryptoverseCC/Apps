@@ -1,0 +1,19 @@
+{
+  "name": "@userfeeds/utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "tslint -c tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "test": "yarn lint"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "web3": "0.20.1"
+  },
+  "devDependencies": {
+    "tslint": "^5.6.0",
+    "tslint-react": "^3.2.0"
+  }
+}

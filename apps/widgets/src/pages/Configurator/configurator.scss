@@ -1,0 +1,14 @@
+@import '~@userfeeds/apps-components/styles/colors';
+
+.self {
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .paper {
+    min-width: 800px;
+    padding: 10px;
+  }
+}

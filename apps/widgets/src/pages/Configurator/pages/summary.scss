@@ -1,0 +1,31 @@
+@import '~@userfeeds/apps-components/styles/colors';
+
+.self {
+
+  .congratulations {
+    text-align: center;
+  }
+
+  .tabs {
+    background-color: #161719;
+
+    .tab-list {
+      color: $white;
+      text-align: center;
+      border: none;
+    }
+
+    .selected-tab {
+      border-bottom: 1px solid $white;
+    }
+  }
+
+  .back {
+    color: $alto;
+    text-decoration: none;
+
+    &:hover {
+      color: $dusty-gray;
+    }
+  }
+}

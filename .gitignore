@@ -64,4 +64,4 @@ env
 package-lock.json
 
 .vscode
-
+*.scss.d.ts

@@ -1,0 +1,20 @@
+@import '~@userfeeds/apps-components/styles/colors';
+
+.self {
+  padding-top: 20px;
+
+  .header {
+    color: $dusty-gray;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8em;
+  }
+  
+  .description {
+    padding-top: 1em;
+    font-size: 0.8em;
+    padding-bottom: 0.5em;
+    color: $black;
+  }
+}

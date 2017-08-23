@@ -1,0 +1,68 @@
+@import '~@userfeeds/apps-components/styles/colors';
+
+.self {
+  width: 100%;
+
+  .progress-cotainer {
+    position: relative;
+  }
+
+  .progress {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    z-index: 1;
+    width: 100%;
+    height: 1em;
+    border-radius: 1em;
+    background-color: $alto;
+  }
+
+  .steps-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    margin-top: calc(20px + 0.5em - 1.5em);
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.waiting {
+      opacity: 0.5;
+    }
+
+    &.done .icon, &.done path {
+      color: $green;
+      fill: $green;
+    }
+
+    .icon {
+      align-self: center;
+      width: 3em;
+      height: 3em;
+      background-color: $alto;
+      border-radius: 3em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .icon {
+    font-size: 1em;
+  }
+}

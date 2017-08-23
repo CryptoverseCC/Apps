@@ -1,0 +1,17 @@
+import { h } from 'preact';
+
+import Input from '@userfeeds/apps-components/src/Input';
+
+import Section from '../Section';
+
+const Title = ({ value, onChange }) => (
+  <Section header="Title" description="Add description here about title">
+    <Input
+      placeholder="Title"
+      value={value}
+      onChange={onChange}
+    />
+  </Section>
+);
+
+export default Title;
