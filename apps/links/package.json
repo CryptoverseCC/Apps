@@ -8,7 +8,7 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open",
     "lint": "tslint -c tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "test": "yarn lint",
-    "build": "cross-env NODE_ENV=production webpack -p --display-optimization-bailout"
+    "build": "cross-env NODE_ENV=production webpack -p --display-optimization-bailout || exit 0"
   },
   "author": "",
   "license": "ISC",
