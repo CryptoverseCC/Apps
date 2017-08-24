@@ -1,11 +1,13 @@
+@import '../styles/colors';
+
 .self {
   position: relative;
 
   & .text {
     visibility: hidden;
     width: 120px;
-    background-color: black;
-    color: #fff;
+    background-color: $black;
+    color: $white;
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;

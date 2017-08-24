@@ -6,7 +6,9 @@
     "jsxFactory": "h",
     "target": "es6",
     "strictNullChecks": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "lib": ["es2017", "dom"]
   },
   "include": [
     "./src/**/*",

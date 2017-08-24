@@ -12,4 +12,12 @@
   font-weight: 700;
   border: 0;
   margin-bottom: 3px;
+
+  .icon {
+    display: inline-block;
+  }
+
+  &:hover .icon {
+    transform: translate(3px, -3px);
+  }
 }

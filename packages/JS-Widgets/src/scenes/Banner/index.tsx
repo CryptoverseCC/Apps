@@ -82,25 +82,25 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
     return (
       <div class={cx(['self', size])} onMouseLeave={this._onInfoLeave}>
-        <div
-          class={style.info}
-          onMouseEnter={this._onInfoEnter}
-          onClick={this._onInfoEnter}
-        >
-          <EthereumLogo class={style.icon} />
-        </div>
         <div class={cx('options', { open: optionsOpen })}>
+          <div>
+            <span class={style.probabilityLabel}>Probability: </span>
+            <div class={style.probability}>{currentLink && `${currentLink.probability}%`}</div>
+          </div>
           <div class={style.arrows}>
-            <div class={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="chevron-left" /></div>
-            <Tooltip class={style.probability} text="Link probability">
-              {currentLink && `${currentLink.probability}%`}
-            </Tooltip>
-            <div class={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="chevron-right" /></div>
+            <div class={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="arrow-left" /></div>
+            <div class={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="arrow-right" /></div>
           </div>
           <Menu />
-          <div />
         </div>
         <div class={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
+          <div
+            class={style.info}
+            onMouseEnter={this._onInfoEnter}
+            onClick={this._onInfoEnter}
+          >
+            Sponsored with <EthereumLogo class={style.icon} />
+          </div>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
               <Link link={currentLink} lines={size === 'rectangle' ? 8 : 2} />

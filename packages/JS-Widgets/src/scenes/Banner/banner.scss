@@ -42,14 +42,17 @@
     z-index: 2;
     top: 0;
     right: 0;
-    opacity: 0.5;
-
-    &:hover {
-      opacity: 1;
-    }
+    color: $dusty-gray;
+    font-size: 0.8em;
 
     .icon {
+      opacity: 0.5;
       width: 32px;
+      vertical-align: middle;
+    }
+
+    &:hover .icon {
+      opacity: 1;
     }
   }
 
@@ -60,7 +63,7 @@
     height: $menu_height;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-end;
     background-color: $alto;
     box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
@@ -71,17 +74,20 @@
     transform: translateY(#{$menu_height - $initial_menu_height});
   }
 
+  .probability-label {
+    color: $dusty-gray;
+    font-size: 0.8em;
+  }
+
   .probability {
     min-width: 3em;
-    text-align: center;
+    display: inline-block;
+    text-align: left;
   }
 
   .arrows {
-    position: absolute;
-    left: 0;
     display: flex;
-    color: $dusty-gray;
-    transform: scale(0.75);
+    color: $tuna;
 
     .arrow {
       padding: 0;
@@ -89,14 +95,18 @@
 
       &.left {
         padding-right: 0.5em;
+
+        &:hover {
+          transform:translateX(-2px);
+        }
       }
 
       &.right {
         padding-left: 0.5em;
-      }
 
-      &:hover {
-        color: $tuna;
+        &:hover {
+          transform:translateX(2px);
+        }
       }
     }
   }
