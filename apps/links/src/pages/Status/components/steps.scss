@@ -2,6 +2,12 @@
 
 .self {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: row;
+  }
 
   .progress-cotainer {
     position: relative;
@@ -16,12 +22,23 @@
     height: 1em;
     border-radius: 1em;
     background-color: $alto;
+
+    @media screen and (max-width: 1200px) {
+      width: 1em;
+      height: 100%;
+      top: 0;
+      left: 20px;
+    }
   }
 
   .steps-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    @media screen and (max-width: 1200px) {
+      flex-direction: column;
+    }
   }
 
   .step {
@@ -29,6 +46,12 @@
     flex-direction: column;
     z-index: 2;
     margin-top: calc(20px + 0.5em - 1.5em);
+
+    @media screen and (max-width: 1200px) {
+      flex-direction: row;
+      margin-top: 0;
+      margin-left: calc(20px + 0.5em - 1.5em);
+    }
 
     &.disabled {
       opacity: 0.5;
@@ -59,6 +82,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      @media screen and (max-width: 1200px) {
+        align-items: flex-start;
+        padding-left: 20px;
+      }
     }
   }
 
