@@ -1,9 +1,10 @@
 @import '../styles/colors';
 
 .self {
-    font-size: 15px;
-    font-family:'PT Sans';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: $dusty-gray;
+  font-size: 15px;
+  text-align: left;
+  font-family:'PT Sans';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $dusty-gray;
 }
