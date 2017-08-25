@@ -20,12 +20,13 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
   };
 
   componentDidMount() {
-    fetch('${CORS_PROXY}https://search.maven.org/solrsearch/select/?q=g%3Aio.userfeeds.widget+AND+a%3Acore')
-      .then((res) => res.json())
-      .then((json) => {
-        const latestVersion = json.response.docs[0].latestVersion;
-        this.setState({ latestVersion });
-      });
+    // ToDo Write own `Highlight` component
+    // fetch(`${CORS_PROXY}https://search.maven.org/solrsearch/select/?q=g%3Aio.userfeeds.widget+AND+a%3Acore`)
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     const latestVersion = json.response.docs[0].latestVersion;
+    //     this.setState({ latestVersion });
+    //   });
   }
 
   render() {

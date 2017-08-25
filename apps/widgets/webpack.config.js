@@ -66,13 +66,6 @@ module.exports = {
     }, {
       test: /\.(woff|ttf|eot|svg|otf)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
       loader: 'url-loader?limit=100000',
-    }, {
-      test: /\.svg$/,
-      loader: 'svg-inline-loader',
-      options: {
-        removeTags: true,
-        removeSVGTagAttrs: true,
-      },
     }],
   },
   plugins: [

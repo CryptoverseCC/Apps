@@ -5,7 +5,7 @@ import Svg from '@userfeeds/apps-components/src/Svg';
 import Link from '@userfeeds/apps-components/src/Link';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Loader from '@userfeeds/apps-components/src/Loader';
-import Button from '@userfeeds/apps-components/src/ButtonSecondary';
+import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import Steps from './components/Steps';
@@ -123,7 +123,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
           <TextWithLabel class={style.label} label="Link status:">
             <div class={style.linkLabel}>
               <a class={style.link} href={window.location.href}>{window.location.href}</a>
-              <Button class={style.addBookmark}>Add to bookmarks</Button>
+              <Button secondary class={style.addBookmark}>Add to bookmarks</Button>
             </div>
           </TextWithLabel>
           <TextWithLabel class={style.label} label="Widget location:">

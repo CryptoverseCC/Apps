@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import Tabs from '@userfeeds/apps-components/src/Tabs';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
-import Label from '@userfeeds/apps-components/src/Label';
 import Snippet from '@userfeeds/apps-components/src/Snippet';
 import AndroidSnippet from '@userfeeds/apps-components/src/AndroidSnippet';
 
 import * as style from './summary.scss';
+
+const heartSvg = require('../../../../images/heart.svg');
 
 const Summary = (props) => {
   const params = new URLSearchParams(props.location.search);
@@ -25,7 +26,8 @@ const Summary = (props) => {
         <Icon name="arrow-circle-left" /> Go Back
       </Link>
       <div class={style.congratulations}>
-        <Label>Congratulactions!</Label>
+        <img src={heartSvg} />
+        <h2>Congratulactions!</h2>
         <span>Your widget is ready to use</span>
       </div>
       <Tabs

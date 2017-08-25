@@ -1,0 +1,12 @@
+@import '../styles/colors';
+
+.self {
+  line-height: 1.2em;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: $dusty-gray;
+  border-radius: 20px;
+  border: 1px solid $dusty-gray;
+  margin-left: 0.2em;
+  padding: 0.15em 0.8em;
+}

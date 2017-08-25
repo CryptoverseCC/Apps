@@ -3,14 +3,8 @@ import * as classnames from 'classnames';
 
 import * as style from './paper.scss';
 
-interface IPaperProps {
-  class?: string;
-}
-
-const Paper: FunctionalComponent<IPaperProps> = ({ class: className, children }) => (
-  <div class={classnames(className, style.self)}>
-    {children}
-  </div>
+const Paper: FunctionalComponent<JSX.HTMLAttributes> = ({ class: className, ...restProps }) => (
+  <div {...restProps} class={classnames(className, style.self)} />
 );
 
 export default Paper;

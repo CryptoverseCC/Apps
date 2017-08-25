@@ -2,12 +2,13 @@
 
 .self {
   position: relative;
-  margin-top: 20px;
   margin-bottom: 20px;
+  margin-top: 20px;
   width: 100%;
   font-family:'PT Sans';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: none!important; // ToDo make something with it
 
   .input {
     font-size: 15px;
@@ -23,6 +24,18 @@
       border: 1px solid $dodger-blue;
       background-color: $white;
     }
+
+    &:-moz-placeholder {
+      box-shadow: none!important;
+    }
+  }
+
+  &.invalid {
+    margin-bottom: calc(30px - 1em);
+  }
+
+  &.invalid > .input {
+    box-shadow: 0 0 5px 1px $red;
   }
 
   .placeholder {
@@ -34,10 +47,17 @@
     transition: 0.2s;
   }
 
-  .input:focus ~ .placeholder, .input:valid ~ .placeholder {
+  .input:focus ~ .placeholder, .input:valid ~ .placeholder, .input:disabled ~ .placeholder {
     color: $black;
     font-size: 11px;
     top: -16px;
     left: 0px;
+  }
+
+  .error {
+    color: $red;
+    height: 1em;
+    font-size: 0.8em;
+    font-weight: 600;
   }
 }
