@@ -19,7 +19,7 @@
   "peerDependencies": {
     "material-ui": "^0.18.3",
     "open-iconic": "^1.1.1",
-    "preact": "git+https://github.com/valotas/preact#ts-improvements-2",
+    "preact": "^8.2.4",
     "react-highlight": "^0.10.0",
     "react-select": "^1.0.0-rc.5"
   }
