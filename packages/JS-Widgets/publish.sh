@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "~~~~~Publishing version: $CI_BRANCH~~~~~"
+echo "~~~~~Publishing @linkexchange/widgets@$CI_BRANCH~~~~~"
 echo $NPMRC > ~/.npmrc
 
 IS_STABLE=`git tag --points-at HEAD | grep -E "^stable$"`
