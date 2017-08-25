@@ -8,11 +8,11 @@ if [ -n "$IS_STABLE" ]; then
   echo "IS STABLE"
   NPM_VERSION=`node -e "console.log(require('./package.json').version);"`
   npm publish
-  npm dist-tag add "@userfeeds/widgets@$NPM_VERSION" stable
-  curl http://purge.jsdelivr.net/npm/@userfeeds/widgets@stable
+  npm dist-tag add "@linkexchange/widgets@$NPM_VERSION" stable
+  curl http://purge.jsdelivr.net/npm/@linkexchange/widgets@stable
 else
   echo "NOT STABLE"
   npm publish
 fi
 
-curl http://purge.jsdelivr.net/npm/@userfeeds/widgets@latest
+curl http://purge.jsdelivr.net/npm/@linkexchange/widgets@latest

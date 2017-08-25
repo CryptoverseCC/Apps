@@ -1,4 +1,4 @@
-# Userfeeds-Widgets
+# Linkexchange-Widgets
 
 JS widget library
 

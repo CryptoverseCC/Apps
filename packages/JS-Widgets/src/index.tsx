@@ -11,10 +11,10 @@ import Banner from './scenes/Banner';
 import * as style from './styles/all.scss';
 
 if (process.env.NODE_ENV !== 'development') {
-  console.info(`Loaded @userfeeds/widgets@${VERSION}`);
+  console.info(`Loaded @linkexchange/widgets@${VERSION}`);
 }
 
-class UserfeedsLink extends HTMLElement {
+class LinkexchangeLink extends HTMLElement {
 
   static get observedAttributes() {
     return ['context', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
@@ -83,4 +83,4 @@ class UserfeedsLink extends HTMLElement {
   }
 }
 
-window.customElements.define('userfeeds-link', UserfeedsLink);
+window.customElements.define('linkexchange-link', LinkexchangeLink);

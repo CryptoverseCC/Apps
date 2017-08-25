@@ -1,5 +1,5 @@
 {
-  "name": "@userfeeds/widgets",
+  "name": "@linkexchange/widgets",
   "version": "${CI_BRANCH}",
   "description": "",
   "main": "build/bundle.js",
@@ -10,7 +10,7 @@
     "pretest": "yarn lint",
     "test": "jest"
   },
-  "author": "",
+  "author": "Userfeeds",
   "license": "ISC",
   "dependencies": {
     "@userfeeds/core": "0.0.17",
