@@ -17,9 +17,9 @@
     "tslint-react": "^3.2.0"
   },
   "peerDependencies": {
-    "preact": "git+https://github.com/valotas/preact#ts-improvements-2",
     "material-ui": "^0.18.3",
     "open-iconic": "^1.1.1",
+    "preact": "git+https://github.com/valotas/preact#ts-improvements-2",
     "react-highlight": "^0.10.0",
     "react-select": "^1.0.0-rc.5"
   }

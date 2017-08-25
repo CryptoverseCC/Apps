@@ -12,12 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@userfeeds/apps-components": "^0.0.1",
     "@userfeeds/core": "^0.0.11",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.1.2",
-    "react-tap-event-plugin": "^2.0.1",
-    "@userfeeds/apps-components": "*"
+    "react-tap-event-plugin": "^2.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
