@@ -7,7 +7,7 @@ const cx = classnames.bind(style);
 
 type TInputProps = JSX.HTMLAttributes & {
   placeholder: string;
-  onChange(value: string, name?: string): void;
+  onChange?(value: string, name?: string): void;
   multiline?: boolean;
   errorMessage?: string;
 };
@@ -18,9 +18,10 @@ export default class Input extends Component<TInputProps, {}> {
     focus(): void;
   } | undefined;
 
-  render({ class: className, placeholder, errorMessage, value, onChange, multiline, disabled = false, ...restProps }) {
+  render({ class: className, placeholder, errorMessage, value, multiline, disabled = false, ...restProps }
+    : TInputProps) {
     return (
-      <div class={cx(style.self, { invalid: !!errorMessage })}>
+      <div class={cx(style.self, className, { invalid: !!errorMessage })}>
         {!multiline ? (
           <input
             ref={this._onInputRef}
@@ -36,6 +37,7 @@ export default class Input extends Component<TInputProps, {}> {
             ref={this._onInputRef}
             class={style.input}
             value={value}
+            disabled={disabled}
             required
             onInput={this._onChange}
             rows={3}
@@ -49,7 +51,9 @@ export default class Input extends Component<TInputProps, {}> {
   }
 
   _onChange = (e) => {
-    this.props.onChange(e.target.value, this.props.name);
+    if (this.props.onChange) {
+      this.props.onChange(e.target.value, this.props.name);
+    }
   }
 
   _onInputRef = (ref) => this.input = ref;
