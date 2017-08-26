@@ -1,8 +1,6 @@
 import { h, Component } from 'preact';
 import debounce from 'lodash.debounce';
 
-// import CircularProgress from 'material-ui/CircularProgress';
-
 import Input from '@userfeeds/apps-components/src/Input';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import LinkListComponent from '@userfeeds/apps-components/src/LinkList';
@@ -54,14 +52,13 @@ export default class LinkList extends Component<ILinkListProps, ILinkListState> 
             disabled={this.state.contextFromParams}
           />
           <LinkListComponent links={this.state.links} />
-          {/* {this.state.fetching && <CircularProgress />} */}
         </Paper>
       </div>
     );
   }
 
-  _onContextChange = (context) => {
-    this.setState({ context });
+  _onContextChange = (e) => {
+    this.setState({ context: e.target.value });
     this._fetchLinks();
   }
 

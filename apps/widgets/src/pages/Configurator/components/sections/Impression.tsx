@@ -1,6 +1,5 @@
 import { h } from 'preact';
 
-import Input from '@userfeeds/apps-components/src/Input';
 import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
 
 import Section from '../Section';

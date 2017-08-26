@@ -4,8 +4,6 @@ import core from '@userfeeds/core';
 
 import debounce from 'lodash.debounce';
 
-// import CircularProgress from 'material-ui/CircularProgress';
-
 import Input from '@userfeeds/apps-components/src/Input';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import AdsList from '@userfeeds/apps-components/src/AdsList';
@@ -68,19 +66,18 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
           />
 
           <AdsList ads={this.state.links} onItemClick={this._onLinkClick} />
-          {/* {this.state.fetching && <CircularProgress />} */}
         </Paper>
       </div>
     );
   }
 
-  _onContextChange = (context) => {
-    this.setState({ context });
+  _onContextChange = (e) => {
+    this.setState({ context: e.target.value });
     this._fetchLinks();
   }
 
-  _onWhitelistChange = (whitelist) => {
-    this.setState({ whitelist });
+  _onWhitelistChange = (e) => {
+    this.setState({ whitelist: e.target.value });
     this._fetchLinks();
   }
 

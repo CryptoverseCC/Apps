@@ -4,7 +4,6 @@ import classnames from 'classnames';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Label from '@userfeeds/apps-components/src/Label';
-import Input from '@userfeeds/apps-components/src/Input';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
 
@@ -123,13 +122,6 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
           value={WIDGET_ALGORITHM[0].value}
           onChange={this._noop}
         />
-        {/*
-          <Input
-            placeholder="Whitelist ID"
-            value={this.state.widgetSettings.whitelistId}
-            onChange={this._onWhitelistIdChange}
-          />
-        */}
         <CreateWidget widgetSettings={this.state.widgetSettings} />
       </div>
     );
@@ -144,7 +136,9 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
     }));
   }
 
-  _handleChange = (name) => (value) => {
+  _handleChange = (name) => (e) => {
+    const value = e.target.value;
+
     this.setState(({ widgetSettings }) => ({
       widgetSettings: {
         ...widgetSettings,

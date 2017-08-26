@@ -7,7 +7,6 @@ const cx = classnames.bind(style);
 
 type TInputProps = JSX.HTMLAttributes & {
   placeholder: string;
-  onChange?(value: string, name?: string): void;
   multiline?: boolean;
   errorMessage?: string;
 };
@@ -29,7 +28,6 @@ export default class Input extends Component<TInputProps, {}> {
             value={value}
             disabled={disabled}
             required
-            onInput={this._onChange}
             {...restProps}
           />
         ) : (
@@ -39,7 +37,6 @@ export default class Input extends Component<TInputProps, {}> {
             value={value}
             disabled={disabled}
             required
-            onInput={this._onChange}
             rows={3}
             {...restProps}
           />
@@ -48,12 +45,6 @@ export default class Input extends Component<TInputProps, {}> {
         {errorMessage && <span class={style.error}>{errorMessage}</span>}
       </div>
     );
-  }
-
-  _onChange = (e) => {
-    if (this.props.onChange) {
-      this.props.onChange(e.target.value, this.props.name);
-    }
   }
 
   _onInputRef = (ref) => this.input = ref;
