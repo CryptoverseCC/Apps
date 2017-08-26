@@ -5,24 +5,20 @@ import * as style from './input.scss';
 
 const cx = classnames.bind(style);
 
-interface IInputProps {
+type TInputProps = JSX.HTMLAttributes & {
   placeholder: string;
-  class?: string;
-  value: string;
-  disabled?: boolean;
-  onChange(value: string): void;
+  onChange(value: string, name?: string): void;
   multiline?: boolean;
   errorMessage?: string;
-}
+};
 
-export default class Input extends Component<IInputProps, {}> {
+export default class Input extends Component<TInputProps, {}> {
 
   input: {
     focus(): void;
   } | undefined;
 
-  render() {
-    const {  class: className, placeholder, errorMessage, value, onChange, multiline, disabled = false } = this.props;
+  render({ class: className, placeholder, errorMessage, value, onChange, multiline, disabled = false, ...restProps }) {
     return (
       <div class={cx(style.self, { invalid: !!errorMessage })}>
         {!multiline ? (
@@ -33,6 +29,7 @@ export default class Input extends Component<IInputProps, {}> {
             disabled={disabled}
             required
             onInput={this._onChange}
+            {...restProps}
           />
         ) : (
           <textarea
@@ -42,6 +39,7 @@ export default class Input extends Component<IInputProps, {}> {
             required
             onInput={this._onChange}
             rows={3}
+            {...restProps}
           />
         )}
         <span class={style.placeholder} onClick={this._onPlaceholderClick}>{placeholder}</span>
@@ -51,7 +49,7 @@ export default class Input extends Component<IInputProps, {}> {
   }
 
   _onChange = (e) => {
-    this.props.onChange(e.target.value);
+    this.props.onChange(e.target.value, this.props.name);
   }
 
   _onInputRef = (ref) => this.input = ref;

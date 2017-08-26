@@ -7,12 +7,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: $dodger-blue;
-  border-radius: 3px;
   letter-spacing: 0.01em;
-  font-size: 15px;
-  font-weight: 300;
-  color: $white;
-  padding: 13px 25px !important;
+
+  &.primary {
+    font-weight: 300;
+    color: $white;
+    font-size: 15px;
+    border-radius: 3px;
+    padding: 13px 25px !important;
+  }
 
   &.secondary {
     float:right;

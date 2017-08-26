@@ -10,7 +10,7 @@ type TButtonProps = JSX.HTMLAttributes & {
 };
 
 const Button = ({ class: className, secondary = false, ...restProps }: TButtonProps) => (
-  <button class={cx(style.self, className, { secondary })} {...restProps} />
+  <button class={cx(style.self, className, { primary: !secondary, secondary })} {...restProps} />
 );
 
 export default Button;
