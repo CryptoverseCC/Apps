@@ -55,13 +55,13 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
           <Input
             placeholder="Userfeed ID"
             value={this.state.context}
-            onChange={this._onContextChange}
+            onInput={this._onContextChange}
             disabled={this.state.contextFromParams}
           />
           <Input
             placeholder="Whitelist ID"
             value={this.state.whitelist}
-            onChange={this._onWhitelistChange}
+            onInput={this._onWhitelistChange}
             disabled={this.state.whitelistFromParams}
           />
 

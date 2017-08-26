@@ -18,13 +18,13 @@ const Address = ({ network, address, onNetworkChange, onAddressChange }) => (
         disabled={false}
         placeholder="Network"
         value={network}
-        onChange={onNetworkChange}
+        onInput={onNetworkChange}
         options={WIDGET_NETWORKS}
       />
       <Input
         placeholder="Userfeed Address"
         value={address}
-        onChange={onAddressChange}
+        onInput={onAddressChange}
       />
     </div>
   </Section>

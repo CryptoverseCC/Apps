@@ -9,7 +9,7 @@ const Title = ({ value, onChange }) => (
     <Input
       placeholder="Title"
       value={value}
-      onChange={onChange}
+      onInput={onChange}
     />
   </Section>
 );

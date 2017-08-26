@@ -9,7 +9,7 @@ const Contact = ({ value, onChange }) => (
     <Input
       placeholder="Contact method"
       value={value}
-      onChange={onChange}
+      onInput={onChange}
     />
   </Section>
 );

@@ -50,7 +50,7 @@ const Size = ({ value, onChange }) => (
       name="widgetSize"
       value={value}
       options={WIDGET_SIZES}
-      onChange={onChange}
+      onInput={onChange}
     />
   </Section>
 );

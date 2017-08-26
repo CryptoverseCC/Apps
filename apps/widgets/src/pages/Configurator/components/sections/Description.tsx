@@ -10,7 +10,7 @@ const Description = ({ value, onChange }) => (
       multiline
       placeholder="Description"
       value={value}
-      onChange={onChange}
+      onInput={onChange}
     />
   </Section>
 );

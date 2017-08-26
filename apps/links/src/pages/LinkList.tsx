@@ -48,7 +48,7 @@ export default class LinkList extends Component<ILinkListProps, ILinkListState> 
           <Input
             placeholder="Advertiser ID"
             value={this.state.context}
-            onChange={this._onContextChange}
+            onInput={this._onContextChange}
             disabled={this.state.contextFromParams}
           />
           <LinkListComponent links={this.state.links} />
