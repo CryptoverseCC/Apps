@@ -2,6 +2,10 @@ import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
+import Paper from '@userfeeds/apps-components/src/Paper';
+import Button from '@userfeeds/apps-components/src/Button';
+import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+
 import { IRootState } from '../../reducers';
 import { ILink, TWidgetSize } from '../../types';
 
@@ -12,9 +16,6 @@ import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../select
 
 import Switch from '../../components/utils/Switch';
 
-import Button from '../../components/Button';
-import Paper from '../../components/Paper';
-import TextWithLabel from '../../components/TextWithLabel';
 
 import SideMenu from './components/SideMenu';
 import DetailsList from './components/DetailsList';

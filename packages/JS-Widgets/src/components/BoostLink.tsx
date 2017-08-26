@@ -1,6 +1,10 @@
 import { h, Component } from 'preact';
 
 import * as core from '@userfeeds/core';
+import Input from '@userfeeds/apps-components/src/Input';
+import Button from '@userfeeds/apps-components/src/Button';
+import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import { ILink } from '../types';
 
@@ -8,10 +12,6 @@ import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
 import If from './utils/If';
-import Input from './Input';
-import Tooltip from './Tooltip';
-import Button from './ButtonSecondary';
-import TextWithLabel from './TextWithLabel';
 
 import * as style from './boostLink.scss';
 
@@ -64,7 +64,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     return (
       <div ref={this._onButtonRef} class={style.self}>
         <Tooltip text={disabledReason}>
-          <Button disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
+          <Button secondary class={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
         </Tooltip>
         <If condition={visible}>
           <div class={style.overlay} onClick={this._onOverlayClick} />
@@ -139,16 +139,17 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     this.setState({ visible: false });
   }
 
-  _onValueChange = (event) => {
-    this.setState({ value: event.target.value });
+  _onValueChange = (e) => {
+    const value = e.target.value;
+    this.setState({ value });
 
     const { link } = this.props;
     const { sum } = this.state;
 
-    const validationError = validate(valueValidationRules, event.target.value);
+    const validationError = validate(valueValidationRules, value);
 
     if (!validationError) {
-      const valueInEth = parseFloat(event.target.value);
+      const valueInEth = parseFloat(value);
       const valueInWei = parseFloat(web3.toWei(valueInEth, 'ether'));
       const rawProbability = (link.score + valueInWei) / (sum + valueInWei);
       const probability = (100 * rawProbability).toFixed(2);

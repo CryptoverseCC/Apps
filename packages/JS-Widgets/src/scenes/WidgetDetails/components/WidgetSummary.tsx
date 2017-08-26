@@ -1,13 +1,14 @@
 import { h } from 'preact';
 import * as classnames from 'classnames';
 
+import Icon from '@userfeeds/apps-components/src/Icon';
+import Button from '@userfeeds/apps-components/src/Button';
+import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+
 import { IWidgetState } from '../../../reducers/widget';
 
-import Icon from '../../../components/Icon';
-import Button from '../../../components/Button';
-import Tooltip from '../../../components/Tooltip';
 import EthereumLogo from '../../../components/EthereumLogo';
-import TextWithLabel from '../../../components/TextWithLabel';
 
 import * as style from './widgetSummary.scss';
 

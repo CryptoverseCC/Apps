@@ -1,12 +1,14 @@
 import { h, Component } from 'preact';
 
+import Link from '@userfeeds/apps-components/src/Link';
+import Paper from '@userfeeds/apps-components/src/Paper';
+import Button from '@userfeeds/apps-components/src/Button';
+
 import { ILink } from '../../../types';
 
 import web3 from '../../../utils/web3';
 
-import Link from '../../../components/Link';
-import Paper from '../../../components/Paper';
-import Button from '../../../components/Button';
+
 import BoostLink from '../../../components/BoostLink';
 
 import * as style from './linksList.scss';

@@ -1,10 +1,11 @@
 import { h } from 'preact';
 
+import Paper from '@userfeeds/apps-components/src/Paper';
+import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+
 import { TWidgetSize } from '../../../types';
 
-import Paper from '../../../components/Paper';
 import EthereumLogo from '../../../components/EthereumLogo';
-import TextWithLabel from '../../../components/TextWithLabel';
 
 import * as style from './widgetSpecification.scss';
 

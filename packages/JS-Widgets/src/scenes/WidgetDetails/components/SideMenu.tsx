@@ -1,8 +1,8 @@
 import { h } from 'preact';
 
-import { TViewType } from '../';
+import Pill from '@userfeeds/apps-components/src/Pill';
 
-import Pill from '../../../components/Pill';
+import { TViewType } from '../';
 
 import * as style from './sideMenu.scss';
 

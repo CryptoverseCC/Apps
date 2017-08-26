@@ -2,13 +2,14 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
+import Modal from '@userfeeds/apps-components/src/Modal';
+
 import { IRootState } from '../../../reducers';
 import { modalActions } from '../../../actions/modal';
 
 import AddLink from '../../AddLink';
 import WidgetDetails from '../../WidgetDetails';
 
-import Modal from '../../../components/Modal';
 
 const ModalMapping = {
   addLink: AddLink,

@@ -2,9 +2,9 @@ import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { modalActions } from '../../../actions/modal';
+import Icon from '@userfeeds/apps-components/src/Icon';
 
-import Icon from '../../../components/Icon';
+import { modalActions } from '../../../actions/modal';
 
 import * as style from './menu.scss';
 

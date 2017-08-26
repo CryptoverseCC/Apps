@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import * as classnames from 'classnames/bind';
 
-import Icon from '../../../components/Icon';
+import Icon from '@userfeeds/apps-components/src/Icon';
 
 import * as style from './toast.scss';
 

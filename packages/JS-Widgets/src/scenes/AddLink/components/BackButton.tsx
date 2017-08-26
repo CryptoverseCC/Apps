@@ -1,6 +1,6 @@
 import { h } from 'preact';
 
-import Icon from '../../../components/Icon';
+import Icon from '@userfeeds/apps-components/src/Icon';
 
 import * as style from './backButton.scss';
 

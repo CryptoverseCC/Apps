@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import * as QRious from 'qrious';
 
-import Icon from '../../../components/Icon';
-import Paper from '../../../components/Paper';
-import TextWithLabel from '../../../components/TextWithLabel';
+import Icon from '@userfeeds/apps-components/src/Icon';
+import Paper from '@userfeeds/apps-components/src/Paper';
+import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import * as style from './userfeedsAddressInfo.scss';
 

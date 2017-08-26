@@ -3,6 +3,11 @@ import { connect } from 'preact-redux';
 import * as classnames from 'classnames/bind';
 import { returntypeof } from 'react-redux-typescript';
 
+import Icon from '@userfeeds/apps-components/src/Icon';
+import Link from '@userfeeds/apps-components/src/Link';
+import Label from '@userfeeds/apps-components/src/Label';
+import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+
 import { ILink } from '../../types';
 import { IRootState } from '../../reducers';
 import { fetchLinks } from '../../actions/links';
@@ -11,10 +16,7 @@ import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
 import EthereumLogo from '../../components/EthereumLogo';
-import Tooltip from '../../components/Tooltip';
-import Label from '../../components/Label';
-import Link from '../../components/Link';
-import Icon from '../../components/Icon';
+
 
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';

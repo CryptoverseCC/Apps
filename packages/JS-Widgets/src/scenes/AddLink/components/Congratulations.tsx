@@ -1,7 +1,7 @@
 import { h } from 'preact';
 
-import Button from '../../../components/Button';
-import TextWithLabel from '../../../components/TextWithLabel';
+import Button from '@userfeeds/apps-components/src/Button';
+import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import { openUserfeedsUrl } from '../../../utils/openUserfeedsUrl';
 

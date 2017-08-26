@@ -1,16 +1,16 @@
 import { h, Component } from 'preact';
 
 import * as core from '@userfeeds/core';
+import Input from '@userfeeds/apps-components/src/Input';
+import Button from '@userfeeds/apps-components/src/Button';
+import Loader from '@userfeeds/apps-components/src/Loader';
+import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 
 import { ILink } from '../types';
 
 import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
-import Input from './Input';
-import Loader from './Loader';
-import Button from './Button';
-import Tooltip from './Tooltip';
 
 import * as style from './addLink.scss';
 
@@ -80,32 +80,32 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           placeholder="Title"
           value={title}
           errorMessage={errors.title}
-          onBlur={this._onInputEvent}
-          onInput={this._onInputEvent}
+          onBlur={this._onInput}
+          onInput={this._onInput}
         />
         <Input
           placeholder="Summary"
           name="summary"
           value={summary}
           errorMessage={errors.summary}
-          onBlur={this._onInputEvent}
-          onInput={this._onInputEvent}
+          onBlur={this._onInput}
+          onInput={this._onInput}
         />
         <Input
           placeholder="URL"
           name="target"
           value={target}
           errorMessage={errors.target}
-          onBlur={this._onInputEvent}
-          onInput={this._onInputEvent}
+          onBlur={this._onInput}
+          onInput={this._onInput}
         />
         <Input
           placeholder="Value"
           value={value}
           name="value"
           errorMessage={errors.value}
-          onBlur={this._onInputEvent}
-          onInput={this._onInputEvent}
+          onBlur={this._onInput}
+          onInput={this._onInput}
         />
         <div class={style.sendButton}>
           {posting
@@ -121,9 +121,8 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     );
   }
 
-  _onInputEvent = (e) => {
-    const { name, value } = e.target;
-
+  _onInput = (e) => {
+    const { value, name } = e.target;
     this.setState({
       [name]: value,
       errors: {

@@ -19,11 +19,11 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.tsx?$/,
-      exclude: /(node_modules)/,
+      exclude: /node_modules\/(?!@userfeeds)/,
       loader: 'awesome-typescript-loader',
     }, {
       test: /\.scss$/,
-      exclude: /(node_modules)/,
+      exclude: /node_modules\/(?!@userfeeds)/,
       use: [{
         loader: 'style-loader',
       }, {
@@ -54,7 +54,7 @@ module.exports = {
       }],
     }, {
       test: /\.(css|scss)$/,
-      include: /(node_modules)/,
+      include: /node_modules\/(?!@userfeeds)/,
       use: ['style-loader', 'css-loader', 'sass-loader'],
     }, {
       test: /\.(png|jpg|gif)$/,
@@ -62,16 +62,7 @@ module.exports = {
     }, {
       test: /\.(woff|ttf|eot|svg|otf)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
       loader: 'url-loader?limit=100000',
-    },
-    // {
-    //   test: /\.svg$/,
-    //   loader: 'svg-inline-loader',
-    //   options: {
-    //     removeTags: true,
-    //     removeSVGTagAttrs: true,
-    //   },
-    // }
-    ],
+    }],
   },
   plugins: [
     new HtmlWebpackPlugin({

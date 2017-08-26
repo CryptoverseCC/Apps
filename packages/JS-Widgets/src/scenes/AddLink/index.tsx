@@ -2,6 +2,9 @@ import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
+import Paper from '@userfeeds/apps-components/src/Paper';
+import Link from '@userfeeds/apps-components/src/Link';
+
 import { ILink } from '../../types';
 import { IRootState } from '../../reducers';
 import { web3Enabled } from '../../selectors/web3';
@@ -10,8 +13,6 @@ import { openToast, TToastType } from '../../actions/toast';
 
 import Switch from '../../components/utils/Switch';
 
-import Link from '../../components/Link';
-import Paper from '../../components/Paper';
 import AddLink from '../../components/AddLink';
 
 import Steps from './components/Steps';
