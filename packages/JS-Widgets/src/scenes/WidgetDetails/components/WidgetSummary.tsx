@@ -50,12 +50,13 @@ const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSepara
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="link-intact" /> Widget location</span>}
-        text={widgetSettings.location}
-      />
+      >
+        <a href={widgetSettings.location}>{widgetSettings.location}</a>
+      </TextWithLabel>
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="envelope-open" /> Contact</span>}
-        text={widgetSettings.publisherNote || '-'}
+        text={widgetSettings.contactMethod || '-'}
       />
       <TextWithLabel
         class={style.box}

@@ -14,6 +14,7 @@ export interface IWidgetState {
   whitelist?: string;
   slots: number;
   timeslot: number;
+  contactMethod?: string;
   publisherNote?: string;
   title: string;
   description: string;

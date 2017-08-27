@@ -61,7 +61,8 @@ class LinkexchangeLink extends HTMLElement {
     const whitelist = this.getAttribute('whitelist');
     const slots = this.getAttribute('slots') || 10;
     const algorithm = this.getAttribute('algorithm');
-    const publisherNote = this.getAttribute('contact-method');
+    const contactMethod = this.getAttribute('contact-method');
+    const publisherNote = this.getAttribute('publisher-note');
     const title = this.getAttribute('widget-title');
     const description = this.getAttribute('description');
     const impression = this.getAttribute('impression');
@@ -71,6 +72,7 @@ class LinkexchangeLink extends HTMLElement {
       algorithm,
       context,
       publisherNote,
+      contactMethod,
       size,
       timeslot,
       whitelist,
