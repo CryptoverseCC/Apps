@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, Middleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
-import rootReducer, { IWidgetState } from '../reducers';
+import rootReducer, { IWidgetState } from '../ducks';
 
 const middlewares: Middleware[] = [
   ReduxThunk,

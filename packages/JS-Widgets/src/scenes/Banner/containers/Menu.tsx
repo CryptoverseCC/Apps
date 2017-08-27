@@ -4,7 +4,7 @@ import { returntypeof } from 'react-redux-typescript';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 
-import { modalActions } from '../../../actions/modal';
+import { modalActions } from '../../../ducks/modal';
 
 import * as style from './menu.scss';
 

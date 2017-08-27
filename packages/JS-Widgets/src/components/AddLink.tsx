@@ -11,7 +11,6 @@ import { ILink } from '../types';
 import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
-
 import * as style from './addLink.scss';
 
 interface IAddLinkProps {

@@ -8,7 +8,6 @@ import { ILink } from '../../../types';
 
 import web3 from '../../../utils/web3';
 
-
 import BoostLink from '../../../components/BoostLink';
 
 import * as style from './linksList.scss';

@@ -6,10 +6,11 @@ import Paper from '@userfeeds/apps-components/src/Paper';
 import Link from '@userfeeds/apps-components/src/Link';
 
 import { ILink } from '../../types';
-import { IRootState } from '../../reducers';
 import { web3Enabled } from '../../selectors/web3';
-import { modalActions } from '../../actions/modal';
-import { openToast, TToastType } from '../../actions/toast';
+
+import { IRootState } from '../../ducks';
+import { modalActions } from '../../ducks/modal';
+import { openToast, TToastType } from '../../ducks/toast';
 
 import Switch from '../../components/utils/Switch';
 

@@ -1,8 +1,10 @@
-import { actionCreatorFactory } from 'typescript-fsa';
-import * as core from '@userfeeds/core';
+import { actionCreatorFactory, isType } from 'typescript-fsa';
+import { Action } from 'redux';
 import * as isEqual from 'lodash/isEqual';
 
-import { IRootState } from '../reducers';
+import * as core from '@userfeeds/core';
+
+import { IRootState } from './';
 
 import web3 from '../utils/web3';
 
@@ -36,3 +38,22 @@ export const observeInjectedWeb3 = () => (dispatch, getState: () => IRootState) 
 
   setInterval(check, 1000);
 };
+
+export interface IWeb3State {
+  available: boolean;
+  unlocked: boolean;
+  network?: string;
+}
+
+const initialState: IWeb3State = {
+  available: false,
+  unlocked: false,
+};
+
+export default function web3Reducer(state: IWeb3State = initialState, action: Action) {
+  if (isType(action, web3Actions.updateAvailability)) {
+    return action.payload;
+  }
+
+  return state;
+}

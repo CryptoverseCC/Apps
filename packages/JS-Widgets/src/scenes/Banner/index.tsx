@@ -9,14 +9,13 @@ import Label from '@userfeeds/apps-components/src/Label';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 
 import { ILink } from '../../types';
-import { IRootState } from '../../reducers';
-import { fetchLinks } from '../../actions/links';
-import { observeInjectedWeb3 } from '../../actions/web3';
+import { IRootState } from '../../ducks';
+import { fetchLinks } from '../../ducks/links';
+import { observeInjectedWeb3 } from '../../ducks/web3';
 import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
 import EthereumLogo from '../../components/EthereumLogo';
-
 
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';

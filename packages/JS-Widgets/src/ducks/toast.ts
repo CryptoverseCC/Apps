@@ -1,4 +1,6 @@
-import { actionCreatorFactory } from 'typescript-fsa';
+import { actionCreatorFactory, isType } from 'typescript-fsa';
+import { Action } from 'redux';
+
 import * as core from '@userfeeds/core';
 
 const acf = actionCreatorFactory('toast');
@@ -19,3 +21,17 @@ export const openToast = (message: string, type: TToastType = 'failure', timeout
   dispatch(toastActions.open({ message, type }));
   setTimeout(() => dispatch(toastActions.close(message)), timeout);
 };
+
+export type TToastState = IToast[];
+
+const initialState: TToastState = [];
+
+export default function web3Reducer(state: TToastState = initialState, action: Action) {
+  if (isType(action, toastActions.open)) {
+    return [...state, action.payload];
+  } else if (isType(action, toastActions.close)) {
+    return state.filter(({ message }) => message !== action.payload);
+  }
+
+  return state;
+}

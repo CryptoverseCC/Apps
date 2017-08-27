@@ -4,12 +4,11 @@ import { returntypeof } from 'react-redux-typescript';
 
 import Modal from '@userfeeds/apps-components/src/Modal';
 
-import { IRootState } from '../../../reducers';
-import { modalActions } from '../../../actions/modal';
+import { IRootState } from '../../../ducks';
+import { modalActions } from '../../../ducks/modal';
 
 import AddLink from '../../AddLink';
 import WidgetDetails from '../../WidgetDetails';
-
 
 const ModalMapping = {
   addLink: AddLink,

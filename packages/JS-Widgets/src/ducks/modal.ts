@@ -1,7 +1,12 @@
+import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
-import { isType } from 'typescript-fsa';
 
-import { modalActions } from '../actions/modal';
+const acf = actionCreatorFactory('modal');
+
+export const modalActions = {
+  open: acf<{ modalName: string, modalProps?: any }>('OPEN'),
+  close: acf('CLOSE'),
+};
 
 export interface IModalState {
   modalName?: string;

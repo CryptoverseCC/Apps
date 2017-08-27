@@ -1,6 +1,7 @@
-import { actionCreatorFactory } from 'typescript-fsa';
+import { actionCreatorFactory, isType } from 'typescript-fsa';
+import { Action } from 'redux';
 
-import { IRootState } from '../reducers';
+import { IRootState } from './';
 import { ILink } from '../types';
 
 import { throwErrorOnNotOkResponse } from '../utils/fetch';
@@ -38,3 +39,33 @@ export const fetchLinks = () => async (dispatch, getState: () => IRootState) => 
     dispatch(fetchLinksActions.failed(e));
   }
 };
+
+export interface ILinksState {
+  fetching: boolean;
+  fetched: boolean;
+  links: ILink[];
+  allLinks: ILink[];
+}
+
+const initialState: ILinksState = {
+  fetching: false,
+  fetched: false,
+  links: [],
+  allLinks: [],
+};
+
+export default function links(state: ILinksState = initialState, action: Action): ILinksState {
+  if (isType(action, fetchLinksActions.started)) {
+    return { ...state, fetching: true, fetched: false };
+  } else if (isType(action, fetchLinksActions.done)) {
+    return {
+      ...state,
+      fetching: false,
+      fetched: true,
+      links: action.payload.result.whitelistedLinks,
+      allLinks: action.payload.result.allLinks,
+    };
+  }
+
+  return state;
+}

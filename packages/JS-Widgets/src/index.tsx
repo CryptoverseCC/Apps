@@ -4,7 +4,7 @@ import { h, render } from 'preact';
 import { Provider } from 'preact-redux';
 
 import getStore from './store';
-import { updateWidgetSettings } from './actions/widget';
+import { updateWidgetSettings } from './ducks/widget';
 
 import Banner from './scenes/Banner';
 

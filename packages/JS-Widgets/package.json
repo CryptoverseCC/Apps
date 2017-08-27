@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@userfeeds/core": "0.0.17",
-    "@userfeeds/apps-components": "^0.0.6",
+    "@userfeeds/apps-components": "^0.0.7",
     "classnames": "^2.2.5",
     "lodash": "~4.17.4",
     "open-iconic": "^1.1.1",

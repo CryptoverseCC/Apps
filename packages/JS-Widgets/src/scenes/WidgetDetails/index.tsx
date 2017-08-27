@@ -6,16 +6,15 @@ import Paper from '@userfeeds/apps-components/src/Paper';
 import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
-import { IRootState } from '../../reducers';
+import { IRootState } from '../../ducks';
 import { ILink, TWidgetSize } from '../../types';
 
-import { openToast, TToastType } from '../../actions/toast';
-import { modalActions } from '../../actions/modal';
+import { openToast, TToastType } from '../../ducks/toast';
+import { modalActions } from '../../ducks/modal';
 import { web3Enabled } from '../../selectors/web3';
 import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
-
 
 import SideMenu from './components/SideMenu';
 import DetailsList from './components/DetailsList';

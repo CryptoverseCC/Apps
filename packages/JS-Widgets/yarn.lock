@@ -41,9 +41,9 @@
   version "20.0.4"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-20.0.4.tgz#91e2c76fbe90b3a719b5d689958f0495f005beb9"
 
-"@userfeeds/apps-components@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@userfeeds/apps-components/-/apps-components-0.0.6.tgz#c465c6693de018073d5559b903ca5557a99a43fa"
+"@userfeeds/apps-components@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@userfeeds/apps-components/-/apps-components-0.0.7.tgz#06d019c53e31529ab6ae9cadf8188c23b9095cc6"
   dependencies:
     classnames "^2.2.5"
     open-iconic "^1.1.1"

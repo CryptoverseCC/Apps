@@ -2,8 +2,8 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { IRootState } from '../../../reducers';
-import { toastActions } from '../../../actions/toast';
+import { IRootState } from '../../../ducks';
+import { toastActions } from '../../../ducks/toast';
 
 import Toast from '../components/Toast';
 
