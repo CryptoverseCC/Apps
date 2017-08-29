@@ -9,7 +9,7 @@ import './index.scss';
 
 const root = document.querySelector('.root');
 
-const [,searchParams] = document.location.href.split('?');
+const [, searchParams] = document.location.href.split('?');
 const store = getStore(qs.parse(searchParams));
 
 if (root) {
