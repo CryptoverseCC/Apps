@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { IRootState } from '../reducers';
+import { IRootState } from '../ducks';
 
 const web3State = ({ web3 }: IRootState) => web3;
 const widgetSettings = ({ widget }: IRootState) => widget;

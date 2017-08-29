@@ -20,6 +20,7 @@
     "preact": "8.2.1",
     "preact-compat": "3.17.0",
     "preact-redux": "^2.0.2",
+    "normalize.css": "7.0.0",
     "qs": "^6.5.0",
     "react-router-dom": "^4.1.2",
     "redux": "^3.7.1"

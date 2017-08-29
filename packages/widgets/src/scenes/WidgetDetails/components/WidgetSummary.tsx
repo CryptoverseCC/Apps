@@ -13,6 +13,7 @@ import EthereumLogo from '../../../components/EthereumLogo';
 import * as style from './widgetSummary.scss';
 
 interface IWidgetSummaryProps {
+  // isMobile?: boolean;
   web3Enabled: {
     enabled: boolean;
     reason?: string;
@@ -25,17 +26,19 @@ interface IWidgetSummaryProps {
 const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSeparateWindow }: IWidgetSummaryProps) => (
   <div class={style.self}>
     <div class={style.header}>
-      <EthereumLogo class={style.logo} />
       <div>
-        <div class="row">
-          <h2>{widgetSettings.title}</h2>
+        <div class={style.title}>
+          <EthereumLogo class={style.logo} />
+          <div>
+            <h2>{widgetSettings.title}</h2>
+            <p>{widgetSettings.description}</p>
+          </div>
           <button onClick={onOpenInSeparateWindow} class={style.openInNewWindow}>
-            <Icon name="external-link" /> New window
-            </button>
+            <Icon name="external-link" />
+          </button>
         </div>
-        <p>{widgetSettings.description}</p>
       </div>
-      <Tooltip text={web3Enabled.reason} style={{ marginLeft: 'auto' }}>
+      <Tooltip class={style.addButtonContainer} text={web3Enabled.reason}>
         <Button class={style.addButton} disabled={!web3Enabled.enabled} onClick={onAddClick}>
           ⊕ Add New Link
         </Button>

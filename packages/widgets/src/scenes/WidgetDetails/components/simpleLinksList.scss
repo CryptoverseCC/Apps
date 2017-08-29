@@ -1,0 +1,12 @@
+.self {
+
+  .linkRow {
+    margin-top: 10px;
+  }
+
+  .linkProperties {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

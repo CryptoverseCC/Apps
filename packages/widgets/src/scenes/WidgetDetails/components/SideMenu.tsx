@@ -10,8 +10,8 @@ interface ISideMenuProps {
   slots: number;
   whitelistedLinksCount: number;
   allLinksCount: number;
-  activeItem: TViewType;
   hasWhitelist: boolean;
+  activeItem: TViewType;
   onItemClick(name: TViewType): void;
 }
 

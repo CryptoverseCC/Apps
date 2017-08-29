@@ -19,8 +19,10 @@ import Switch from '../../components/utils/Switch';
 
 import SideMenu from './components/SideMenu';
 import DetailsList from './components/DetailsList';
+import DetailsAccordion from './components/DetailsAccordion';
 import WidgetSummary from './components/WidgetSummary';
 
+import { mobileOrTablet } from '../../utils/userAgent';
 import { openUserfeedsUrl } from '../../utils/openUserfeedsUrl';
 
 import * as style from './widgetDetails.scss';
@@ -30,6 +32,7 @@ export type TViewType = 'Userfeed' | 'Specification' | 'Links.Algorithm'
 
 interface IWidgetDetailsState {
   viewType: TViewType;
+  mobileOrTablet: boolean;
 }
 
 const mapStateToProps = (state: IRootState) => {
@@ -69,13 +72,14 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
     super(props);
     this.state = {
       viewType: 'Links.Slots',
+      mobileOrTablet: mobileOrTablet(),
     };
   }
 
   render(
     { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount }
     : IWidgetDetailsProps,
-    { viewType }: IWidgetDetailsState) {
+    { viewType, mobileOrTablet }: IWidgetDetailsState) {
 
     return (
       <div class={classnames(style.self, this.props.class)}>
@@ -85,31 +89,48 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
           onAddClick={this._onAddLinkClick}
           onOpenInSeparateWindow={this._onOpenInSeparateWindowClick}
         />
-        <div class={style.details}>
-          <SideMenu
-            slots={widgetSettings.slots}
-            whitelistedLinksCount={whitelistedLinksCount}
-            hasWhitelist={!!widgetSettings.whitelist}
-            allLinksCount={allLinksCount}
-            activeItem={this.state.viewType}
-            onItemClick={this._menuItemClicked}
-          />
-          <DetailsList
-            web3Enabled={web3Enabled}
-            initialView={viewType}
-            scrolledTo={this._onScrolledTo}
-            ref={this._onDetailsListRef}
-            context={widgetSettings.context}
-            hasWhitelist={!!widgetSettings.whitelist}
-            size={widgetSettings.size}
-            links={links}
-            whitelistedLinks={whitelistedLinks}
-            allLinks={allLinks}
-            allLinksCount={allLinksCount}
-            onBoostSuccess={this._onBoostSuccess}
-            onBoostError={this._onBoostError}
-          />
-        </div>
+        <Switch expresion={mobileOrTablet ? 'mobile' : 'desktop'}>
+          <Switch.Case condition={'mobile'}>
+            <DetailsAccordion
+              context={widgetSettings.context}
+              slots={widgetSettings.slots}
+              whitelistedLinksCount={whitelistedLinksCount}
+              hasWhitelist={!!widgetSettings.whitelist}
+              allLinksCount={allLinksCount}
+              size={widgetSettings.size}
+              links={links}
+              whitelistedLinks={whitelistedLinks}
+              allLinks={allLinks}
+            />
+          </Switch.Case>
+          <Switch.Case condition={'desktop'}>
+            <div class={style.details}>
+              <SideMenu
+                slots={widgetSettings.slots}
+                whitelistedLinksCount={whitelistedLinksCount}
+                hasWhitelist={!!widgetSettings.whitelist}
+                allLinksCount={allLinksCount}
+                activeItem={this.state.viewType}
+                onItemClick={this._menuItemClicked}
+              />
+              <DetailsList
+                web3Enabled={web3Enabled}
+                initialView={viewType}
+                scrolledTo={this._onScrolledTo}
+                ref={this._onDetailsListRef}
+                context={widgetSettings.context}
+                hasWhitelist={!!widgetSettings.whitelist}
+                size={widgetSettings.size}
+                links={links}
+                whitelistedLinks={whitelistedLinks}
+                allLinks={allLinks}
+                allLinksCount={allLinksCount}
+                onBoostSuccess={this._onBoostSuccess}
+                onBoostError={this._onBoostError}
+              />
+            </div>
+          </Switch.Case>
+        </Switch>
       </div>
     );
   }

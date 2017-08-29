@@ -6,7 +6,7 @@ const hashFunction = (...args) => args.reduce((acc, val) => acc + '-' + JSON.str
 // ToDo optimize this?
 const createSelector = createSelectorCreator(memoize, hashFunction);
 
-import { IRootState } from '../reducers';
+import { IRootState } from '../ducks';
 import { ILink } from '../types';
 
 const whitelistedLinks = ({ links }: IRootState) => links.links;

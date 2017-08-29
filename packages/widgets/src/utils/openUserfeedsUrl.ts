@@ -1,4 +1,4 @@
-import { IWidgetState } from '../reducers/widget';
+import { IWidgetState } from '../ducks/widget';
 
 type TExtendedWidgetState = IWidgetState & {
   linkId?: string;
