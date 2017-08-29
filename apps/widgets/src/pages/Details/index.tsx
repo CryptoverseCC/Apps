@@ -3,7 +3,9 @@ import { connect } from 'preact-redux';
 
 import { fetchLinks } from '@linkexchange/widgets/src/ducks/links';
 import { observeInjectedWeb3 } from '@linkexchange/widgets/src/ducks/web3';
+
 import WidgetDetails from '@linkexchange/widgets/src/scenes/WidgetDetails';
+import RootModal from '@linkexchange/widgets/src/scenes/Banner/containers/RootModal'; // Extract it
 
 import * as style from './details.scss';
 
@@ -24,6 +26,7 @@ export default class Details extends Component<void, void> {
     return (
       <div class={style.self}>
         <WidgetDetails class={style.details} />
+        <RootModal />
       </div>
     );
   }

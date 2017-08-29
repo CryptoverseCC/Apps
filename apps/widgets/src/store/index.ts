@@ -3,6 +3,7 @@ import ReduxThunk from 'redux-thunk';
 
 import web3 from '@linkexchange/widgets/src/ducks/web3';
 import links from '@linkexchange/widgets/src/ducks/links';
+import modal from '@linkexchange/widgets/src/ducks/modal';
 import widget, { IWidgetState } from '@linkexchange/widgets/src/ducks/widget';
 
 const middlewares: Middleware[] = [
@@ -15,7 +16,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const getStore = (widgetInitialState: IWidgetState) => createStore(
-  combineReducers({ web3, links, widget }),
+  combineReducers({ web3, links, widget, modal }),
   { widget: widgetInitialState },
   applyMiddleware(...middlewares),
 );
