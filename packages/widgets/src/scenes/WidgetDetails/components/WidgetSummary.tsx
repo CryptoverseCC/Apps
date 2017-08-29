@@ -6,7 +6,7 @@ import Button from '@userfeeds/apps-components/src/Button';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
-import { IWidgetState } from '../../../reducers/widget';
+import { IWidgetState } from '../../../ducks/widget';
 
 import EthereumLogo from '../../../components/EthereumLogo';
 
@@ -24,7 +24,7 @@ interface IWidgetSummaryProps {
 
 const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSeparateWindow }: IWidgetSummaryProps) => (
   <div class={style.self}>
-    <div class={classnames(style.header, 'row')}>
+    <div class={style.header}>
       <EthereumLogo class={style.logo} />
       <div>
         <div class="row">
@@ -41,7 +41,7 @@ const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSepara
         </Button>
       </Tooltip>
     </div>
-    <div class={classnames(style.boxes, 'row')}>
+    <div class={style.boxes}>
       <TextWithLabel
         class={style.box}
         label={<span><Icon name="eye" /> Impressions per day</span>}

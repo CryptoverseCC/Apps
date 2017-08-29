@@ -21,6 +21,6 @@
     "tslint-react": "^3.2.0"
   },
   "peerDependencies": {
-    "preact": "^8.2.4"
+    "preact": "8.2.1"
   }
 }
