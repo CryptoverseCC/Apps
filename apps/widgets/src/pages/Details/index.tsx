@@ -5,6 +5,8 @@ import { fetchLinks } from '@linkexchange/widgets/src/ducks/links';
 import { observeInjectedWeb3 } from '@linkexchange/widgets/src/ducks/web3';
 import WidgetDetails from '@linkexchange/widgets/src/scenes/WidgetDetails';
 
+import * as style from './details.scss';
+
 const mapDispatchToProps = (dispatch) => ({
   fetchLinks: () => dispatch(fetchLinks()),
   observeInjectedWeb3: () => dispatch(observeInjectedWeb3()),
@@ -19,6 +21,10 @@ export default class Details extends Component<void, void> {
   }
 
   render() {
-    return (<WidgetDetails />);
+    return (
+      <div class={style.self}>
+        <WidgetDetails class={style.details} />
+      </div>
+    );
   }
 }

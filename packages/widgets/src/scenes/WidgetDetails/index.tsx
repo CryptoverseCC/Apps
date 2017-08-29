@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
+import * as classnames from 'classnames';
 
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Button from '@userfeeds/apps-components/src/Button';
@@ -57,7 +58,7 @@ const mapDispatchToProps = (dispatch) => ({
 const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
-type IWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props;
+type IWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & { class: string; };
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidgetDetailsState> {
@@ -77,7 +78,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
     { viewType }: IWidgetDetailsState) {
 
     return (
-      <div class={style.self}>
+      <div class={classnames(style.self, this.props.class)}>
         <WidgetSummary
           widgetSettings={widgetSettings}
           web3Enabled={web3Enabled}
