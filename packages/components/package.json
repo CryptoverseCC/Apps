@@ -1,4 +1,5 @@
 {
+  "private": "true",
   "name": "@userfeeds/apps-components",
   "version": "0.0.7",
   "description": "",

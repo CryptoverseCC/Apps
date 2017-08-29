@@ -9,6 +9,7 @@
       "quotemark": [true, "single", "jsx-double"],
       "ordered-imports": [false],
       "member-access": [false],
+      "jsx-key": [false],
       "jsx-boolean-value": [true, "never"],
       "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
       "jsx-no-multiline-js": [false],

@@ -117,7 +117,8 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     );
   }
 
-  _onInfoEnter = () => {
+  _onInfoEnter = (e: MouseEvent) => {
+    e.stopImmediatePropagation();
     this.setState({ optionsOpen: true });
   }
 

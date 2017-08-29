@@ -4,9 +4,10 @@
     "test": "lerna exec --concurrency 1 -- yarn test",
     "lerna": "lerna",
     "lerna-clean": "lerna clean --yes",
+    "lerna-sh": "lerna publish --independent",
     "lerna-bootstrap": "lerna bootstrap --hoist"
   },
   "devDependencies": {
-    "lerna": "^2.0.0"
+    "lerna": "^2.1.0"
   }
 }
