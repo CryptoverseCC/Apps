@@ -8,5 +8,8 @@
     font-size: 15px;
     color: $black;
     text-align: left;
+    overflow: hidden;
+    word-wrap: nowrap;
+    text-overflow: ellipsis;
   }
 }
