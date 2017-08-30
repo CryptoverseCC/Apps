@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import { web3 } from '@userfeeds/utils';
+import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 import Svg from '@userfeeds/apps-components/src/Svg';
 import Link from '@userfeeds/apps-components/src/Link';
 import Paper from '@userfeeds/apps-components/src/Paper';
@@ -45,6 +45,7 @@ interface IStatusProps {
 }
 
 interface IStatusState {
+  mobileOrTablet: boolean;
   link?: any;
   linkId: string;
   context: string;
@@ -73,6 +74,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const widgetLocation = params.get('widgetLocation') || '';
 
     this.state = {
+      mobileOrTablet: mobileOrTablet(),
       linkId,
       context,
       algorithm,
@@ -109,7 +111,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       return null;
     }
 
-    const { linkId, context, link, blockchain, widgetLocation } = this.state;
+    const { mobileOrTablet, linkId, context, link, blockchain, widgetLocation } = this.state;
     return (
       <div class={style.self}>
         <Paper class={style.preview}>
@@ -123,7 +125,13 @@ export default class Status extends Component<IStatusProps, IStatusState> {
           <TextWithLabel class={style.label} label="Link status:">
             <div class={style.linkLabel}>
               <a class={style.link} href={window.location.href}>{window.location.href}</a>
-              <Button secondary class={style.addBookmark}>Add to bookmarks</Button>
+              {!mobileOrTablet && <Button
+                secondary
+                class={style.addBookmark}
+                onClick={this._bookmarkIt}
+              >
+                Add to bookmarks
+              </Button>}
             </div>
           </TextWithLabel>
           <TextWithLabel class={style.label} label="Widget location:">
@@ -201,5 +209,16 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     this.setState({ link });
 
     return link;
+  }
+
+  _bookmarkIt = (e) => {
+    e.preventDefault();
+    const bookmarkURL = window.location.href;
+    const bookmarkTitle = document.title;
+    if (!this.state.mobileOrTablet) {
+      // Other browsers (mainly WebKit - Chrome/Safari)
+      const commandKey = /Mac/i.test(navigator.userAgent) ? 'CMD' : 'Ctrl';
+      alert(`Please press ${(commandKey)} D to add this page to your bookmarks.`);
+    }
   }
 }

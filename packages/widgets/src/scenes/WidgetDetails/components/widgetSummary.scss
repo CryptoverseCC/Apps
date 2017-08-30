@@ -40,7 +40,8 @@
     border-top: 1px solid $alto;
 
     &>.box {
-      flex: 1;
+      flex-basis: calc(25% - 33px); // 50% - 2 * padding - border
+      overflow: hidden;
       border-right: 1px solid $alto;
 
       @media screen and (max-width: 1200px) {

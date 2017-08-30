@@ -3,6 +3,8 @@ import { connect } from 'preact-redux';
 import { returntypeof } from 'react-redux-typescript';
 import * as classnames from 'classnames';
 
+import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
+
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
@@ -22,7 +24,6 @@ import DetailsList from './components/DetailsList';
 import DetailsAccordion from './components/DetailsAccordion';
 import WidgetSummary from './components/WidgetSummary';
 
-import { mobileOrTablet } from '../../utils/userAgent';
 import { openUserfeedsUrl } from '../../utils/openUserfeedsUrl';
 
 import * as style from './widgetDetails.scss';
