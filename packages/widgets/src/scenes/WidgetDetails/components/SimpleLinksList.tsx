@@ -38,10 +38,11 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
     maxRows: 5,
   };
 
-  render({ links }: ISimpleLinksListProps) {
+  render({ links }: ISimpleLinksListProps, { maxRows }: ISimpleLinksListState) {
     return (
       <div class={style.self}>
-        {links.map(this._renderRow)}
+        {links.slice(0, maxRows).map(this._renderRow)}
+        {this._renderLoadMore()}
       </div>
     );
   }
@@ -56,5 +57,21 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
         <hr />
       </div>
     );
+  }
+
+  _renderLoadMore = () => {
+    if (this.state.maxRows < this.props.links.length) {
+      return (
+        <div class={style.loadMore} onClick={this._onLoadMore}>
+          <span>Load More</span>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  _onLoadMore = () => {
+    this.setState({ maxRows: this.state.maxRows * 2 });
   }
 }

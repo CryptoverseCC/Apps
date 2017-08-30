@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
+import { returntypeof } from 'react-redux-typescript';
 
 import { fetchLinks } from '@linkexchange/widgets/src/ducks/links';
 import { observeInjectedWeb3 } from '@linkexchange/widgets/src/ducks/web3';
@@ -14,8 +15,12 @@ const mapDispatchToProps = (dispatch) => ({
   observeInjectedWeb3: () => dispatch(observeInjectedWeb3()),
 });
 
+const Dispatch2Props = returntypeof(mapDispatchToProps);
+
+type TDetailsProps = typeof Dispatch2Props;
+
 @connect(null, mapDispatchToProps)
-export default class Details extends Component<void, void> {
+export default class Details extends Component<TDetailsProps, void> {
 
   componentDidMount() {
     this.props.fetchLinks();

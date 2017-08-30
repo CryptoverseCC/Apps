@@ -61,14 +61,14 @@ const mapDispatchToProps = (dispatch) => ({
 const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
-type IWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & { class: string; };
+type TWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & { class: string; };
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidgetDetailsState> {
+export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
 
   detailsListCmp: DetailsList;
 
-  constructor(props: IWidgetDetailsProps) {
+  constructor(props: TWidgetDetailsProps) {
     super(props);
     this.state = {
       viewType: 'Links.Slots',
@@ -78,7 +78,7 @@ export default class WidgetDetails extends Component<IWidgetDetailsProps, IWidge
 
   render(
     { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount }
-    : IWidgetDetailsProps,
+    : TWidgetDetailsProps,
     { viewType, mobileOrTablet }: IWidgetDetailsState) {
 
     return (
