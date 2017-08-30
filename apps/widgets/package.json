@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkechange/app-widget",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,14 +13,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/widgets": "^0.0.98",
-    "@userfeeds/apps-components": "^0.0.8",
+    "@linkexchange/widgets": "^0.0.99",
+    "@userfeeds/apps-components": "^0.0.9",
     "@userfeeds/core": "^0.0.11",
     "classnames": "^2.2.5",
+    "normalize.css": "7.0.0",
     "preact": "8.2.1",
     "preact-compat": "3.17.0",
     "preact-redux": "^2.0.2",
-    "normalize.css": "7.0.0",
     "qs": "^6.5.0",
     "react-router-dom": "^4.1.2",
     "redux": "^3.7.1"
