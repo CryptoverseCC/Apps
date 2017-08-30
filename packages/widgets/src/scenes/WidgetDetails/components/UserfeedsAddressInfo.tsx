@@ -27,7 +27,7 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
   return (
     <div class={style.self}>
       <h2>Userfeed Address</h2>
-      <div class="row" style={{ justifyContent: 'space-between' }}>
+      <div class={style.row}>
         <Paper style={{ flex: 1, marginRight: '15px' }}>
           <TextWithLabel label="Total number of links" text={linksNumber} />
         </Paper>
@@ -39,7 +39,7 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
       </div>
       <Paper>
         <TextWithLabel label="Userfeed address">
-          <div class="row">
+          <div class={style.row}>
             {context}
             <div class={style.qr}>
               <canvas class={style.canvas} ref={renderQR.bind(null, context)} />

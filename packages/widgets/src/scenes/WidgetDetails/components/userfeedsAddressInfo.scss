@@ -2,6 +2,12 @@
   height: 100%;
   padding-top: 20px;
 
+  .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   .qr {
     position: relative;
     width: 20px;
