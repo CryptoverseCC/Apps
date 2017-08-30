@@ -52,7 +52,7 @@ interface IStatusState {
   algorithm: string;
   whitelist: string;
   publisherNote: string;
-  widgetLocation: string;
+  location: string;
   blockchain: {
     web3Available: boolean;
     blockNumber: number | null;
@@ -71,7 +71,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const whitelist = params.get('whitelist') || '';
     const linkId = params.get('linkId') || '';
     const publisherNote = params.get('publisherNote') || '';
-    const widgetLocation = params.get('widgetLocation') || '';
+    const location = params.get('location') || '';
 
     this.state = {
       mobileOrTablet: mobileOrTablet(),
@@ -80,7 +80,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       algorithm,
       whitelist,
       publisherNote,
-      widgetLocation,
+      location,
       blockchain: {
         web3Available: false,
         blockNumber: null,
@@ -111,7 +111,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       return null;
     }
 
-    const { mobileOrTablet, linkId, context, link, blockchain, widgetLocation } = this.state;
+    const { mobileOrTablet, linkId, context, link, blockchain, location } = this.state;
     return (
       <div class={style.self}>
         <Paper class={style.preview}>
@@ -135,7 +135,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
             </div>
           </TextWithLabel>
           <TextWithLabel class={style.label} label="Widget location:">
-            <a href={widgetLocation}>{widgetLocation}</a>
+            <a href={location}>{location}</a>
           </TextWithLabel>
           <Steps
             linkId={linkId}
