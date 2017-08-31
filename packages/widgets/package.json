@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.101",
+  "version": "0.0.102",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "dependencies": {
     "@userfeeds/apps-components": "^0.0.9",
     "@userfeeds/core": "0.0.17",
-    "@userfeeds/utils": "^0.0.2",
+    "@userfeeds/utils": "^0.0.3",
     "classnames": "^2.2.5",
     "lodash": "~4.17.4",
     "preact": "8.2.1",

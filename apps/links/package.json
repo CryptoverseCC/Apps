@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/app-links",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "dependencies": {
     "@userfeeds/apps-components": "^0.0.9",
     "@userfeeds/core": "^0.0.11",
-    "@userfeeds/utils": "^0.0.2",
+    "@userfeeds/utils": "^0.0.3",
     "classnames": "^2.2.5",
     "lodash.debounce": "^4.0.8",
     "normalize.css": "7.0.0",
