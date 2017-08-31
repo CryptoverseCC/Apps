@@ -17,7 +17,19 @@
 
   h1, h2, h3, h4, p, a, button, input, span, img, div, ul, li, table, thead, tbody, th, tr, td {
     /* no important */
-    all: unset;
+    // all: unset; // Because of dumb Safari!
+    background: unset;
+    outline: unset;
+    transition: unset;
+    zoom: unset;
+    z-index: unset;
+    margin: unset;
+    padding: unset;
+    color: unset;
+    font: unset;
+    border: unset;
+    position: unset;
+    display: unset;
   }
 
   div {

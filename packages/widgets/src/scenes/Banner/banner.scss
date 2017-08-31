@@ -13,6 +13,10 @@
   &.leaderboard {
     width: 728px;
     height: 90px;
+
+    @media screen and (max-width: 720px) {
+      width: 100%;
+    }
   }
 
   &.rectangle {

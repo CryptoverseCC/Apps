@@ -10,7 +10,7 @@
     flex-direction: row;
     padding-bottom: 15px;
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 800px) {
       flex-direction: column;
     }
   }
@@ -23,7 +23,7 @@
   .add-button-container {
     margin-left: auto;
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 800px) {
       margin: 0;
     }
   }
@@ -44,7 +44,7 @@
       overflow: hidden;
       border-right: 1px solid $alto;
 
-      @media screen and (max-width: 1200px) {
+      @media screen and (max-width: 800px) {
         border: none;
         flex-basis: calc(50% - 33px); // 50% - 2 * padding - border
       }
@@ -74,7 +74,7 @@
       border-color: $dusty-gray;
     }
 
-    @media screen and (min-width: 1200px) {
+    @media screen and (min-width: 800px) {
       &:after {
         content: ' New window';
       }
