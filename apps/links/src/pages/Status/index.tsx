@@ -152,9 +152,10 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const baseURL = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/`)
+      const allLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/`, { cache: 'no-store' })
         .then((res) => res.json());
-      const whitelistedLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`)
+      const whitelistedLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`,
+        { cache: 'no-store' })
         .then((res) => res.json());
 
       const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest,
