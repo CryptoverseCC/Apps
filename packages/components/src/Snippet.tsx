@@ -11,7 +11,7 @@ const Snippet = ({ widgetSettings }) => {
   return (
     <Highlight class="html">
       {`
-  <userfeeds-link
+  <linkexchange-link
     size="${widgetSettings.size}"
     type="${widgetSettings.type}"
     context="${widgetSettings.network}:${widgetSettings.userfeedsId}"
@@ -22,8 +22,8 @@ const Snippet = ({ widgetSettings }) => {
     contact-method="${widgetSettings.contactMethod}"
     algorithm="${widgetSettings.algorithm}"
   >
-  </userfeeds-link>
-  <script src="https://cdn.jsdelivr.net/npm/@userfeeds/widgets@latest"></script>
+  </linkexchange-link>
+  <script src="https://cdn.jsdelivr.net/npm/@linkexchange/widgets@stable"></script>
         `}
     </Highlight>
   );
