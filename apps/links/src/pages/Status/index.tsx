@@ -89,21 +89,16 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     };
 
     this._observeBlockchainState(linkId);
-    this._fetchLinks(context, algorithm, whitelist)
-      .then(this._findLinkById(linkId))
-      .then((link) => {
-        if (!link) {
-          const setTimeoutForFetch = () => {
-            setTimeout(() => {
-              this._fetchLinks(context, algorithm, whitelist)
-                .then(this._findLinkById(linkId))
-                .then((link) => !link && setTimeoutForFetch());
-            }, 5000);
-          };
 
-          setTimeoutForFetch();
-        }
-      });
+    const setTimeoutForFetch = (timeout: number | undefined) => {
+      setTimeout(() => {
+        this._fetchLinks(context, algorithm, whitelist)
+          .then(this._findLinkById(linkId))
+          .then((link) => link && !link.whitelisted && setTimeoutForFetch(5000));
+      }, timeout);
+    };
+
+    setTimeoutForFetch(0);
   }
 
   render() {
@@ -197,12 +192,6 @@ export default class Status extends Component<IStatusProps, IStatusState> {
         currentBlockNumber,
       },
     });
-
-    while (true) {
-      await wait(10000);
-      const currentBlockNumber = await getBlockNumber();
-      this.setState({ blockchain: { ...this.state.blockchain, currentBlockNumber }});
-    }
   }
 
   _findLinkById = (linkId) => (links) => {
