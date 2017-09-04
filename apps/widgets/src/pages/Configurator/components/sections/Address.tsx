@@ -18,7 +18,7 @@ const Address = ({ network, address, onNetworkChange, onAddressChange }) => (
         disabled={false}
         placeholder="Network"
         value={network}
-        onInput={onNetworkChange}
+        onChange={onNetworkChange}
         options={WIDGET_NETWORKS}
       />
       <Input

@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
-import * as Highlight from 'react-highlight';
+// import * as Highlight from 'react-highlight';
+import Highlight from './Highlight';
 
 import 'highlight.js/styles/androidstudio.css';
 
@@ -20,13 +21,12 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
   };
 
   componentDidMount() {
-    // ToDo Write own `Highlight` component
-    // fetch(`${CORS_PROXY}https://search.maven.org/solrsearch/select/?q=g%3Aio.userfeeds.widget+AND+a%3Acore`)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     const latestVersion = json.response.docs[0].latestVersion;
-    //     this.setState({ latestVersion });
-    //   });
+    fetch(`${CORS_PROXY}https://search.maven.org/solrsearch/select/?q=g%3Aio.userfeeds.widget+AND+a%3Acore`)
+      .then((res) => res.json())
+      .then((json) => {
+        const latestVersion = json.response.docs[0].latestVersion;
+        this.setState({ latestVersion });
+      });
   }
 
   render() {
@@ -35,8 +35,9 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
 
     return (
       <div>
-        <Highlight class="xml">
-          {`
+        <Highlight
+          language="xml"
+          code={`
   <io.userfeeds.widget.LinksViewPager
       xmlns:userfeeds="http://schemas.android.com/apk/res-auto"
       android:layout_width="match_parent"
@@ -45,15 +46,16 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
       userfeeds:whitelist="${whitelist}"
       userfeeds:publisherNote="${widgetSettings.publisherNote}"
       userfeeds:algorithm="${widgetSettings.algorithm}"/>
-          `}
-        </Highlight>
-        <Highlight class="groovy">
-          {`
+        `}
+        />
+        <Highlight
+          language="groovy"
+          code={`
   dependencies {
       compile 'io.userfeeds.widget:core:${this.state.latestVersion}'
   }
           `}
-        </Highlight>
+        />
       </div>
     );
   }

@@ -14,7 +14,7 @@ const Algorithm = ({ value, onChange }) => (
       disabled
       placeholder="Algorithm"
       value={value}
-      onInput={onChange}
+      onChange={onChange}
       options={WIDGET_ALGORITHM}
     />
   </Section>

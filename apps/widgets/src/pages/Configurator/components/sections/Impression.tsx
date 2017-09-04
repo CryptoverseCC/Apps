@@ -33,7 +33,7 @@ const Impression = ({ value, onChange}) => (
       name="impressions"
       value={value}
       options={WIDGET_IMPRESSIONS}
-      onInput={onChange}
+      onChange={onChange}
     />
   </Section>
 );

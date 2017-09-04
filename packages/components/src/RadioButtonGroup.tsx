@@ -22,7 +22,6 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
 
   render() {
     const { name, value, onChange, options } = this.props;
-    const _onChange = (e) => onChange(e.target.value);
 
     return (
       <div class={style.self}>
@@ -35,7 +34,7 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
               value={option.value}
               disabled={option.disabled}
               checked={option.value === value}
-              onChange={_onChange}
+              onChange={onChange}
             />
             <label for={`${name}control_${index}`}>
               {this._renderLabel(option)}

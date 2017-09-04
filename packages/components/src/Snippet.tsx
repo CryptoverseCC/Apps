@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import * as Highlight from 'react-highlight';
+import Highlight from './Highlight';
 
 import 'highlight.js/styles/androidstudio.css';
 
@@ -9,8 +9,9 @@ const Snippet = ({ widgetSettings }) => {
     : '';
 
   return (
-    <Highlight class="html">
-      {`
+    <Highlight
+      language="html"
+      code={`
   <linkexchange-link
     size="${widgetSettings.size}"
     type="${widgetSettings.type}"
@@ -25,7 +26,7 @@ const Snippet = ({ widgetSettings }) => {
   </linkexchange-link>
   <script src="https://cdn.jsdelivr.net/npm/@linkexchange/widgets@stable"></script>
         `}
-    </Highlight>
+    />
   );
 };
 

@@ -1,5 +1,5 @@
 {
-  "private": "true",
+  "private": true,
   "name": "@userfeeds/apps-components",
   "version": "0.0.9",
   "description": "",
@@ -13,7 +13,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "open-iconic": "^1.1.1",
-    "react-highlight": "^0.10.0",
+    "highlight.js": "^9.11.0",
     "react-select": "^1.0.0-rc.5"
   },
   "devDependencies": {
