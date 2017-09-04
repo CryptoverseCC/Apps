@@ -72,18 +72,19 @@
 
   th {
     /* no important */
+    display: table-cell;
     font-weight: bold;
     vertical-align: inherit;
-    display: table-cell;
   }
 
   td {
     /* no important */
-    vertical-align: top;
     display: table-cell;
+    vertical-align: top;
   }
 
   h1, h2, h3, h4, p, button {
+    /* no important */
     display: block;
     font-family: 'PT Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -91,17 +92,28 @@
   }
 
   h2 {
+    /* no important */
+    display: block;
     font-size: 22px;
     font-weight: 300;
     color: $black;
   }
 
+  span {
+    /* no important */
+    display: inline;
+  }
+
   p {
+    /* no important */
+    display: block;
     font-size: 15px;
     color: $dusty-gray;
   }
 
   a {
+    /* no important */
+    display: inline;
     cursor: pointer;
   }
 }
