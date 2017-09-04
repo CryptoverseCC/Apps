@@ -84,7 +84,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               />
             </div>
             <Button
-              disabled={!!validationError}
+              disabled={!!validationError || !value}
               style={{ marginLeft: 'auto' }}
               onClick={this._onSendClick}
             >
