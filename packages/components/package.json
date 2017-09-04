@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@userfeeds/apps-components",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,8 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "classnames": "^2.2.5",
-    "open-iconic": "^1.1.1",
     "highlight.js": "^9.11.0",
+    "open-iconic": "^1.1.1",
     "react-select": "^1.0.0-rc.5"
   },
   "devDependencies": {

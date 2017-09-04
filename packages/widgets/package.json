@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.102",
+  "version": "0.0.103",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "author": "Userfeeds",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/apps-components": "^0.0.9",
+    "@userfeeds/apps-components": "^0.0.10",
     "@userfeeds/core": "0.0.17",
     "@userfeeds/utils": "^0.0.3",
     "classnames": "^2.2.5",
