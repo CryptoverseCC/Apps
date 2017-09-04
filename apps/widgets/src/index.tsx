@@ -5,8 +5,6 @@ import * as qs from 'qs';
 import getStore from './store';
 import App from './App';
 
-import './index.scss';
-
 const root = document.querySelector('.root');
 
 const [, searchParams] = document.location.href.split('?');
