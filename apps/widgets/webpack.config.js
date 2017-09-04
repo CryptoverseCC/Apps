@@ -82,6 +82,7 @@ module.exports = {
     // new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   devServer: {
+    compress: true,
     historyApiFallback: true,
     disableHostCheck: true,
   },

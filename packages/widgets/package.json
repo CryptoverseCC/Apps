@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --progress --open",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "lint": "tslint -c tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "build": "cross-env NODE_ENV=production webpack -p --display-optimization-bailout || exit 0",
     "pretest": "yarn lint",

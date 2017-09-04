@@ -13,12 +13,16 @@ export default class Modal extends Component<IModalProps, {}> {
     document.addEventListener('wheel', this._consumeEvent);
     document.addEventListener('mousewheel', this._consumeEvent);
     document.addEventListener('keydown', this._closeOnEsc);
+    window.addEventListener('popstate', this._onOverlayClick);
+
+    history.pushState(null, null, document.URL);
   }
 
   componentWillUnmount() {
     document.removeEventListener('wheel', this._consumeEvent);
     document.removeEventListener('mousewheel', this._consumeEvent);
     document.removeEventListener('keydown', this._closeOnEsc);
+    window.removeEventListener('popstate', this._onOverlayClick);
   }
 
   render() {
