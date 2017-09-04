@@ -12,7 +12,9 @@ import CreateWidget from '../components/CreateWidget';
 
 import Title from '../components/sections/Title';
 import Contact from '../components/sections/Contact';
+import Whitelist from '../components/sections/Whitelist';
 import Description from '../components/sections/Description';
+import PublisherNote from '../components/sections/PublisherNote';
 import Size, { WIDGET_SIZES } from '../components/sections/Size';
 import Type, { WIDGET_TYPES } from '../components/sections/Type';
 import Token, { WIDGET_TOKENS } from '../components/sections/Token';
@@ -90,6 +92,10 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
           address={this.state.widgetSettings.userfeedsId}
           onAddressChange={this._onUserfeedIdChange}
         />
+        <Whitelist
+          value={this.state.widgetSettings.whitelistId}
+          onChange={this._onWhitelistIdChange}
+        />
         <Title
           value={this.state.widgetSettings.title}
           onChange={this._onTitleChange}
@@ -101,6 +107,10 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
         <Impression
           value={this.state.widgetSettings.impression}
           onChange={this._onWidgetImpressionChange}
+        />
+        <PublisherNote
+          value={this.state.widgetSettings.publisherNote}
+          onChange={this._onPublisherNoteChange}
         />
         <Contact
           value={this.state.widgetSettings.contactMethod}
