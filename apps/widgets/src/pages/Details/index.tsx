@@ -7,6 +7,7 @@ import { observeInjectedWeb3 } from '@linkexchange/widgets/src/ducks/web3';
 
 import WidgetDetails from '@linkexchange/widgets/src/scenes/WidgetDetails';
 import RootModal from '@linkexchange/widgets/src/scenes/Banner/containers/RootModal'; // Extract it
+import RootToast from '@linkexchange/widgets/src/scenes/Banner/containers/RootToast'; // Extract it
 
 import * as style from './details.scss';
 
@@ -32,6 +33,7 @@ export default class Details extends Component<TDetailsProps, void> {
       <div class={style.self}>
         <WidgetDetails class={style.details} />
         <RootModal />
+        <RootToast />
       </div>
     );
   }
