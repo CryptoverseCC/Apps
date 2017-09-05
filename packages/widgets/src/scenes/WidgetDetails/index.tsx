@@ -117,6 +117,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
               <DetailsList
                 web3Enabled={web3Enabled}
                 initialView={viewType}
+                algorithm={widgetSettings.algorithm}
                 scrolledTo={this._onScrolledTo}
                 ref={this._onDetailsListRef}
                 context={widgetSettings.context}

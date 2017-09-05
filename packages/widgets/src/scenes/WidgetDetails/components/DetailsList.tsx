@@ -18,6 +18,7 @@ interface IAllLinkProps {
   };
   initialView: TViewType;
   context: string;
+  algorithm: string;
   hasWhitelist: boolean;
   size: TWidgetSize;
   links: ILink[];
@@ -44,7 +45,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   render() {
-    const { web3Enabled, context, size, links, hasWhitelist, whitelistedLinks, allLinks, allLinksCount,
+    const { web3Enabled, context, size, algorithm, links, hasWhitelist, whitelistedLinks, allLinks, allLinksCount,
       onBoostError, onBoostSuccess } = this.props;
 
     return (
@@ -85,6 +86,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
         )}
         <WidgetSpecification
           size={size}
+          algorithm={algorithm}
           ref={this._onRef('Specification')}
         />
         <UserfeedAddressInfo

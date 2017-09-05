@@ -10,11 +10,12 @@ import EthereumLogo from '../../../components/EthereumLogo';
 import * as style from './widgetSpecification.scss';
 
 interface IWidgetSpecificationProps {
-  size?: TWidgetSize;
+  size: TWidgetSize;
+  algorithm: string;
   ref?(ref: any): void;
 }
 
-const WidgetSpecification = ({ size }: IWidgetSpecificationProps) => (
+const WidgetSpecification = ({ size, algorithm }: IWidgetSpecificationProps) => (
   <div class={style.self}>
     <h2>Widget Specification</h2>
     <div class={style.row}>
@@ -33,7 +34,7 @@ const WidgetSpecification = ({ size }: IWidgetSpecificationProps) => (
       </Paper>
       <Paper style={{ flex: 1, marginLeft: '15px' }}>
         <TextWithLabel label="Algorithm">
-          Text
+          {algorithm}
         </TextWithLabel>
       </Paper>
     </div>
