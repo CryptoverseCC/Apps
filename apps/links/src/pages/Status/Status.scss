@@ -18,6 +18,7 @@
     width: 300px;
     height: 250px;
     margin-right: 30px;
+    margin-top: 0;
     padding: 10px;
     flex: auto;
     flex-grow: 0;
@@ -31,6 +32,11 @@
       margin: 0;
       margin-bottom: 20px;
     }
+  }
+
+  .preview-title {
+    color: $dusty-gray;
+    margin-bottom: 0;
   }
 
   .loader {

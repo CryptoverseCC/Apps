@@ -1,5 +1,7 @@
 import { h, Component } from 'preact';
 
+import web3 from '@userfeeds/utils/src/web3';
+
 import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 import Svg from '@userfeeds/apps-components/src/Svg';
 import Link from '@userfeeds/apps-components/src/Link';
@@ -109,10 +111,13 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const { mobileOrTablet, linkId, context, link, blockchain, location } = this.state;
     return (
       <div class={style.self}>
-        <Paper class={style.preview}>
-          {link && <Link link={link} />}
-          {!link && <div class={style.loader}><Loader /></div>}
-        </Paper>
+        <div>
+          <p class={style.previewTitle}>Link preview:</p>
+          <Paper class={style.preview}>
+            {link && <Link link={link} />}
+            {!link && <div class={style.loader}><Loader /></div>}
+          </Paper>
+        </div>
         <Paper class={style.content}>
           <img src={heartSvg} />
           <h2>Your link has been succesfully submited!</h2>
