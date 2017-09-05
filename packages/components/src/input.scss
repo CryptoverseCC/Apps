@@ -11,8 +11,8 @@
   transition: none!important; // ToDo make something with it
 
   .input {
-    font-size: 15px;
-    padding: 10px;
+    font-size: 14px;
+    padding: 15px;
     width: calc(100% - 30px);
     background-color: $aqua-haze;
     border: 1px solid $alto;
@@ -40,10 +40,10 @@
 
   .placeholder {
     position: absolute;
-    top: 10px;
-    left: 5px;
+    top: 20px;
+    left: 14px;
     color: $dusty-gray;
-    font-size: 15px;
+    font-size: 14px;
     transition: 0.2s;
   }
 
