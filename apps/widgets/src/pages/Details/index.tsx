@@ -31,7 +31,7 @@ export default class Details extends Component<TDetailsProps, void> {
   render() {
     return (
       <div class={style.self}>
-        <WidgetDetails class={style.details} />
+        <WidgetDetails standaloneMode class={style.details} />
         <RootModal />
         <RootToast />
       </div>

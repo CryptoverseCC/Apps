@@ -62,7 +62,10 @@ const mapDispatchToProps = (dispatch) => ({
 const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
-type TWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & { class: string; };
+type TWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & {
+  class: string;
+  standaloneMode?: boolean;
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
@@ -78,13 +81,14 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
   }
 
   render(
-    { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount }
-    : TWidgetDetailsProps,
+    { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount,
+      standaloneMode }: TWidgetDetailsProps,
     { viewType, mobileOrTablet }: IWidgetDetailsState) {
 
     return (
       <div class={classnames(style.self, this.props.class)}>
         <WidgetSummary
+          openInNewWindowHidden={standaloneMode}
           widgetSettings={widgetSettings}
           web3Enabled={web3Enabled}
           onAddClick={this._onAddLinkClick}
