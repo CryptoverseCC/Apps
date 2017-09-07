@@ -129,7 +129,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
               <div class={style.linkLabel}>
                 <a class={style.link} href={window.location.href}>{window.location.href}</a>
                 {!mobileOrTablet && <Button
-                  secondary 
+                  secondary
                   class={style.addBookmark}
                   onClick={this._bookmarkIt}
                 >
@@ -152,6 +152,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     );
   }
 
+  // ToDo fix - when network is unaailable
   _fetchLinks = async (context, algorithm, whitelist) => {
     const baseURL = 'https://api.userfeeds.io/ranking';
 

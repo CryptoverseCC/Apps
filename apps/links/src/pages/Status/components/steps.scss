@@ -1,6 +1,5 @@
 @import '~@userfeeds/apps-components/styles/colors';
 
-
 @-webkit-keyframes waiting {
   0%   { opacity: 0.5; }
   50% { opacity: 1; }
@@ -8,9 +7,8 @@
 
 }
 
-
-
 .self {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -26,6 +24,7 @@
 
   .progress {
     position: absolute;
+    overflow: hidden;
     left: 0;
     top: 20px;
     z-index: 1;
@@ -39,6 +38,15 @@
       height: 100%;
       top: 0;
       left: 20px;
+    }
+
+    .progressFill {
+      transition: max-width 1s ease-in;
+      background-color: $green;
+
+      @media screen and (max-width: 1200px) {
+        transition: max-height 1s ease-in;
+      }
     }
   }
 
@@ -69,15 +77,19 @@
       cursor: not-allowed;
     }
 
+    &.notstarted {
+      opacity: 0.5;
+    }
+
     &.waiting {
       opacity: 0.5;
-      animation:waiting 2s ease-in-out infinite;
+      animation: waiting 1s ease-in-out infinite;
     }
 
     &.done .icon, &.done path {
-      color: $green;
+      color: $white;
       fill: white;
-      background-color:$green;
+      background-color: $green;
     }
 
     .icon {
