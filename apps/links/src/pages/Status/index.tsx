@@ -119,24 +119,28 @@ export default class Status extends Component<IStatusProps, IStatusState> {
           </Paper>
         </div>
         <Paper class={style.content}>
-          <img src={heartSvg} />
-          <h2>Your link has been succesfully submited!</h2>
-          <p>In order to track its progress please save the link</p>
-          <TextWithLabel class={style.label} label="Link status:">
-            <div class={style.linkLabel}>
-              <a class={style.link} href={window.location.href}>{window.location.href}</a>
-              {!mobileOrTablet && <Button
-                secondary
-                class={style.addBookmark}
-                onClick={this._bookmarkIt}
-              >
-                Add to bookmarks
-              </Button>}
-            </div>
-          </TextWithLabel>
-          <TextWithLabel class={style.label} label="Widget location:">
-            <a href={location}>{location}</a>
-          </TextWithLabel>
+          <div class={style.introduction}>
+            <img src={heartSvg} />
+            <h2>Your link has been succesfully submited!</h2>
+            <p>In order to track its progress please save the link</p>
+          </div>
+          <div class={style.info}>
+            <TextWithLabel class={style.label} label="Link status:">
+              <div class={style.linkLabel}>
+                <a class={style.link} href={window.location.href}>{window.location.href}</a>
+                {!mobileOrTablet && <Button
+                  secondary 
+                  class={style.addBookmark}
+                  onClick={this._bookmarkIt}
+                >
+                  Add to bookmarks
+                </Button>}
+              </div>
+            </TextWithLabel>
+            <TextWithLabel class={style.label} label="Widget location:">
+              <a href={location}>{location}</a>
+            </TextWithLabel>
+          </div>
           <Steps
             linkId={linkId}
             context={context}
