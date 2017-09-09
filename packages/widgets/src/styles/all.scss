@@ -1,10 +1,11 @@
 @import '~@userfeeds/apps-components/styles/colors';
-@import url("https://fonts.googleapis.com/css?family=PT+Sans:400,700");
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
 .root {
   @import './flex';
 
   all: initial;
+  @import './unset';
 
   * {
     transition: all 200ms ease-in-out;
@@ -15,105 +16,4 @@
     background: $dodger-blue;
   }
 
-  h1, h2, h3, h4, p, a, button, input, span, img, div, ul, li, table, thead, tbody, th, tr, td {
-    /* no important */
-    // all: unset; // Because of dumb Safari!
-    background: unset;
-    outline: unset;
-    transition: unset;
-    zoom: unset;
-    z-index: unset;
-    margin: unset;
-    padding: unset;
-    color: unset;
-    font: unset;
-    border: unset;
-    position: unset;
-    display: unset;
-  }
-
-  div {
-    /* no important */
-    display: block;
-  }
-
-  ul, li {
-    /* no important */
-    display: block;
-    list-style-type: disc;
-  }
-
-  table {
-    /* no important */
-    display: table;
-    border-collapse: separate;
-  }
-
-  thead {
-    /* no important */
-    display: table-header-group;
-    vertical-align: middle;
-    border-color: inherit;
-  }
-
-  tbody {
-    /* no important */
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
-  }
-
-  tr {
-    /* no important */
-    display: table-row;
-    vertical-align: inherit;
-    border-color: inherit;
-  }
-
-  th {
-    /* no important */
-    display: table-cell;
-    font-weight: bold;
-    vertical-align: inherit;
-  }
-
-  td {
-    /* no important */
-    display: table-cell;
-    vertical-align: top;
-  }
-
-  h1, h2, h3, h4, p, button {
-    /* no important */
-    display: block;
-    font-family: 'PT Sans', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  h2 {
-    /* no important */
-    display: block;
-    font-size: 22px;
-    font-weight: 300;
-    color: $black;
-  }
-
-  span {
-    /* no important */
-    display: inline;
-  }
-
-  p {
-    /* no important */
-    display: block;
-    font-size: 15px;
-    color: $dusty-gray;
-  }
-
-  a {
-    /* no important */
-    display: inline;
-    cursor: pointer;
-  }
 }
