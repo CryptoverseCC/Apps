@@ -119,7 +119,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
       })
       .map(([name]) => name);
 
-    const closedView = visibleSections[visibleSections.length - 1];
+    const closedView = visibleSections[0];
     this.props.scrolledTo(closedView);
   }, 100, { leading: false });
 }
