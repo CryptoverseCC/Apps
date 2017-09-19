@@ -111,7 +111,6 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
   }, 500);
 
   _onLinkClick = (link) => {
-    const [_, address] = this.state.whitelist.split(':');
     const claim = {
       claim: { target: link.id },
       credits: [{
@@ -119,7 +118,6 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
         value: window.location.href,
       }],
     };
-
-    core.ethereum.claims.sendClaimWithoutValueTransfer(address, claim);
+    core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
   }
 }
