@@ -120,6 +120,6 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
       }],
     };
 
-    core.ethereum.claims.sendClaim(address, claim);
+    core.ethereum.claims.sendClaimWithoutValueTransfer(address, claim);
   }
 }

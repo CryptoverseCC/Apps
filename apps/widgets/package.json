@@ -15,7 +15,7 @@
   "dependencies": {
     "@linkexchange/widgets": "^0.0.109",
     "@userfeeds/apps-components": "^0.0.12",
-    "@userfeeds/core": "^0.0.11",
+    "@userfeeds/core": "0.0.18",
     "classnames": "^2.2.5",
     "preact": "8.2.1",
     "preact-compat": "3.17.0",

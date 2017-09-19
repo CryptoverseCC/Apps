@@ -166,7 +166,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       }],
     };
 
-    core.ethereum.claims.sendClaim(web3, address, claim, value)
+    core.ethereum.claims.sendClaimValueTransfer(web3, address, value, claim)
       .then((linkId) => {
         this.props.onSuccess(linkId);
       })

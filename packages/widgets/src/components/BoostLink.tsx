@@ -174,7 +174,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       }],
     };
 
-    core.ethereum.claims.sendClaim(web3, address, claim, value)
+    core.ethereum.claims.sendClaimValueTransfer(web3, address, value, claim)
       .then((transactionId: string) => {
         if (this.props.onSuccess) {
           this.props.onSuccess(transactionId);
