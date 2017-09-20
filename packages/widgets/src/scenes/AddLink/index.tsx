@@ -53,7 +53,7 @@ interface IAddLinkModalState {
 const DEFAULT_LINK = {
   title: 'Title',
   summary: 'Summary',
-  target: 'http://www.',
+  target: 'http://',
 };
 
 @connect(mapsStateToProps, mapDispatchToProps)
