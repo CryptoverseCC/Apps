@@ -17,8 +17,8 @@ export const WIDGET_IMPRESSIONS = [{
   value: '10.001 - 100.000',
   label: '10.001 - 100.000',
 }, {
-  value: '100.000 - 1 milion',
-  label: '100.000 - 1 milion',
+  value: '100.001 - 1 milion',
+  label: '100.001 - 1 milion',
 }, {
   value: '1 milion - ∞',
   label: '1 milion - ∞',
