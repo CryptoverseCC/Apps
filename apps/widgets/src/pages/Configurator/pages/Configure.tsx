@@ -17,8 +17,8 @@ import Description from '../components/sections/Description';
 import PublisherNote from '../components/sections/PublisherNote';
 import Size, { WIDGET_SIZES } from '../components/sections/Size';
 import Type, { WIDGET_TYPES } from '../components/sections/Type';
-import Token, { WIDGET_TOKENS } from '../components/sections/Token';
-import Address, { WIDGET_NETWORKS } from '../components/sections/Address';
+import Token, { CUSTOM_TOKEN, WIDGET_NETWORKS } from '../components/sections/Token';
+import Address from '../components/sections/Address';
 import Algorithm, { WIDGET_ALGORITHM } from '../components/sections/Algorithm';
 import Impression, { WIDGET_IMPRESSIONS } from '../components/sections/Impression';
 
@@ -55,7 +55,7 @@ const defaultWidgetSettings = {
   size: WIDGET_SIZES[0].value,
   type: WIDGET_TYPES[0].value,
   impression: WIDGET_IMPRESSIONS[0].value,
-  token: WIDGET_TOKENS[0].value,
+  token: WIDGET_NETWORKS[0].tokens[0].value,
   network: WIDGET_NETWORKS[0].value,
   algorithm: WIDGET_ALGORITHM[0].value,
 };
@@ -87,10 +87,8 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
     return (
       <div>
         <Address
-          network={this.state.widgetSettings.network}
-          onNetworkChange={this._onNetworkChange}
-          address={this.state.widgetSettings.userfeedsId}
-          onAddressChange={this._onUserfeedIdChange}
+          userfeed={this.state.widgetSettings.userfeedsId}
+          onUserfeedChange={this._onUserfeedIdChange}
         />
         <Whitelist
           value={this.state.widgetSettings.whitelistId}
@@ -125,8 +123,10 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
           onChange={this._onWidgetTypeChange}
         />
         <Token
-          value={WIDGET_TOKENS[0].value}
-          onChange={this._noop}
+          network={this.state.widgetSettings.network}
+          onNetworkChange={this._onNetworkChange}
+          token={this.state.widgetSettings.token}
+          onTokenChange={this._onTokenChange}
         />
         <Algorithm
           value={WIDGET_ALGORITHM[0].value}
@@ -142,8 +142,22 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
       widgetSettings: {
         ...widgetSettings,
         network: value,
+        token: WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => { return e.value === value })].tokens[0].value
       },
     }));
+  }
+
+  _onTokenChange = ({ value }) => {
+    if (value === CUSTOM_TOKEN) {
+
+    } else {
+      this.setState(({widgetSettings}) => ({
+        widgetSettings: {
+          ...widgetSettings,
+          token: value,
+        },
+      }));
+    }
   }
 
   _handleChange = (name) => (e) => {
