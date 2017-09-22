@@ -164,8 +164,6 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const { id } = this.props.link;
     const { value } = this.state;
 
-    const [_, address] = context.split(':');
-
     const claim = {
       claim: { target: id },
       credits: [{
@@ -174,7 +172,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       }],
     };
 
-    core.ethereum.claims.sendClaimValueTransfer(web3, address, value, claim)
+    core.ethereum.claims.sendClaimValueTransfer(web3, context, value, claim)
       .then((transactionId: string) => {
         if (this.props.onSuccess) {
           this.props.onSuccess(transactionId);

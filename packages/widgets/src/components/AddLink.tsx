@@ -155,8 +155,6 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     const { title, summary, target, value } = this.state;
     this.setState({ posting: true });
 
-    const [_, address] = context.split(':');
-
     const claim = {
       type: ['link'],
       claim: { target, title, summary },
@@ -166,7 +164,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       }],
     };
 
-    core.ethereum.claims.sendClaimValueTransfer(web3, address, value, claim)
+    core.ethereum.claims.sendClaimValueTransfer(web3, context, value, claim)
       .then((linkId) => {
         this.props.onSuccess(linkId);
       })

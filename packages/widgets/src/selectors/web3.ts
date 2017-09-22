@@ -8,8 +8,8 @@ const widgetSettings = ({ widget }: IRootState) => widget;
 export const web3Enabled = createSelector(
   web3State,
   widgetSettings,
-  (web3State, { context }) => {
-    const [network] = context.split(':');
+  (web3State, { asset }) => {
+    const [network] = asset.split(':');
 
     return {
       enabled: web3State.available && web3State.unlocked && web3State.network === network,

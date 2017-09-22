@@ -18,18 +18,18 @@ export const fetchLinksActions = acf.async<
   >('FETCH_LINKS');
 
 export const fetchLinks = () => async (dispatch, getState: () => IRootState) => {
-  const { widget: { context, algorithm, whitelist } } = getState();
+  const { widget: { context, asset, algorithm, whitelist } } = getState();
   dispatch(fetchLinksActions.started(undefined));
 
   const baseURL = 'https://api.userfeeds.io/ranking';
-  const queryParams = whitelist ? `?whitelist=${whitelist}` : '';
+  const queryParams = whitelist ? `?whitelist=${asset}:${whitelist}` : '';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }]: [{ items: ILink[] }, { items: ILink[] }]  =
       await Promise.all([
-        fetch(`${baseURL}/${context}/${algorithm}/${queryParams}`)
+        fetch(`${baseURL}/${asset}:${context}/${algorithm}/${queryParams}`)
           .then(throwErrorOnNotOkResponse)
           .then((res) => res.json()),
-        fetch(`${baseURL}/${context}/${algorithm}/`)
+        fetch(`${baseURL}/${asset}:${context}/${algorithm}/`)
           .then(throwErrorOnNotOkResponse)
           .then((res) => res.json()),
       ]);

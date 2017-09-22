@@ -69,6 +69,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const params = new URLSearchParams(props.location.search);
 
     const context = params.get('context') || '';
+    const asset = params.get('asset') || '';
     const algorithm = params.get('algorithm') || '';
     const whitelist = params.get('whitelist') || '';
     const linkId = params.get('linkId') || '';
@@ -79,6 +80,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       mobileOrTablet: mobileOrTablet(),
       linkId,
       context,
+      asset,
       algorithm,
       whitelist,
       publisherNote,
@@ -94,7 +96,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
 
     const setTimeoutForFetch = (timeout: number | undefined) => {
       setTimeout(() => {
-        this._fetchLinks(context, algorithm, whitelist)
+        this._fetchLinks(context, asset, algorithm, whitelist)
           .then(this._findLinkById(linkId))
           .then((link) => link && !link.whitelisted && setTimeoutForFetch(5000));
       }, timeout);
@@ -152,19 +154,19 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     );
   }
 
-  // ToDo fix - when network is unaailable
-  _fetchLinks = async (context, algorithm, whitelist) => {
+  // ToDo fix - when network is unavailable
+  _fetchLinks = async (context, asset, algorithm, whitelist) => {
     const baseURL = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/`, { cache: 'no-store' })
+      const allLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/`, { cache: 'no-store' })
         .then((res) => res.json());
-      const whitelistedLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`,
+      const whitelistedLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/?whitelist=${asset}:${whitelist}`,
         { cache: 'no-store' })
         .then((res) => res.json());
 
-      const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest,
-        whitelistedLinksRequest]);
+      const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest, whitelistedLinksRequest]);
+      // suboptimal: make a map id to link before mapping links instead
       const links = allLinks.items.map((link) => {
         const whitelisted = whitelistedLinks.items.find((a) => link.id === a.id);
 

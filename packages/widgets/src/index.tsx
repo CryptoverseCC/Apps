@@ -59,6 +59,7 @@ class LinkexchangeLink extends HTMLElement {
     const timeslot = this.getAttribute('timeslot') || 5;
     const context = this.getAttribute('context');
     const whitelist = this.getAttribute('whitelist');
+    const asset = this.getAttribute('asset');
     const slots = this.getAttribute('slots') || 10;
     const algorithm = this.getAttribute('algorithm');
     const contactMethod = this.getAttribute('contact-method');
@@ -71,6 +72,7 @@ class LinkexchangeLink extends HTMLElement {
     return {
       algorithm,
       context,
+      asset,
       publisherNote,
       contactMethod,
       size,

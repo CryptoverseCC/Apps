@@ -17,6 +17,7 @@ export const updateWidgetSettings = (newSettings: IWidgetState) => (dispatch, ge
   dispatch(widgetActions.update(newSettings));
 
   if (newSettings.context !== oldSettings.context
+    || newSettings.asset !== oldSettings.asset
     || newSettings.whitelist !== oldSettings.whitelist
     || newSettings.algorithm !== oldSettings.algorithm) {
     dispatch(fetchLinks());
@@ -25,6 +26,7 @@ export const updateWidgetSettings = (newSettings: IWidgetState) => (dispatch, ge
 
 export interface IWidgetState {
   context: string;
+  asset: string;
   algorithm: string;
   size: TWidgetSize;
   whitelist?: string;

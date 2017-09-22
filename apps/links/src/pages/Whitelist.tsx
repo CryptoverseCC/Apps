@@ -89,9 +89,10 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
     const baseURL = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/`)
+      const allLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/`)
         .then((res) => res.json());
-      const whitelistedLinksRequest = fetch(`${baseURL}/${context}/${algorithm}/?whitelist=${whitelist}`)
+      const whitelistParam = whitelist ? `?whitelist=${asset}:${whitelist}` : '';
+      const whitelistedLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/${whitelistParam}`)
         .then((res) => res.json());
 
       const [allLinks, whitelistedLinks] = await Promise.all([
