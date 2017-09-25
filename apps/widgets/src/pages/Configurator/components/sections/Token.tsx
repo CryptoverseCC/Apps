@@ -44,7 +44,7 @@ const Token = ({ network, onNetworkChange, token, onTokenChange }) => (
         placeholder="ERC20 Token Address"
         value={token}
         onChange={onTokenChange}
-        options={WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => { return e.value === network })].tokens}
+        options={WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === network)].tokens}
       />
     </div>
   </Section>

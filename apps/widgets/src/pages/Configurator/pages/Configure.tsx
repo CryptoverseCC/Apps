@@ -25,7 +25,7 @@ import Impression, { WIDGET_IMPRESSIONS } from '../components/sections/Impressio
 import * as style from './configure.scss';
 
 interface IWidgetSettings {
-  userfeedsId: string;
+  recipientAddress: string;
   whitelistId: string;
   contactMethod: string;
   title: string;
@@ -66,7 +66,7 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
     super(props);
 
     const web3 = window.web3;
-    const userfeedsId = web3 && web3.eth.accounts.length > 0 ? web3.eth.accounts[0] : '';
+    const recipientAddress = web3 && web3.eth.accounts.length > 0 ? web3.eth.accounts[0] : '';
 
     if (props.location.search) {
       const params = new URLSearchParams(props.location.search);
@@ -76,8 +76,8 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
       this.state = {
         widgetSettings: {
           ...defaultWidgetSettings,
-          userfeedsId,
-          whitelistId: userfeedsId,
+          recipientAddress,
+          whitelistId: recipientAddress,
         },
       };
     }
@@ -87,8 +87,8 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
     return (
       <div>
         <Address
-          userfeed={this.state.widgetSettings.userfeedsId}
-          onUserfeedChange={this._onUserfeedIdChange}
+          recipientAddress={this.state.widgetSettings.recipientAddress}
+          onRecipientAddressChange={this._onRecipientAddressChange}
         />
         <Whitelist
           value={this.state.widgetSettings.whitelistId}
@@ -142,14 +142,14 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
       widgetSettings: {
         ...widgetSettings,
         network: value,
-        token: WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => { return e.value === value })].tokens[0].value
+        token: WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === value)].tokens[0].value,
       },
     }));
   }
 
   _onTokenChange = ({ value }) => {
     if (value === CUSTOM_TOKEN) {
-
+      // TODO
     } else {
       this.setState(({widgetSettings}) => ({
         widgetSettings: {
@@ -175,7 +175,7 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
 
   _onWidgetTypeChange = this._handleChange('type');
   _onWidgetSizeChange = this._handleChange('size');
-  _onUserfeedIdChange = this._handleChange('userfeedsId');
+  _onRecipientAddressChange = this._handleChange('recipientAddress');
   _onWhitelistIdChange = this._handleChange('whitelistId');
   _onPublisherNoteChange = this._handleChange('publisherNote');
   _onWidgetImpressionChange = this._handleChange('impression');

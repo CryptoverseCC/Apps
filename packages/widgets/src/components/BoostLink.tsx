@@ -20,7 +20,7 @@ interface IBidLinkProps {
   disabledReason?: string;
   link: ILink;
   links: ILink[];
-  context: string;
+  recipientAddress: string;
   onSuccess?(linkId: string): void;
   onError?(e: any): void;
 }
@@ -160,7 +160,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   }
 
   _onSendClick = () => {
-    const { context } = this.props;
+    const { recipientAddress } = this.props;
     const { id } = this.props.link;
     const { value } = this.state;
 
@@ -172,7 +172,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       }],
     };
 
-    core.ethereum.claims.sendClaimValueTransfer(web3, context, value, claim)
+    core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim)
       .then((transactionId: string) => {
         if (this.props.onSuccess) {
           this.props.onSuccess(transactionId);

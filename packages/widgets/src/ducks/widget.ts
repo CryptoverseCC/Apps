@@ -16,7 +16,7 @@ export const updateWidgetSettings = (newSettings: IWidgetState) => (dispatch, ge
   const { widget: oldSettings } = getState();
   dispatch(widgetActions.update(newSettings));
 
-  if (newSettings.context !== oldSettings.context
+  if (newSettings.recipientAddress !== oldSettings.recipientAddress
     || newSettings.asset !== oldSettings.asset
     || newSettings.whitelist !== oldSettings.whitelist
     || newSettings.algorithm !== oldSettings.algorithm) {
@@ -25,7 +25,7 @@ export const updateWidgetSettings = (newSettings: IWidgetState) => (dispatch, ge
 };
 
 export interface IWidgetState {
-  context: string;
+  recipientAddress: string;
   asset: string;
   algorithm: string;
   size: TWidgetSize;

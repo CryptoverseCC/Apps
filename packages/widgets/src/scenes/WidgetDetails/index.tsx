@@ -97,7 +97,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
         <Switch expresion={mobileOrTablet ? 'mobile' : 'desktop'}>
           <Switch.Case condition={'mobile'}>
             <DetailsAccordion
-              context={widgetSettings.context}
+              recipientAddress={widgetSettings.recipientAddress}
               slots={widgetSettings.slots}
               whitelistedLinksCount={whitelistedLinksCount}
               hasWhitelist={!!widgetSettings.whitelist}
@@ -124,7 +124,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
                 algorithm={widgetSettings.algorithm}
                 scrolledTo={this._onScrolledTo}
                 ref={this._onDetailsListRef}
-                context={widgetSettings.context}
+                recipientAddress={widgetSettings.recipientAddress}
                 hasWhitelist={!!widgetSettings.whitelist}
                 size={widgetSettings.size}
                 links={links}

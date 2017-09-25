@@ -57,7 +57,7 @@ const Progress = ({ step0State, step1State, step2State,
 };
 
 interface IStepsProps {
-  context: string;
+  asset: string;
   linkId: string;
   link?: any;
   blockchainState: {
@@ -73,7 +73,7 @@ export default class Steps extends Component<IStepsProps, {}> {
   step1Ref: JSX.Element | undefined;
   step2Ref: JSX.Element | undefined;
 
-  render({ context, linkId, link, blockchainState }: IStepsProps) {
+  render({ asset, linkId, link, blockchainState }: IStepsProps) {
     let step0State;
     let step0Reason;
 
@@ -99,8 +99,8 @@ export default class Steps extends Component<IStepsProps, {}> {
       ? 'notstarted'
       : link && link.whitelisted ? 'done' : 'waiting';
 
-    const [network] = context.split(':');
-    const networkPrefix = network !== 'eth' ? `${network}.` : '';
+    const [network] = asset.split(':');
+    const networkPrefix = network !== 'ethereum' ? `${network}.` : '';
     const [, tx] = linkId.split(':');
     const etherscanUrl = link ? `https://${networkPrefix}etherscan.io/tx/${tx}` : '';
 

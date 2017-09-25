@@ -42,7 +42,7 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
       xmlns:userfeeds="http://schemas.android.com/apk/res-auto"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      userfeeds:context="${widgetSettings.network}:${widgetSettings.userfeedsId}"
+      userfeeds:context="${widgetSettings.network}:${widgetSettings.recipientAddress}"
       userfeeds:whitelist="${whitelist}"
       userfeeds:publisherNote="${widgetSettings.publisherNote}"
       userfeeds:algorithm="${widgetSettings.algorithm}"/>

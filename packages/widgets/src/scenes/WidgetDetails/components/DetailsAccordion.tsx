@@ -15,7 +15,7 @@ import UserfeedsAddressInfo from './UserfeedsAddressInfo';
 import * as style from './detailsAccordion.scss';
 
 interface IDetailsAccordinProps {
-  context: string;
+  recipientAddress: string;
   size: TWidgetSize;
   slots: number;
   whitelistedLinksCount: number;
@@ -28,7 +28,7 @@ interface IDetailsAccordinProps {
 
 export default class DetailsAccordion extends Component<IDetailsAccordinProps, {}> {
 
-  render({ context, size, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
+  render({ recipientAddress, size, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
     links, whitelistedLinks, allLinks }: IDetailsAccordinProps) {
 
     return (
@@ -83,7 +83,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             class={style.accordion}
             title={<p class={style.accordionHeader}>Userfeed</p>}
           >
-            <TextWithLabel label="Userfeed address" text={context} />
+            <TextWithLabel label="Userfeed address" text={recipientAddress} />
           </Accordion>
         </Paper>
 

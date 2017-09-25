@@ -17,10 +17,11 @@ interface IWhitelistProps {
 interface IWhitelistState {
   links: any[];
   fetching: boolean;
-  context: string;
+  asset: string;
+  recipientAddress: string;
   algorithm: string;
   whitelist: string;
-  contextFromParams: boolean;
+  recipientAddressFromParams: boolean;
   whitelistFromParams: boolean;
 }
 
@@ -34,16 +35,17 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
     this.state = {
       links: [],
       fetching: false,
-      context: params.get('context') || '',
+      asset: params.get('asset') || '',
+      recipientAddress: params.get('recipientAddress') || '',
       algorithm: params.get('algorithm') || 'links',
       whitelist: params.get('whitelist') || '',
-      contextFromParams: params.has('context'),
+      recipientAddressFromParams: params.has('recipientAddress'),
       whitelistFromParams: params.has('whitelist'),
     };
   }
 
   componentWillMount() {
-    if (this.state.contextFromParams) {
+    if (this.state.recipientAddressFromParams) {
       this._fetchLinks();
     }
   }
@@ -54,9 +56,9 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
         <Paper class={style.paper}>
           <Input
             placeholder="Userfeed ID"
-            value={this.state.context}
-            onInput={this._onContextChange}
-            disabled={this.state.contextFromParams}
+            value={this.state.recipientAddress}
+            onInput={this._onRecipientAddressChange}
+            disabled={this.state.recipientAddressFromParams}
           />
           <Input
             placeholder="Whitelist ID"
@@ -71,8 +73,8 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
     );
   }
 
-  _onContextChange = (e) => {
-    this.setState({ context: e.target.value });
+  _onRecipientAddressChange = (e) => {
+    this.setState({ recipientAddress: e.target.value });
     this._fetchLinks();
   }
 
@@ -82,17 +84,17 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
   }
 
   _fetchLinks = debounce(async () => {
-    const { context, algorithm, whitelist } = this.state;
+    const { recipientAddress, algorithm, whitelist } = this.state;
 
     this.setState({ fetching: true });
 
     const baseURL = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/`)
+      const allLinksRequest = fetch(`${baseURL}/${asset}:${recipientAddress}/${algorithm}/`)
         .then((res) => res.json());
       const whitelistParam = whitelist ? `?whitelist=${asset}:${whitelist}` : '';
-      const whitelistedLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/${whitelistParam}`)
+      const whitelistedLinksRequest = fetch(`${baseURL}/${asset}:${recipientAddress}/${algorithm}/${whitelistParam}`)
         .then((res) => res.json());
 
       const [allLinks, whitelistedLinks] = await Promise.all([

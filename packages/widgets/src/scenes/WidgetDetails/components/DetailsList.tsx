@@ -17,7 +17,7 @@ interface IAllLinkProps {
     reason?: string;
   };
   initialView: TViewType;
-  context: string;
+  recipientAddress: string;
   algorithm: string;
   hasWhitelist: boolean;
   size: TWidgetSize;
@@ -45,14 +45,16 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   render() {
-    const { web3Enabled, context, size, algorithm, links, hasWhitelist, whitelistedLinks, allLinks, allLinksCount,
+    const { web3Enabled, recipientAddress, size,
+      algorithm, links, hasWhitelist,
+      whitelistedLinks, allLinks, allLinksCount,
       onBoostError, onBoostSuccess } = this.props;
 
     return (
       <div class={style.self} onScroll={this._onScroll}>
         <LinksList
           label="Slots"
-          context={context}
+          recipientAddress={recipientAddress}
           links={links}
           boostDisabled={!web3Enabled.enabled}
           boostDisabledReason={web3Enabled.reason}
@@ -63,7 +65,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
         <LinksList
           label="Whitelist"
           showProbability={false}
-          context={context}
+          recipientAddress={recipientAddress}
           links={whitelistedLinks}
           boostDisabled={!web3Enabled.enabled}
           boostDisabledReason={web3Enabled.reason}
@@ -75,7 +77,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           <LinksList
             label="Algorithm"
             showProbability={false}
-            context={context}
+            recipientAddress={recipientAddress}
             links={allLinks}
             boostDisabled={!web3Enabled.enabled}
             boostDisabledReason={web3Enabled.reason}
@@ -90,7 +92,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           ref={this._onRef('Specification')}
         />
         <UserfeedAddressInfo
-          context={context}
+          recipientAddress={recipientAddress}
           linksNumber={allLinksCount}
           ref={this._onRef('Userfeed')}
         />

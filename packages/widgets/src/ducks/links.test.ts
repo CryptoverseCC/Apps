@@ -23,7 +23,7 @@ describe('links actions', () => {
 
     const store = mockStore({
       links: {},
-      widget: { context: 'my-context', algorithm: 'alg-links', whitelist: 'my-whitelist' },
+      widget: { recipientAddress: 'my-context', algorithm: 'alg-links', whitelist: 'my-whitelist' },
     });
 
     await store.dispatch(fetchLinks());
@@ -57,7 +57,7 @@ describe('links actions', () => {
 
     const store = mockStore({
       links: {},
-      widget: { context: 'my-context', algorithm: 'alg-links', whitelist: 'my-whitelist' },
+      widget: { recipientAddress: 'my-context', algorithm: 'alg-links', whitelist: 'my-whitelist' },
     });
 
     await store.dispatch(fetchLinks());

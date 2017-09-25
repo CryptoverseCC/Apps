@@ -14,7 +14,7 @@ import web3 from '../utils/web3';
 import * as style from './addLink.scss';
 
 interface IAddLinkProps {
-  context: string;
+  recipientAddress: string;
   web3State: {
     enabled: boolean;
     reason?: string;
@@ -151,7 +151,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       return;
     }
 
-    const { context } = this.props;
+    const { recipientAddress } = this.props;
     const { title, summary, target, value } = this.state;
     this.setState({ posting: true });
 
@@ -164,7 +164,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       }],
     };
 
-    core.ethereum.claims.sendClaimValueTransfer(web3, context, value, claim)
+    core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim)
       .then((linkId) => {
         this.props.onSuccess(linkId);
       })

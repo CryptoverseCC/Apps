@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'development') {
 class LinkexchangeLink extends HTMLElement {
 
   static get observedAttributes() {
-    return ['context', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
+    return ['recipient-address', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
   }
 
   instance: Element;
@@ -57,7 +57,7 @@ class LinkexchangeLink extends HTMLElement {
   _argsToState() {
     const size = this.getAttribute('size') || 'rectangle';
     const timeslot = this.getAttribute('timeslot') || 5;
-    const context = this.getAttribute('context');
+    const recipientAddress = this.getAttribute('recipient-address');
     const whitelist = this.getAttribute('whitelist');
     const asset = this.getAttribute('asset');
     const slots = this.getAttribute('slots') || 10;
@@ -71,7 +71,7 @@ class LinkexchangeLink extends HTMLElement {
 
     return {
       algorithm,
-      context,
+      recipientAddress,
       asset,
       publisherNote,
       contactMethod,

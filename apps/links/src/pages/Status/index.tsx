@@ -50,7 +50,7 @@ interface IStatusState {
   mobileOrTablet: boolean;
   link?: any;
   linkId: string;
-  context: string;
+  recipientAddress: string;
   algorithm: string;
   whitelist: string;
   publisherNote: string;
@@ -68,7 +68,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     super(props);
     const params = new URLSearchParams(props.location.search);
 
-    const context = params.get('context') || '';
+    const recipientAddress = params.get('recipientAddress') || '';
     const asset = params.get('asset') || '';
     const algorithm = params.get('algorithm') || '';
     const whitelist = params.get('whitelist') || '';
@@ -79,7 +79,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     this.state = {
       mobileOrTablet: mobileOrTablet(),
       linkId,
-      context,
+      recipientAddress,
       asset,
       algorithm,
       whitelist,
@@ -96,7 +96,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
 
     const setTimeoutForFetch = (timeout: number | undefined) => {
       setTimeout(() => {
-        this._fetchLinks(context, asset, algorithm, whitelist)
+        this._fetchLinks(recipientAddress, asset, algorithm, whitelist)
           .then(this._findLinkById(linkId))
           .then((link) => link && !link.whitelisted && setTimeoutForFetch(5000));
       }, timeout);
@@ -106,11 +106,11 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   }
 
   render() {
-    if (!this.state.context) {
+    if (!this.state.recipientAddress) {
       return null;
     }
 
-    const { mobileOrTablet, linkId, context, link, blockchain, location } = this.state;
+    const { mobileOrTablet, linkId, asset, recipientAddress, link, blockchain, location } = this.state;
     return (
       <div class={style.self}>
         <div>
@@ -123,7 +123,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
         <Paper class={style.content}>
           <div class={style.introduction}>
             <img src={heartSvg} />
-            <h2>Your link has been succesfully submited!</h2>
+            <h2>Your link has been successfully submitted!</h2>
             <p>In order to track its progress please save the link</p>
           </div>
           <div class={style.info}>
@@ -145,7 +145,8 @@ export default class Status extends Component<IStatusProps, IStatusState> {
           </div>
           <Steps
             linkId={linkId}
-            context={context}
+            asset={asset}
+            recipientAddress={recipientAddress}
             link={link}
             blockchainState={blockchain}
           />
@@ -155,13 +156,16 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   }
 
   // ToDo fix - when network is unavailable
-  _fetchLinks = async (context, asset, algorithm, whitelist) => {
+  _fetchLinks = async (recipientAddress, asset, algorithm, whitelist) => {
     const baseURL = 'https://api.userfeeds.io/ranking';
 
     try {
-      const allLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/`, { cache: 'no-store' })
+      const allLinksRequest = fetch(
+        `${baseURL}/${asset}:${recipientAddress}/${algorithm}/`,
+        { cache: 'no-store' })
         .then((res) => res.json());
-      const whitelistedLinksRequest = fetch(`${baseURL}/${asset}:${context}/${algorithm}/?whitelist=${asset}:${whitelist}`,
+      const whitelistedLinksRequest = fetch(
+        `${baseURL}/${asset}:${recipientAddress}/${algorithm}/?whitelist=${asset}:${whitelist}`,
         { cache: 'no-store' })
         .then((res) => res.json());
 

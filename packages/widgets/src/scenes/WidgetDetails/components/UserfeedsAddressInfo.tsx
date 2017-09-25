@@ -8,21 +8,20 @@ import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 import * as style from './userfeedsAddressInfo.scss';
 
 interface IUserfeedsAddressInfoProps {
-  context: string;
+  recipientAddress: string;
   linksNumber: number;
   ref?(ref: any): void;
 }
 
-const renderQR = (context, ref) => {
+const renderQR = (recipientAddress, ref) => {
   const qr = new QRious({
     element: ref,
-    value: context,
+    value: recipientAddress,
   });
 };
 
-const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoProps) => {
-  const [network, address] = context.split(':');
-  const etherscanUrl = `https://${network}.etherscan.io/address/${address}`;
+const UserfeedsAddressInfo = ({ recipientAddress, linksNumber }: IUserfeedsAddressInfoProps) => {
+  const etherscanUrl = `https://etherscan.io/address/${recipientAddress}`;
 
   return (
     <div class={style.self}>
@@ -40,9 +39,9 @@ const UserfeedsAddressInfo = ({ context, linksNumber }: IUserfeedsAddressInfoPro
       <Paper>
         <TextWithLabel label="Userfeed address">
           <div class={style.row}>
-            {context}
+            {recipientAddress}
             <div class={style.qr}>
-              <canvas class={style.canvas} ref={renderQR.bind(null, context)} />
+              <canvas class={style.canvas} ref={renderQR.bind(null, recipientAddress)} />
             </div>
           </div>
         </TextWithLabel>

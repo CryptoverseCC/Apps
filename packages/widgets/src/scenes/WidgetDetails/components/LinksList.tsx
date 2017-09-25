@@ -15,7 +15,7 @@ import * as style from './linksList.scss';
 interface ILinksListProps {
   label: string;
   links: ILink[];
-  context: string;
+  recipientAddress: string;
   boostDisabled: boolean;
   boostDisabledReason?: string;
   onBoostSuccess?: (transationId: string) => void;
@@ -50,7 +50,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
         <BoostLink
           disabled={this.props.boostDisabled}
           disabledReason={this.props.boostDisabledReason}
-          context={this.props.context}
+          recipientAddress={this.props.recipientAddress}
           onSuccess={this.props.onBoostSuccess}
           onError={this.props.onBoostError}
           link={link}
