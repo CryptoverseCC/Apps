@@ -83,8 +83,37 @@ const tokenTransferAbi = [{
   type: 'function'
 }];
 
+function getErc20Contract(web3Instance, contractAddress) {
+  let contract = web3Instance.eth.contract(erc20abi).at(contractAddress);
+  return contract;
+}
+
+const erc20abi = [{
+  constant: false,
+  inputs: [
+    { name: "_spender", type: "address" },
+    { name: "_value", type: "uint256" }
+  ],
+  name: "approve",
+  outputs: [
+    { name: "success", type: "bool"}
+  ],
+  payable: false,
+  type: "function"
+}, {
+  constant: true,
+  inputs: [],
+  name: "decimals",
+  outputs: [
+    { name: "", type: "uint8"}
+  ],
+  payable: false,
+  type: "function"
+}];
+
 module.exports = {
   getContractWithoutValueTransfer,
   getContractValueTransfer,
   getContractTokenTransfer,
+  getErc20Contract,
 };
