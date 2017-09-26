@@ -4,7 +4,7 @@ async function erc20ContractApprove(web3Instance, contractAddress, spender, valu
   const [from] = await getAccounts(web3Instance);
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
-      contract.approve(
+    contract.approve(
       spender,
       value,
       { from },
@@ -13,8 +13,7 @@ async function erc20ContractApprove(web3Instance, contractAddress, spender, valu
   });
 }
 
-async function getErc20ContractDecimals(web3Instance, contractAddress) {
-  const [from] = await getAccounts(web3Instance);
+function getErc20ContractDecimals(web3Instance, contractAddress) {
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.decimals(
