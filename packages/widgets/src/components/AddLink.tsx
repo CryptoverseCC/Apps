@@ -151,7 +151,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       return;
     }
 
-    const { recipientAddress } = this.props;
+    const { asset, recipientAddress } = this.props;
     const { title, summary, target, value } = this.state;
     this.setState({ posting: true });
 
@@ -163,14 +163,20 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         value: window.location.href,
       }],
     };
-
-    core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim)
-      .then((linkId) => {
-        this.props.onSuccess(linkId);
-      })
-      .catch((e: Error) => {
-        this.props.onError(e.message);
-      })
+    const [, token] = asset.split(':');
+    let sendClaimPromise;
+    if (typeof token == 'undefined') {
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+    } else {
+      sendClaimPromise = core.ethereum.erc20.getErc20ContractDecimals(web3, token).then((decimals) => {
+        const valueAsInt = Math.floor(value * Math.pow(10, decimals));
+        return core.ethereum.erc20.erc20ContractApprove(web3, token, '0x54b4372fa0bd76664b48625f0e8c899ff19dfc39', valueAsInt)
+          .then((s) => core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, valueAsInt, claim));
+      });
+    }
+    sendClaimPromise
+      .then((linkId) => { this.props.onSuccess(linkId); })
+      .catch((e: Error) => { this.props.onError(e.message); })
       .then(() => this.setState({ posting: false }));
   }
 }

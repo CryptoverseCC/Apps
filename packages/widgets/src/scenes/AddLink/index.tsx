@@ -81,6 +81,7 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
               <Switch expresion={step}>
                 <Switch.Case condition="form">
                   <AddLink
+                    asset={widgetSettings.asset}
                     recipientAddress={widgetSettings.recipientAddress}
                     web3State={web3State}
                     onChange={this._onFormEdit}
