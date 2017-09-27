@@ -170,7 +170,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     } else {
       sendClaimPromise = core.ethereum.erc20.getErc20ContractDecimals(web3, token).then((decimals) => {
         const valueAsInt = Math.floor(value * Math.pow(10, decimals));
-        return core.ethereum.erc20.erc20ContractApprove(web3, token, '0x54b4372fa0bd76664b48625f0e8c899ff19dfc39', valueAsInt)
+        return core.ethereum.claims.approveUserfeedsContractTokenTransfer(web3, token, valueAsInt)
           .then((s) => core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, valueAsInt, claim));
       });
     }
