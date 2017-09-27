@@ -74,6 +74,7 @@ function getResolveOrRejectOnErrorFunc(resolve, reject) {
 module.exports = {
   sendClaimWithoutValueTransfer,
   sendClaimValueTransfer,
+  approveUserfeedsContractTokenTransfer,
   sendClaimTokenTransfer,
 };
 
