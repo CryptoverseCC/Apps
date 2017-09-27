@@ -53,7 +53,7 @@ function erc20ContractName(web3Instance, contractAddress) {
   });
 }
 
-function getErc20ContractSymbol(web3Instance, contractAddress) {
+function erc20ContractSymbol(web3Instance, contractAddress) {
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.symbol(
@@ -78,5 +78,5 @@ module.exports = {
   erc20ContractBalance,
   erc20ContractDecimals,
   erc20ContractName,
-  getErc20ContractSymbol,
+  erc20ContractSymbol,
 };
