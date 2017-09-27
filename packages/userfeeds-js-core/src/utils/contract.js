@@ -69,6 +69,14 @@ function getContractTokenTransfer(web3Instance, networkName) {
   return contract;
 }
 
+function getContractTokenTransferAddress(networkName) {
+  let contractAddress = tokenTransferContractAddressMapping[networkName];
+  if (!contractAddress) {
+    throw new Error('Contract is not available');
+  }
+  return contractAddress;
+}
+
 const tokenTransferAbi = [{
   constant: false,
   inputs: [
@@ -115,5 +123,6 @@ module.exports = {
   getContractWithoutValueTransfer,
   getContractValueTransfer,
   getContractTokenTransfer,
+  getContractTokenTransferAddress,
   getErc20Contract,
 };

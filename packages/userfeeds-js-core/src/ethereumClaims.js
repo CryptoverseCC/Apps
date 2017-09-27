@@ -4,6 +4,7 @@ const {
   getContractWithoutValueTransfer,
   getContractValueTransfer,
   getContractTokenTransfer,
+  getContractTokenTransferAddress,
 } = require('./utils/contract');
 
 async function sendClaimWithoutValueTransfer(web3Instance, claim) {
@@ -39,7 +40,7 @@ async function sendClaimValueTransfer(web3Instance, address, value, claim) {
 
 async function approveUserfeedsContractTokenTransfer(web3Instance, spender, value) {
   const networkName = await getCurrentNetworkName(web3Instance);
-  const contract = getContractTokenTransfer(web3Instance, networkName);
+  const contract = getContractTokenTransferAddress(networkName);
   return erc20ContractApprove(web3Instance, contract, spender, value);
 }
 
