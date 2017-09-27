@@ -14,10 +14,49 @@ async function erc20ContractApprove(web3Instance, contractAddress, spender, valu
   });
 }
 
-function getErc20ContractDecimals(web3Instance, contractAddress) {
+function erc20ContractAllowance(web3Instance, contractAddress, owner, spender) {
+  const contract = getErc20Contract(web3Instance, contractAddress);
+  return new Promise((resolve, reject) => {
+    contract.allowance(
+      owner,
+      spender,
+      getResolveOrRejectOnErrorFunc(resolve, reject),
+    );
+  });
+}
+
+function erc20ContractBalance(web3Instance, contractAddress, owner) {
+  const contract = getErc20Contract(web3Instance, contractAddress);
+  return new Promise((resolve, reject) => {
+    contract.balanceOf(
+      owner,
+      getResolveOrRejectOnErrorFunc(resolve, reject),
+    );
+  });
+}
+
+function erc20ContractDecimals(web3Instance, contractAddress) {
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.decimals(
+      getResolveOrRejectOnErrorFunc(resolve, reject),
+    );
+  });
+}
+
+function erc20ContractName(web3Instance, contractAddress) {
+  const contract = getErc20Contract(web3Instance, contractAddress);
+  return new Promise((resolve, reject) => {
+    contract.name(
+      getResolveOrRejectOnErrorFunc(resolve, reject),
+    );
+  });
+}
+
+function getErc20ContractSymbol(web3Instance, contractAddress) {
+  const contract = getErc20Contract(web3Instance, contractAddress);
+  return new Promise((resolve, reject) => {
+    contract.symbol(
       getResolveOrRejectOnErrorFunc(resolve, reject),
     );
   });
@@ -35,5 +74,9 @@ function getResolveOrRejectOnErrorFunc(resolve, reject) {
 
 module.exports = {
   erc20ContractApprove,
-  getErc20ContractDecimals,
+  erc20ContractAllowance,
+  erc20ContractBalance,
+  erc20ContractDecimals,
+  erc20ContractName,
+  getErc20ContractSymbol,
 };
