@@ -50,6 +50,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
         <BoostLink
           disabled={this.props.boostDisabled}
           disabledReason={this.props.boostDisabledReason}
+          asset={this.props.asset}
           recipientAddress={this.props.recipientAddress}
           onSuccess={this.props.onBoostSuccess}
           onError={this.props.onBoostError}

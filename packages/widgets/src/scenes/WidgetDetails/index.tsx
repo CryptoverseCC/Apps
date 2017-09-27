@@ -124,6 +124,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
                 algorithm={widgetSettings.algorithm}
                 scrolledTo={this._onScrolledTo}
                 ref={this._onDetailsListRef}
+                asset={widgetSettings.asset}
                 recipientAddress={widgetSettings.recipientAddress}
                 hasWhitelist={!!widgetSettings.whitelist}
                 size={widgetSettings.size}

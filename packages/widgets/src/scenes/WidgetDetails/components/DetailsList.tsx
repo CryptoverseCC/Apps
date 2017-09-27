@@ -17,6 +17,7 @@ interface IAllLinkProps {
     reason?: string;
   };
   initialView: TViewType;
+  asset: string;
   recipientAddress: string;
   algorithm: string;
   hasWhitelist: boolean;
@@ -30,6 +31,7 @@ interface IAllLinkProps {
   scrolledTo(to: TViewType): void;
 }
 
+// TODO: shouldn't this be called DetailsList?
 export default class AllLinks extends Component<IAllLinkProps, {}> {
 
   refs: { [key: string]: any; } = {};
@@ -45,7 +47,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   render() {
-    const { web3Enabled, recipientAddress, size,
+    const { web3Enabled, asset, recipientAddress, size,
       algorithm, links, hasWhitelist,
       whitelistedLinks, allLinks, allLinksCount,
       onBoostError, onBoostSuccess } = this.props;
@@ -54,6 +56,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
       <div class={style.self} onScroll={this._onScroll}>
         <LinksList
           label="Slots"
+          asset={asset}
           recipientAddress={recipientAddress}
           links={links}
           boostDisabled={!web3Enabled.enabled}
@@ -65,6 +68,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
         <LinksList
           label="Whitelist"
           showProbability={false}
+          asset={asset}
           recipientAddress={recipientAddress}
           links={whitelistedLinks}
           boostDisabled={!web3Enabled.enabled}
@@ -77,6 +81,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           <LinksList
             label="Algorithm"
             showProbability={false}
+            asset={asset}
             recipientAddress={recipientAddress}
             links={allLinks}
             boostDisabled={!web3Enabled.enabled}
