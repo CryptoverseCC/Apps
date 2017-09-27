@@ -1,3 +1,4 @@
+const { getAccounts } = require('./utils');
 const { getErc20Contract } = require('./utils/contract');
 
 async function erc20ContractApprove(web3Instance, contractAddress, spender, value) {
