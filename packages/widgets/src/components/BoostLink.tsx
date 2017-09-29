@@ -177,7 +177,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     if (typeof token == 'undefined') {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     } else {
-      sendClaimPromise = core.ethereum.erc20.getErc20ContractDecimals(web3, token).then((decimals) => {
+      sendClaimPromise = core.ethereum.erc20.erc20ContractDecimals(web3, token).then((decimals) => {
         const valueAsInt = Math.floor(value * Math.pow(10, decimals));
         return core.ethereum.claims.approveUserfeedsContractTokenTransfer(web3, token, valueAsInt)
           .then((s) => core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, valueAsInt, claim));
