@@ -82,6 +82,7 @@ module.exports = {
   sendClaimWithoutValueTransfer,
   sendClaimValueTransfer,
   approveUserfeedsContractTokenTransfer,
+  allowanceUserfeedsContractTokenTransfer,
   sendClaimTokenTransfer,
 };
 
