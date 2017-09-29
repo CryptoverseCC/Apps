@@ -38,10 +38,10 @@ async function sendClaimValueTransfer(web3Instance, address, value, claim) {
   });
 }
 
-async function approveUserfeedsContractTokenTransfer(web3Instance, spender, value) {
+async function approveUserfeedsContractTokenTransfer(web3Instance, tokenContractAddress, value) {
   const networkName = await getCurrentNetworkName(web3Instance);
-  const contract = getContractTokenTransferAddress(networkName);
-  return erc20ContractApprove(web3Instance, contract, spender, value);
+  const spenderContractAddress = getContractTokenTransferAddress(networkName);
+  return erc20ContractApprove(web3Instance, tokenContractAddress, spenderContractAddress, value);
 }
 
 async function sendClaimTokenTransfer(web3Instance, address, token, value, claim) {
