@@ -14,22 +14,24 @@ async function erc20ContractApprove(web3Instance, contractAddress, spender, valu
   });
 }
 
-function erc20ContractAllowance(web3Instance, contractAddress, owner, spender) {
+async function erc20ContractAllowance(web3Instance, contractAddress, spender) {
+  const [from] = await getAccounts(web3Instance);
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.allowance(
-      owner,
+      from,
       spender,
       getResolveOrRejectOnErrorFunc(resolve, reject),
     );
   });
 }
 
-function erc20ContractBalance(web3Instance, contractAddress, owner) {
+async function erc20ContractBalance(web3Instance, contractAddress) {
+  const [from] = await getAccounts(web3Instance);
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.balanceOf(
-      owner,
+      from,
       getResolveOrRejectOnErrorFunc(resolve, reject),
     );
   });

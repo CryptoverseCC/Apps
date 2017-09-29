@@ -1,5 +1,5 @@
 const { getCurrentNetworkName, getAccounts } = require('./utils');
-const { erc20ContractApprove } = require('./erc20');
+const { erc20ContractApprove, erc20ContractAllowance } = require('./erc20');
 const {
   getContractWithoutValueTransfer,
   getContractValueTransfer,
@@ -42,6 +42,12 @@ async function approveUserfeedsContractTokenTransfer(web3Instance, tokenContract
   const networkName = await getCurrentNetworkName(web3Instance);
   const spenderContractAddress = getContractTokenTransferAddress(networkName);
   return erc20ContractApprove(web3Instance, tokenContractAddress, spenderContractAddress, value);
+}
+
+async function allowanceUserfeedsContractTokenTransfer(web3Instance, tokenContractAddress) {
+  const networkName = await getCurrentNetworkName(web3Instance);
+  const spenderContractAddress = getContractTokenTransferAddress(networkName);
+  return erc20ContractAllowance(web3Instance, tokenContractAddress, spenderContractAddress);
 }
 
 async function sendClaimTokenTransfer(web3Instance, address, token, value, claim) {
