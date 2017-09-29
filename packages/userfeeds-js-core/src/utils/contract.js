@@ -111,7 +111,7 @@ const erc20abi = [{
 }, {
   constant: true,
   inputs: [
-    { name: "_owner", type: "address" }
+    { name: "_owner", type: "address" },
     { name: "_spender", type: "address" }
   ],
   name: "allowance",
