@@ -148,16 +148,12 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
   }
 
   _onTokenChange = ({ value }) => {
-    if (value === CUSTOM_TOKEN) {
-      // TODO
-    } else {
-      this.setState(({widgetSettings}) => ({
-        widgetSettings: {
-          ...widgetSettings,
-          token: value,
-        },
-      }));
-    }
+    this.setState(({widgetSettings}) => ({
+      widgetSettings: {
+        ...widgetSettings,
+        token: value,
+      },
+    }));
   }
 
   _handleChange = (name) => (e) => {
