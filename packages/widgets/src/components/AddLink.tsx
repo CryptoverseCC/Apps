@@ -45,7 +45,7 @@ interface IAddLinkState {
     target?: string;
     value?: string;
   };
-  stuffAboutThisToken: {
+  tokenDetails: {
     loaded: boolean;
     decimals: any | null;
     balance: any | null;
@@ -85,7 +85,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     value: '',
     unlimitedApproval: false,
     errors: {},
-    stuffAboutThisToken: {
+    tokenDetails: {
       loaded: false,
       decimals: null,
       balance: null,
@@ -95,25 +95,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
   };
 
   componentDidMount() {
-    this._loadStuffAboutThisToken();
-  }
-
-  async _loadStuffAboutThisToken() {
-    const token = this._getToken();
-    const [decimals, balance, symbol, name] = await Promise.all([
-      erc20ContractDecimals(web3, token),
-      erc20ContractBalance(web3, token),
-      erc20ContractSymbol(web3, token),
-      erc20ContractName(web3, token),
-    ]);
-    console.log(decimals);
-    this.setState({stuffAboutThisToken: {
-      loaded: true,
-      decimals,
-      balance,
-      symbol,
-      name,
-    }});
+    this._loadTokenDetails();
   }
 
   render(
@@ -153,11 +135,11 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           onBlur={this._onInput}
           onInput={this._onInput}
         />
-        {this._getToken() &&
+        {this._getTokenAddress() &&
           [
-            this.state.stuffAboutThisToken.loaded && <p>
-              Your balance for <i>{this.state.stuffAboutThisToken.name}</i> (
-              {this.state.stuffAboutThisToken.symbol}, {this._getToken()})
+            this.state.tokenDetails.loaded && <p>
+              Your balance for <i>{this.state.tokenDetails.name}</i> (
+              {this.state.tokenDetails.symbol}, {this._getTokenAddress()})
               is {this._getTokenBalance()}.
             </p>,
             <Checkbox
@@ -181,8 +163,28 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     );
   }
 
+  async _loadTokenDetails() {
+    const token = this._getTokenAddress();
+    if (!token) {
+      return;
+    }
+    const [decimals, balance, symbol, name] = await Promise.all([
+      erc20ContractDecimals(web3, token),
+      erc20ContractBalance(web3, token),
+      erc20ContractSymbol(web3, token),
+      erc20ContractName(web3, token),
+    ]);
+    this.setState({tokenDetails: {
+      loaded: true,
+      decimals,
+      balance,
+      symbol,
+      name,
+    }});
+  }
+
   _getTokenBalance() {
-    return this.state.stuffAboutThisToken.balance.shift(-this.state.stuffAboutThisToken.decimals.toNumber()).toNumber();
+    return this.state.tokenDetails.balance.shift(-this.state.tokenDetails.decimals.toNumber()).toNumber();
   }
 
   _onInput = (e) => {
@@ -231,7 +233,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         value: window.location.href,
       }],
     };
-    const token = this._getToken();
+    const token = this._getTokenAddress();
     let sendClaimPromise;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, unlimitedApproval, claim);
@@ -244,7 +246,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       .then(() => this.setState({ posting: false }));
   }
 
-  _getToken() {
+  _getTokenAddress() {
     return this.props.asset.split(':')[1];
   }
 }
