@@ -11,7 +11,7 @@ export const openUserfeedsUrl = (path, widgetSettings: TExtendedWidgetState) => 
 
   const queryString = qs.stringify({
     ...widgetSettings,
-    linkId: `claim:${widgetSettings.linkId}`,
+    ...(widgetSettings.linkId ? { linkId: `claim:${widgetSettings.linkId}` } : {}),
   });
 
   window.open(`${baseUrl}${path}?${queryString}`, '_blank');
