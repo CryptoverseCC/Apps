@@ -139,17 +139,16 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   _validateAll = () => {
     const errors = ['title', 'summary', 'target', 'value']
-      .map((name) => ({ [name]: validate(rules[name], this.state[name])}))
-      .reduce((acc, r) => ({ ...acc, ...r}), {});
-
-    return errors;
+      .reduce((acc, name) => {
+        const validations = validate(rules[name], this.state[name]);
+        return !validations ? acc : {...acc, [name]: validations};
+      }, {});
+    this.setState({ errors });
+    return Object.keys(errors).length === 0;
   }
 
   _onSubmit = () => {
-    const errors = this._validateAll();
-    const valid = Object.values(errors).filter((v) => !!v).length === 0;
-    if (!valid) {
-      this.setState({ errors });
+    if (!this._validateAll()) {
       return;
     }
 
