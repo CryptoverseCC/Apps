@@ -14,6 +14,13 @@ import web3 from '../utils/web3';
 
 import * as style from './addLink.scss';
 
+const {
+  erc20ContractDecimals,
+  erc20ContractBalance,
+  erc20ContractSymbol,
+  erc20ContractName
+} = core.ethereum.erc20;
+
 interface IAddLinkProps {
   asset: string;
   recipientAddress: string;
@@ -37,6 +44,13 @@ interface IAddLinkState {
     summary?: string;
     target?: string;
     value?: string;
+  };
+  stuffAboutThisToken: {
+    loaded: boolean;
+    decimals: any | null;
+    balance: any | null;
+    symbol: string | null;
+    name: string | null;
   };
   posting?: boolean;
 }
@@ -71,7 +85,36 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     value: '',
     unlimitedApproval: false,
     errors: {},
+    stuffAboutThisToken: {
+      loaded: false,
+      decimals: null,
+      balance: null,
+      symbol: null,
+      name: null,
+    },
   };
+
+  componentDidMount() {
+    this._loadStuffAboutThisToken();
+  }
+
+  async _loadStuffAboutThisToken() {
+    const token = this._getToken();
+    const [decimals, balance, symbol, name] = await Promise.all([
+      erc20ContractDecimals(web3, token),
+      erc20ContractBalance(web3, token),
+      erc20ContractSymbol(web3, token),
+      erc20ContractName(web3, token),
+    ]);
+    console.log(decimals);
+    this.setState({stuffAboutThisToken: {
+      loaded: true,
+      decimals,
+      balance,
+      symbol,
+      name,
+    }});
+  }
 
   render(
     { web3State }: IAddLinkProps,
@@ -111,11 +154,18 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           onInput={this._onInput}
         />
         {this._getToken() &&
-          <Checkbox
-            label="Don't ask me again for this token on any website or wherever"
-            checked={unlimitedApproval}
-            onChange={this._onUnlimitedApprovalChange}
-          />
+          [
+            this.state.stuffAboutThisToken.loaded && <p>
+              Your balance for <i>{this.state.stuffAboutThisToken.name}</i> (
+              {this.state.stuffAboutThisToken.symbol}, {this._getToken()})
+              is {this._getTokenBalance()}.
+            </p>,
+            <Checkbox
+              label="Don't ask me again for this token on any website or wherever"
+              checked={unlimitedApproval}
+              onChange={this._onUnlimitedApprovalChange}
+            />
+          ]
         }
         <div class={style.sendButton}>
           {posting
@@ -129,6 +179,10 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         </div>
       </div>
     );
+  }
+
+  _getTokenBalance() {
+    return this.state.stuffAboutThisToken.balance.shift(-this.state.stuffAboutThisToken.decimals.toNumber()).toNumber();
   }
 
   _onInput = (e) => {
