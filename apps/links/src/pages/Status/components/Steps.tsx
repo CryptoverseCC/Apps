@@ -99,11 +99,6 @@ export default class Steps extends Component<IStepsProps, {}> {
       ? 'notstarted'
       : link && link.whitelisted ? 'done' : 'waiting';
 
-    const [network] = asset.split(':');
-    const networkPrefix = network !== 'ethereum' ? `${network}.` : '';
-    const [, tx] = linkId.split(':');
-    const etherscanUrl = link ? `https://${networkPrefix}etherscan.io/tx/${tx}` : '';
-
     return (
       <div class={style.self}>
         <Progress
@@ -121,7 +116,6 @@ export default class Steps extends Component<IStepsProps, {}> {
             icon={<Tooltip text={step0Reason}><Icon class={style.icon} name="eye" /></Tooltip>}
           >
             <p>Visible on blockchain</p>
-            <a href={etherscanUrl} target="_blank">Etherscan <Icon name="external-link" /></a>
           </Step>
           <Step
             ref={this._onRef('step1Ref')}
