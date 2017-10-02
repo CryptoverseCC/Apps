@@ -5,6 +5,7 @@ import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Loader from '@userfeeds/apps-components/src/Loader';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import Checkbox from '@userfeeds/apps-components/src/Checkbox';
 
 import { ILink } from '../types';
 
@@ -68,12 +69,13 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     summary: '',
     target: 'http://',
     value: '',
+    unlimitedApproval: false,
     errors: {},
   };
 
   render(
     { web3State }: IAddLinkProps,
-    { posting, title, summary, target, value, errors }: IAddLinkState) {
+    { posting, title, summary, target, value, unlimitedApproval, errors }: IAddLinkState) {
     return (
       <div class={style.self}>
         <Input
@@ -108,6 +110,13 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           onBlur={this._onInput}
           onInput={this._onInput}
         />
+        {this._getToken() &&
+          <Checkbox
+            label="Don't ask me again for this token on any website or wherever"
+            checked={unlimitedApproval}
+            onChange={this._onUnlimitedApprovalChange}
+          />
+        }
         <div class={style.sendButton}>
           {posting
             ? <Loader />
@@ -137,6 +146,10 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     });
   }
 
+  _onUnlimitedApprovalChange = (e) => {
+    this.setState({unlimitedApproval: e.target.checked});
+  }
+
   _validateAll = () => {
     const errors = ['title', 'summary', 'target', 'value']
       .reduce((acc, name) => {
@@ -153,7 +166,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     }
 
     const { asset, recipientAddress } = this.props;
-    const { title, summary, target, value, unlimitedApproval = true } = this.state;
+    const { title, summary, target, value, unlimitedApproval } = this.state;
     this.setState({ posting: true });
 
     const claim = {
@@ -164,7 +177,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         value: window.location.href,
       }],
     };
-    const [, token] = asset.split(':');
+    const token = this._getToken();
     let sendClaimPromise;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, unlimitedApproval, claim);
@@ -175,5 +188,9 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       .then((linkId) => { this.props.onSuccess(linkId); })
       .catch((e: Error) => { this.props.onError(e.message); })
       .then(() => this.setState({ posting: false }));
+  }
+
+  _getToken() {
+    return this.props.asset.split(':')[1];
   }
 }
