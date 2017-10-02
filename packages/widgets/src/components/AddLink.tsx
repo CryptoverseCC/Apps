@@ -14,6 +14,7 @@ import web3 from '../utils/web3';
 import * as style from './addLink.scss';
 
 interface IAddLinkProps {
+  asset: string;
   recipientAddress: string;
   web3State: {
     enabled: boolean;
@@ -29,6 +30,7 @@ interface IAddLinkState {
   summary: string;
   target: string;
   value: string;
+  unlimitedApproval: boolean;
   errors: {
     title?: string;
     summary?: string;
@@ -152,7 +154,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     }
 
     const { asset, recipientAddress } = this.props;
-    const { title, summary, target, value } = this.state;
+    const { title, summary, target, value, unlimitedApproval = true } = this.state;
     this.setState({ posting: true });
 
     const claim = {
@@ -165,28 +167,10 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     };
     const [, token] = asset.split(':');
     let sendClaimPromise;
-    if (typeof token === 'undefined') {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+    if (token) {
+      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, unlimitedApproval, claim);
     } else {
-      sendClaimPromise = core.ethereum.erc20.erc20ContractDecimals(web3, token).then((decimals) => {
-        const valueAsInt = Math.floor(value * Math.pow(10, decimals));
-        return core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token).then((allowance) => {
-          console.log('Allowance: ' + allowance);
-          if (valueAsInt >= allowance) {
-            const unlimited = true;
-            let approveValue;
-            if (unlimited) {
-              approveValue = 1e66;
-            } else {
-              approveValue = valueAsInt;
-            }
-            return core.ethereum.claims.approveUserfeedsContractTokenTransfer(web3, token, approveValue)
-              .then((s) => core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, valueAsInt, claim));
-          } else {
-            return core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, valueAsInt, claim);
-          }
-        });
-      });
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }
     sendClaimPromise
       .then((linkId) => { this.props.onSuccess(linkId); })
