@@ -115,7 +115,7 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
     });
   }
 
-  _onError = () => {
-    this.props.openToast('Transation rejected');
+  _onError = (e) => {
+    this.props.openToast('Transation rejected ' + e);
   }
 }
