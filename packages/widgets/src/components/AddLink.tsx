@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
 
 import * as core from '@userfeeds/core';
 import Input from '@userfeeds/apps-components/src/Input';
@@ -13,13 +14,8 @@ import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
 import * as style from './addLink.scss';
-
-const {
-  erc20ContractDecimals,
-  erc20ContractBalance,
-  erc20ContractSymbol,
-  erc20ContractName
-} = core.ethereum.erc20;
+import {IRootState} from "../ducks/index";
+import {ITokenDetailsState} from "../ducks/widget";
 
 interface IAddLinkProps {
   asset: string;
@@ -28,6 +24,7 @@ interface IAddLinkProps {
     enabled: boolean;
     reason?: string;
   };
+  tokenDetails: ITokenDetailsState;
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: ILink) => void;
@@ -45,12 +42,9 @@ interface IAddLinkState {
     target?: string;
     value?: string;
   };
-  tokenDetails: {
+  tokenBalance: {
     loaded: boolean;
-    decimals: any | null;
     balance: any | null;
-    symbol: string | null;
-    name: string | null;
   };
   posting?: boolean;
 }
@@ -75,7 +69,8 @@ const rules = {
       return true;
     }, 'Invalid value')],
 };
-
+const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({ tokenDetails });
+@connect(mapStateToProps)
 export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   state: IAddLinkState = {
@@ -85,17 +80,14 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     value: '',
     unlimitedApproval: false,
     errors: {},
-    tokenDetails: {
+    tokenBalance: {
       loaded: false,
-      decimals: null,
       balance: null,
-      symbol: null,
-      name: null,
     },
   };
 
   componentDidMount() {
-    this._loadTokenDetails();
+    this._loadUserBalance();
   }
 
   render(
@@ -137,10 +129,8 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         />
         {this._getTokenAddress() &&
           [
-            this.state.tokenDetails.loaded && <p>
-              Your balance for <i>{this.state.tokenDetails.name}</i> (
-              {this.state.tokenDetails.symbol}, {this._getTokenAddress()})
-              is {this._getTokenBalance()}.
+            this.state.tokenBalance.loaded && this.props.tokenDetails.loaded && <p>
+              Your balance: {this._getTokenBalance()} {this.props.tokenDetails.symbol}.
             </p>,
             <Checkbox
               label="Don't ask me again for this token on any website or wherever"
@@ -163,28 +153,20 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     );
   }
 
-  async _loadTokenDetails() {
+  async _loadUserBalance() {
     const token = this._getTokenAddress();
     if (!token) {
       return;
     }
-    const [decimals, balance, symbol, name] = await Promise.all([
-      erc20ContractDecimals(web3, token),
-      erc20ContractBalance(web3, token),
-      erc20ContractSymbol(web3, token),
-      erc20ContractName(web3, token),
-    ]);
-    this.setState({tokenDetails: {
+    const balance = await core.ethereum.erc20.erc20ContractBalance(web3, token);
+    this.setState({tokenBalance: {
       loaded: true,
-      decimals,
       balance,
-      symbol,
-      name,
     }});
   }
 
   _getTokenBalance() {
-    return this.state.tokenDetails.balance.shift(-this.state.tokenDetails.decimals.toNumber()).toNumber();
+    return this.props.tokenDetails.balance.shift(-this.props.tokenDetails.decimals.toNumber()).toNumber();
   }
 
   _onInput = (e) => {

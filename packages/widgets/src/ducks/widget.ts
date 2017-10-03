@@ -18,7 +18,7 @@ const acf = actionCreatorFactory('widget');
 
 export const widgetActions = {
   update: acf<IWidgetState>('UPDATE'),
-  tokenDetailsLoaded: acf<ITokenDeatilsState>('TOKEN_DETAILS_LOADED'),
+  tokenDetailsLoaded: acf<ITokenDetailsState>('TOKEN_DETAILS_LOADED'),
 };
 
 export const updateWidgetSettings = (newSettings: IWidgetState) => (dispatch, getState: () => IRootState) => {
@@ -48,7 +48,7 @@ export const loadTokenDetails = () => async (dispatch, getState) => {
   dispatch(widgetActions.tokenDetailsLoaded({ loaded: true, decimals, balance, symbol, name }));
 };
 
-interface ITokenDeatilsState {
+export interface ITokenDetailsState {
   loaded: boolean;
   decimals: any | null;
   balance?: any;
@@ -71,7 +71,7 @@ export interface IWidgetState {
   impression?: string;
   location?: string;
   tillDate?: string;
-  tokenDetails: ITokenDeatilsState;
+  tokenDetails: ITokenDetailsState;
 }
 
 const initialState = {
