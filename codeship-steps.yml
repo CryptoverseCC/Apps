@@ -3,3 +3,8 @@
   steps:
     - service: apps
       command: /apps/release.sh
+
+- type: serial
+  exclude: master
+  steps:
+    - service: apps
