@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
+import { bindActionCreators } from 'redux';
 
 import * as core from '@userfeeds/core';
 import Input from '@userfeeds/apps-components/src/Input';
@@ -15,7 +16,7 @@ import web3 from '../utils/web3';
 
 import * as style from './addLink.scss';
 import {IRootState} from '../ducks/index';
-import {ITokenDetailsState} from '../ducks/widget';
+import {ITokenDetailsState, loadTokenDetails} from '../ducks/widget';
 
 interface IAddLinkProps {
   asset: string;
@@ -25,6 +26,7 @@ interface IAddLinkProps {
     reason?: string;
   };
   tokenDetails: ITokenDetailsState;
+  loadTokenDetails: any;
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: ILink) => void;
@@ -41,10 +43,6 @@ interface IAddLinkState {
     summary?: string;
     target?: string;
     value?: string;
-  };
-  tokenBalance: {
-    loaded: boolean;
-    balance: any | null;
   };
   posting?: boolean;
 }
@@ -70,7 +68,8 @@ const rules = {
     }, 'Invalid value')],
 };
 const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({ tokenDetails });
-@connect(mapStateToProps)
+const mapDispatchToProps = (dispatch) => bindActionCreators({loadTokenDetails}, dispatch);
+@connect(mapStateToProps, mapDispatchToProps)
 export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   state: IAddLinkState = {
@@ -80,14 +79,10 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     value: '',
     unlimitedApproval: false,
     errors: {},
-    tokenBalance: {
-      loaded: false,
-      balance: null,
-    },
   };
 
   componentDidMount() {
-    this._loadUserBalance();
+    this.props.loadTokenDetails();
   }
 
   render(
@@ -129,7 +124,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         />
         {this._getTokenAddress() &&
           [
-            this.state.tokenBalance.loaded && this.props.tokenDetails.loaded && <p>
+            this.props.tokenDetails.loaded && <p>
               Your balance: {this._getTokenBalance()} {this.props.tokenDetails.symbol}.
             </p>,
             <Checkbox
@@ -151,18 +146,6 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         </div>
       </div>
     );
-  }
-
-  async _loadUserBalance() {
-    const token = this._getTokenAddress();
-    if (!token) {
-      return;
-    }
-    const balance = await core.ethereum.erc20.erc20ContractBalance(web3, token);
-    this.setState({tokenBalance: {
-      loaded: true,
-      balance,
-    }});
   }
 
   _getTokenBalance() {
