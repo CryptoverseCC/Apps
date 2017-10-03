@@ -3,4 +3,4 @@ apps:
   cached: true
   encrypted_env_file: env.encrypted
   environment:
-    - REMOTE_REPOSITORY=git@github.com:Userfeeds/userfeeds.io.git
+    - REMOTE_REPOSITORY=git@github.com:Userfeeds/link-exchange.git
