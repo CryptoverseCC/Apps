@@ -27,7 +27,7 @@ import WidgetSummary from './components/WidgetSummary';
 import { openUserfeedsUrl } from '../../utils/openUserfeedsUrl';
 
 import * as style from './widgetDetails.scss';
-import {loadTokenDetails} from "../../ducks/widget";
+import {loadTokenDetails} from '../../ducks/widget';
 
 export type TViewType = 'Userfeed' | 'Specification' | 'Links.Algorithm'
   | 'Links.Whitelist' | 'Links.Slots';
@@ -59,8 +59,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(openToast(message, type));
   },
   loadTokenDetails() {
-    dispatch(loadTokenDetails())
-  }
+    dispatch(loadTokenDetails());
+  },
 });
 
 const State2Props = returntypeof(mapStateToProps);

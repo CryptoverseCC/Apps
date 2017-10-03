@@ -176,7 +176,9 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const token = this._getTokenAddress();
     let sendClaimPromise;
     if (token) {
-      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, false, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
+        web3, recipientAddress, token, value, false, claim,
+      );
     } else {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }

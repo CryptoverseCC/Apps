@@ -14,8 +14,8 @@ import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
 import * as style from './addLink.scss';
-import {IRootState} from "../ducks/index";
-import {ITokenDetailsState} from "../ducks/widget";
+import {IRootState} from '../ducks/index';
+import {ITokenDetailsState} from '../ducks/widget';
 
 interface IAddLinkProps {
   asset: string;
@@ -136,7 +136,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
               label="Don't ask me again for this token on any website or wherever"
               checked={unlimitedApproval}
               onChange={this._onUnlimitedApprovalChange}
-            />
+            />,
           ]
         }
         <div class={style.sendButton}>
@@ -218,7 +218,9 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     const token = this._getTokenAddress();
     let sendClaimPromise;
     if (token) {
-      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, unlimitedApproval, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
+        web3, recipientAddress, token, value, unlimitedApproval, claim,
+      );
     } else {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }

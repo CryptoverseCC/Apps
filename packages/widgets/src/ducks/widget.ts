@@ -11,7 +11,7 @@ const {
   erc20ContractDecimals,
   erc20ContractBalance,
   erc20ContractSymbol,
-  erc20ContractName
+  erc20ContractName,
 } = core.ethereum.erc20;
 
 const acf = actionCreatorFactory('widget');
@@ -85,7 +85,7 @@ export default function widget(state: IWidgetState = initialState, action: Actio
   if (isType(action, widgetActions.update)) {
     return action.payload;
   } else if (isType(action, widgetActions.tokenDetailsLoaded)) {
-    return { ...state, tokenDetails: action.payload }
+    return { ...state, tokenDetails: action.payload };
   }
   return state;
 }
