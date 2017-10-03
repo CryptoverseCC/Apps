@@ -1,15 +1,17 @@
 {
+  "private": true,
   "name": "@userfeeds/core",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"no test specified\" && exit 0"
+    "lint": "tslint -c tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "test": "yarn lint"
   },
   "author": "",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Userfeeds/js-core"
-  },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "tslint": "^5.6.0",
+    "tslint-react": "^3.2.0"
+  }
 }

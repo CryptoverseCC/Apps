@@ -2,7 +2,7 @@ import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 import * as isEqual from 'lodash/isEqual';
 
-import * as core from '@userfeeds/core';
+import core from '@userfeeds/core';
 
 import { IRootState } from './';
 

@@ -6,7 +6,8 @@ import { IRootState } from './';
 
 import { fetchLinks } from './links';
 
-import * as core from '@userfeeds/core';
+import core from '@userfeeds/core';
+
 const {
   erc20ContractDecimals,
   erc20ContractBalance,

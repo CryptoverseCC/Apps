@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 
-import * as core from '@userfeeds/core';
+import core from '@userfeeds/core';
 import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';

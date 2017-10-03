@@ -1,8 +1,6 @@
 import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 
-import * as core from '@userfeeds/core';
-
 const acf = actionCreatorFactory('toast');
 
 export type TToastType = 'success' | 'failure';

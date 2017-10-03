@@ -19,7 +19,7 @@ const tokenTransferContractAddressMapping = {
   kovan: '0xd6Ede7F43882B100C6311a9dF801088eA91cEb64'
 };
 
-function getContractWithoutValueTransfer(web3Instance, networkName) {
+export function getContractWithoutValueTransfer(web3Instance, networkName) {
   let contractAddress = withoutValueTransferContractAddressMapping[networkName];
   if (!contractAddress) {
     throw new Error('Contract is not available');
@@ -39,7 +39,7 @@ const withoutValueTransferAbi = [{
   type: 'function'
 }];
 
-function getContractValueTransfer(web3Instance, networkName) {
+export function getContractValueTransfer(web3Instance, networkName) {
   let contractAddress = valueTransferContractAddressMapping[networkName];
   if (!contractAddress) {
     throw new Error('Contract is not available');
@@ -60,7 +60,7 @@ const valueTransferAbi = [{
   type: 'function'
 }];
 
-function getContractTokenTransfer(web3Instance, networkName) {
+export function getContractTokenTransfer(web3Instance, networkName) {
   let contractAddress = tokenTransferContractAddressMapping[networkName];
   if (!contractAddress) {
     throw new Error('Contract is not available');
@@ -69,7 +69,7 @@ function getContractTokenTransfer(web3Instance, networkName) {
   return contract;
 }
 
-function getContractTokenTransferAddress(networkName) {
+export function getContractTokenTransferAddress(networkName) {
   let contractAddress = tokenTransferContractAddressMapping[networkName];
   if (!contractAddress) {
     throw new Error('Contract is not available');
@@ -91,7 +91,7 @@ const tokenTransferAbi = [{
   type: 'function'
 }];
 
-function getErc20Contract(web3Instance, contractAddress) {
+export function getErc20Contract(web3Instance, contractAddress) {
   let contract = web3Instance.eth.contract(erc20abi).at(contractAddress);
   return contract;
 }
@@ -159,11 +159,3 @@ const erc20abi = [{
   payable: false,
   type: "function"
 }];
-
-module.exports = {
-  getContractWithoutValueTransfer,
-  getContractValueTransfer,
-  getContractTokenTransfer,
-  getContractTokenTransferAddress,
-  getErc20Contract,
-};

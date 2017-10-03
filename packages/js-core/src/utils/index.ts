@@ -1,4 +1,3 @@
-
 const networkMapping = {
   '1': 'ethereum',
   '3': 'ropsten',
@@ -6,7 +5,7 @@ const networkMapping = {
   '42': 'kovan',
 };
 
-function getCurrentNetworkName(web3Instance) {
+export function getCurrentNetworkName(web3Instance) {
   return new Promise((resolve, reject) => {
     if (!web3Instance.isConnected()) {
       return resolve(undefined);
@@ -22,7 +21,7 @@ function getCurrentNetworkName(web3Instance) {
   });
 }
 
-function getAccounts(web3Instance) {
+export function getAccounts(web3Instance): Promise<Array<any>> {
   return new Promise((resolve, reject) => {
     if (!web3Instance.isConnected()) {
       return resolve(undefined);
@@ -37,9 +36,3 @@ function getAccounts(web3Instance) {
     });
   });
 }
-
-module.exports = {
-  getAccounts,
-  getCurrentNetworkName,
-};
-
