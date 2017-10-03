@@ -8,4 +8,4 @@
   exclude: master
   steps:
     - service: apps
-    - command: echo 'dumb script'
+      command: echo 'dumb script'
