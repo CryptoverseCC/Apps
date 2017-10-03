@@ -17,7 +17,7 @@
     "@userfeeds/apps-components": "^0.0.12",
     "@userfeeds/core": "0.0.33",
     "classnames": "^2.2.5",
-    "preact": "8.2.1",
+    "preact": "8.2.5",
     "preact-compat": "3.17.0",
     "preact-redux": "^2.0.2",
     "qs": "^6.5.0",
