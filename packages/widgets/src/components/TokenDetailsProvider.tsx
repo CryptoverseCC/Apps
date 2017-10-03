@@ -1,6 +1,6 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
-import { bindActionCreators } from 'redux';
+import {Component, h} from 'preact';
+import {connect} from 'preact-redux';
+import {bindActionCreators} from 'redux';
 
 import {IRootState} from '../ducks/index';
 import {ITokenDetailsState, loadTokenDetails} from '../ducks/widget';
@@ -11,7 +11,7 @@ interface IProps {
   render: any;
 }
 
-const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
+const mapStateToProps = ({widget: {tokenDetails}}: IRootState) => ({
   tokenDetails: {
     ...tokenDetails,
     balanceWithDecimalPoint: tokenDetails.balance.shift(-tokenDetails.decimals.toNumber()).toNumber(),
@@ -23,6 +23,7 @@ export default class TokenDetailsProvider extends Component<IProps, {}> {
   componentDidMount() {
     this.props.loadTokenDetails();
   }
+
   render() {
     const {tokenDetails, render} = this.props;
     return (
