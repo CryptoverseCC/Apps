@@ -55,13 +55,13 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
       <div class={style.self}>
         <Paper class={style.paper}>
           <Input
-            placeholder="Userfeed ID"
+            placeholder="Recipient Address"
             value={this.state.recipientAddress}
             onInput={this._onRecipientAddressChange}
             disabled={this.state.recipientAddressFromParams}
           />
           <Input
-            placeholder="Whitelist ID"
+            placeholder="Whitelist"
             value={this.state.whitelist}
             onInput={this._onWhitelistChange}
             disabled={this.state.whitelistFromParams}
@@ -84,7 +84,7 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
   }
 
   _fetchLinks = debounce(async () => {
-    const { recipientAddress, algorithm, whitelist } = this.state;
+    const { recipientAddress, algorithm, whitelist, asset } = this.state;
 
     this.setState({ fetching: true });
 
