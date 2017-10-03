@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
 
 import * as core from '@userfeeds/core';
 import Input from '@userfeeds/apps-components/src/Input';
@@ -14,12 +15,17 @@ import web3 from '../utils/web3';
 import If from './utils/If';
 
 import * as style from './boostLink.scss';
+import {IRootState} from '../ducks/index';
+import {ITokenDetailsState, loadTokenDetails} from '../ducks/widget';
+import {bindActionCreators} from 'redux';
 
 interface IBidLinkProps {
   disabled?: boolean;
   disabledReason?: string;
   link: ILink;
   links: ILink[];
+  tokenDetails: ITokenDetailsState;
+  loadTokenDetails: any;
   asset: string;
   recipientAddress: string;
   onSuccess?(linkId: string): void;
@@ -46,18 +52,20 @@ const valueValidationRules = [R.required, R.number, R.value((v: number) => v > 0
     return true;
   }, 'Invalid value')];
 
+const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({ tokenDetails });
+const mapDispatchToProps = (dispatch) => bindActionCreators({loadTokenDetails}, dispatch);
+@connect(mapStateToProps, mapDispatchToProps)
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _buttonRef: Element;
+  state = {
+    visible: false,
+    sum: this.props.links.reduce((acc, { score }) => acc + score, 0),
+    probability: '-',
+  };
 
-  constructor(props: IBidLinkProps) {
-    super(props);
-
-    this.state = {
-      visible: false,
-      sum: props.links.reduce((acc, { score }) => acc + score, 0),
-      probability: '-',
-    };
+  componentDidMount() {
+    this.props.loadTokenDetails();
   }
 
   render({ link, disabled, disabledReason }: IBidLinkProps,
@@ -84,6 +92,10 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                 value={`${probability} %`}
               />
             </div>
+            {this._getTokenAddress() && this.props.tokenDetails.loaded && <p>
+                Your balance: {this._getTokenBalance()} {this.props.tokenDetails.symbol}.
+              </p>
+            }
             <Button
               disabled={!!validationError || !value}
               style={{ marginLeft: 'auto' }}
@@ -95,6 +107,10 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         </If>
       </div>
     );
+  }
+
+  _getTokenBalance() {
+    return this.props.tokenDetails.balance.shift(-this.props.tokenDetails.decimals.toNumber()).toNumber();
   }
 
   _onButtonRef = (ref) => this._buttonRef = ref;
