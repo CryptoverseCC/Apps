@@ -1,6 +1,4 @@
 import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
-import { bindActionCreators } from 'redux';
 
 import * as core from '@userfeeds/core';
 import Input from '@userfeeds/apps-components/src/Input';
@@ -15,8 +13,7 @@ import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
 
 import * as style from './addLink.scss';
-import {IRootState} from '../ducks/index';
-import {ITokenDetailsState, loadTokenDetails} from '../ducks/widget';
+import TokenDetailsProvider from './TokenDetailsProvider';
 
 interface IAddLinkProps {
   asset: string;
@@ -25,7 +22,6 @@ interface IAddLinkProps {
     enabled: boolean;
     reason?: string;
   };
-  tokenDetails: ITokenDetailsState;
   loadTokenDetails: any;
   onSuccess(linkId: string): void;
   onError(error: any): void;
@@ -67,14 +63,7 @@ const rules = {
       return true;
     }, 'Invalid value')],
 };
-const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
-  tokenDetails: {
-    ...tokenDetails,
-    balanceWithDecimalPoint: tokenDetails.balance.shift(-tokenDetails.decimals.toNumber()).toNumber(),
-  },
-});
-const mapDispatchToProps = (dispatch) => bindActionCreators({loadTokenDetails}, dispatch);
-@connect(mapStateToProps, mapDispatchToProps)
+
 export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   state: IAddLinkState = {
@@ -85,10 +74,6 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     unlimitedApproval: false,
     errors: {},
   };
-
-  componentDidMount() {
-    this.props.loadTokenDetails();
-  }
 
   render(
     { web3State }: IAddLinkProps,
@@ -129,9 +114,11 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         />
         {this._getTokenAddress() &&
           [
-            this.props.tokenDetails.loaded && <p>
-              Your balance: {this.props.tokenDetails.balanceWithDecimalPoint} {this.props.tokenDetails.symbol}.
-            </p>,
+            <TokenDetailsProvider
+              render={(tokenDetails) => (<p>
+                Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+              </p>)}
+            />,
             <Checkbox
               label="Don't ask me again for this token on any website or wherever"
               checked={unlimitedApproval}

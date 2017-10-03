@@ -1,11 +1,9 @@
 import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
 
 import * as core from '@userfeeds/core';
 import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import { ILink } from '../types';
 
@@ -15,16 +13,13 @@ import web3 from '../utils/web3';
 import If from './utils/If';
 
 import * as style from './boostLink.scss';
-import {IRootState} from '../ducks/index';
-import {ITokenDetailsState, loadTokenDetails} from '../ducks/widget';
-import {bindActionCreators} from 'redux';
+import TokenDetailsProvider from './TokenDetailsProvider';
 
 interface IBidLinkProps {
   disabled?: boolean;
   disabledReason?: string;
   link: ILink;
   links: ILink[];
-  tokenDetails: ITokenDetailsState;
   loadTokenDetails: any;
   asset: string;
   recipientAddress: string;
@@ -52,14 +47,6 @@ const valueValidationRules = [R.required, R.number, R.value((v: number) => v > 0
     return true;
   }, 'Invalid value')];
 
-const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
-  tokenDetails: {
-    ...tokenDetails,
-    balanceWithDecimalPoint: tokenDetails.balance.shift(-tokenDetails.decimals.toNumber()).toNumber(),
-  },
-});
-const mapDispatchToProps = (dispatch) => bindActionCreators({loadTokenDetails}, dispatch);
-@connect(mapStateToProps, mapDispatchToProps)
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _buttonRef: Element;
@@ -68,10 +55,6 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     sum: this.props.links.reduce((acc, { score }) => acc + score, 0),
     probability: '-',
   };
-
-  componentDidMount() {
-    this.props.loadTokenDetails();
-  }
 
   render({ link, disabled, disabledReason }: IBidLinkProps,
          { visible, value, validationError, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
@@ -97,9 +80,12 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                 value={`${probability} %`}
               />
             </div>
-            {this._getTokenAddress() && this.props.tokenDetails.loaded && <p>
-                Your balance: {this.props.tokenDetails.balanceWithDecimalPoint} {this.props.tokenDetails.symbol}.
-              </p>
+            {this._getTokenAddress() &&
+              <TokenDetailsProvider
+                render={(tokenDetails) => (<p>
+                  Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+                </p>)}
+              />
             }
             <Button
               disabled={!!validationError || !value}

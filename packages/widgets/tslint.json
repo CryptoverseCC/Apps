@@ -11,6 +11,7 @@
       "member-access": [false],
       "jsx-key": [false],
       "jsx-boolean-value": [true, "never"],
+      "jsx-no-lambda": [false],
       "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
       "jsx-no-multiline-js": [false],
       "object-literal-sort-keys": [false],
