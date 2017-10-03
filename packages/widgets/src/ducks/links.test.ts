@@ -39,12 +39,12 @@ describe('links actions', () => {
         title: 't1',
         summary: 's1',
         target: 'http://t1',
-        score: 3 * Math.pow(10, 18),
+        score: 3e18,
       }, {
         title: 't0',
         summary: 's0',
         target: 'http://t0',
-        score: 1 * Math.pow(10, 18),
+        score: 1e18,
       }],
     };
 
