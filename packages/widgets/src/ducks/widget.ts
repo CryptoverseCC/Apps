@@ -6,10 +6,19 @@ import { IRootState } from './';
 
 import { fetchLinks } from './links';
 
+import * as core from '@userfeeds/core';
+const {
+  erc20ContractDecimals,
+  erc20ContractBalance,
+  erc20ContractSymbol,
+  erc20ContractName
+} = core.ethereum.erc20;
+
 const acf = actionCreatorFactory('widget');
 
 export const widgetActions = {
   update: acf<IWidgetState>('UPDATE'),
+  tokenDetailsLoaded: acf<ITokenDeatilsState>('TOKEN_DETAILS_LOADED'),
 };
 
 export const updateWidgetSettings = (newSettings: IWidgetState) => (dispatch, getState: () => IRootState) => {
@@ -24,29 +33,59 @@ export const updateWidgetSettings = (newSettings: IWidgetState) => (dispatch, ge
   }
 };
 
-export interface IWidgetState {
-  recipientAddress: string;
-  asset: string;
-  algorithm: string;
-  size: TWidgetSize;
-  whitelist?: string;
-  slots: number;
-  timeslot: number;
-  contactMethod?: string;
-  publisherNote?: string;
-  title: string;
-  description: string;
-  impression: string;
-  location: string;
-  tillDate: string;
+export const loadTokenDetails = () => async (dispatch, getState) => {
+  const state = getState();
+  const token = state.widget.asset.split(':')[1];
+  if (!token) {
+    return;
+  }
+  const [decimals, balance, symbol, name] = await Promise.all([
+    erc20ContractDecimals(web3, token),
+    erc20ContractBalance(web3, token),
+    erc20ContractSymbol(web3, token),
+    erc20ContractName(web3, token),
+  ]);
+  dispatch(widgetActions.tokenDetailsLoaded({ loaded: true, decimals, balance, symbol, name }));
+};
+
+interface ITokenDeatilsState {
+  loaded: boolean;
+  decimals: any | null;
+  balance?: any;
+  symbol?: string;
+  name?: string;
 }
 
-const initialState = {};
+export interface IWidgetState {
+  recipientAddress?: string;
+  asset?: string;
+  algorithm?: string;
+  size?: TWidgetSize;
+  whitelist?: string;
+  slots?: number;
+  timeslot?: number;
+  contactMethod?: string;
+  publisherNote?: string;
+  title?: string;
+  description?: string;
+  impression?: string;
+  location?: string;
+  tillDate?: string;
+  tokenDetails: ITokenDeatilsState;
+}
+
+const initialState = {
+  tokenDetails: {
+    loaded: false,
+    decimals: 18,
+  },
+};
 
 export default function widget(state: IWidgetState = initialState, action: Action): IWidgetState {
   if (isType(action, widgetActions.update)) {
     return action.payload;
+  } else if (isType(action, widgetActions.tokenDetailsLoaded)) {
+    return { ...state, tokenDetails: action.payload }
   }
-
   return state;
 }
