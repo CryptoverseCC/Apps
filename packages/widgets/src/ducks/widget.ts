@@ -52,6 +52,7 @@ export interface ITokenDetailsState {
   loaded: boolean;
   decimals: any | null;
   balance?: any;
+  balanceWithDecimalPoint?: any;
   symbol?: string;
   name?: string;
 }

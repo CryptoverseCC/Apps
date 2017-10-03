@@ -67,7 +67,12 @@ const rules = {
       return true;
     }, 'Invalid value')],
 };
-const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({ tokenDetails });
+const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
+  tokenDetails: {
+    ...tokenDetails,
+    balanceWithDecimalPoint: tokenDetails.balance.shift(-tokenDetails.decimals.toNumber()).toNumber(),
+  },
+});
 const mapDispatchToProps = (dispatch) => bindActionCreators({loadTokenDetails}, dispatch);
 @connect(mapStateToProps, mapDispatchToProps)
 export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
@@ -125,7 +130,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         {this._getTokenAddress() &&
           [
             this.props.tokenDetails.loaded && <p>
-              Your balance: {this._getTokenBalance()} {this.props.tokenDetails.symbol}.
+              Your balance: {this.props.tokenDetails.balanceWithDecimalPoint} {this.props.tokenDetails.symbol}.
             </p>,
             <Checkbox
               label="Don't ask me again for this token on any website or wherever"
@@ -146,10 +151,6 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         </div>
       </div>
     );
-  }
-
-  _getTokenBalance() {
-    return this.props.tokenDetails.balance.shift(-this.props.tokenDetails.decimals.toNumber()).toNumber();
   }
 
   _onInput = (e) => {

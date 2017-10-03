@@ -52,7 +52,12 @@ const valueValidationRules = [R.required, R.number, R.value((v: number) => v > 0
     return true;
   }, 'Invalid value')];
 
-const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({ tokenDetails });
+const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
+  tokenDetails: {
+    ...tokenDetails,
+    balanceWithDecimalPoint: tokenDetails.balance.shift(-tokenDetails.decimals.toNumber()).toNumber(),
+  },
+});
 const mapDispatchToProps = (dispatch) => bindActionCreators({loadTokenDetails}, dispatch);
 @connect(mapStateToProps, mapDispatchToProps)
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
@@ -93,7 +98,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               />
             </div>
             {this._getTokenAddress() && this.props.tokenDetails.loaded && <p>
-                Your balance: {this._getTokenBalance()} {this.props.tokenDetails.symbol}.
+                Your balance: {this.props.tokenDetails.balanceWithDecimalPoint} {this.props.tokenDetails.symbol}.
               </p>
             }
             <Button
@@ -107,10 +112,6 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         </If>
       </div>
     );
-  }
-
-  _getTokenBalance() {
-    return this.props.tokenDetails.balance.shift(-this.props.tokenDetails.decimals.toNumber()).toNumber();
   }
 
   _onButtonRef = (ref) => this._buttonRef = ref;
