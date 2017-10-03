@@ -51,8 +51,8 @@ const rules = {
   summary: [R.required, R.maxLength(70)],
   target: [
     R.required,
-    R.value((v: string) => httpRegExp.test(v), 'Have to start with http(s)://'),
-    R.value((v: string) => urlRegExp.test(v), 'Have to be valid url'),
+    R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://'),
+    R.value((v: string) => urlRegExp.test(v), 'Has to be valid url'),
   ],
   value: [R.required, R.number, R.value((v: number) => v >= 0, 'Cannot be negative'),
     R.value((v: string) => {
@@ -174,18 +174,11 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       return;
     }
 
-    const { asset, recipientAddress } = this.props;
-    const { title, summary, target, value, unlimitedApproval } = this.state;
+    const { recipientAddress } = this.props;
+    const { value, unlimitedApproval } = this.state;
     this.setState({ posting: true });
 
-    const claim = {
-      type: ['link'],
-      claim: { target, title, summary },
-      credits: [{
-        type: 'interface',
-        value: window.location.href,
-      }],
-    };
+    const claim = this._createClaim();
     const token = this._getTokenAddress();
     let sendClaimPromise;
     if (token) {
@@ -193,12 +186,26 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         web3, recipientAddress, token, value, unlimitedApproval, claim,
       );
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(
+        web3, recipientAddress, value, claim
+      );
     }
     sendClaimPromise
       .then((linkId) => { this.props.onSuccess(linkId); })
       .catch((e: Error) => { this.props.onError(e.message); })
       .then(() => this.setState({ posting: false }));
+  }
+
+  _createClaim() {
+    const {target, title, summary} = this.state;
+    return {
+      type: ['link'],
+      claim: {target, title, summary},
+      credits: [{
+        type: 'interface',
+        value: window.location.href,
+      }],
+    };
   }
 
   _getTokenAddress() {

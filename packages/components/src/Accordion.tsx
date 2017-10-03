@@ -42,7 +42,7 @@ export default class Accordion extends Component<IAccordionProps, IAccordionStat
           {this.props.title}
           <Icon class={style.arrow} name={this.state.open ? 'chevron-top' : 'chevron-bottom'}/>
         </div>
-        {this.state.open && <div class={style.content}>{this.props.children}</div>}
+        {this.state.open && <div>{this.props.children}</div>}
       </div>
     );
   }
