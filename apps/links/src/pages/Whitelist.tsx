@@ -18,6 +18,7 @@ interface IWhitelistState {
   links: any[];
   fetching: boolean;
   asset: string;
+  assetFromParams: boolean;
   recipientAddress: string;
   algorithm: string;
   whitelist: string;
@@ -41,6 +42,7 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
       whitelist: params.get('whitelist') || '',
       recipientAddressFromParams: params.has('recipientAddress'),
       whitelistFromParams: params.has('whitelist'),
+      assetFromParams: params.has('asset'),
     };
   }
 
@@ -55,31 +57,31 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
       <div class={style.self}>
         <Paper class={style.paper}>
           <Input
+            placeholder="Asset"
+            value={this.state.asset}
+            onInput={this._onChange('asset')}
+            disabled={this.state.assetFromParams}
+          />
+          <Input
             placeholder="Recipient Address"
             value={this.state.recipientAddress}
-            onInput={this._onRecipientAddressChange}
+            onInput={this._onChange('recipientAddress')}
             disabled={this.state.recipientAddressFromParams}
           />
           <Input
             placeholder="Whitelist"
             value={this.state.whitelist}
-            onInput={this._onWhitelistChange}
+            onInput={this._onChange('whitelist')}
             disabled={this.state.whitelistFromParams}
           />
-
           <AdsList ads={this.state.links} onItemClick={this._onLinkClick} />
         </Paper>
       </div>
     );
   }
 
-  _onRecipientAddressChange = (e) => {
-    this.setState({ recipientAddress: e.target.value });
-    this._fetchLinks();
-  }
-
-  _onWhitelistChange = (e) => {
-    this.setState({ whitelist: e.target.value });
+  _onChange = (fieldName) => (e) => {
+    this.setState({ [fieldName]: e.target.value });
     this._fetchLinks();
   }
 
