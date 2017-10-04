@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "allowJs": true,
-    "module": "es6",
+    "module": "commonjs",
     "jsx": "react",
     "jsxFactory": "h",
     "target": "es6",
@@ -10,8 +9,5 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "lib": ["es2017", "dom"]
-  },
-  "include": [
-    "../../node_modules/web3-typescript-typings/index.d.ts"
-  ]
+  }
 }
