@@ -1,9 +1,9 @@
-import {Component, h} from 'preact';
-import {connect} from 'preact-redux';
-import {bindActionCreators} from 'redux';
+import { Component, h } from 'preact';
+import { connect } from 'preact-redux';
+import { bindActionCreators } from 'redux';
 
-import {IRootState} from '../ducks/index';
-import {ITokenDetailsState, loadTokenDetails} from '../ducks/widget';
+import { IRootState } from '../ducks/index';
+import { ITokenDetailsState, loadTokenDetails } from '../ducks/widget';
 
 interface IProps {
   tokenDetails: ITokenDetailsState;
@@ -11,25 +11,28 @@ interface IProps {
   render: any;
 }
 
-const mapStateToProps = ({widget: {tokenDetails}}: IRootState) => ({
+const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
   tokenDetails: {
     ...tokenDetails,
-    balanceWithDecimalPoint: tokenDetails.balance.shift(-tokenDetails.decimals.toNumber()).toNumber(),
+    balanceWithDecimalPoint: tokenDetails.balance
+      .shift(-tokenDetails.decimals.toNumber())
+      .toNumber(),
   },
 });
-const mapDispatchToProps = (dispatch) => bindActionCreators({loadTokenDetails}, dispatch);
-@connect(mapStateToProps, mapDispatchToProps)
-export default class TokenDetailsProvider extends Component<IProps, {}> {
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ loadTokenDetails }, dispatch);
+
+export class TokenDetailsProvider extends Component<IProps, {}> {
   componentDidMount() {
     this.props.loadTokenDetails();
   }
 
   render() {
-    const {tokenDetails, render} = this.props;
-    return (
-      <div>
-        {tokenDetails.loaded && render(tokenDetails)}
-      </div>
-    );
+    const { tokenDetails, render } = this.props;
+    return tokenDetails.loaded && render(tokenDetails);
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  TokenDetailsProvider,
+);

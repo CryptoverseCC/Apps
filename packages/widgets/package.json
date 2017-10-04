@@ -4,9 +4,12 @@
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
-    "lint": "tslint -c tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
-    "build": "cross-env NODE_ENV=production webpack -p --display-optimization-bailout || exit 0",
+    "start":
+      "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
+    "lint":
+      "tslint -c tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "build":
+      "cross-env NODE_ENV=production webpack -p --display-optimization-bailout || exit 0",
     "pretest": "yarn lint",
     "test": "jest"
   },
@@ -46,6 +49,7 @@
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
     "postcss-safe-important": "^1.0.4",
+    "preact-render-spy": "^1.1.0",
     "redux-mock-store": "^1.2.3",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
@@ -64,10 +68,7 @@
       ".(ts|tsx)": "../../node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(.*\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "transformIgnorePatterns": ["/node_modules/(?!@userfeeds).*"]
   }
 }
