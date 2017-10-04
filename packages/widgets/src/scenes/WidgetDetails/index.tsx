@@ -24,7 +24,7 @@ import DetailsList from './components/DetailsList';
 import DetailsAccordion from './components/DetailsAccordion';
 import WidgetSummary from './components/WidgetSummary';
 
-import { openUserfeedsUrl } from '../../utils/openUserfeedsUrl';
+import { openLinkexchangeUrl } from '../../utils/openLinkexchangeUrl';
 
 import * as style from './widgetDetails.scss';
 import {loadTokenDetails} from '../../ducks/widget';
@@ -161,7 +161,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
   }
 
   _onOpenInSeparateWindowClick = () => {
-    openUserfeedsUrl('apps/widgets/#/details/', this.props.widgetSettings);
+    openLinkexchangeUrl('apps/widgets/#/details/', this.props.widgetSettings);
   }
 
   _onAddLinkClick = () => {

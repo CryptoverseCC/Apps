@@ -6,8 +6,8 @@ type TExtendedWidgetState = IWidgetState & {
 };
 
 // ToDo fix arguments type
-export const openUserfeedsUrl = (path, widgetSettings: TExtendedWidgetState) => {
-  const baseUrl = 'https://userfeeds.io/';
+export const openLinkexchangeUrl = (path, widgetSettings: TExtendedWidgetState) => {
+  const baseUrl = 'https://linkexchange.io/';
 
   const queryString = qs.stringify({
     ...widgetSettings,
