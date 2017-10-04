@@ -54,18 +54,21 @@ const rules = {
     R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://'),
     R.value((v: string) => urlRegExp.test(v), 'Has to be valid url'),
   ],
-  value: [R.required, R.number, R.value((v: number) => v >= 0, 'Cannot be negative'),
+  value: [
+    R.required,
+    R.number,
+    R.value((v: number) => v >= 0, 'Cannot be negative'),
     R.value((v: string) => {
       const dotIndex = v.indexOf('.');
       if (dotIndex !== -1) {
         return v.length - 1 - dotIndex <= 18;
       }
       return true;
-    }, 'Invalid value')],
+    }, 'Invalid value'),
+  ],
 };
 
 export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
-
   state: IAddLinkState = {
     title: '',
     summary: '',
@@ -77,7 +80,8 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   render(
     { web3State }: IAddLinkProps,
-    { posting, title, summary, target, value, unlimitedApproval, errors }: IAddLinkState) {
+    { posting, title, summary, target, value, unlimitedApproval, errors }: IAddLinkState,
+  ) {
     return (
       <div class={style.self}>
         <Input
@@ -112,29 +116,30 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           onBlur={this._onInput}
           onInput={this._onInput}
         />
-        {this._getTokenAddress() &&
-          [
-            <TokenDetailsProvider
-              render={(tokenDetails) => (<p>
+        {this._getTokenAddress() && [
+          <TokenDetailsProvider
+            render={(tokenDetails) => (
+              <p>
                 Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-              </p>)}
-            />,
-            <Checkbox
-              label="Don't ask me again for this token on any website or wherever"
-              checked={unlimitedApproval}
-              onChange={this._onUnlimitedApprovalChange}
-            />,
-          ]
-        }
+              </p>
+            )}
+          />,
+          <Checkbox
+            label="Don't ask me again for this token on any website or wherever"
+            checked={unlimitedApproval}
+            onChange={this._onUnlimitedApprovalChange}
+          />,
+        ]}
         <div class={style.sendButton}>
-          {posting
-            ? <Loader />
-            : (
-                <Tooltip text={web3State.reason}>
-                  <Button disabled={!web3State.enabled} onClick={this._onSubmit}>Send</Button>
-                </Tooltip>
-              )
-          }
+          {posting ? (
+            <Loader />
+          ) : (
+            <Tooltip text={web3State.reason}>
+              <Button disabled={!web3State.enabled} onClick={this._onSubmit}>
+                Send
+              </Button>
+            </Tooltip>
+          )}
         </div>
       </div>
     );
@@ -142,29 +147,31 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   _onInput = (e) => {
     const { value, name } = e.target;
-    this.setState({
-      [name]: value,
-      errors: {
-        ...this.state.errors,
-        [name]: validate(rules[name], value),
+    this.setState(
+      {
+        [name]: value,
+        errors: {
+          ...this.state.errors,
+          [name]: validate(rules[name], value),
+        },
       },
-    }, () => {
-      if (this.props.onChange) {
-        this.props.onChange(this.state);
-      }
-    });
+      () => {
+        if (this.props.onChange) {
+          this.props.onChange(this.state);
+        }
+      },
+    );
   }
 
   _onUnlimitedApprovalChange = (e) => {
-    this.setState({unlimitedApproval: e.target.checked});
+    this.setState({ unlimitedApproval: e.target.checked });
   }
 
   _validateAll = () => {
-    const errors = ['title', 'summary', 'target', 'value']
-      .reduce((acc, name) => {
-        const validations = validate(rules[name], this.state[name]);
-        return !validations ? acc : {...acc, [name]: validations};
-      }, {});
+    const errors = ['title', 'summary', 'target', 'value'].reduce((acc, name) => {
+      const validations = validate(rules[name], this.state[name]);
+      return !validations ? acc : { ...acc, [name]: validations };
+    }, {});
     this.setState({ errors });
     return Object.keys(errors).length === 0;
   }
@@ -183,28 +190,42 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     let sendClaimPromise;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
-        web3, recipientAddress, token, value, unlimitedApproval, claim,
+        web3,
+        recipientAddress,
+        token,
+        value,
+        unlimitedApproval,
+        claim,
       );
     } else {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(
-        web3, recipientAddress, value, claim
+        web3,
+        recipientAddress,
+        value,
+        claim,
       );
     }
     sendClaimPromise
-      .then((linkId) => { this.props.onSuccess(linkId); })
-      .catch((e: Error) => { this.props.onError(e.message); })
+      .then((linkId) => {
+        this.props.onSuccess(linkId);
+      })
+      .catch((e: Error) => {
+        this.props.onError(e.message);
+      })
       .then(() => this.setState({ posting: false }));
   }
 
   _createClaim() {
-    const {target, title, summary} = this.state;
+    const { target, title, summary } = this.state;
     return {
       type: ['link'],
-      claim: {target, title, summary},
-      credits: [{
-        type: 'interface',
-        value: window.location.href,
-      }],
+      claim: { target, title, summary },
+      credits: [
+        {
+          type: 'interface',
+          value: window.location.href,
+        },
+      ],
     };
   }
 

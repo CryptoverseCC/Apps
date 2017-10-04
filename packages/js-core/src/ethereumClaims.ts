@@ -14,11 +14,7 @@ export async function sendClaimWithoutValueTransfer(web3Instance, claim) {
   const contract = getContractWithoutValueTransfer(web3Instance, networkName);
 
   return new Promise((resolve, reject) => {
-    contract.post(
-      JSON.stringify(claim),
-      { from },
-      getResolveOrRejectOnErrorFunc(resolve, reject),
-    );
+    contract.post(JSON.stringify(claim), { from }, getResolveOrRejectOnErrorFunc(resolve, reject));
   });
 }
 
@@ -38,7 +34,11 @@ export async function sendClaimValueTransfer(web3Instance, address, value, claim
   });
 }
 
-export async function approveUserfeedsContractTokenTransfer(web3Instance, tokenContractAddress, value) {
+export async function approveUserfeedsContractTokenTransfer(
+  web3Instance,
+  tokenContractAddress,
+  value,
+) {
   const networkName = await getCurrentNetworkName(web3Instance);
   const spenderContractAddress = getContractTokenTransferAddress(networkName);
   return erc20ContractApprove(web3Instance, tokenContractAddress, spenderContractAddress, value);
@@ -66,7 +66,14 @@ export async function sendClaimTokenTransferImpl(web3Instance, address, token, v
   });
 }
 
-export async function sendClaimTokenTransfer(web3Instance, recipientAddress, token, value, unlimitedApproval, claim) {
+export async function sendClaimTokenTransfer(
+  web3Instance,
+  recipientAddress,
+  token,
+  value,
+  unlimitedApproval,
+  claim,
+) {
   const decimals = await erc20ContractDecimals(web3Instance, token);
   const tokenWei = valueToTokenWei(value, decimals);
   const allowance = await allowanceUserfeedsContractTokenTransfer(web3Instance, token);
@@ -82,7 +89,7 @@ function valueToTokenWei(value, decimals) {
 }
 
 function getResolveOrRejectOnErrorFunc(resolve, reject) {
-  return function(error, result) {
+  return (error, result) => {
     if (error) {
       reject(error);
     } else {

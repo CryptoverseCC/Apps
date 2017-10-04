@@ -1,8 +1,8 @@
 const networkMapping = {
-  '1': 'ethereum',
-  '3': 'ropsten',
-  '4': 'rinkeby',
-  '42': 'kovan',
+  1: 'ethereum',
+  3: 'ropsten',
+  4: 'rinkeby',
+  42: 'kovan',
 };
 
 export function getCurrentNetworkName(web3Instance) {
@@ -21,7 +21,7 @@ export function getCurrentNetworkName(web3Instance) {
   });
 }
 
-export function getAccounts(web3Instance): Promise<Array<any>> {
+export function getAccounts(web3Instance): Promise<any[]> {
   return new Promise((resolve, reject) => {
     if (!web3Instance.isConnected()) {
       return resolve(undefined);
