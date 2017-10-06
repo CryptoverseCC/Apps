@@ -118,11 +118,8 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
   _onLinkClick = (link) => {
     const claim = {
       claim: { target: link.id },
-      credits: [{
-        type: 'interface',
-        value: window.location.href,
-      }],
     };
+    
     core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
   }
 }
