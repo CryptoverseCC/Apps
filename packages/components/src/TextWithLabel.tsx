@@ -6,9 +6,10 @@ import * as style from './textWithLabel.scss';
 import Label from './Label';
 
 interface ITextWithLabelProps {
-  label: string |JSX.Element;
+  label: string | JSX.Element;
   text?: string | number;
   className?: string;
+  children?: JSX.Element | string;
 }
 
 const TextWithLabel = ({ label, text, className, children }: ITextWithLabelProps) => {

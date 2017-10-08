@@ -72,9 +72,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
               <TextWithLabel label="Token">
                 <EthereumLogo className={style.tokenLogo} /> Ether
               </TextWithLabel>
-              <TextWithLabel label="Algorithm">
-                Text
-              </TextWithLabel>
+              <TextWithLabel label="Algorithm" text="Text" />
             </div>
           </Accordion>
         </Paper>

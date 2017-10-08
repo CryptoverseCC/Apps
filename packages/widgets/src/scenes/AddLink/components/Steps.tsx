@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames/bind';
 
 import * as style from './steps.scss';
+
 const cx = classnames.bind(style);
 
 const Steps = ({ activeStep }) => (

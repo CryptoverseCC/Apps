@@ -22,7 +22,6 @@ interface IAddLinkProps {
     enabled: boolean;
     reason?: string;
   };
-  loadTokenDetails: any;
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: ILink) => void;
@@ -78,10 +77,10 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     errors: {},
   };
 
-  render(
-    { web3State }: IAddLinkProps,
-    { posting, title, summary, target, value, unlimitedApproval, errors }: IAddLinkState,
-  ) {
+  render() {
+    const { web3State } = this.props;
+    const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
+
     return (
       <div className={style.self}>
         <Input
@@ -157,7 +156,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       },
       () => {
         if (this.props.onChange) {
-          this.props.onChange(this.state);
+          this.props.onChange(this.state as ILink); // ToDo
         }
       },
     );

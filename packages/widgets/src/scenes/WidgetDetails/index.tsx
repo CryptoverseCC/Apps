@@ -67,12 +67,11 @@ const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & {
-  class: string;
+  className?: string;
   standaloneMode?: boolean;
 };
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
+class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
 
   detailsListCmp: DetailsList;
 
@@ -94,7 +93,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
     const { viewType, mobileOrTablet } = this.state;
 
     return (
-      <div className={classnames(style.self, this.props.class)}>
+      <div className={classnames(style.self, this.props.className)}>
         <WidgetSummary
           openInNewWindowHidden={standaloneMode}
           widgetSettings={widgetSettings}
@@ -178,3 +177,5 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
 
   _onDetailsListRef = (ref) => this.detailsListCmp = ref;
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(WidgetDetails);

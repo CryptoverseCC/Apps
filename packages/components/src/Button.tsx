@@ -5,8 +5,7 @@ import * as style from './button.scss';
 
 const cx = classnames.bind(style);
 
-type TButtonProps = {
-  className?: string;
+type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   secondary?: boolean;
 };
 

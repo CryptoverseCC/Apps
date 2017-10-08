@@ -59,8 +59,8 @@ export interface ITokenDetailsState {
 }
 
 export interface IWidgetState {
-  recipientAddress?: string;
-  asset?: string;
+  recipientAddress: string;
+  asset: string;
   algorithm?: string;
   size?: TWidgetSize;
   whitelist?: string;

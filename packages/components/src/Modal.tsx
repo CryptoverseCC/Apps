@@ -15,7 +15,7 @@ export default class Modal extends Component<IModalProps, {}> {
     document.addEventListener('keydown', this._closeOnEsc);
     window.addEventListener('popstate', this._onOverlayClick);
 
-    history.pushState(null, null, document.URL);
+    history.pushState(null, '', document.URL);
   }
 
   componentWillUnmount() {
@@ -46,7 +46,7 @@ export default class Modal extends Component<IModalProps, {}> {
     }
   }
 
-  _consumeEvent = (event: MouseEvent) => {
+  _consumeEvent = (event) => {
     event.stopPropagation();
   }
 

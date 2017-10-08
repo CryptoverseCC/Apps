@@ -20,7 +20,6 @@ interface IBidLinkProps {
   disabledReason?: string;
   link: ILink;
   links: ILink[];
-  loadTokenDetails: any;
   asset: string;
   recipientAddress: string;
   onSuccess?(linkId: string): void;
@@ -50,7 +49,7 @@ const valueValidationRules = [R.required, R.number, R.value((v: number) => v > 0
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _buttonRef: Element;
-  state = {
+  state: IBidLinkState = {
     visible: false,
     sum: this.props.links.reduce((acc, { score }) => acc + score, 0),
     probability: '-',
@@ -103,7 +102,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _onButtonRef = (ref) => this._buttonRef = ref;
 
-  _onFormRef = (ref: Element) => {
+  _onFormRef = (ref: HTMLDivElement) => {
     if (!ref) {
       return;
     }

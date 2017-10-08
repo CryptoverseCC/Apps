@@ -15,7 +15,7 @@ interface IOption {
 interface IRadioButtonGroupProps {
   name: string;
   value: any;
-  onChange(option: IOption): void;
+  onChange(option): void;
   options: IOption[];
 }
 
@@ -37,7 +37,7 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
               checked={option.value === value}
               onChange={onChange}
             />
-            <label for={`${name}control_${index}`}>
+            <label htmlFor={`${name}control_${index}`}>
               {this._renderLabel(option)}
             </label>
           </div>

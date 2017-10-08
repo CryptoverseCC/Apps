@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import * as Highlight from 'react-highlight';
 import Highlight from './Highlight';
 
 import 'highlight.js/styles/androidstudio.css';

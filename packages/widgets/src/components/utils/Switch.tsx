@@ -6,6 +6,7 @@ interface ISwitchProps {
 
 interface ICaseProps {
   condition: any;
+  children: JSX.Element;
 }
 
 // ToDo throw it away?
@@ -22,8 +23,10 @@ export default class Switch extends Component<ISwitchProps, {}> {
   render() {
     const { expresion, children } = this.props;
 
-    return Children
+    const childToRender = Children
       .toArray(children)
       .find((child) => child.props.condition === expresion);
+
+    return childToRender || null;
   }
 }

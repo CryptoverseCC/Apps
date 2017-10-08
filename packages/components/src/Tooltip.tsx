@@ -7,7 +7,7 @@ interface ITooltipProps {
   text?: string;
   children?: JSX.Element;
   className?: string;
-  style?: string | { [key: string]: number | string };
+  style?: React.StyleHTMLAttributes<HTMLDivElement>;
 }
 
 const Tooltip = ({ className, style: externalStyle, text, children }: ITooltipProps) => (

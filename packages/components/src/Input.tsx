@@ -5,8 +5,7 @@ import * as style from './input.scss';
 
 const cx = classnames.bind(style);
 
-type TInputProps = JSX.HTMLAttributes & {
-  placeholder: string;
+type TInputProps = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
   multiline?: boolean;
   errorMessage?: string;
 };

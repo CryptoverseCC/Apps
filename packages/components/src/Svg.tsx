@@ -20,7 +20,6 @@ const Svg = ({ svg, size, viewBox, className }: ISvgProps) => {
     <svg
       className={className}
       style={{ width: size }}
-      alt={name}
       dangerouslySetInnerHTML={{ __html: svgContent }}
       viewBox={viewBox}
       xmlns="http://www.w3.org/2000/svg"

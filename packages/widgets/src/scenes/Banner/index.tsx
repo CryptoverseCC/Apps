@@ -119,7 +119,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     );
   }
 
-  _onInfoEnter = (e: MouseEvent) => {
+  _onInfoEnter = (e) => {
     this.setState({ optionsOpen: true });
   }
 
@@ -158,7 +158,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
       clearTimeout(this._timeout);
     }
 
-    this._timeout = setTimeout(() => {
+    this._timeout = window.setTimeout(() => {
       this.setState({
         currentLink: this._getRandomLink(links),
       }, () => this._setTimeout(this.props.links));

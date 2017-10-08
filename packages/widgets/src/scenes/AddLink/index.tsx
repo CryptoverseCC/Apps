@@ -45,9 +45,9 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props;
 
 interface IAddLinkModalState {
-  step: 'form' | 'congratulations';
-  link: ILink;
-  linkId?: string;
+  // step: 'form' | 'congratulations';
+  // link: ILink;
+  // linkId?: string;
 }
 
 const DEFAULT_LINK = {
@@ -56,8 +56,7 @@ const DEFAULT_LINK = {
   target: 'http://',
 };
 
-@connect(mapsStateToProps, mapDispatchToProps)
-export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
+class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
 
   state: IAddLinkModalState = {
     step: 'form',
@@ -122,3 +121,5 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
     this.props.openToast('Transation rejected ' + e);
   }
 }
+
+export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);

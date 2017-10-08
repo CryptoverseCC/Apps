@@ -1,6 +1,6 @@
 import React from 'react';
 
-type TCheckboxProps = JSX.HTMLAttributes & {
+type TCheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string,
   checked?: boolean,
   onChange?: (e: any) => void,

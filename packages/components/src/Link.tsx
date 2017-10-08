@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
+// ToDo
 import { ILink } from '../types';
 
 import * as style from './link.scss';
@@ -11,7 +12,7 @@ interface ILinkProps {
   link: ILink;
   className?: string;
   lines?: number;
-  style?: string | {[key: string]: number | string};
+  style?: React.StyleHTMLAttributes<HTMLDivElement>;
 }
 
 const stopPropagation = (e) => e.stopPropagation();
