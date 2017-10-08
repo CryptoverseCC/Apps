@@ -24,28 +24,26 @@ const SideMenu = ({ activeItem, onItemClick, hasWhitelist, slots,
 
   return (
     <ul className={style.self}>
-      <ul className={style.subMenu}>
+      <li
+        className={activeItem === 'Links.Slots' ? style.active : ''}
+        onClick={notify('Links.Slots')}
+      >
+        Slots <Pill>{slots}</Pill>
+      </li>
+      <li
+        className={activeItem === 'Links.Whitelist' ? style.active : ''}
+        onClick={notify('Links.Whitelist')}
+      >
+        Whitelist <Pill>{whitelistedLinksCount}</Pill>
+      </li>
+      {!hasWhitelist && (
         <li
-          className={activeItem === 'Links.Slots' ? style.active : ''}
-          onClick={notify('Links.Slots')}
+          className={activeItem === 'Links.Algorithm' ? style.active : ''}
+          onClick={notify('Links.Algorithm')}
         >
-          Slots <Pill>{slots}</Pill>
+          Algorithm <Pill>{allLinksCount}</Pill>
         </li>
-        <li
-          className={activeItem === 'Links.Whitelist' ? style.active : ''}
-          onClick={notify('Links.Whitelist')}
-        >
-          Whitelist <Pill>{whitelistedLinksCount}</Pill>
-        </li>
-        { !hasWhitelist && (
-          <li
-            className={activeItem === 'Links.Algorithm' ? style.active : ''}
-            onClick={notify('Links.Algorithm')}
-          >
-            Algorithm <Pill>{allLinksCount}</Pill>
-          </li>
-        )}
-      </ul>
+      )}
       <li
         className={activeItem === 'Specification' ? style.active : ''}
         onClick={notify('Specification')}

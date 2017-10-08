@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import * as throttle from 'lodash/throttle';
 
 import { ILink, TWidgetSize } from '../../../types';
@@ -34,10 +35,10 @@ interface IAllLinkProps {
 // TODO: shouldn't this be called DetailsList?
 export default class AllLinks extends Component<IAllLinkProps, {}> {
 
-  refs: { [key: string]: any; } = {};
+  componentsRefs: { [key: string]: any; } = {};
 
   scrollTo(to: TViewType) {
-    this.refs[to].base.scrollIntoView(true);
+    findDOMNode(this.componentsRefs[to]).scrollIntoView(true);
   }
 
   componentDidMount() {
@@ -77,7 +78,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
           onBoostError={onBoostError}
           ref={this._onRef('Links.Whitelist')}
         />
-        { !hasWhitelist && (
+        {!hasWhitelist && (
           <LinksList
             label="Algorithm"
             showProbability={false}
@@ -106,20 +107,28 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   _onRef = (name: string) => (ref) => {
-    this.refs[name] = ref;
+    this.componentsRefs[name] = ref;
   }
 
-  _onScroll = throttle((e) => {
+  // ToDo rewrite!!
+  // _onScroll = throttle((event) => {
+  _onScroll = (event) => {
+    event.persist();
+    this._onScrollThrottled(event.currentTarget);
+  }
+
+  _onScrollThrottled = throttle((element) => {
     const viewport = {
-      top: e.target.scrollTop,
-      bottom: e.target.scrollTop + e.target.offsetHeight,
+      top: element.scrollTop,
+      bottom: element.scrollTop + element.offsetHeight,
     };
 
-    const visibleSections = Object.entries(this.refs)
+    const visibleSections = Object.entries(this.componentsRefs)
       .filter(([, ref]) => {
+        const node = findDOMNode(ref);
         const bounds = {
-          top: ref.base.offsetTop,
-          bottom: ref.base.offsetTop + ref.base.offsetHeight,
+          top: node.offsetTop,
+          bottom: node.offsetTop + node.offsetHeight,
         };
 
         return ((bounds.top <= viewport.bottom) && (bounds.bottom >= viewport.top));

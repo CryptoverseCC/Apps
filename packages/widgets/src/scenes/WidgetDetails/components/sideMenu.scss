@@ -26,19 +26,3 @@
     color: $dodger-blue;
   }
 }
-
-.sub-menu {
-  list-style: none;
-  font-weight: normal;
-  color: $black;
-  padding-left: 10px;
-  
-  & > li:hover {
-    color: $dodger-blue;
-  }
-
-  & > li.active {
-    color: $dodger-blue;
-    font-size: 22px;
-  }
-}

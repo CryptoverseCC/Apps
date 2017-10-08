@@ -13,19 +13,17 @@ interface ICaseProps {
 export default class Switch extends Component<ISwitchProps, {}> {
 
   static Case = ({ children }: ICaseProps) => {
-    if (children && children.length === 1) {
-      return children[0];
+    if (children && Children.count(children) === 1) {
+      return Children.only(children);
     }
     return <div>{children}</div>;
   }
 
   render() {
     const { expresion, children } = this.props;
-    return Children.map((child) => {
-      if (child.nodeName === Switch.Case && child.attributes.condition === expresion) {
-        return child;
-      }
-      return null;
-    });
+
+    return Children
+      .toArray(children)
+      .find((child) => child.props.condition === expresion);
   }
 }
