@@ -1,5 +1,5 @@
-import { h } from 'preact';
-import { shallow } from 'preact-render-spy';
+import React from 'react';
+import { shallow } from 'spy-on-render';
 import { TokenDetailsProvider } from './TokenDetailsProvider';
 
 describe('TokenDetailsProvider', () => {

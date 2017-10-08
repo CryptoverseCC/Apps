@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import core from '@userfeeds/core';
 import Input from '@userfeeds/apps-components/src/Input';

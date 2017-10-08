@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 
 import Paper from '@userfeeds/apps-components/src/Paper';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';

@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
 
 import Input from '@userfeeds/apps-components/src/Input';

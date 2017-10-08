@@ -1,8 +1,8 @@
-import { h, FunctionalComponent } from 'preact';
+import React from 'react';
 
 import * as style from './label.scss';
 
-const Label: FunctionalComponent<{}> = (props) => {
+const Label = (props) => {
   if (props && props.children) {
     return <p class={style.self}>{props.children}</p>;
   }

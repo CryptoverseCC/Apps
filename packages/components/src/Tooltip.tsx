@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 import * as classnames from 'classnames';
 
 import * as style from './tooltip.scss';

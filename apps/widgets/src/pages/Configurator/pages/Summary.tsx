@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Tabs from '@userfeeds/apps-components/src/Tabs';
 

@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import Link from '@userfeeds/apps-components/src/Link';
 import Paper from '@userfeeds/apps-components/src/Paper';

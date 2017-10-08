@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 import { Route } from 'react-router-dom';
 
 import Paper from '@userfeeds/apps-components/src/Paper';

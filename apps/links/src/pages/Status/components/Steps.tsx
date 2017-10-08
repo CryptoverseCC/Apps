@@ -1,4 +1,4 @@
-import { h, FunctionalComponent, Component } from 'preact';
+import React, { Component } from 'react';
 import * as classnames from 'classnames/bind';
 
 import Svg from '@userfeeds/apps-components/src/Svg';
@@ -15,7 +15,7 @@ interface IStepProps {
   state: 'disabled' | 'notstarted' | 'waiting' | 'done';
 }
 
-const Step: FunctionalComponent<IStepProps> = ({ icon, state, children }) => (
+const Step = ({ icon, state, children }) => (
   <div class={cx(style.step, { [state]: true })}>
     <div class={style.icon}>{icon}</div>
     <div class={style.content}>{children}</div>

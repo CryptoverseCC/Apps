@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 import * as QRious from 'qrious';
 
 import Icon from '@userfeeds/apps-components/src/Icon';

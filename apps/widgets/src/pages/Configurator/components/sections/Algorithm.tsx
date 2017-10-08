@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 

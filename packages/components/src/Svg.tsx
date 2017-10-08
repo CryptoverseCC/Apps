@@ -1,4 +1,4 @@
-import { h, FunctionalComponent } from 'preact';
+import React from 'react';
 
 const getSvgContentRegxp = /<svg[^>]*>(.*)<\/svg>/;
 

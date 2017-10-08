@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 

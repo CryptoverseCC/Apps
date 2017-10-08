@@ -1,4 +1,4 @@
-import { h, Component, FunctionalComponent } from 'preact';
+import React, { Component } from 'react';
 import * as classnames from 'classnames';
 
 import TabList from './TabList';
@@ -7,7 +7,8 @@ interface ITabsProps {
   class?: string;
   tabListClass?: string;
   selectedTabClass?: string;
-  tabs: { [key: string]: FunctionalComponent<void> };
+  // tabs: { [key: string]: FunctionalComponent<void> };
+  tabs: any;
 }
 
 interface ITabsState {

@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import * as throttle from 'lodash/throttle';
 
 import { ILink, TWidgetSize } from '../../../types';

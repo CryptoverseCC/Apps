@@ -1,4 +1,4 @@
-import { h, Component, FunctionalComponent } from 'preact';
+import React, { Component } from 'react';
 
 interface ISwitchProps {
   expresion: any;
@@ -10,7 +10,7 @@ interface ICaseProps {
 
 export default class Switch extends Component<ISwitchProps, {}> {
 
-  static Case: FunctionalComponent<ICaseProps>  = ({ children }) => {
+  static Case = ({ children }: ICaseProps) => {
     if (children && children.length === 1) {
       return children[0];
     }

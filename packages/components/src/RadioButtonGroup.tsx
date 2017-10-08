@@ -1,4 +1,4 @@
-import { h, Component, FunctionalComponent } from 'preact';
+import React, { Component } from 'react';
 
 import Label from './Label';
 
@@ -8,7 +8,8 @@ interface IOption {
   label: string;
   value: any;
   disabled?: boolean;
-  component?: FunctionalComponent<{ option: IOption }>;
+  // component?: FunctionalComponent<{ option: IOption }>;
+  component: any;
 }
 
 interface IRadioButtonGroupProps {

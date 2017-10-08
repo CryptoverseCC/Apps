@@ -1,4 +1,4 @@
-import { h, FunctionalComponent } from 'preact';
+import React from 'react';
 import * as classnames from 'classnames';
 
 import * as style from './textWithLabel.scss';
@@ -11,7 +11,7 @@ interface ITextWithLabelProps {
   class?: string;
 }
 
-const TextWithLabel: FunctionalComponent<ITextWithLabelProps> = ({ label, text, class: className, children }) => {
+const TextWithLabel = ({ label, text, class: className, children }: ITextWithLabelProps) => {
   return (
     <div class={classnames(style.self, className)}>
       <Label>{label}</Label>

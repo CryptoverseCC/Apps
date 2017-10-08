@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 // import * as Highlight from 'react-highlight';
 import Highlight from './Highlight';
 

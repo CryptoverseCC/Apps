@@ -1,5 +1,5 @@
-import { h } from 'preact';
-import { connect } from 'preact-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import Modal from '@userfeeds/apps-components/src/Modal';

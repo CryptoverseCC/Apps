@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import * as classnames from 'classnames/bind';
 
 import * as style from './input.scss';
