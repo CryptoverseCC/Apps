@@ -1,10 +1,10 @@
 import React from 'react';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import * as style from './loader.scss';
 
 interface ILoaderProps {
-  class?: string;
+  className?: string;
 }
 
 const Loader = ({ className}: ILoaderProps) => {

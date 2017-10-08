@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 

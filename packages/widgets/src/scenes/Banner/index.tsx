@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as classnames from 'classnames/bind';
+import classnames from 'classnames/bind';
 import { returntypeof } from 'react-redux-typescript';
 
 import Icon from '@userfeeds/apps-components/src/Icon';

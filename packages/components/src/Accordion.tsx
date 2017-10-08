@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import Icon from './Icon';
 
@@ -8,7 +8,7 @@ import * as style from './accordion.scss';
 interface IAccordionProps {
   open?: boolean;
   onChange?: () => void;
-  class?: string;
+  className?: string;
   title: string | JSX.Element;
 }
 
@@ -37,7 +37,7 @@ export default class Accordion extends Component<IAccordionProps, IAccordionStat
 
   render() {
     return (
-      <div className={classnames(style.self, this.props.class)}>
+      <div className={classnames(style.self, this.props.className)}>
         <div className={style.header} onClick={this._toggle}>
           {this.props.title}
           <Icon className={style.arrow} name={this.state.open ? 'chevron-top' : 'chevron-bottom'}/>

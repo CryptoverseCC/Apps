@@ -1,11 +1,11 @@
 import React from 'react';
-import * as classnames from 'classnames/bind';
+import classnames from 'classnames/bind';
 
 import * as style from './tabList.scss';
 const cx = classnames.bind(style);
 
 interface ITabListProps {
-  class?: string;
+  className?: string;
   selectedTabClass?: string;
   selectedTab: string;
   tabsNames: string[];

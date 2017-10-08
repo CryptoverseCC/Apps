@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as classnames from 'classnames/bind';
+import classnames from 'classnames/bind';
 
 import Svg from '@userfeeds/apps-components/src/Svg';
 import Icon from '@userfeeds/apps-components/src/Icon';

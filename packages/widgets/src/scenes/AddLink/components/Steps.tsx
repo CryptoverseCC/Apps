@@ -1,5 +1,5 @@
 import React from 'react';
-import * as classnames from 'classnames/bind';
+import classnames from 'classnames/bind';
 
 import * as style from './steps.scss';
 const cx = classnames.bind(style);

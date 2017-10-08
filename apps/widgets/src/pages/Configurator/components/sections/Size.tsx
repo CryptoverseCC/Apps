@@ -1,5 +1,5 @@
 import React from 'react';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
 

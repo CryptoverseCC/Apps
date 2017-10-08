@@ -1,5 +1,5 @@
 import React from 'react';
-import * as classnames from 'classnames/bind';
+import classnames from 'classnames/bind';
 
 import { ILink } from '../types';
 
@@ -9,7 +9,7 @@ const cx = classnames.bind(style);
 
 interface ILinkProps {
   link: ILink;
-  class?: string;
+  className?: string;
   lines?: number;
   style?: string | {[key: string]: number | string};
 }

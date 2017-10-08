@@ -1,12 +1,12 @@
 import React from 'react';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 import 'open-iconic/font/css/open-iconic.min.css';
 
 import * as style from './icon.scss';
 
 interface IIconProps {
   name: string;
-  class?: string;
+  className?: string;
 }
 
 const Icon = ({ name, className, ...restProps }: IIconProps) => (

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import * as QRious from 'qrious';
+import QRious from 'qrious';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Paper from '@userfeeds/apps-components/src/Paper';

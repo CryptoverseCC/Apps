@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import TabList from './TabList';
 
 interface ITabsProps {
-  class?: string;
+  className?: string;
   tabListClass?: string;
   selectedTabClass?: string;
   // tabs: { [key: string]: FunctionalComponent<void> };

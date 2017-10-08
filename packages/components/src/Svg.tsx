@@ -3,7 +3,7 @@ import React from 'react';
 const getSvgContentRegxp = /<svg[^>]*>(.*)<\/svg>/;
 
 interface ISvgProps {
-  class?: string;
+  className?: string;
   svg: string;
   size: number | string;
   viewBox: string;

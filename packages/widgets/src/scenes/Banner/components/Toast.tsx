@@ -1,5 +1,5 @@
 import React from 'react';
-import * as classnames from 'classnames/bind';
+import classnames from 'classnames/bind';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 
