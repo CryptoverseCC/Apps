@@ -27,9 +27,9 @@ export default class Tabs extends Component<ITabsProps, ITabsState> {
 
   render() {
     return (
-      <div class={classnames(this.props.class)}>
+      <div className={classnames(this.props.class)}>
         <TabList
-          class={this.props.tabListClass}
+          className={this.props.tabListClass}
           selectedTabClass={this.props.selectedTabClass}
           selectedTab={this.state.activeTab}
           tabsNames={Object.keys(this.props.tabs)}

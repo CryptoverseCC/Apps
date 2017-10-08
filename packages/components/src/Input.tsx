@@ -17,14 +17,14 @@ export default class Input extends Component<TInputProps, {}> {
     focus(): void;
   } | undefined;
 
-  render({ class: className, placeholder, errorMessage, value, multiline, disabled = false, ...restProps }
-    : TInputProps) {
+  render() {
+    const { className, placeholder, errorMessage, value, multiline, disabled = false, ...restProps } = this.props;
     return (
-      <div class={cx(style.self, className, { invalid: !!errorMessage })}>
+      <div className={cx(style.self, className, { invalid: !!errorMessage })}>
         {!multiline ? (
           <input
             ref={this._onInputRef}
-            class={style.input}
+            className={style.input}
             value={value}
             disabled={disabled}
             required
@@ -33,7 +33,7 @@ export default class Input extends Component<TInputProps, {}> {
         ) : (
           <textarea
             ref={this._onInputRef}
-            class={style.input}
+            className={style.input}
             value={value}
             disabled={disabled}
             required
@@ -41,8 +41,8 @@ export default class Input extends Component<TInputProps, {}> {
             {...restProps}
           />
         )}
-        <span class={style.placeholder} onClick={this._onPlaceholderClick}>{placeholder}</span>
-        {errorMessage && <span class={style.error}>{errorMessage}</span>}
+        <span className={style.placeholder} onClick={this._onPlaceholderClick}>{placeholder}</span>
+        {errorMessage && <span className={style.error}>{errorMessage}</span>}
       </div>
     );
   }

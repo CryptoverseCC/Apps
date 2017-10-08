@@ -24,9 +24,9 @@ const UserfeedsAddressInfo = ({ recipientAddress, linksNumber }: IUserfeedsAddre
   const etherscanUrl = `https://etherscan.io/address/${recipientAddress}`;
 
   return (
-    <div class={style.self}>
+    <div className={style.self}>
       <h2>Userfeed Address</h2>
-      <div class={style.row}>
+      <div className={style.row}>
         <Paper style={{ flex: 1, marginRight: '15px' }}>
           <TextWithLabel label="Total number of links" text={linksNumber} />
         </Paper>
@@ -38,10 +38,10 @@ const UserfeedsAddressInfo = ({ recipientAddress, linksNumber }: IUserfeedsAddre
       </div>
       <Paper>
         <TextWithLabel label="Userfeed address">
-          <div class={style.row}>
+          <div className={style.row}>
             {recipientAddress}
-            <div class={style.qr}>
-              <canvas class={style.canvas} ref={renderQR.bind(null, recipientAddress)} />
+            <div className={style.qr}>
+              <canvas className={style.canvas} ref={renderQR.bind(null, recipientAddress)} />
             </div>
           </div>
         </TextWithLabel>

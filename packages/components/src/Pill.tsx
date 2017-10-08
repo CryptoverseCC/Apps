@@ -8,7 +8,7 @@ const Pill = (props) => {
   }
 
   return (
-    <span class={style.self}>{props.children}</span>
+    <span className={style.self}>{props.children}</span>
   );
 };
 

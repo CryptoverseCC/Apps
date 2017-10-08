@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'spy-on-render';
+import { shallow } from 'enzyme';
 import { TokenDetailsProvider } from './TokenDetailsProvider';
 
 describe('TokenDetailsProvider', () => {

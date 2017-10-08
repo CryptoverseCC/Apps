@@ -17,9 +17,9 @@ const Toast = ({ message, type, onClose }: IToastProps) => {
   const onClick = onClose.bind(null, message);
 
   return (
-    <div class={cx('self', type)}>
+    <div className={cx('self', type)}>
       {message}
-      <Icon class={style.ex} name="x" onClick={onClick} />
+      <Icon className={style.ex} name="x" onClick={onClick} />
     </div>
   );
 };

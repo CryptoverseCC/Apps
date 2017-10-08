@@ -64,20 +64,23 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
     link: DEFAULT_LINK,
   };
 
-  render({ widgetSettings, web3State }: TAddLinkModalProps, { step, link, linkId }: IAddLinkModalState) {
+  render() {
+    const { widgetSettings, web3State } = this.props;
+    const { step, link, linkId } = this.state;
+
     return (
-      <div class={style.self}>
-        <div class={style.header}>
+      <div className={style.self}>
+        <div className={style.header}>
           <BackButton onClick={this.props.openWidgetDetails} />
           <h2>Create a new link</h2>
         </div>
-        <div class={style.body}>
+        <div className={style.body}>
           <Steps activeStep={step} />
-          <div class={style.content}>
-            <Paper class={style.preview}>
+          <div className={style.content}>
+            <Paper className={style.preview}>
               <Link link={link} />
             </Paper>
-            <Paper class={style.form}>
+            <Paper className={style.form}>
               <Switch expresion={step}>
                 <Switch.Case condition="form">
                   <AddLink

@@ -56,24 +56,25 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     probability: '-',
   };
 
-  render({ link, disabled, disabledReason }: IBidLinkProps,
-         { visible, value, validationError, probability, formLeft, formTop, formOpacity }: IBidLinkState) {
+  render() {
+    const { link, disabled, disabledReason } = this.props;
+    const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
     return (
-      <div ref={this._onButtonRef} class={style.self}>
+      <div ref={this._onButtonRef} className={style.self}>
         <Tooltip text={disabledReason}>
-          <Button secondary class={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
+          <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
         </Tooltip>
         <If condition={visible}>
-          <div class={style.overlay} onClick={this._onOverlayClick} />
-          <div ref={this._onFormRef} class={style.form} style={{ top: formTop, left: formLeft, opacity: formOpacity }}>
-            <div class={style.inputRow}>
+          <div className={style.overlay} onClick={this._onOverlayClick} />
+          <div ref={this._onFormRef} className={style.form} style={{ top: formTop, left: formLeft, opacity: formOpacity }}>
+            <div className={style.inputRow}>
               <Input
                 placeholder="Value"
                 value={value}
                 onInput={this._onValueChange}
                 errorMessage={validationError}
               />
-              <p class={style.equalSign}>=</p>
+              <p className={style.equalSign}>=</p>
               <Input
                 placeholder="Estimated Probability"
                 disabled

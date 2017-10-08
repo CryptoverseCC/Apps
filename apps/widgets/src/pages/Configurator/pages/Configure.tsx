@@ -86,7 +86,7 @@ export default class Configurator extends Component<IConfiguratorProps, IConfigu
   render() {
     return (
       <div>
-         <div class={style.introduction}>
+         <div className={style.introduction}>
           <h1>Create widget</h1>
           <p>Provide essential information to get your widget up and running!</p>
         </div>

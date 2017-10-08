@@ -8,19 +8,19 @@ import Section from '../Section';
 import * as style from './size.scss';
 
 const BannerSize = (props) => (
-  <span class={style.bannerSizeLabel}>{props.children}</span>
+  <span className={style.bannerSizeLabel}>{props.children}</span>
 );
 
 const LeaderboardPictograph = () => (
-  <div class={classnames(style.pictograph, style.leaderboard)}>
-    <div class={style.fill70} />
+  <div className={classnames(style.pictograph, style.leaderboard)}>
+    <div className={style.fill70} />
   </div>
 );
 
 const RectanglePictograph = () => (
-  <div class={classnames(style.pictograph, style.rectangle)}>
-    <div class={style.fill90} />
-    <div class={style.fill70} />
+  <div className={classnames(style.pictograph, style.rectangle)}>
+    <div className={style.fill90} />
+    <div className={style.fill70} />
   </div>
 );
 

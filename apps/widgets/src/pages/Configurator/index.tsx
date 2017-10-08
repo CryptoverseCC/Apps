@@ -9,8 +9,8 @@ import Summary from './pages/Summary';
 import * as style from './configurator.scss';
 
 const Configurator = ({ match }) => (
-  <div class={style.self}>
-    <Paper class={style.paper}>
+  <div className={style.self}>
+    <Paper className={style.paper}>
       <Route path={match.url + '/summary'} component={Summary} />
       <Route exact path={match.url} component={Configure} />
     </Paper>

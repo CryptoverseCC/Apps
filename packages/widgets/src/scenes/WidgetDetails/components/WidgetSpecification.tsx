@@ -16,9 +16,9 @@ interface IWidgetSpecificationProps {
 }
 
 const WidgetSpecification = ({ size, algorithm }: IWidgetSpecificationProps) => (
-  <div class={style.self}>
+  <div className={style.self}>
     <h2>Widget Specification</h2>
-    <div class={style.row}>
+    <div className={style.row}>
       <Paper style={{ flex: 1, marginRight: '15px' }}>
         <TextWithLabel label="Size" text={size} />
       </Paper>
@@ -26,10 +26,10 @@ const WidgetSpecification = ({ size, algorithm }: IWidgetSpecificationProps) => 
         <TextWithLabel label="Type" text="Text" />
       </Paper>
     </div>
-    <div class={style.row}>
+    <div className={style.row}>
       <Paper style={{ flex: 1, marginRight: '15px' }}>
         <TextWithLabel label="Token">
-          <EthereumLogo class={style.tokenLogo} /> Ether
+          <EthereumLogo className={style.tokenLogo} /> Ether
         </TextWithLabel>
       </Paper>
       <Paper style={{ flex: 1, marginLeft: '15px' }}>

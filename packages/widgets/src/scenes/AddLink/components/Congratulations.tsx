@@ -13,7 +13,7 @@ const Congratulations = ({ linkId, widgetSettings }) => {
   const goToLinkStatus = () => openLinkexchangeUrl('apps/links/#/status/', { linkId, ...widgetSettings });
 
   return (
-    <div class={style.self}>
+    <div className={style.self}>
       <img src={heartSvg} />
       <h2>Congratulations!</h2>
       <p>Thanks you for sending the link</p>

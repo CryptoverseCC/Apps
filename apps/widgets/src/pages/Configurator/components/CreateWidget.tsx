@@ -12,13 +12,13 @@ const CreateWidget = ({ widgetSettings }) => {
 
   return (
     <Link
-      class={style.self}
+      className={style.self}
       to={{
         pathname: '/configurator/summary',
         search: `?${searchParams}`,
       }}
     >
-      <Button class={style.button}>
+      <Button className={style.button}>
         Create my widget!
       </Button>
     </Link>

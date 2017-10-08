@@ -9,7 +9,7 @@ interface ILinkProps {
 }
 
 const Link = ({ link }: ILinkProps) => (
-  <div class={style.row}>
+  <div className={style.row}>
     <div>
       <div>URL: <a href={link.target}>{link.target}</a></div>
       <div>{link.summary}</div>
@@ -23,7 +23,7 @@ interface ILinkListProps {
 }
 
 const LinkList = ({ links = []}: ILinkListProps) => (
-  <div class={style.self}>
+  <div className={style.self}>
     {links.map((link) => (<Link link={link} />))}
   </div>
 );

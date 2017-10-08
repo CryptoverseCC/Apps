@@ -28,6 +28,9 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.0",
+    "@types/react": "16.0.10",
+    "@types/react-dom": "16.0.1",
+    "@types/react-redux": "5.0.10",
     "autoprefixer": "^7.1.2",
     "awesome-typescript-loader": "^3.2.3",
     "cross-env": "^5.0.1",

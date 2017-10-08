@@ -37,10 +37,10 @@ export default class Accordion extends Component<IAccordionProps, IAccordionStat
 
   render() {
     return (
-      <div class={classnames(style.self, this.props.class)}>
-        <div class={style.header} onClick={this._toggle}>
+      <div className={classnames(style.self, this.props.class)}>
+        <div className={style.header} onClick={this._toggle}>
           {this.props.title}
-          <Icon class={style.arrow} name={this.state.open ? 'chevron-top' : 'chevron-bottom'}/>
+          <Icon className={style.arrow} name={this.state.open ? 'chevron-top' : 'chevron-bottom'}/>
         </div>
         {this.state.open && <div>{this.props.children}</div>}
       </div>

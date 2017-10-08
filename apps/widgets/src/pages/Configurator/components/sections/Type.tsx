@@ -8,13 +8,13 @@ import Section from '../Section';
 import * as style from './type.scss';
 
 const Soon = () => (
-  <span class={style.soon}>Soon</span>
+  <span className={style.soon}>Soon</span>
 );
 
 const WidgetOptions = ({ option }) => (
-  <div class={style.widgetType}>
+  <div className={style.widgetType}>
     <span>{option.label} {option.disabled && <Soon />}</span>
-    <Icon class={style.typeIcon} name={option.value} />
+    <Icon className={style.typeIcon} name={option.value} />
   </div>
 );
 

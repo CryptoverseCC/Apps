@@ -7,8 +7,8 @@ interface ILoaderProps {
   class?: string;
 }
 
-const Loader = ({ class: className}: ILoaderProps) => {
-  return <div class={classnames(style.self, className)} />;
+const Loader = ({ className}: ILoaderProps) => {
+  return <div className={classnames(style.self, className)} />;
 };
 
 export default Loader;

@@ -83,7 +83,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     { posting, title, summary, target, value, unlimitedApproval, errors }: IAddLinkState,
   ) {
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         <Input
           name="title"
           placeholder="Title"
@@ -130,7 +130,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
             onChange={this._onUnlimitedApprovalChange}
           />,
         ]}
-        <div class={style.sendButton}>
+        <div className={style.sendButton}>
           {posting ? (
             <Loader />
           ) : (

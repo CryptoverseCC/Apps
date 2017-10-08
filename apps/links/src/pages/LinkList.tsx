@@ -45,8 +45,8 @@ export default class LinkList extends Component<ILinkListProps, ILinkListState> 
 
   render() {
     return (
-      <div class={style.self}>
-        <Paper class={style.paper}>
+      <div className={style.self}>
+        <Paper className={style.paper}>
           <Input
             placeholder="Advertiser ID"
             value={this.state.creatorAddress}

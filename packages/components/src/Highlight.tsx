@@ -11,7 +11,7 @@ const Highlight = ({ language, code }: IHighlightProps) => {
 
   return (
     <pre>
-      <code class={`hljs ${language}`} dangerouslySetInnerHTML={{ __html: innerHtml }} />
+      <code className={`hljs ${language}`} dangerouslySetInnerHTML={{ __html: innerHtml }} />
     </pre>
   );
 };

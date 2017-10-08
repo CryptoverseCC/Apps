@@ -88,13 +88,13 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
     this.props.loadTokenDetails();
   }
 
-  render(
-    { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount,
-      standaloneMode }: TWidgetDetailsProps,
-    { viewType, mobileOrTablet }: IWidgetDetailsState) {
+  render() {
+    const { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount,
+      standaloneMode } = this.props;
+    const { viewType, mobileOrTablet } = this.state;
 
     return (
-      <div class={classnames(style.self, this.props.class)}>
+      <div className={classnames(style.self, this.props.class)}>
         <WidgetSummary
           openInNewWindowHidden={standaloneMode}
           widgetSettings={widgetSettings}
@@ -117,7 +117,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
             />
           </Switch.Case>
           <Switch.Case condition={'desktop'}>
-            <div class={style.details}>
+            <div className={style.details}>
               <SideMenu
                 slots={widgetSettings.slots}
                 whitelistedLinksCount={whitelistedLinksCount}

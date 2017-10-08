@@ -9,8 +9,8 @@ interface IIconProps {
   class?: string;
 }
 
-const Icon = ({ name, class: className, ...restProps }: IIconProps) => (
-  <span class={classnames(style.self, className, 'oi')} data-glyph={name} aria-hidden="true" {...restProps} />
+const Icon = ({ name, className, ...restProps }: IIconProps) => (
+  <span className={classnames(style.self, className, 'oi')} data-glyph={name} aria-hidden="true" {...restProps} />
 );
 
 export default Icon;

@@ -16,9 +16,9 @@ interface IStepProps {
 }
 
 const Step = ({ icon, state, children }) => (
-  <div class={cx(style.step, { [state]: true })}>
-    <div class={style.icon}>{icon}</div>
-    <div class={style.content}>{children}</div>
+  <div className={cx(style.step, { [state]: true })}>
+    <div className={style.icon}>{icon}</div>
+    <div className={style.content}>{children}</div>
   </div>
 );
 
@@ -48,9 +48,9 @@ const Progress = ({ step0State, step1State, step2State,
   }
 
   return (
-    <div class={style.progressCotainer}>
-      <div class={style.progress}>
-        <div class={style.progressFill} style={fillStyle} />
+    <div className={style.progressCotainer}>
+      <div className={style.progress}>
+        <div className={style.progressFill} style={fillStyle} />
       </div>
     </div>
   );
@@ -73,7 +73,8 @@ export default class Steps extends Component<IStepsProps, {}> {
   step1Ref: JSX.Element | undefined;
   step2Ref: JSX.Element | undefined;
 
-  render({ asset, linkId, link, blockchainState }: IStepsProps) {
+  render() {
+    const { asset, linkId, link, blockchainState } = this.props;
     let step0State;
     let step0Reason;
 
@@ -100,7 +101,7 @@ export default class Steps extends Component<IStepsProps, {}> {
       : link && link.whitelisted ? 'done' : 'waiting';
 
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         <Progress
           step0State={step0State}
           step1State={step1State}
@@ -109,11 +110,11 @@ export default class Steps extends Component<IStepsProps, {}> {
           step1Ref={this.step1Ref}
           step2Ref={this.step2Ref}
         />
-        <div class={style.stepsContainer}>
+        <div className={style.stepsContainer}>
           <Step
             ref={this._onRef('step0Ref')}
             state={step0State}
-            icon={<Tooltip text={step0Reason}><Icon class={style.icon} name="eye" /></Tooltip>}
+            icon={<Tooltip text={step0Reason}><Icon className={style.icon} name="eye" /></Tooltip>}
           >
             <p>Visible on blockchain</p>
           </Step>
@@ -128,7 +129,7 @@ export default class Steps extends Component<IStepsProps, {}> {
           <Step
             ref={this._onRef('step2Ref')}
             state={step2State}
-            icon={<Icon class={style.icon} name="check" />}
+            icon={<Icon className={style.icon} name="check" />}
           >
             <p>Put on whitelist</p>
             <span>All set!</span>

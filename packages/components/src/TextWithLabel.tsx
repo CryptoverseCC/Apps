@@ -11,11 +11,11 @@ interface ITextWithLabelProps {
   class?: string;
 }
 
-const TextWithLabel = ({ label, text, class: className, children }: ITextWithLabelProps) => {
+const TextWithLabel = ({ label, text, className, children }: ITextWithLabelProps) => {
   return (
-    <div class={classnames(style.self, className)}>
+    <div className={classnames(style.self, className)}>
       <Label>{label}</Label>
-      <p class={style.text}>{text || children}</p>
+      <p className={style.text}>{text || children}</p>
     </div>
   );
 };

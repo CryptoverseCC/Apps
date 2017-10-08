@@ -11,14 +11,14 @@ interface IAdProps {
 }
 
 const Ad = ({ ad, onClick }: IAdProps) => (
-  <div class={style.row}>
+  <div className={style.row}>
     <div>
       <div>URL: <a href={ad.target}>{ad.target}</a></div>
       <div>score: {web3.fromWei(ad.score, 'ether')}</div>
       <div>{ad.title}</div>
       <div>{ad.summary}</div>
     </div>
-    <div class={style.button}>
+    <div className={style.button}>
       <Button
         onClick={onClick.bind(null, ad)}
         disabled={ad.whitelisted}
@@ -35,7 +35,7 @@ interface IAdsListProps {
 }
 
 const AdsList = ({ ads = [], onItemClick = noop }: IAdsListProps) => (
-  <div class={style.self}>
+  <div className={style.self}>
     {ads.map((ad) => (<Ad ad={ad} onClick={onItemClick} />))}
   </div>
 );

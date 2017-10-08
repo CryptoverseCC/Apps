@@ -12,11 +12,11 @@ interface ITabListProps {
   onTabClick(name: string): void;
 }
 
-const TabList = ({ class: className, selectedTabClass, selectedTab, tabsNames, onTabClick }: ITabListProps) => (
-  <ul class={cx('self', className)}>
+const TabList = ({ className, selectedTabClass, selectedTab, tabsNames, onTabClick }: ITabListProps) => (
+  <ul className={cx('self', className)}>
     {tabsNames.map((name) => (
       <li
-        class={cx('item', {
+        className={cx('item', {
           selected: name === selectedTab && !selectedTabClass,
           [selectedTabClass || '']: name === selectedTab,
         })}

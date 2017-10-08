@@ -8,9 +8,9 @@ interface ISectionProps {
 }
 
 const Section = ({ header, description, children }) => (
-  <div class={style.self}>
-    <div class={style.header}>{header}</div>
-    {description && <div class={style.description}>{description}</div>}
+  <div className={style.self}>
+    <div className={style.header}>{header}</div>
+    {description && <div className={style.description}>{description}</div>}
     {children}
   </div>
 );

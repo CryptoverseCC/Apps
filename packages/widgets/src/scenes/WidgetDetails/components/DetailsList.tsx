@@ -53,7 +53,7 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
       onBoostError, onBoostSuccess } = this.props;
 
     return (
-      <div class={style.self} onScroll={this._onScroll}>
+      <div className={style.self} onScroll={this._onScroll}>
         <LinksList
           label="Slots"
           asset={asset}

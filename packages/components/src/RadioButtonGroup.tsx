@@ -25,9 +25,9 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
     const { name, value, onChange, options } = this.props;
 
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         {options.map((option, index) => (
-          <div class={style.option} key={option.value + index}>
+          <div className={style.option} key={option.value + index}>
             <input
               type="radio"
               id={`${name}control_${index}`}

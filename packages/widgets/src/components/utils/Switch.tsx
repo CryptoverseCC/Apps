@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 
 interface ISwitchProps {
   expresion: any;
@@ -7,6 +7,8 @@ interface ISwitchProps {
 interface ICaseProps {
   condition: any;
 }
+
+// ToDo throw it away?
 
 export default class Switch extends Component<ISwitchProps, {}> {
 
@@ -17,10 +19,13 @@ export default class Switch extends Component<ISwitchProps, {}> {
     return <div>{children}</div>;
   }
 
-  render({ expresion, children }) {
-    const child = children.find((c) => c.nodeName === Switch.Case &&
-      c.attributes.condition === expresion);
-
-    return child;
+  render() {
+    const { expresion, children } = this.props;
+    return Children.map((child) => {
+      if (child.nodeName === Switch.Case && child.attributes.condition === expresion) {
+        return child;
+      }
+      return null;
+    });
   }
 }

@@ -9,7 +9,7 @@ interface ISvgProps {
   viewBox: string;
 }
 
-const Svg = ({ svg, size, viewBox, class: className }: ISvgProps) => {
+const Svg = ({ svg, size, viewBox, className }: ISvgProps) => {
   let svgContent;
   const regexpResult = getSvgContentRegxp.exec(svg);
   if (regexpResult) {
@@ -18,7 +18,7 @@ const Svg = ({ svg, size, viewBox, class: className }: ISvgProps) => {
 
   return (
     <svg
-      class={className}
+      className={className}
       style={{ width: size }}
       alt={name}
       dangerouslySetInnerHTML={{ __html: svgContent }}
