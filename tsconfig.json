@@ -8,6 +8,12 @@
     "strictNullChecks": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "lib": ["es2017", "dom"]
-  }
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  },
+  "typeRoots": [
+    "./node_modules/@types"
+  ]
 }
