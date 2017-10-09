@@ -17,11 +17,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const Dispatch2Props = returntypeof(mapDispatchToProps);
-
 type TDetailsProps = typeof Dispatch2Props;
 
-@connect(null, mapDispatchToProps)
-export default class Details extends Component<TDetailsProps, void> {
+class Details extends Component<TDetailsProps, {}> {
 
   componentDidMount() {
     this.props.fetchLinks();
@@ -38,3 +36,5 @@ export default class Details extends Component<TDetailsProps, void> {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(Details);
