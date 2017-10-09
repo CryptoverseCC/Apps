@@ -17,7 +17,7 @@ export async function erc20ContractAllowance(web3Instance, contractAddress, spen
   });
 }
 
-export async function erc20ContractBalance(web3Instance, contractAddress) {
+export async function erc20ContractBalance(web3Instance, contractAddress): Promise<any> {
   const [from] = await getAccounts(web3Instance);
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
@@ -25,21 +25,21 @@ export async function erc20ContractBalance(web3Instance, contractAddress) {
   });
 }
 
-export function erc20ContractDecimals(web3Instance, contractAddress) {
+export function erc20ContractDecimals(web3Instance, contractAddress): Promise<any> {
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.decimals(getResolveOrRejectOnErrorFunc(resolve, reject));
   });
 }
 
-export function erc20ContractName(web3Instance, contractAddress) {
+export function erc20ContractName(web3Instance, contractAddress): Promise<string> {
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.name(getResolveOrRejectOnErrorFunc(resolve, reject));
   });
 }
 
-export function erc20ContractSymbol(web3Instance, contractAddress) {
+export function erc20ContractSymbol(web3Instance, contractAddress): Promise<string> {
   const contract = getErc20Contract(web3Instance, contractAddress);
   return new Promise((resolve, reject) => {
     contract.symbol(getResolveOrRejectOnErrorFunc(resolve, reject));

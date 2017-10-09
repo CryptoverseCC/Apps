@@ -12,7 +12,7 @@ import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import Steps from './components/Steps';
 
-import * as style from './Status.scss';
+import * as style from './status.scss';
 
 const heartSvg = require('../../../images/heart.svg');
 
@@ -50,6 +50,7 @@ interface IStatusState {
   mobileOrTablet: boolean;
   link?: any;
   linkId: string;
+  asset: string;
   recipientAddress: string;
   algorithm: string;
   whitelist: string;
@@ -144,9 +145,6 @@ export default class Status extends Component<IStatusProps, IStatusState> {
             </TextWithLabel>
           </div>
           <Steps
-            linkId={linkId}
-            asset={asset}
-            recipientAddress={recipientAddress}
             link={link}
             blockchainState={blockchain}
           />

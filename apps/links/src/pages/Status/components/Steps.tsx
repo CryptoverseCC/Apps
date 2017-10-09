@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import classnames from 'classnames/bind';
 
 import Svg from '@userfeeds/apps-components/src/Svg';
@@ -15,12 +15,19 @@ interface IStepProps {
   state: 'disabled' | 'notstarted' | 'waiting' | 'done';
 }
 
-const Step = ({ icon, state, children }) => (
-  <div className={cx(style.step, { [state]: true })}>
-    <div className={style.icon}>{icon}</div>
-    <div className={style.content}>{children}</div>
-  </div>
-);
+class Step extends PureComponent<IStepProps> {
+
+  render() {
+    const { icon, state, children } = this.props;
+
+    return (
+      <div className={cx(style.step, { [state]: true })}>
+        <div className={style.icon}>{icon}</div>
+        <div className={style.content}>{children}</div>
+      </div>
+    );
+  }
+}
 
 const Progress = ({ step0State, step1State, step2State,
   step0Ref, step1Ref, step2Ref }) => {
@@ -57,8 +64,6 @@ const Progress = ({ step0State, step1State, step2State,
 };
 
 interface IStepsProps {
-  asset: string;
-  linkId: string;
   link?: any;
   blockchainState: {
     web3Available: boolean;
@@ -74,7 +79,7 @@ export default class Steps extends Component<IStepsProps, {}> {
   step2Ref: JSX.Element | undefined;
 
   render() {
-    const { asset, linkId, link, blockchainState } = this.props;
+    const { link, blockchainState } = this.props;
     let step0State;
     let step0Reason;
 
