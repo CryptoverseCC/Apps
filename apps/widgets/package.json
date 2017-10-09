@@ -1,28 +1,26 @@
 {
   "private": true,
   "name": "@linkechange/app-widget",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":
-      "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
-    "lint":
-      "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
+    "lint": "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "test": "yarn lint",
     "build": "cross-env NODE_ENV=production webpack -p --display-optimization-bailout || exit 0"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/widgets": "^0.0.109",
-    "@userfeeds/apps-components": "^0.0.12",
-    "@userfeeds/core": "0.0.33",
+    "@linkexchange/widgets": "^0.0.110",
+    "@userfeeds/apps-components": "^0.0.13",
+    "@userfeeds/core": "^0.0.34",
     "classnames": "^2.2.5",
+    "qs": "^6.5.0",
     "react": "16.0.0",
     "react-dom": "16.0.0",
     "react-redux": "5.0.6",
-    "qs": "^6.5.0",
     "react-router-dom": "^4.1.2",
     "redux": "^3.7.1"
   },

@@ -1,12 +1,11 @@
 {
   "private": true,
   "name": "@userfeeds/apps-components",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint":
-      "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "lint": "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "test": "yarn lint"
   },
   "author": "",
