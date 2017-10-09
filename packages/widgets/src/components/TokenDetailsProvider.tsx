@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { returntypeof } from 'react-redux-typescript';
 
 import { IRootState } from '../ducks/index';
 import { ITokenDetailsState, loadTokenDetails } from '../ducks/widget';
-
-interface IProps {
-  tokenDetails: ITokenDetailsState;
-  loadTokenDetails: any;
-  render: any;
-}
 
 const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
   tokenDetails: {
@@ -19,10 +14,21 @@ const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
       .toNumber(),
   },
 });
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ loadTokenDetails }, dispatch);
 
-export class TokenDetailsProvider extends Component<IProps, {}> {
+const State2Props = returntypeof(mapStateToProps);
+const Dispatch2Props = returntypeof(mapDispatchToProps);
+
+type ITokenDetailsProps = typeof State2Props & typeof Dispatch2Props & {
+  tokenDetails: ITokenDetailsState;
+  loadTokenDetails: any;
+  render: any;
+};
+
+
+export class TokenDetailsProvider extends Component<ITokenDetailsProps, {}> {
   componentDidMount() {
     this.props.loadTokenDetails();
   }

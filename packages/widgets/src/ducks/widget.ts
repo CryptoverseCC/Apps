@@ -61,10 +61,10 @@ export interface ITokenDetailsState {
 export interface IWidgetState {
   recipientAddress: string;
   asset: string;
-  algorithm?: string;
-  size?: TWidgetSize;
+  algorithm: string;
+  size: TWidgetSize;
   whitelist?: string;
-  slots?: number;
+  slots: number;
   timeslot?: number;
   contactMethod?: string;
   publisherNote?: string;
