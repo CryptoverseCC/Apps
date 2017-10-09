@@ -25,7 +25,7 @@ export default class Switch extends Component<ISwitchProps, {}> {
 
     const childToRender = Children
       .toArray(children)
-      .find((child) => child.props.condition === expresion);
+      .find((child: React.ReactChild) => typeof child === 'object' && child.props.condition === expresion);
 
     return childToRender || null;
   }

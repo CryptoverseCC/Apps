@@ -4,9 +4,9 @@ import { Action } from 'redux';
 import { TWidgetSize } from '../types';
 import { IRootState } from './';
 
+import core from '@userfeeds/core/src';
 import { fetchLinks } from './links';
-
-import core from '@userfeeds/core';
+import web3 from '@userfeeds/utils/src/web3';
 
 const {
   erc20ContractDecimals,

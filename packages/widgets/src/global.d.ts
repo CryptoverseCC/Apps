@@ -1,1 +1,2 @@
-declare var web3;
+declare const VERSION: string;
+declare const web3: any;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import core from '@userfeeds/core';
+import core from '@userfeeds/core/src';
 
 import debounce from 'lodash.debounce';
 

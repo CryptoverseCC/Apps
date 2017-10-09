@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import core from '@userfeeds/core';
+import core from '@userfeeds/core/src';
 import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Loader from '@userfeeds/apps-components/src/Loader';
