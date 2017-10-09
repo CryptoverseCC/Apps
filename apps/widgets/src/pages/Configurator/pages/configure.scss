@@ -1,8 +1,44 @@
-@import '~@userfeeds/apps-components/styles/colors';
+.InputWrapper {
+  display: flex;
+  flex-direction: column;
 
-.introduction {
-  h1 {margin-top:0;}
-  p {margin-bottom:0;padding-bottom:0;}
- padding-bottom:30px;
- border-bottom:1px solid $alto;
+  .InputHeader {
+    color: #A6AEB8;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.5em;
+  }
+
+  .InputDescription {
+    font-size: 14px;
+    color: #586881;
+  }
+
+  .Input {
+    padding: 15px 20px;
+    line-height: 30px;
+    font-size: 14px;
+    background-color: #F5F7FA;
+    border: 1px solid #D9E0E7;
+    border-radius: 5px;
+    color: #657092;
+
+    &:focus {
+      border-color: #263FFF;
+    }
+  }
+
+  .InputHeader + .InputDescription {
+    margin-top: 5px;
+  }
+
+  .InputDescription + .Input {
+    margin-top: 10px;
+  }
+
+  .InputHeader + .Input {
+    margin-top: 5px;
+  }
 }
