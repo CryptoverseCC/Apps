@@ -1,22 +1,22 @@
-import { h } from 'preact';
-import * as classnames from 'classnames/bind';
+import React from 'react';
+import classnames from 'classnames/bind';
 
 import * as style from './tabList.scss';
 const cx = classnames.bind(style);
 
 interface ITabListProps {
-  class?: string;
+  className?: string;
   selectedTabClass?: string;
   selectedTab: string;
   tabsNames: string[];
   onTabClick(name: string): void;
 }
 
-const TabList = ({ class: className, selectedTabClass, selectedTab, tabsNames, onTabClick }: ITabListProps) => (
-  <ul class={cx('self', className)}>
+const TabList = ({ className, selectedTabClass, selectedTab, tabsNames, onTabClick }: ITabListProps) => (
+  <ul className={cx('self', className)}>
     {tabsNames.map((name) => (
       <li
-        class={cx('item', {
+        className={cx('item', {
           selected: name === selectedTab && !selectedTabClass,
           [selectedTabClass || '']: name === selectedTab,
         })}

@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import * as style from './modal.scss';
 
@@ -15,7 +15,7 @@ export default class Modal extends Component<IModalProps, {}> {
     document.addEventListener('keydown', this._closeOnEsc);
     window.addEventListener('popstate', this._onOverlayClick);
 
-    history.pushState(null, null, document.URL);
+    history.pushState(null, '', document.URL);
   }
 
   componentWillUnmount() {
@@ -32,8 +32,8 @@ export default class Modal extends Component<IModalProps, {}> {
     }
 
     return (
-      <div class={style.self} onClick={this._onOverlayClick}>
-        <div class={style.content} onClick={this._consumeEvent}>
+      <div className={style.self} onClick={this._onOverlayClick}>
+        <div className={style.content} onClick={this._consumeEvent}>
           {children}
         </div>
       </div>
@@ -46,8 +46,8 @@ export default class Modal extends Component<IModalProps, {}> {
     }
   }
 
-  _consumeEvent = (event: MouseEvent) => {
-    event.stopImmediatePropagation();
+  _consumeEvent = (event) => {
+    event.stopPropagation();
   }
 
   _closeOnEsc = (event: KeyboardEvent) => {

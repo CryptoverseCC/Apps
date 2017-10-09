@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 import {
   HashRouter as Router,
   Route,
@@ -7,7 +7,6 @@ import {
 import Home from './pages/Home';
 import Status from './pages/Status';
 import Whitelist from './pages/Whitelist';
-import LinkList from './pages/LinkList';
 
 const App = () => (
   <Router>
@@ -15,7 +14,6 @@ const App = () => (
       <Route exact path="/" component={Home} />
       <Route path="/status" component={Status} />
       <Route path="/whitelist" component={Whitelist} />
-      <Route path="/linklist" component={LinkList} />
     </div>
   </Router>
 );

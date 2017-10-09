@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 
 import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
@@ -13,7 +13,7 @@ const Congratulations = ({ linkId, widgetSettings }) => {
   const goToLinkStatus = () => openLinkexchangeUrl('apps/links/#/status/', { linkId, ...widgetSettings });
 
   return (
-    <div class={style.self}>
+    <div className={style.self}>
       <img src={heartSvg} />
       <h2>Congratulations!</h2>
       <p>Thanks you for sending the link</p>

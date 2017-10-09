@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import Pill from '@userfeeds/apps-components/src/Pill';
 import Paper from '@userfeeds/apps-components/src/Paper';
@@ -28,23 +28,24 @@ interface IDetailsAccordinProps {
 
 export default class DetailsAccordion extends Component<IDetailsAccordinProps, {}> {
 
-  render({ recipientAddress, size, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
-    links, whitelistedLinks, allLinks }: IDetailsAccordinProps) {
+  render() {
+    const { recipientAddress, size, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
+      links, whitelistedLinks, allLinks } = this.props;
 
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         <Paper>
           <Accordion
-            class={style.accordion}
-            title={<p class={style.accordionHeader}>Slots <Pill>{slots}</Pill></p>}
+            className={style.accordion}
+            title={<p className={style.accordionHeader}>Slots <Pill>{slots}</Pill></p>}
           >
             <SimpleLinksList links={links} />
           </Accordion>
         </Paper>
         <Paper>
           <Accordion
-            class={style.accordion}
-            title={<p class={style.accordionHeader}>Whitelist <Pill>{whitelistedLinksCount}</Pill></p>}
+            className={style.accordion}
+            title={<p className={style.accordionHeader}>Whitelist <Pill>{whitelistedLinksCount}</Pill></p>}
           >
             <SimpleLinksList links={whitelistedLinks} />
           </Accordion>
@@ -52,8 +53,8 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
         { !hasWhitelist &&
           <Paper>
             <Accordion
-              class={style.accordion}
-              title={<p class={style.accordionHeader}>Algorithm <Pill>{allLinksCount}</Pill></p>}
+              className={style.accordion}
+              title={<p className={style.accordionHeader}>Algorithm <Pill>{allLinksCount}</Pill></p>}
             >
               <SimpleLinksList links={allLinks} />
             </Accordion>
@@ -62,26 +63,24 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
         <Paper>
           <Accordion
             open
-            class={style.accordion}
-            title={<p class={style.accordionHeader}>Widget Specification</p>}
+            className={style.accordion}
+            title={<p className={style.accordionHeader}>Widget Specification</p>}
           >
-            <div class={style.widgetSpecification}>
+            <div className={style.widgetSpecification}>
               <TextWithLabel label="Size" text={size} />
               <TextWithLabel label="Type" text="Text" />
               <TextWithLabel label="Token">
-                <EthereumLogo class={style.tokenLogo} /> Ether
+                <EthereumLogo className={style.tokenLogo} /> Ether
               </TextWithLabel>
-              <TextWithLabel label="Algorithm">
-                Text
-              </TextWithLabel>
+              <TextWithLabel label="Algorithm" text="Text" />
             </div>
           </Accordion>
         </Paper>
         <Paper>
           <Accordion
             open
-            class={style.accordion}
-            title={<p class={style.accordionHeader}>Userfeed</p>}
+            className={style.accordion}
+            title={<p className={style.accordionHeader}>Userfeed</p>}
           >
             <TextWithLabel label="Userfeed address" text={recipientAddress} />
           </Accordion>

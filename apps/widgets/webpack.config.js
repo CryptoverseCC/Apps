@@ -15,11 +15,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    alias: {
-      'react': 'preact-compat',
-      'react-dom': 'preact-compat',
-      'create-react-class': 'preact-compat/lib/create-react-class'      
-    },
   },
   module: {
     loaders: [{

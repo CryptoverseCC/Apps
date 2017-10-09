@@ -1,19 +1,19 @@
-import { h } from 'preact';
-import * as classnames from 'classnames';
+import React from 'react';
+import classnames from 'classnames';
 
 import * as style from './tooltip.scss';
 
 interface ITooltipProps {
   text?: string;
   children?: JSX.Element;
-  class?: string;
-  style?: string | { [key: string]: number | string };
+  className?: string;
+  style?: React.StyleHTMLAttributes<HTMLDivElement>;
 }
 
-const Tooltip = ({ class: className, style: externalStyle, text, children }: ITooltipProps) => (
-  <div style={externalStyle} class={classnames(style.self, className)}>
+const Tooltip = ({ className, style: externalStyle, text, children }: ITooltipProps) => (
+  <div style={externalStyle} className={classnames(style.self, className)}>
     {children}
-    {text && <div class={style.text}>{text}</div>}
+    {text && <div className={style.text}>{text}</div>}
   </div>
 );
 

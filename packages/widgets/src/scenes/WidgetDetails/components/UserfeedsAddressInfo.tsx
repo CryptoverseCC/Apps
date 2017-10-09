@@ -1,5 +1,5 @@
-import { h } from 'preact';
-import * as QRious from 'qrious';
+import React, { PureComponent } from 'react';
+import QRious from 'qrious';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Paper from '@userfeeds/apps-components/src/Paper';
@@ -20,34 +20,35 @@ const renderQR = (recipientAddress, ref) => {
   });
 };
 
-const UserfeedsAddressInfo = ({ recipientAddress, linksNumber }: IUserfeedsAddressInfoProps) => {
-  const etherscanUrl = `https://etherscan.io/address/${recipientAddress}`;
+export default class UserfeedsAddressInfo extends PureComponent<IUserfeedsAddressInfoProps> {
+  render() {
+    const { recipientAddress, linksNumber } = this.props;
+    const etherscanUrl = `https://etherscan.io/address/${recipientAddress}`;
 
-  return (
-    <div class={style.self}>
-      <h2>Userfeed Address</h2>
-      <div class={style.row}>
-        <Paper style={{ flex: 1, marginRight: '15px' }}>
-          <TextWithLabel label="Total number of links" text={linksNumber} />
-        </Paper>
-        <Paper style={{ flex: 1, marginLeft: '15px' }}>
-          <TextWithLabel label="Etherscan">
-            <a href={etherscanUrl} target="_blank"><Icon name="external-link" /> See it on Etherscan</a>
+    return (
+      <div className={style.self}>
+        <h2>Userfeed Address</h2>
+        <div className={style.row}>
+          <Paper style={{ flex: 1, marginRight: '15px' }}>
+            <TextWithLabel label="Total number of links" text={linksNumber} />
+          </Paper>
+          <Paper style={{ flex: 1, marginLeft: '15px' }}>
+            <TextWithLabel label="Etherscan">
+              <a href={etherscanUrl} target="_blank"><Icon name="external-link" /> See it on Etherscan</a>
+            </TextWithLabel>
+          </Paper>
+        </div>
+        <Paper>
+          <TextWithLabel label="Userfeed address">
+            <div className={style.row}>
+              {recipientAddress}
+              <div className={style.qr}>
+                <canvas className={style.canvas} ref={renderQR.bind(null, recipientAddress)} />
+              </div>
+            </div>
           </TextWithLabel>
         </Paper>
       </div>
-      <Paper>
-        <TextWithLabel label="Userfeed address">
-          <div class={style.row}>
-            {recipientAddress}
-            <div class={style.qr}>
-              <canvas class={style.canvas} ref={renderQR.bind(null, recipientAddress)} />
-            </div>
-          </div>
-        </TextWithLabel>
-      </Paper>
-    </div>
-  );
-};
-
-export default UserfeedsAddressInfo;
+    );
+  }
+}

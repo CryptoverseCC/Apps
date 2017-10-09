@@ -1,6 +1,7 @@
-import { h } from 'preact';
-import * as classnames from 'classnames/bind';
+import React from 'react';
+import classnames from 'classnames/bind';
 
+// ToDo
 import { ILink } from '../types';
 
 import * as style from './link.scss';
@@ -9,24 +10,24 @@ const cx = classnames.bind(style);
 
 interface ILinkProps {
   link: ILink;
-  class?: string;
+  className?: string;
   lines?: number;
-  style?: string | {[key: string]: number | string};
+  style?: React.StyleHTMLAttributes<HTMLDivElement>;
 }
 
 const stopPropagation = (e) => e.stopPropagation();
 
-const Link = ({ class: className, link, lines = 2, style: externalStyle }: ILinkProps) => {
+const Link = ({ className, link, lines = 2, style: externalStyle }: ILinkProps) => {
   if (!(lines === 2 || lines === 8)) {
     throw new Error('Only 2 and 8 lines links are available');
   }
 
   return (
-    <div class={classnames(style.self, className)} style={externalStyle}>
-      <div class={style.title}>{link.title}</div>
-      <div class={cx('summary', { lines2: lines === 2, lines8: lines === 8 })}>{link.summary}</div>
+    <div className={classnames(style.self, className)} style={externalStyle}>
+      <div className={style.title}>{link.title}</div>
+      <div className={cx('summary', { lines2: lines === 2, lines8: lines === 8 })}>{link.summary}</div>
       <a
-        class={style.link}
+        className={style.link}
         target="_blank"
         href={link.target}
         onClick={stopPropagation}

@@ -1,5 +1,4 @@
-import { h, Component } from 'preact';
-// import * as Highlight from 'react-highlight';
+import React, { Component } from 'react';
 import Highlight from './Highlight';
 
 import 'highlight.js/styles/androidstudio.css';

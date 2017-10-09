@@ -8,6 +8,6 @@
     "lerna-bootstrap": "lerna bootstrap --hoist"
   },
   "devDependencies": {
-    "lerna": "^2.1.0"
+    "lerna": "^2.4.0"
   }
 }

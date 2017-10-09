@@ -1,7 +1,7 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
-import * as classnames from 'classnames';
+import classnames from 'classnames';
 
 import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 
@@ -67,12 +67,11 @@ const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & {
-  class: string;
+  className?: string;
   standaloneMode?: boolean;
 };
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
+class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
 
   detailsListCmp: DetailsList;
 
@@ -88,13 +87,13 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
     this.props.loadTokenDetails();
   }
 
-  render(
-    { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount,
-      standaloneMode }: TWidgetDetailsProps,
-    { viewType, mobileOrTablet }: IWidgetDetailsState) {
+  render() {
+    const { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount,
+      standaloneMode } = this.props;
+    const { viewType, mobileOrTablet } = this.state;
 
     return (
-      <div class={classnames(style.self, this.props.class)}>
+      <div className={classnames(style.self, this.props.className)}>
         <WidgetSummary
           openInNewWindowHidden={standaloneMode}
           widgetSettings={widgetSettings}
@@ -117,7 +116,7 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
             />
           </Switch.Case>
           <Switch.Case condition={'desktop'}>
-            <div class={style.details}>
+            <div className={style.details}>
               <SideMenu
                 slots={widgetSettings.slots}
                 whitelistedLinksCount={whitelistedLinksCount}
@@ -178,3 +177,5 @@ export default class WidgetDetails extends Component<TWidgetDetailsProps, IWidge
 
   _onDetailsListRef = (ref) => this.detailsListCmp = ref;
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(WidgetDetails);

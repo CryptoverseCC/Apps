@@ -1,5 +1,5 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import Paper from '@userfeeds/apps-components/src/Paper';
@@ -56,28 +56,30 @@ const DEFAULT_LINK = {
   target: 'http://',
 };
 
-@connect(mapsStateToProps, mapDispatchToProps)
-export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
+class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
 
   state: IAddLinkModalState = {
     step: 'form',
     link: DEFAULT_LINK,
   };
 
-  render({ widgetSettings, web3State }: TAddLinkModalProps, { step, link, linkId }: IAddLinkModalState) {
+  render() {
+    const { widgetSettings, web3State } = this.props;
+    const { step, link, linkId } = this.state;
+
     return (
-      <div class={style.self}>
-        <div class={style.header}>
+      <div className={style.self}>
+        <div className={style.header}>
           <BackButton onClick={this.props.openWidgetDetails} />
           <h2>Create a new link</h2>
         </div>
-        <div class={style.body}>
+        <div className={style.body}>
           <Steps activeStep={step} />
-          <div class={style.content}>
-            <Paper class={style.preview}>
+          <div className={style.content}>
+            <Paper className={style.preview}>
               <Link link={link} />
             </Paper>
-            <Paper class={style.form}>
+            <Paper className={style.form}>
               <Switch expresion={step}>
                 <Switch.Case condition="form">
                   <AddLink
@@ -119,3 +121,5 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
     this.props.openToast('Transation rejected ' + e);
   }
 }
+
+export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);

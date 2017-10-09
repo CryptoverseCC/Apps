@@ -1,6 +1,6 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
-import * as classnames from 'classnames/bind';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import classnames from 'classnames/bind';
 import { returntypeof } from 'react-redux-typescript';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
@@ -76,31 +76,33 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     }
   }
 
-  render({ links, size, fetched }: IBannerProps, { currentLink, optionsOpen }: IBannerState) {
+  render() {
+    const { links, size, fetched } = this.props;
+    const { currentLink, optionsOpen } = this.state;
     if (!fetched) {
       return <div />;
     }
 
     return (
-      <div class={cx(['self', size])} onMouseLeave={this._onInfoLeave}>
-        <div class={cx('options', { open: optionsOpen })}>
+      <div className={cx(['self', size])} onMouseLeave={this._onInfoLeave}>
+        <div className={cx('options', { open: optionsOpen })}>
           <div>
-            <span class={style.probabilityLabel}>Probability: </span>
-            <div class={style.probability}>{currentLink && `${currentLink.probability}%`}</div>
+            <span className={style.probabilityLabel}>Probability: </span>
+            <div className={style.probability}>{currentLink && `${currentLink.probability}%`}</div>
           </div>
-          <div class={style.arrows}>
-            <div class={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="arrow-left" /></div>
-            <div class={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="arrow-right" /></div>
+          <div className={style.arrows}>
+            <div className={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="arrow-left" /></div>
+            <div className={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="arrow-right" /></div>
           </div>
           <Menu />
         </div>
-        <div class={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
+        <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
           <div
-            class={style.info}
+            className={style.info}
             onMouseEnter={this._onInfoEnter}
             onClick={this._onInfoEnter}
           >
-            Sponsored with <EthereumLogo class={style.icon} />
+            Sponsored with <EthereumLogo className={style.icon} />
           </div>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
@@ -117,8 +119,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     );
   }
 
-  _onInfoEnter = (e: MouseEvent) => {
-    e.stopImmediatePropagation();
+  _onInfoEnter = (e) => {
     this.setState({ optionsOpen: true });
   }
 
@@ -157,7 +158,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
       clearTimeout(this._timeout);
     }
 
-    this._timeout = setTimeout(() => {
+    this._timeout = window.setTimeout(() => {
       this.setState({
         currentLink: this._getRandomLink(links),
       }, () => this._setTimeout(this.props.links));

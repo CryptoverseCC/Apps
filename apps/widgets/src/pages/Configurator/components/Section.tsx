@@ -1,16 +1,17 @@
-import { h, FunctionalComponent } from 'preact';
+import React from 'react';
 
 import * as style from './section.scss';
 
 interface ISectionProps {
   header: string;
   description?: string;
+  children: JSX.Element | JSX.Element[];
 }
 
-const Section: FunctionalComponent<ISectionProps> = ({ header, description, children }) => (
-  <div class={style.self}>
-    <div class={style.header}>{header}</div>
-    {description && <div class={style.description}>{description}</div>}
+const Section = ({ header, description, children }: ISectionProps) => (
+  <div className={style.self}>
+    <div className={style.header}>{header}</div>
+    {description && <div className={style.description}>{description}</div>}
     {children}
   </div>
 );

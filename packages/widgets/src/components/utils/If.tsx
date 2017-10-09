@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 
 const If = ({ condition, children }) => {
   if (condition && children.length === 1) {

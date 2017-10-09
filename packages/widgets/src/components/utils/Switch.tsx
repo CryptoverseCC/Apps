@@ -1,4 +1,4 @@
-import { h, Component, FunctionalComponent } from 'preact';
+import React, { Component, Children } from 'react';
 
 interface ISwitchProps {
   expresion: any;
@@ -6,21 +6,27 @@ interface ISwitchProps {
 
 interface ICaseProps {
   condition: any;
+  children: JSX.Element;
 }
+
+// ToDo throw it away?
 
 export default class Switch extends Component<ISwitchProps, {}> {
 
-  static Case: FunctionalComponent<ICaseProps>  = ({ children }) => {
-    if (children && children.length === 1) {
-      return children[0];
+  static Case = ({ children }: ICaseProps) => {
+    if (children && Children.count(children) === 1) {
+      return Children.only(children);
     }
     return <div>{children}</div>;
   }
 
-  render({ expresion, children }) {
-    const child = children.find((c) => c.nodeName === Switch.Case &&
-      c.attributes.condition === expresion);
+  render() {
+    const { expresion, children } = this.props;
 
-    return child;
+    const childToRender = Children
+      .toArray(children)
+      .find((child: React.ReactChild) => typeof child === 'object' && child.props.condition === expresion);
+
+    return childToRender || null;
   }
 }

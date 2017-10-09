@@ -1,4 +1,4 @@
-import { h, Component, FunctionalComponent } from 'preact';
+import React, { Component } from 'react';
 
 import Label from './Label';
 
@@ -8,13 +8,14 @@ interface IOption {
   label: string;
   value: any;
   disabled?: boolean;
-  component?: FunctionalComponent<{ option: IOption }>;
+  // component?: FunctionalComponent<{ option: IOption }>;
+  component: any;
 }
 
 interface IRadioButtonGroupProps {
   name: string;
   value: any;
-  onChange(option: IOption): void;
+  onChange(option): void;
   options: IOption[];
 }
 
@@ -24,9 +25,9 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
     const { name, value, onChange, options } = this.props;
 
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         {options.map((option, index) => (
-          <div class={style.option} key={option.value + index}>
+          <div className={style.option} key={option.value + index}>
             <input
               type="radio"
               id={`${name}control_${index}`}
@@ -36,7 +37,7 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
               checked={option.value === value}
               onChange={onChange}
             />
-            <label for={`${name}control_${index}`}>
+            <label htmlFor={`${name}control_${index}`}>
               {this._renderLabel(option)}
             </label>
           </div>

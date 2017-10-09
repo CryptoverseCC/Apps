@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import Link from '@userfeeds/apps-components/src/Link';
 import Paper from '@userfeeds/apps-components/src/Paper';
@@ -45,7 +45,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   }, {
     name: 'Bids',
     prop: (link: ILink) => (
-      <div class={style.boostCell}>
+      <div className={style.boostCell}>
         {link.group_count || 0}
         <BoostLink
           disabled={this.props.boostDisabled}
@@ -74,12 +74,14 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     }
   }
 
-  render({ label, links }: ILinksListProps, { maxRows }: ILinksListState) {
+  render() {
+    const { label, links } = this.props;
+    const { maxRows } = this.state;
     return (
-      <div class={style.self}>
-        <h2 class={style.label}>{label}</h2>
+      <div className={style.self}>
+        <h2 className={style.label}>{label}</h2>
         <Paper>
-          <table class={style.table}>
+          <table className={style.table}>
             {this._renderHeader()}
             <tbody>
               {links.slice(0, maxRows).map(this._renderRow)}
@@ -93,7 +95,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
 
   _renderHeader = () => {
     return (
-      <thead class={style.tableHeader}>
+      <thead className={style.tableHeader}>
         <tr>
           {this.columns.map(({ name }) => <th>{name}</th>)}
         </tr>
@@ -112,7 +114,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   _renderLoadMore = () => {
     if (this.state.maxRows < this.props.links.length) {
       return (
-        <tr class={style.loadMore} onClick={this._onLoadMore}>
+        <tr className={style.loadMore} onClick={this._onLoadMore}>
           <td colSpan={this.columns.length}>Load More</td>
         </tr>
       );

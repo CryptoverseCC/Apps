@@ -1,10 +1,10 @@
-import { h, FunctionalComponent } from 'preact';
-import * as classnames from 'classnames';
+import React from 'react';
+import classnames from 'classnames';
 
 import * as style from './paper.scss';
 
-const Paper: FunctionalComponent<JSX.HTMLAttributes> = ({ class: className, ...restProps }) => (
-  <div {...restProps} class={classnames(className, style.self)} />
+const Paper = ({ className, ...restProps }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div {...restProps} className={classnames(className, style.self)} />
 );
 
 export default Paper;

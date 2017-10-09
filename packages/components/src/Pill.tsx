@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 
 import * as style from './pill.scss';
 
@@ -8,7 +8,7 @@ const Pill = (props) => {
   }
 
   return (
-    <span class={style.self}>{props.children}</span>
+    <span className={style.self}>{props.children}</span>
   );
 };
 

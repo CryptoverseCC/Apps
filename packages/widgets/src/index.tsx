@@ -1,7 +1,8 @@
 import '@webcomponents/custom-elements';
 
-import { h, render } from 'preact';
-import { Provider } from 'preact-redux';
+import { render } from 'react-dom';
+import React from 'react';
+import { Provider } from 'react-redux';
 
 import getStore from './store';
 import { updateWidgetSettings } from './ducks/widget';

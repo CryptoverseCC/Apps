@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 import hljs from 'highlight.js';
 
 interface IHighlightProps {
@@ -11,7 +11,7 @@ const Highlight = ({ language, code }: IHighlightProps) => {
 
   return (
     <pre>
-      <code class={`hljs ${language}`} dangerouslySetInnerHTML={{ __html: innerHtml }} />
+      <code className={`hljs ${language}`} dangerouslySetInnerHTML={{ __html: innerHtml }} />
     </pre>
   );
 };

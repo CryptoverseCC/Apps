@@ -1,14 +1,14 @@
-import { h } from 'preact';
-import * as classnames from 'classnames';
+import React from 'react';
+import classnames from 'classnames';
 
 import * as style from './loader.scss';
 
 interface ILoaderProps {
-  class?: string;
+  className?: string;
 }
 
-const Loader = ({ class: className}: ILoaderProps) => {
-  return <div class={classnames(style.self, className)} />;
+const Loader = ({ className}: ILoaderProps) => {
+  return <div className={classnames(style.self, className)} />;
 };
 
 export default Loader;

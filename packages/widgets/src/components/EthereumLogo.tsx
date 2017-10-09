@@ -1,9 +1,9 @@
-import { h } from 'preact';
+import React from 'react';
 
 import * as ethereum from '../images/ethereum.png';
 
-const EthereumLogo = ({ class: className }) => (
-  <img class={className} src={ethereum} />
+const EthereumLogo = ({ className }) => (
+  <img className={className} src={ethereum} />
 );
 
 export default EthereumLogo;

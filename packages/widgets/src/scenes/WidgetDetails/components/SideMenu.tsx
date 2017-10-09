@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 
 import Pill from '@userfeeds/apps-components/src/Pill';
 
@@ -17,43 +17,41 @@ interface ISideMenuProps {
 
 const SideMenu = ({ activeItem, onItemClick, hasWhitelist, slots,
   whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
-  const notify = (name: TViewType) => (event: MouseEvent) => {
+  const notify = (name: TViewType) => (event) => {
     onItemClick(name);
-    event.stopImmediatePropagation();
+    event.stopPropagation();
   };
 
   return (
-    <ul class={style.self}>
-      <ul class={style.subMenu}>
-        <li
-          class={activeItem === 'Links.Slots' ? style.active : ''}
-          onClick={notify('Links.Slots')}
-        >
-          Slots <Pill>{slots}</Pill>
-        </li>
-        <li
-          class={activeItem === 'Links.Whitelist' ? style.active : ''}
-          onClick={notify('Links.Whitelist')}
-        >
-          Whitelist <Pill>{whitelistedLinksCount}</Pill>
-        </li>
-        { !hasWhitelist && (
-          <li
-            class={activeItem === 'Links.Algorithm' ? style.active : ''}
-            onClick={notify('Links.Algorithm')}
-          >
-            Algorithm <Pill>{allLinksCount}</Pill>
-          </li>
-        )}
-      </ul>
+    <ul className={style.self}>
       <li
-        class={activeItem === 'Specification' ? style.active : ''}
+        className={activeItem === 'Links.Slots' ? style.active : ''}
+        onClick={notify('Links.Slots')}
+      >
+        Slots <Pill>{slots}</Pill>
+      </li>
+      <li
+        className={activeItem === 'Links.Whitelist' ? style.active : ''}
+        onClick={notify('Links.Whitelist')}
+      >
+        Whitelist <Pill>{whitelistedLinksCount}</Pill>
+      </li>
+      {!hasWhitelist && (
+        <li
+          className={activeItem === 'Links.Algorithm' ? style.active : ''}
+          onClick={notify('Links.Algorithm')}
+        >
+          Algorithm <Pill>{allLinksCount}</Pill>
+        </li>
+      )}
+      <li
+        className={activeItem === 'Specification' ? style.active : ''}
         onClick={notify('Specification')}
       >
         Widget Specification
       </li>
       <li
-        class={activeItem === 'Userfeed' ? style.active : ''}
+        className={activeItem === 'Userfeed' ? style.active : ''}
         onClick={notify('Userfeed')}
       >
         Userfeed

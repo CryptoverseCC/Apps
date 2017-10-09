@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from '@userfeeds/apps-components/src/Button';
@@ -12,13 +12,13 @@ const CreateWidget = ({ widgetSettings }) => {
 
   return (
     <Link
-      class={style.self}
+      className={style.self}
       to={{
         pathname: '/configurator/summary',
         search: `?${searchParams}`,
       }}
     >
-      <Button class={style.button}>
+      <Button className={style.button}>
         Create my widget!
       </Button>
     </Link>

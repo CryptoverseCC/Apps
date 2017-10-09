@@ -5,10 +5,10 @@ const networkMapping = {
   42: 'kovan',
 };
 
-export function getCurrentNetworkName(web3Instance) {
+export function getCurrentNetworkName(web3Instance): Promise<string> {
   return new Promise((resolve, reject) => {
     if (!web3Instance.isConnected()) {
-      return resolve(undefined);
+      return reject('web3 is not connected');
     }
 
     web3Instance.version.getNetwork((error, networkId) => {
@@ -21,10 +21,10 @@ export function getCurrentNetworkName(web3Instance) {
   });
 }
 
-export function getAccounts(web3Instance): Promise<any[]> {
+export function getAccounts(web3Instance): Promise<string[]> {
   return new Promise((resolve, reject) => {
     if (!web3Instance.isConnected()) {
-      return resolve(undefined);
+      return reject('web3 is not connected');
     }
 
     web3Instance.eth.getAccounts((error, accounts = []) => {

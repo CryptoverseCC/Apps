@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import RadioButtonGroup from '@userfeeds/apps-components/src/RadioButtonGroup';
@@ -8,13 +8,13 @@ import Section from '../Section';
 import * as style from './type.scss';
 
 const Soon = () => (
-  <span class={style.soon}>Soon</span>
+  <span className={style.soon}>Soon</span>
 );
 
 const WidgetOptions = ({ option }) => (
-  <div class={style.widgetType}>
+  <div className={style.widgetType}>
     <span>{option.label} {option.disabled && <Soon />}</span>
-    <Icon class={style.typeIcon} name={option.value} />
+    <Icon className={style.typeIcon} name={option.value} />
   </div>
 );
 

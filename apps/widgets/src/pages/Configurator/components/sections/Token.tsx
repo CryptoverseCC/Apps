@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import Input from '@userfeeds/apps-components/src/Input';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
@@ -50,7 +50,9 @@ export default class Token extends Component<ITokenProps, ITokenState> {
     this.state = { token, tokenAddress: props.token };
   }
 
-  render({ network, onNetworkChange, onTokenChange }, { token, tokenAddress }) {
+  render() {
+    const { network, onNetworkChange, onTokenChange } = this.props;
+    const { token, tokenAddress } = this.state;
     const tokensOptions = WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === network)].tokens;
 
     return (

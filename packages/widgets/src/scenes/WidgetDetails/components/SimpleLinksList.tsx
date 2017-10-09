@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import Link from '@userfeeds/apps-components/src/Link';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
@@ -38,9 +38,12 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
     maxRows: 5,
   };
 
-  render({ links }: ISimpleLinksListProps, { maxRows }: ISimpleLinksListState) {
+  render() {
+    const { links } = this.props;
+    const { maxRows } = this.state;
+
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         {links.slice(0, maxRows).map(this._renderRow)}
         {this._renderLoadMore()}
       </div>
@@ -49,9 +52,9 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
 
   _renderRow = (link: ILink, index: number) => {
     return (
-      <div class={style.linkRow}>
+      <div className={style.linkRow}>
         <Link link={link} />
-        <div class={style.linkProperties}>
+        <div className={style.linkProperties}>
           {this.columns.map(({ name, prop }) => (<TextWithLabel label={name} text={prop(link, index)} />))}
         </div>
         <hr />
@@ -62,7 +65,7 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
   _renderLoadMore = () => {
     if (this.state.maxRows < this.props.links.length) {
       return (
-        <div class={style.loadMore} onClick={this._onLoadMore}>
+        <div className={style.loadMore} onClick={this._onLoadMore}>
           <span>Load More</span>
         </div>
       );

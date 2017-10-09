@@ -1,13 +1,14 @@
-import { h, Component, FunctionalComponent } from 'preact';
-import * as classnames from 'classnames';
+import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import TabList from './TabList';
 
 interface ITabsProps {
-  class?: string;
+  className?: string;
   tabListClass?: string;
   selectedTabClass?: string;
-  tabs: { [key: string]: FunctionalComponent<void> };
+  // tabs: { [key: string]: FunctionalComponent<void> };
+  tabs: any;
 }
 
 interface ITabsState {
@@ -26,9 +27,9 @@ export default class Tabs extends Component<ITabsProps, ITabsState> {
 
   render() {
     return (
-      <div class={classnames(this.props.class)}>
+      <div className={classnames(this.props.className)}>
         <TabList
-          class={this.props.tabListClass}
+          className={this.props.tabListClass}
           selectedTabClass={this.props.selectedTabClass}
           selectedTab={this.state.activeTab}
           tabsNames={Object.keys(this.props.tabs)}

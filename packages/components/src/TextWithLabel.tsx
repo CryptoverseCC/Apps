@@ -1,21 +1,22 @@
-import { h, FunctionalComponent } from 'preact';
-import * as classnames from 'classnames';
+import React from 'react';
+import classnames from 'classnames';
 
 import * as style from './textWithLabel.scss';
 
 import Label from './Label';
 
 interface ITextWithLabelProps {
-  label: string |JSX.Element;
+  label: string | JSX.Element;
   text?: string | number;
-  class?: string;
+  className?: string;
+  children?: JSX.Element | string;
 }
 
-const TextWithLabel: FunctionalComponent<ITextWithLabelProps> = ({ label, text, class: className, children }) => {
+const TextWithLabel = ({ label, text, className, children }: ITextWithLabelProps) => {
   return (
-    <div class={classnames(style.self, className)}>
+    <div className={classnames(style.self, className)}>
       <Label>{label}</Label>
-      <p class={style.text}>{text || children}</p>
+      <p className={style.text}>{text || children}</p>
     </div>
   );
 };

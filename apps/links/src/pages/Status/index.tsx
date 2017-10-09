@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
 import web3 from '@userfeeds/utils/src/web3';
 
@@ -12,7 +12,7 @@ import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import Steps from './components/Steps';
 
-import * as style from './Status.scss';
+import * as style from './status.scss';
 
 const heartSvg = require('../../../images/heart.svg');
 
@@ -50,6 +50,7 @@ interface IStatusState {
   mobileOrTablet: boolean;
   link?: any;
   linkId: string;
+  asset: string;
   recipientAddress: string;
   algorithm: string;
   whitelist: string;
@@ -112,41 +113,38 @@ export default class Status extends Component<IStatusProps, IStatusState> {
 
     const { mobileOrTablet, linkId, asset, recipientAddress, link, blockchain, location } = this.state;
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         <div>
-          <p class={style.previewTitle}>Link preview:</p>
-          <Paper class={style.preview}>
+          <p className={style.previewTitle}>Link preview:</p>
+          <Paper className={style.preview}>
             {link && <Link link={link} />}
-            {!link && <div class={style.loader}><Loader /></div>}
+            {!link && <div className={style.loader}><Loader /></div>}
           </Paper>
         </div>
-        <Paper class={style.content}>
-          <div class={style.introduction}>
+        <Paper className={style.content}>
+          <div className={style.introduction}>
             <img src={heartSvg} />
             <h2>Your link has been successfully submitted!</h2>
             <p>In order to track its progress please save the link</p>
           </div>
-          <div class={style.info}>
-            <TextWithLabel class={style.label} label="Link status:">
-              <div class={style.linkLabel}>
-                <a class={style.link} href={window.location.href}>{window.location.href}</a>
+          <div className={style.info}>
+            <TextWithLabel className={style.label} label="Link status:">
+              <div className={style.linkLabel}>
+                <a className={style.link} href={window.location.href}>{window.location.href}</a>
                 {!mobileOrTablet && <Button
                   secondary
-                  class={style.addBookmark}
+                  className={style.addBookmark}
                   onClick={this._bookmarkIt}
                 >
                   Add to bookmarks
                 </Button>}
               </div>
             </TextWithLabel>
-            <TextWithLabel class={style.label} label="Widget location:">
+            <TextWithLabel className={style.label} label="Widget location:">
               <a href={location}>{location}</a>
             </TextWithLabel>
           </div>
           <Steps
-            linkId={linkId}
-            asset={asset}
-            recipientAddress={recipientAddress}
             link={link}
             blockchainState={blockchain}
           />

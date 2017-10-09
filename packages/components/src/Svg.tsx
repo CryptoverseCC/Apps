@@ -1,15 +1,15 @@
-import { h, FunctionalComponent } from 'preact';
+import React from 'react';
 
 const getSvgContentRegxp = /<svg[^>]*>(.*)<\/svg>/;
 
 interface ISvgProps {
-  class?: string;
+  className?: string;
   svg: string;
   size: number | string;
   viewBox: string;
 }
 
-const Svg = ({ svg, size, viewBox, class: className }: ISvgProps) => {
+const Svg = ({ svg, size, viewBox, className }: ISvgProps) => {
   let svgContent;
   const regexpResult = getSvgContentRegxp.exec(svg);
   if (regexpResult) {
@@ -18,9 +18,8 @@ const Svg = ({ svg, size, viewBox, class: className }: ISvgProps) => {
 
   return (
     <svg
-      class={className}
+      className={className}
       style={{ width: size }}
-      alt={name}
       dangerouslySetInnerHTML={{ __html: svgContent }}
       viewBox={viewBox}
       xmlns="http://www.w3.org/2000/svg"

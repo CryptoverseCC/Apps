@@ -1,5 +1,5 @@
-import { h } from 'preact';
-import * as classnames from 'classnames';
+import React from 'react';
+import classnames from 'classnames';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Button from '@userfeeds/apps-components/src/Button';
@@ -25,45 +25,45 @@ interface IWidgetSummaryProps {
 
 const WidgetSummary = ({ web3Enabled, widgetSettings, onAddClick, onOpenInSeparateWindow,
   openInNewWindowHidden }: IWidgetSummaryProps) => (
-  <div class={style.self}>
-    <div class={style.header}>
+  <div className={style.self}>
+    <div className={style.header}>
       <div>
-        <div class={style.title}>
-          <EthereumLogo class={style.logo} />
+        <div className={style.title}>
+          <EthereumLogo className={style.logo} />
           <div>
             <h2>{widgetSettings.title}</h2>
             <p>{widgetSettings.description}</p>
           </div>
-          {!openInNewWindowHidden && <button onClick={onOpenInSeparateWindow} class={style.openInNewWindow}>
+          {!openInNewWindowHidden && <button onClick={onOpenInSeparateWindow} className={style.openInNewWindow}>
             <Icon name="external-link" />
           </button>}
         </div>
       </div>
-      <Tooltip class={style.addButtonContainer} text={web3Enabled.reason}>
-        <Button class={style.addButton} disabled={!web3Enabled.enabled} onClick={onAddClick}>
+      <Tooltip className={style.addButtonContainer} text={web3Enabled.reason}>
+        <Button className={style.addButton} disabled={!web3Enabled.enabled} onClick={onAddClick}>
           ⊕ Add New Link
         </Button>
       </Tooltip>
     </div>
-    <div class={style.boxes}>
+    <div className={style.boxes}>
       <TextWithLabel
-        class={style.box}
+        className={style.box}
         label={<span><Icon name="eye" /> Impressions per day</span>}
         text={widgetSettings.impression}
       />
       <TextWithLabel
-        class={style.box}
+        className={style.box}
         label={<span><Icon name="link-intact" /> Widget location</span>}
       >
         <a href={widgetSettings.location}>{widgetSettings.location}</a>
       </TextWithLabel>
       <TextWithLabel
-        class={style.box}
+        className={style.box}
         label={<span><Icon name="envelope-open" /> Contact</span>}
         text={widgetSettings.contactMethod || '-'}
       />
       <TextWithLabel
-        class={style.box}
+        className={style.box}
         label={<span><Icon name="calendar" /> Valid till</span>}
         text={widgetSettings.tillDate || '-'}
       />

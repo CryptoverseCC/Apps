@@ -1,14 +1,14 @@
-import { h, Component } from 'preact';
-
-import core from '@userfeeds/core';
-
+import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
+
+import core from '@userfeeds/core/src';
+import web3 from '@userfeeds/utils/src/web3';
 
 import Input from '@userfeeds/apps-components/src/Input';
 import Paper from '@userfeeds/apps-components/src/Paper';
-import AdsList from '@userfeeds/apps-components/src/AdsList';
+import LinksList from './components/LinksList';
 
-import * as style from './Whitelist.scss';
+import * as style from './whitelist.scss';
 
 interface IWhitelistProps {
   location: any;
@@ -54,8 +54,8 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
 
   render() {
     return (
-      <div class={style.self}>
-        <Paper class={style.paper}>
+      <div className={style.self}>
+        <Paper className={style.paper}>
           <Input
             placeholder="Asset"
             value={this.state.asset}
@@ -74,7 +74,7 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
             onInput={this._onChange('whitelist')}
             disabled={this.state.whitelistFromParams}
           />
-          <AdsList ads={this.state.links} onItemClick={this._onLinkClick} />
+          <LinksList links={this.state.links} onItemClick={this._onLinkClick} />
         </Paper>
       </div>
     );
@@ -119,7 +119,7 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
     const claim = {
       claim: { target: link.id },
     };
-    
+
     core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
   }
 }

@@ -1,16 +1,16 @@
-import { h } from 'preact';
-import * as classnames from 'classnames/bind';
+import React from 'react';
+import classnames from 'classnames/bind';
 
 import * as style from './button.scss';
 
 const cx = classnames.bind(style);
 
-type TButtonProps = JSX.HTMLAttributes & {
+type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   secondary?: boolean;
 };
 
-const Button = ({ class: className, secondary = false, ...restProps }: TButtonProps) => (
-  <button class={cx(style.self, className, { primary: !secondary, secondary })} {...restProps} />
+const Button = ({ className, secondary = false, ...restProps }: TButtonProps) => (
+  <button className={cx(style.self, className, { primary: !secondary, secondary })} {...restProps} />
 );
 
 export default Button;

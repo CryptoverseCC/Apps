@@ -1,6 +1,6 @@
-import { h, Component } from 'preact';
+import React, { Component } from 'react';
 
-import core from '@userfeeds/core';
+import core from '@userfeeds/core/src';
 import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Loader from '@userfeeds/apps-components/src/Loader';
@@ -22,7 +22,6 @@ interface IAddLinkProps {
     enabled: boolean;
     reason?: string;
   };
-  loadTokenDetails: any;
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: ILink) => void;
@@ -78,12 +77,12 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     errors: {},
   };
 
-  render(
-    { web3State }: IAddLinkProps,
-    { posting, title, summary, target, value, unlimitedApproval, errors }: IAddLinkState,
-  ) {
+  render() {
+    const { web3State } = this.props;
+    const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
+
     return (
-      <div class={style.self}>
+      <div className={style.self}>
         <Input
           name="title"
           placeholder="Title"
@@ -130,7 +129,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
             onChange={this._onUnlimitedApprovalChange}
           />,
         ]}
-        <div class={style.sendButton}>
+        <div className={style.sendButton}>
           {posting ? (
             <Loader />
           ) : (
@@ -157,7 +156,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       },
       () => {
         if (this.props.onChange) {
-          this.props.onChange(this.state);
+          this.props.onChange(this.state as ILink); // ToDo
         }
       },
     );

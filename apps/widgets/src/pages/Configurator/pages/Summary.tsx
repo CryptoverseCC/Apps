@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Tabs from '@userfeeds/apps-components/src/Tabs';
 
@@ -15,9 +15,9 @@ const Summary = (props) => {
   const widgetSettings = Array.from(params.entries()).reduce((acc, [k, v]) => ({...acc, [k]: v}), {});
 
   return (
-    <div class={style.self}>
+    <div className={style.self}>
       <Link
-        class={style.back}
+        className={style.back}
         to={{
           pathname: '/configurator',
           search: props.location.search,
@@ -25,13 +25,13 @@ const Summary = (props) => {
       >
         <Icon name="arrow-circle-left" /> Go Back
       </Link>
-      <div class={style.congratulations}>
+      <div className={style.congratulations}>
         <img src={heartSvg} />
         <h2>Congratulactions!</h2>
         <span>Your widget is ready to use</span>
       </div>
       <Tabs
-        class={style.tabs}
+        className={style.tabs}
         tabListClass={style.tabList}
         selectedTabClass={style.selectedTab}
         tabs={{

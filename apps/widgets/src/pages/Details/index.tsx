@@ -1,5 +1,5 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import { fetchLinks } from '@linkexchange/widgets/src/ducks/links';
@@ -17,11 +17,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const Dispatch2Props = returntypeof(mapDispatchToProps);
-
 type TDetailsProps = typeof Dispatch2Props;
 
-@connect(null, mapDispatchToProps)
-export default class Details extends Component<TDetailsProps, void> {
+class Details extends Component<TDetailsProps, {}> {
 
   componentDidMount() {
     this.props.fetchLinks();
@@ -30,11 +28,13 @@ export default class Details extends Component<TDetailsProps, void> {
 
   render() {
     return (
-      <div class={style.self}>
-        <WidgetDetails standaloneMode class={style.details} />
+      <div className={style.self}>
+        <WidgetDetails standaloneMode className={style.details} />
         <RootModal />
         <RootToast />
       </div>
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(Details);
