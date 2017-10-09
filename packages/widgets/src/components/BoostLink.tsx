@@ -61,11 +61,17 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     return (
       <div ref={this._onButtonRef} className={style.self}>
         <Tooltip text={disabledReason}>
-          <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>Boost</Button>
+          <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>
+            Boost
+          </Button>
         </Tooltip>
         <If condition={visible}>
           <div className={style.overlay} onClick={this._onOverlayClick} />
-          <div ref={this._onFormRef} className={style.form} style={{ top: formTop, left: formLeft, opacity: formOpacity }}>
+          <div
+            ref={this._onFormRef}
+            className={style.form}
+            style={{ top: formTop, left: formLeft, opacity: formOpacity }}
+          >
             <div className={style.inputRow}>
               <Input
                 placeholder="Value"

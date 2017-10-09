@@ -11,7 +11,7 @@ interface IDropdownProps {
   onChange(value: any): void;
   options: any;
   style?: React.StyleHTMLAttributes<HTMLDivElement>;
-};
+}
 
 const Dropdown = ({ disabled, placeholder, value, onChange, options, ...restProps }: IDropdownProps) => (
   <Select

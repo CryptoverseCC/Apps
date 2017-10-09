@@ -15,7 +15,8 @@
     "no-var-requires": false,
     "no-shadowed-variable": false,
     "member-ordering": [false],
-    "no-console": [true, "log", "error"]
+    "no-console": [true, "log", "error"],
+    "max-classes-per-file": [true, 2]
   },
   "rulesDirectory": []
 }

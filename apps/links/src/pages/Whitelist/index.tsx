@@ -119,7 +119,7 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
     const claim = {
       claim: { target: link.id },
     };
-    
+
     core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
   }
 }

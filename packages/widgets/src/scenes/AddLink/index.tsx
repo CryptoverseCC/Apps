@@ -45,9 +45,9 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props;
 
 interface IAddLinkModalState {
-  // step: 'form' | 'congratulations';
-  // link: ILink;
-  // linkId?: string;
+  step: 'form' | 'congratulations';
+  link: ILink;
+  linkId?: string;
 }
 
 const DEFAULT_LINK = {

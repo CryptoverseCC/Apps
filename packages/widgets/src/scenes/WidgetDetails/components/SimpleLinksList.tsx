@@ -41,7 +41,7 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
   render() {
     const { links } = this.props;
     const { maxRows } = this.state;
-    
+
     return (
       <div className={style.self}>
         {links.slice(0, maxRows).map(this._renderRow)}

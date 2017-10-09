@@ -27,7 +27,6 @@ type ITokenDetailsProps = typeof State2Props & typeof Dispatch2Props & {
   render: any;
 };
 
-
 export class TokenDetailsProvider extends Component<ITokenDetailsProps, {}> {
   componentDidMount() {
     this.props.loadTokenDetails();

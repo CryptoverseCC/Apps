@@ -15,8 +15,6 @@ if (process.env.NODE_ENV !== 'development') {
   console.info(`Loaded @linkexchange/widgets@${VERSION}`);
 }
 
-console.log(`.${style.root}`);
-
 class LinkexchangeLink extends HTMLElement {
 
   static get observedAttributes() {
