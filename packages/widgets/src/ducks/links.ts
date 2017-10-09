@@ -18,10 +18,12 @@ export const fetchLinksActions = acf.async<
   >('FETCH_LINKS');
 
 export const fetchLinks = () => async (dispatch, getState: () => IRootState) => {
-  const { widget: { recipientAddress, asset, algorithm, whitelist } } = getState();
+  const { widget:
+    { apiUrl = 'https://api.userfeeds.io', recipientAddress, asset, algorithm, whitelist },
+  } = getState();
   dispatch(fetchLinksActions.started(undefined));
 
-  const baseURL = 'https://api.userfeeds.io/ranking';
+  const baseURL = `${apiUrl}/ranking`;
   const queryParams = whitelist ? `?whitelist=${asset}:${whitelist}` : '';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }]: [{ items: ILink[] }, { items: ILink[] }]  =

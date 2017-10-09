@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'development') {
 class LinkexchangeLink extends HTMLElement {
 
   static get observedAttributes() {
-    return ['recipient-address', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
+    return ['api-url', 'recipient-address', 'asset', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
   }
 
   instance: Element;
@@ -56,6 +56,7 @@ class LinkexchangeLink extends HTMLElement {
   }
 
   _argsToState() {
+    const apiUrl = this.getAttribute('api-url') || 'https://api.userfeeds.io';
     const size = this.getAttribute('size') || 'rectangle';
     const timeslot = this.getAttribute('timeslot') || 5;
     const recipientAddress = this.getAttribute('recipient-address');
@@ -71,6 +72,7 @@ class LinkexchangeLink extends HTMLElement {
     const tillDate = this.getAttribute('till-date');
 
     return {
+      apiUrl,
       algorithm,
       recipientAddress,
       asset,

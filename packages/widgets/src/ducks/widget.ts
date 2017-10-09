@@ -59,6 +59,7 @@ export interface ITokenDetailsState {
 }
 
 export interface IWidgetState {
+  apiUrl: string;
   recipientAddress: string;
   asset: string;
   algorithm: string;
