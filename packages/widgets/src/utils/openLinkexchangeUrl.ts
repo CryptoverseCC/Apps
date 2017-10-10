@@ -5,8 +5,7 @@ type TExtendedWidgetState = IWidgetState & {
   linkId?: string;
 };
 
-// ToDo fix arguments type
-export const openLinkexchangeUrl = (path, widgetSettings: TExtendedWidgetState) => {
+export const openLinkexchangeUrl = (path: string, widgetSettings: TExtendedWidgetState) => {
   const baseUrl = 'https://linkexchange.io/';
 
   const queryString = qs.stringify({
