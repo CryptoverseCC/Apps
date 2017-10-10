@@ -7,7 +7,7 @@
 }
 
 .Header {
-  color: #A6AEB8;
+  color: #a6aeb8;
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
@@ -50,6 +50,7 @@
   margin-top: 5px;
 }
 
-.Description + .InputGroup {
+.Description + .InputGroup,
+.Header + .InputGroup {
   margin-top: -10px;
 }
