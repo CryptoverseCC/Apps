@@ -97,16 +97,16 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     return (
       <thead className={style.tableHeader}>
         <tr>
-          {this.columns.map(({ name }) => <th>{name}</th>)}
+          {this.columns.map(({ name }) => <th key={name}>{name}</th>)}
         </tr>
       </thead>
     );
   }
 
-  _renderRow = (link: ILink, index) => {
+  _renderRow = (link: ILink, index: number) => {
     return (
-      <tr>
-        {this.columns.map(({ prop }) => <td valign="top">{prop(link, index)}</td>)}
+      <tr key={link.id}>
+        {this.columns.map(({ prop, name }) => <td key={`${name}_${link.id}`}>{prop(link, index)}</td>)}
       </tr>
     );
   }
