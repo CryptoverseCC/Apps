@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@userfeeds/apps-components",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/types": "0.0.1",
+    "@userfeeds/types": "^0.0.2",
     "classnames": "^2.2.5",
     "highlight.js": "^9.11.0",
     "open-iconic": "^1.1.1",
