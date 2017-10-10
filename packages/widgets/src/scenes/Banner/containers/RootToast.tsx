@@ -22,7 +22,9 @@ type IRootToastProps = typeof State2Props & typeof Dispatch2Props;
 
 const RootToast = ({ toast, closeToast }: IRootToastProps) => (
   <div className={style.self}>
-    {toast.map(({ message, type }) => (<Toast message={message} type={type} onClose={closeToast} />))}
+    {toast.map(({ message, type }, index) => (
+      <Toast key={`${message}_${index}`} message={message} type={type} onClose={closeToast} />
+    ))}
   </div>
 );
 
