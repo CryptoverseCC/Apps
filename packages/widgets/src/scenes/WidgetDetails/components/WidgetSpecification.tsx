@@ -3,14 +3,14 @@ import React, { PureComponent } from 'react';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
-import { TWidgetSize } from '../../../types';
+import { EWidgetSize } from '../../../types';
 
 import EthereumLogo from '../../../components/EthereumLogo';
 
 import * as style from './widgetSpecification.scss';
 
 interface IWidgetSpecificationProps {
-  size: TWidgetSize;
+  size: EWidgetSize;
   algorithm: string;
   ref?(ref: any): void;
 }

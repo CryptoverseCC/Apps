@@ -11,7 +11,7 @@ import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 import { ILink } from '@userfeeds/types/link';
 
 import { IRootState } from '../../ducks';
-import { TWidgetSize } from '../../types';
+import { EWidgetSize } from '../../types';
 
 import { openToast, TToastType } from '../../ducks/toast';
 import { modalActions } from '../../ducks/modal';

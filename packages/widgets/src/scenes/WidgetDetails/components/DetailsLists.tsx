@@ -4,7 +4,7 @@ import * as throttle from 'lodash/throttle';
 
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
-import { TWidgetSize } from '../../../types';
+import { EWidgetSize } from '../../../types';
 import { TViewType } from '../';
 
 import LinksList from './LinksList';
@@ -23,7 +23,7 @@ interface IDetailsListsinkProps {
   recipientAddress: string;
   algorithm: string;
   hasWhitelist: boolean;
-  size: TWidgetSize;
+  size: EWidgetSize;
   links: ILink[];
   whitelistedLinks: IRemoteLink[];
   allLinks: IRemoteLink[];
@@ -124,7 +124,7 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
 
     const visibleSections = Object.entries(this.componentsRefs)
       .filter(([, ref]) => {
-        const node = findDOMNode(ref);
+        const node = findDOMNode(ref) as HTMLElement;
         const bounds = {
           top: node.offsetTop,
           bottom: node.offsetTop + node.offsetHeight,
@@ -134,7 +134,7 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
       })
       .map(([name]) => name);
 
-    const closedView = visibleSections[0];
+    const closedView = visibleSections[0] as TViewType;
     this.props.scrolledTo(closedView);
   }, 100, { leading: false });
 }

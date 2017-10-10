@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 import Link from '@userfeeds/apps-components/src/Link';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
-import { ILink } from '@userfeeds/types/link';
+import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
 import web3 from '../../../utils/web3';
 
 import * as style from './simpleLinksList.scss';
 
 interface ISimpleLinksListProps {
-  links: ILink[];
+  links: ILink[] | IRemoteLink[];
 }
 
 interface ISimpleLinksListState {

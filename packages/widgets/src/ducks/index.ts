@@ -20,7 +20,7 @@ export { IModalState } from './modal';
 export { IWeb3State } from './web3';
 export { TToastState } from './toast';
 
-export default combineReducers({
+export default combineReducers<IRootState>({
   links,
   widget,
   modal,

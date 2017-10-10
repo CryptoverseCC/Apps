@@ -6,7 +6,7 @@ import Accordion from '@userfeeds/apps-components/src/Accordion';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
-import { TWidgetSize } from '../../../types';
+import { EWidgetSize } from '../../../types';
 
 import EthereumLogo from '../../../components/EthereumLogo';
 
@@ -17,7 +17,7 @@ import * as style from './detailsAccordion.scss';
 
 interface IDetailsAccordinProps {
   recipientAddress: string;
-  size: TWidgetSize;
+  size: EWidgetSize;
   slots: number;
   whitelistedLinksCount: number;
   allLinksCount: number;

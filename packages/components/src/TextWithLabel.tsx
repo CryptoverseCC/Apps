@@ -9,7 +9,7 @@ interface ITextWithLabelProps {
   label: string | JSX.Element;
   text?: string | number;
   className?: string;
-  children?: JSX.Element | string;
+  children?: string | JSX.Element | Array<(string | JSX.Element)>;
 }
 
 const TextWithLabel = ({ label, text, className, children }: ITextWithLabelProps) => {

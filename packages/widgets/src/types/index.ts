@@ -1,2 +1,5 @@
 
-export type TWidgetSize = 'rectangle' | 'leaderboard';
+export enum EWidgetSize {
+  rectangle = 'rectangle',
+  leaderboard = 'leaderboard',
+}

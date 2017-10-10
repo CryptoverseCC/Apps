@@ -105,7 +105,7 @@ class Banner extends Component<IBannerProps, IBannerState> {
           </div>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
-              <Link link={currentLink} lines={size === 'rectangle' ? 8 : 2} />
+              {currentLink && <Link link={currentLink} lines={size === 'rectangle' ? 8 : 2} />}
             </Switch.Case>
             <Switch.Case condition={false}>
               <Label>No ads available</Label>
@@ -135,21 +135,25 @@ class Banner extends Component<IBannerProps, IBannerState> {
   _onPrevClick = () => {
     const { links } = this.props;
     const { currentLink } = this.state;
-    const currentIndex = links.indexOf(currentLink);
+    if (currentLink) {
+      const currentIndex = links.indexOf(currentLink);
 
-    this.setState({
-      currentLink: links[currentIndex - 1 < 0 ? links.length - 1 : currentIndex - 1],
-    }, () => this._setTimeout(this.props.links));
+      this.setState({
+        currentLink: links[currentIndex - 1 < 0 ? links.length - 1 : currentIndex - 1],
+      }, () => this._setTimeout(this.props.links));
+    }
   }
 
   _onNextClick = () => {
     const { links } = this.props;
     const { currentLink } = this.state;
-    const currentIndex = links.indexOf(currentLink);
+    if (currentLink) {
+      const currentIndex = links.indexOf(currentLink);
 
-    this.setState({
-      currentLink: links[currentIndex + 1 >= links.length ? 0 : currentIndex + 1],
-    }, () => this._setTimeout(this.props.links));
+      this.setState({
+        currentLink: links[currentIndex + 1 >= links.length ? 0 : currentIndex + 1],
+      }, () => this._setTimeout(this.props.links));
+    }
   }
 
   _setTimeout(links) {

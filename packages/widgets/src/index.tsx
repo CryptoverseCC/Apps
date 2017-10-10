@@ -2,9 +2,12 @@ import '@webcomponents/custom-elements';
 
 import { render } from 'react-dom';
 import React from 'react';
+import { Store } from 'redux';
 import { Provider } from 'react-redux';
 
+import { EWidgetSize } from './types';
 import getStore from './store';
+import { IRootState } from './ducks';
 import { updateWidgetSettings } from './ducks/widget';
 
 import Banner from './scenes/Banner';
@@ -21,8 +24,7 @@ class LinkexchangeLink extends HTMLElement {
     return ['api-url', 'recipient-address', 'asset', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
   }
 
-  instance: Element;
-  storeInstance: { dispatch(any): void; };
+  storeInstance: Store<IRootState>;
 
   connectedCallback() {
     this._renderComponent();
@@ -41,7 +43,7 @@ class LinkexchangeLink extends HTMLElement {
       location: window.location.href,
     });
 
-    this.instance = render((
+    render((
       <Provider store={this.storeInstance}>
         <Banner />
       </Provider>), this.querySelector(`.${style.root}`));
@@ -57,19 +59,21 @@ class LinkexchangeLink extends HTMLElement {
 
   _argsToState() {
     const apiUrl = this.getAttribute('api-url') || 'https://api.userfeeds.io';
-    const size = this.getAttribute('size') || 'rectangle';
-    const timeslot = this.getAttribute('timeslot') || 5;
-    const recipientAddress = this.getAttribute('recipient-address');
-    const whitelist = this.getAttribute('whitelist');
-    const asset = this.getAttribute('asset');
-    const slots = this.getAttribute('slots') || 10;
-    const algorithm = this.getAttribute('algorithm');
-    const contactMethod = this.getAttribute('contact-method');
-    const publisherNote = this.getAttribute('publisher-note');
-    const title = this.getAttribute('widget-title');
-    const description = this.getAttribute('description');
-    const impression = this.getAttribute('impression');
-    const tillDate = this.getAttribute('till-date');
+    const size = this.getAttribute('size') === 'rectangle'
+      ? EWidgetSize.rectangle
+      : EWidgetSize.leaderboard;
+    const timeslot = parseInt(this.getAttribute('timeslot') || '5', 10);
+    const recipientAddress = this.getAttribute('recipient-address') || '';
+    const whitelist = this.getAttribute('whitelist') || undefined;
+    const asset = this.getAttribute('asset') || 'rinkeby';
+    const slots = parseInt(this.getAttribute('slots') || '10', 10);
+    const algorithm = this.getAttribute('algorithm') || '';
+    const contactMethod = this.getAttribute('contact-method') || undefined;
+    const publisherNote = this.getAttribute('publisher-note') || undefined;
+    const title = this.getAttribute('widget-title') || undefined;
+    const description = this.getAttribute('description') || undefined;
+    const impression = this.getAttribute('impression') || undefined;
+    const tillDate = this.getAttribute('till-date') || undefined;
 
     return {
       apiUrl,

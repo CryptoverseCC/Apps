@@ -6,7 +6,7 @@ interface ISwitchProps {
 
 interface ICaseProps {
   condition: any;
-  children: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
 }
 
 // ToDo throw it away?

@@ -11,7 +11,7 @@ interface ILinkProps {
   link: IBaseLink;
   className?: string;
   lines?: number;
-  style?: React.StyleHTMLAttributes<HTMLDivElement>;
+  style?: React.CSSProperties;
 }
 
 const stopPropagation = (e) => e.stopPropagation();
