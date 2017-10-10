@@ -5,7 +5,7 @@
       command: /apps/release.sh
 
 - type: serial
-  exclude: master
+  exclude: (master|\d+\.\d+\.\d+)
   steps:
     - service: apps
       command: echo 'dumb script'
