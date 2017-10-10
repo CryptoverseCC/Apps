@@ -4,7 +4,11 @@
   .paper {
     margin: 20px auto;
     min-width: 400px;
-    max-width:600px;
+    max-width:660px;
     padding: 30px 50px;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 }

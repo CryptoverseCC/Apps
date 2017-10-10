@@ -1,0 +1,50 @@
+.Radio {
+  position: relative;
+  padding: 15px 10px;
+  border: 1px solid #CCD0DC;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #657092;
+
+  &.checked {
+    border: 1px solid #263FFF;
+    color: #263FFF;
+
+    .FakeInput {
+      border-color: #263FFF;
+      opacity: 1;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 18px;
+        height: 18px;
+        background-color: #263FFF;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px 0 rgba(50,93,255,0.25);
+      }
+    }
+  }
+}
+
+.Input {
+  position: absolute;
+  left: -10000px;
+}
+
+.FakeInput {
+  border-radius: 50%;
+  border: 1px solid #CCD0DC;
+  background-color: #F2F2F2;
+  opacity: 0.5;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  position: relative;
+}

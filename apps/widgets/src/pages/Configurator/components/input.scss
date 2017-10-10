@@ -1,0 +1,27 @@
+.Input {
+  padding: 15px 20px;
+  line-height: 1.5em;
+  font-size: 14px;
+  background-color: #F5F7FA;
+  border: 1px solid #D9E0E7;
+  border-radius: 5px;
+  color: #657092;
+
+  &:focus {
+    border-color: #263FFF;
+    outline: none;
+  }
+
+  &.invalid {
+    border-color: red;
+  }
+
+  & + .Error {
+    margin-top: 5px;
+  }
+}
+
+.Error {
+  color: red;
+}
+
