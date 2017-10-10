@@ -111,7 +111,6 @@ export default class AllLinks extends Component<IAllLinkProps, {}> {
   }
 
   // ToDo rewrite!!
-  // _onScroll = throttle((event) => {
   _onScroll = (event) => {
     event.persist();
     this._onScrollThrottled(event.currentTarget);

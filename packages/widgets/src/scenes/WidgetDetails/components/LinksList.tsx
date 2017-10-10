@@ -15,6 +15,7 @@ import * as style from './linksList.scss';
 interface ILinksListProps {
   label: string;
   links: ILink[];
+  asset: string;
   recipientAddress: string;
   boostDisabled: boolean;
   boostDisabledReason?: string;
