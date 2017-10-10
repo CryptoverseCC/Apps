@@ -88,7 +88,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           value={title}
           errorMessage={errors.title}
           onBlur={this._onInput}
-          onInput={this._onInput}
+          onChange={this._onInput}
         />
         <Input
           placeholder="Summary"
@@ -96,7 +96,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           value={summary}
           errorMessage={errors.summary}
           onBlur={this._onInput}
-          onInput={this._onInput}
+          onChange={this._onInput}
         />
         <Input
           placeholder="URL"
@@ -104,7 +104,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           value={target}
           errorMessage={errors.target}
           onBlur={this._onInput}
-          onInput={this._onInput}
+          onChange={this._onInput}
         />
         <Input
           placeholder="Value"
@@ -112,7 +112,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           name="value"
           errorMessage={errors.value}
           onBlur={this._onInput}
-          onInput={this._onInput}
+          onChange={this._onInput}
         />
         {this._getTokenAddress() && [
           <TokenDetailsProvider

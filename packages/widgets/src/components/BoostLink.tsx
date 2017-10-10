@@ -75,7 +75,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               <Input
                 placeholder="Value"
                 value={value}
-                onInput={this._onValueChange}
+                onChange={this._onValueChange}
                 errorMessage={validationError}
               />
               <p className={style.equalSign}>=</p>

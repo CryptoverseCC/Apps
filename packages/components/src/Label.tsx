@@ -2,12 +2,10 @@ import React from 'react';
 
 import * as style from './label.scss';
 
-const Label = (props) => {
-  if (props && props.children) {
-    return <p className={style.self}>{props.children}</p>;
-  }
+interface ILabelProps {
+  children?: string | JSX.Element;
+}
 
-  return <p className={style.self} />;
-};
+const Label = (props: ILabelProps) => <p className={style.self}>{props.children}</p>;
 
 export default Label;

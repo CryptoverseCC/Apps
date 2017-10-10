@@ -16,7 +16,7 @@ const TextWithLabel = ({ label, text, className, children }: ITextWithLabelProps
   return (
     <div className={classnames(style.self, className)}>
       <Label>{label}</Label>
-      <p className={style.text}>{text || children}</p>
+      <div className={style.text}>{text || children}</div>
     </div>
   );
 };
