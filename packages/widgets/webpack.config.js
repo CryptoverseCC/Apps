@@ -86,7 +86,7 @@ module.exports = {
         compress: true,
       },
     }) : null,
-  ],
+  ].filter((p) => !!p),
   devServer: {
     compress: true,
     historyApiFallback: true,
