@@ -3,7 +3,6 @@
   padding: 15px 10px;
   border: 1px solid #ccd0dc;
   border-radius: 5px;
-  overflow: hidden;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -31,11 +30,15 @@
       }
     }
   }
+
+  &.disabled {
+    color: #a6aeb8;
+  }
 }
 
 .Input {
-  position: absolute;
   left: -10000px;
+  opacity: 0;
 }
 
 .FakeInput {
@@ -48,4 +51,21 @@
   margin-right: 10px;
   position: relative;
   flex-shrink: 0;
+}
+
+.Soon {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  transform: translateY(-50%);
+  background-color: #fff;
+  color: #a6aeb8 !important;
+}
+
+.Icon {
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  color: #dbe2e9;
+  margin-left: auto;
 }
