@@ -3,10 +3,11 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const safeImportant = require('postcss-safe-important');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'inline-source-map',
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -21,6 +22,8 @@ module.exports = {
       test: /\.tsx?$/,
       exclude: /node_modules\/(?!@userfeeds)/,
       loader: 'awesome-typescript-loader',
+      options: {
+      },
     }, {
       test: /\.scss$/,
       exclude: /node_modules\/(?!@userfeeds)/,
@@ -77,6 +80,12 @@ module.exports = {
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
+    process.env.NODE_ENV === 'production' ? new UglifyJsPlugin({
+      uglifyOptions: {
+        ecma: 6,
+        compress: true,
+      },
+    }) : null,
   ],
   devServer: {
     compress: true,
