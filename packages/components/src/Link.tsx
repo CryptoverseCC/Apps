@@ -1,15 +1,14 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-// ToDo
-import { ILink } from '../types';
+import { IBaseLink } from '@userfeeds/types/link';
 
 import * as style from './link.scss';
 
 const cx = classnames.bind(style);
 
 interface ILinkProps {
-  link: ILink;
+  link: IBaseLink;
   className?: string;
   lines?: number;
   style?: React.StyleHTMLAttributes<HTMLDivElement>;

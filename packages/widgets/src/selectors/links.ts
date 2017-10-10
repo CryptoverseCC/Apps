@@ -1,13 +1,14 @@
 import { createSelectorCreator } from 'reselect';
 import * as memoize from 'lodash/memoize';
 
+import { ILink, IRemoteLink } from '@userfeeds/types/link';
+
+import { IRootState } from '../ducks';
+
 const hashFunction = (...args) => args.reduce((acc, val) => acc + '-' + JSON.stringify(val), '');
 
 // ToDo optimize this?
 const createSelector = createSelectorCreator(memoize, hashFunction);
-
-import { IRootState } from '../ducks';
-import { ILink } from '../types';
 
 const whitelistedLinks = ({ links }: IRootState) => links.links;
 const allLinks = ({ links }: IRootState) => links.allLinks;
@@ -36,10 +37,10 @@ export const allLinksCount = createSelector(
 );
 
 // ToDo rething function name
-const calculateProbabilities = (links: ILink[]): ILink[] => {
+const calculateProbabilities = (links: IRemoteLink[]): ILink[] => {
   const scoreSum = links.reduce((acc, { score }) => acc + score, 0);
 
-  let probabilities;
+  let probabilities: number[];
   if (scoreSum !== 0) {
     probabilities = links.map(({ score }) => score / scoreSum * 100);
   } else {
@@ -49,7 +50,7 @@ const calculateProbabilities = (links: ILink[]): ILink[] => {
   const roundedDownProbabilities = probabilities.map((probability) => Math.floor(probability));
   const roundedDownProbabilitiesSum = roundedDownProbabilities.reduce((acc, probability) => acc + probability, 0);
 
-  let roundedProbabilities;
+  let roundedProbabilities: number[];
   if (roundedDownProbabilitiesSum === 100) {
     roundedProbabilities = roundedDownProbabilities;
   } else {

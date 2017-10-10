@@ -7,8 +7,8 @@ import Icon from '@userfeeds/apps-components/src/Icon';
 import Link from '@userfeeds/apps-components/src/Link';
 import Label from '@userfeeds/apps-components/src/Label';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import { ILink } from '@userfeeds/types/link';
 
-import { ILink } from '../../types';
 import { IRootState } from '../../ducks';
 import { fetchLinks } from '../../ducks/links';
 import { observeInjectedWeb3 } from '../../ducks/web3';
@@ -54,8 +54,7 @@ interface IBannerState {
   optionsOpen: boolean;
 }
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Banner extends Component<IBannerProps, IBannerState> {
+class Banner extends Component<IBannerProps, IBannerState> {
 
   _timeout: number | null = null;
   state: IBannerState = {
@@ -178,3 +177,5 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     });
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banner);

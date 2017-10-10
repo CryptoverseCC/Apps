@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import Link from '@userfeeds/apps-components/src/Link';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Button from '@userfeeds/apps-components/src/Button';
-
-import { ILink } from '../../../types';
+import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
 import web3 from '../../../utils/web3';
 
@@ -14,7 +13,7 @@ import * as style from './linksList.scss';
 
 interface ILinksListProps {
   label: string;
-  links: ILink[];
+  links: ILink[] | IRemoteLink[];
   asset: string;
   recipientAddress: string;
   boostDisabled: boolean;

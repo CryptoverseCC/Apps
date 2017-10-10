@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import * as throttle from 'lodash/throttle';
 
-import { ILink, TWidgetSize } from '../../../types';
+import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
+import { TWidgetSize } from '../../../types';
 import { TViewType } from '../';
 
 import LinksList from './LinksList';
 import WidgetSpecification from './WidgetSpecification';
 import UserfeedAddressInfo from './UserfeedsAddressInfo';
 
-import * as style from './detailsList.scss';
+import * as style from './detailsLists.scss';
 
-interface IAllLinkProps {
+interface IDetailsListsinkProps {
   web3Enabled: {
     enabled: boolean;
     reason?: string;
@@ -24,16 +25,15 @@ interface IAllLinkProps {
   hasWhitelist: boolean;
   size: TWidgetSize;
   links: ILink[];
-  whitelistedLinks: ILink[];
-  allLinks: ILink[];
+  whitelistedLinks: IRemoteLink[];
+  allLinks: IRemoteLink[];
   allLinksCount: number;
   onBoostSuccess?: (transationId: string) => void;
   onBoostError?: (error: any) => void;
   scrolledTo(to: TViewType): void;
 }
 
-// TODO: shouldn't this be called DetailsList?
-export default class AllLinks extends Component<IAllLinkProps, {}> {
+export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
 
   componentsRefs: { [key: string]: any; } = {};
 

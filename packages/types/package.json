@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "@userfeeds/types",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./",
+  "scripts": {
+    "lint": "tslint -c ../../tslint.json `find . -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "test": "yarn lint"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tslint": "^5.6.0",
+    "tslint-react": "^3.2.0"
+  }
+}

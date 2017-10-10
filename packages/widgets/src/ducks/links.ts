@@ -2,7 +2,7 @@ import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 
 import { IRootState } from './';
-import { ILink } from '../types';
+import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
 import { throwErrorOnNotOkResponse } from '../utils/fetch';
 
@@ -11,22 +11,24 @@ const acf = actionCreatorFactory('links');
 export const fetchLinksActions = acf.async<
   void,
   {
-    whitelistedLinks: ILink[];
-    allLinks: ILink[];
+    whitelistedLinks: IRemoteLink[];
+    allLinks: IRemoteLink[];
   },
   { reason: any }
   >('FETCH_LINKS');
 
 export const fetchLinks = () => async (dispatch, getState: () => IRootState) => {
-  const { widget:
-    { apiUrl = 'https://api.userfeeds.io', recipientAddress, asset, algorithm, whitelist },
+  const {
+    widget: { apiUrl = 'https://api.userfeeds.io', recipientAddress, asset, algorithm, whitelist },
   } = getState();
+
   dispatch(fetchLinksActions.started(undefined));
 
   const baseURL = `${apiUrl}/ranking`;
   const queryParams = whitelist ? `?whitelist=${asset}:${whitelist}` : '';
   try {
-    const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }]: [{ items: ILink[] }, { items: ILink[] }]  =
+    const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }]:
+      [{ items: IRemoteLink[] }, { items: IRemoteLink[] }]  =
       await Promise.all([
         fetch(`${baseURL}/${asset}:${recipientAddress}/${algorithm}/${queryParams}`)
           .then(throwErrorOnNotOkResponse)
@@ -45,8 +47,8 @@ export const fetchLinks = () => async (dispatch, getState: () => IRootState) => 
 export interface ILinksState {
   fetching: boolean;
   fetched: boolean;
-  links: ILink[];
-  allLinks: ILink[];
+  links: IRemoteLink[];
+  allLinks: IRemoteLink[];
 }
 
 const initialState: ILinksState = {

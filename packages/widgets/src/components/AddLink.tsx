@@ -6,8 +6,7 @@ import Button from '@userfeeds/apps-components/src/Button';
 import Loader from '@userfeeds/apps-components/src/Loader';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import Checkbox from '@userfeeds/apps-components/src/Checkbox';
-
-import { ILink } from '../types';
+import { IBaseLink } from '@userfeeds/types/link';
 
 import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
@@ -24,7 +23,7 @@ interface IAddLinkProps {
   };
   onSuccess(linkId: string): void;
   onError(error: any): void;
-  onChange?: (link: ILink) => void;
+  onChange?: (link: IBaseLink) => void;
 }
 
 interface IAddLinkState {
@@ -156,7 +155,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
       },
       () => {
         if (this.props.onChange) {
-          this.props.onChange(this.state as ILink); // ToDo
+          this.props.onChange(this.state);
         }
       },
     );

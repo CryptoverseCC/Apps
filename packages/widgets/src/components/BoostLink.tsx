@@ -4,8 +4,7 @@ import core from '@userfeeds/core/src';
 import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
-
-import { ILink } from '../types';
+import { IRemoteLink } from '@userfeeds/types/link';
 
 import { R, validate } from '../utils/validation';
 import web3 from '../utils/web3';
@@ -18,8 +17,8 @@ import TokenDetailsProvider from './TokenDetailsProvider';
 interface IBidLinkProps {
   disabled?: boolean;
   disabledReason?: string;
-  link: ILink;
-  links: ILink[];
+  link: IRemoteLink;
+  links: IRemoteLink[];
   asset: string;
   recipientAddress: string;
   onSuccess?(linkId: string): void;

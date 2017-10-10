@@ -4,8 +4,9 @@ import Pill from '@userfeeds/apps-components/src/Pill';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Accordion from '@userfeeds/apps-components/src/Accordion';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
-import { ILink, TWidgetSize } from '../../../types';
+import { TWidgetSize } from '../../../types';
 
 import EthereumLogo from '../../../components/EthereumLogo';
 
@@ -22,8 +23,8 @@ interface IDetailsAccordinProps {
   allLinksCount: number;
   hasWhitelist: boolean;
   links: ILink[];
-  whitelistedLinks: ILink[];
-  allLinks: ILink[];
+  whitelistedLinks: IRemoteLink[];
+  allLinks: IRemoteLink[];
 }
 
 export default class DetailsAccordion extends Component<IDetailsAccordinProps, {}> {

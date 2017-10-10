@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 
 import Link from '@userfeeds/apps-components/src/Link';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import { ILink } from '@userfeeds/types/link';
 
 import web3 from '../../../utils/web3';
-
-import { ILink } from '../../../types';
 
 import * as style from './simpleLinksList.scss';
 

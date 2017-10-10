@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
+import { IBaseLink } from '@userfeeds/types/link';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Link from '@userfeeds/apps-components/src/Link';
 
-import { ILink } from '../../types';
 import { web3Enabled } from '../../selectors/web3';
 
 import { IRootState } from '../../ducks';
@@ -46,7 +46,7 @@ type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props;
 
 interface IAddLinkModalState {
   step: 'form' | 'congratulations';
-  link: ILink;
+  link: IBaseLink;
   linkId?: string;
 }
 
@@ -102,7 +102,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
     );
   }
 
-  _onFormEdit = (link: ILink) => {
+  _onFormEdit = (link: IBaseLink) => {
     const notEmptyProperties = Object.entries(link)
       .filter(([, value]) => !!value)
       .reduce((acc, [k, v]) => ({ ...acc, [k]: v}), {});

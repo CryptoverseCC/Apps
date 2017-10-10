@@ -8,9 +8,10 @@ import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import { ILink } from '@userfeeds/types/link';
 
 import { IRootState } from '../../ducks';
-import { ILink, TWidgetSize } from '../../types';
+import { TWidgetSize } from '../../types';
 
 import { openToast, TToastType } from '../../ducks/toast';
 import { modalActions } from '../../ducks/modal';
@@ -20,7 +21,7 @@ import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../select
 import Switch from '../../components/utils/Switch';
 
 import SideMenu from './components/SideMenu';
-import DetailsList from './components/DetailsList';
+import DetailsLists from './components/DetailsLists';
 import DetailsAccordion from './components/DetailsAccordion';
 import WidgetSummary from './components/WidgetSummary';
 
@@ -73,7 +74,7 @@ type TWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & {
 
 class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
 
-  detailsListCmp: DetailsList;
+  detailsListCmp: DetailsLists;
 
   constructor(props: TWidgetDetailsProps) {
     super(props);
@@ -125,7 +126,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
                 activeItem={this.state.viewType}
                 onItemClick={this._menuItemClicked}
               />
-              <DetailsList
+              <DetailsLists
                 web3Enabled={web3Enabled}
                 initialView={viewType}
                 algorithm={widgetSettings.algorithm}

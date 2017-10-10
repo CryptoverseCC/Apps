@@ -16,6 +16,7 @@
     "@userfeeds/apps-components": "^0.0.13",
     "@userfeeds/core": "^0.0.34",
     "@userfeeds/utils": "^0.0.4",
+    "@userfeeds/types": "0.0.1",
     "classnames": "^2.2.5",
     "lodash": "~4.17.4",
     "qrious": "^4.0.2",
