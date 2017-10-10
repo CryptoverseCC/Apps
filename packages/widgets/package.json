@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.113",
+  "version": "0.0.114",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
@@ -62,10 +62,10 @@
     "tslint-react": "^3.2.0",
     "typescript": "^2.5.3",
     "typings-for-css-modules-loader": "^1.5.0",
+    "uglifyjs-webpack-plugin": "1.0.0-beta.3",
     "url-loader": "^0.5.9",
     "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.6.1",
-    "uglifyjs-webpack-plugin": "1.0.0-beta.3"
+    "webpack-dev-server": "^2.6.1"
   },
   "jest": {
     "transform": {
