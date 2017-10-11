@@ -9,7 +9,7 @@ type TIconProps = React.HTMLAttributes<HTMLSpanElement> & {
   type: string;
 };
 
-const Icon = ({ name, className, ...restProps }: TIconProps) => (
+const Icon: React.StatelessComponent<TIconProps> = ({ name, className, ...restProps }) => (
   <span
     className={classnames(style.self, className, 'oi')}
     data-glyph={name}
