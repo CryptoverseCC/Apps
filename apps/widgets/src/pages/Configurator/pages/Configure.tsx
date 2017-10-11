@@ -5,16 +5,11 @@ import Radio from '../components/Radio';
 import { input as fieldInput } from '../components/field.scss';
 import { Field, Title, Description, RadioGroup } from '../components/Field';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
-import { WIDGET_SIZES } from '../components/sections/Size';
-import { WIDGET_TYPES } from '../components/sections/Type';
-import { WIDGET_IMPRESSIONS } from '../components/sections/Impression';
-import { WIDGET_NETWORKS } from '../components/sections/Token';
-import { WIDGET_ALGORITHM } from '../components/sections/Algorithm';
 import CreateWidget from '../components/CreateWidget';
+import NewToken, { WIDGET_NETWORKS } from '../components/sections/NewToken';
+
 import Icon from '@userfeeds/apps-components/src/Icon';
-import NewToken from '../components/sections/NewToken';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
-import Button from '@userfeeds/apps-components/src/Button';
 
 interface IState {
   recipientAddress: string;
@@ -37,19 +32,19 @@ interface IProps {
   location: any;
 }
 
-const defaultState = {
+const initialState = {
   publisherNote: '',
   title: '',
   description: 'I accept only links that are about science and technology. I like trains',
   contactMethod: '',
-  size: WIDGET_SIZES[0].value,
-  type: WIDGET_TYPES[0].value,
-  impression: WIDGET_IMPRESSIONS[0].value,
+  size: 'leaderboard',
+  type: 'text',
+  impression: 'N/A',
   asset: {
     token: WIDGET_NETWORKS[0].tokens[0].value,
     network: WIDGET_NETWORKS[0].value,
   },
-  algorithm: WIDGET_ALGORITHM[0].value,
+  algorithm: 'links',
 };
 
 export default class Configurator extends Component<IProps, IState> {
@@ -68,7 +63,7 @@ export default class Configurator extends Component<IProps, IState> {
       this.state = state;
     } else {
       this.state = {
-        ...defaultState,
+        ...initialState,
         recipientAddress,
         whitelistId: recipientAddress,
       };
@@ -213,15 +208,14 @@ export default class Configurator extends Component<IProps, IState> {
         <Field>
           <Title>Choose algorithm</Title>
           <Description>Add description here about algorithms</Description>
-          <div className={fieldInput}>
-            <Dropdown
-              disabled
-              placeholder="Algorithm"
-              value={algorithm}
-              onChange={() => null}
-              options={[{ value: 'links', label: 'Ad Ether / total ether - time' }]}
-            />
-          </div>
+          <Dropdown
+            className={fieldInput}
+            disabled
+            placeholder="Algorithm"
+            value={algorithm}
+            onChange={() => null}
+            options={[{ value: 'links', label: 'Ad Ether / total ether - time' }]}
+          />
         </Field>
         <CreateWidget widgetSettings={this.widgetSettings()} />
       </div>
