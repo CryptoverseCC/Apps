@@ -10,7 +10,7 @@ interface IDropdownProps {
   value: any;
   onChange(value: any): void;
   options: any;
-  className: string;
+  className?: string;
   style?: React.StyleHTMLAttributes<HTMLDivElement>;
 }
 

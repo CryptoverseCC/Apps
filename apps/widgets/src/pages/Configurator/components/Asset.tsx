@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Input from '@userfeeds/apps-components/src/Input';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
+import Wrapper from './Wrapper';
 
 export const ETH = 'eth';
 export const CUSTOM_TOKEN = 'custom';
@@ -39,11 +40,14 @@ export const WIDGET_NETWORKS = [
   },
 ];
 
-type asset = { token: string; network: string };
+interface IAsset {
+  token: string;
+  network: string;
+}
 
 interface IAssetProps {
-  asset: asset;
-  onChange(asset: asset);
+  asset: IAsset;
+  onChange(asset: IAsset);
 }
 
 interface IAssetState {
@@ -65,7 +69,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     const { asset, onChange } = this.props;
     const { token, tokenAddress } = this.state;
     const tokensOptions =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === asset.network)].tokens;
+      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === asset.network)].tokens;
 
     const ContractAddress =
       token === CUSTOM_TOKEN ? (
@@ -75,50 +79,52 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
           onInput={this._onAddressChange}
         />
       ) : null;
-    return [
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Dropdown
-          style={{ minWidth: '200px' }}
-          placeholder="Network"
-          value={asset.network}
-          onChange={this._onNetworkChange}
-          options={WIDGET_NETWORKS}
-        />
-        <Dropdown
-          style={{ minWidth: '200px' }}
-          placeholder="ERC20 Token Address"
-          value={token}
-          onChange={this._onTokenChange}
-          options={tokensOptions}
-        />
-      </div>,
-      ContractAddress,
-    ];
+    return (
+      <Wrapper>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Dropdown
+            style={{ minWidth: '200px' }}
+            placeholder="Network"
+            value={asset.network}
+            onChange={this._onNetworkChange}
+            options={WIDGET_NETWORKS}
+          />
+          <Dropdown
+            style={{ minWidth: '200px' }}
+            placeholder="ERC20 Token Address"
+            value={token}
+            onChange={this._onTokenChange}
+            options={tokensOptions}
+          />
+        </div>
+        {ContractAddress}
+      </Wrapper>
+    );
   }
 
   _onNetworkChange = ({ value }) => {
     const token =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === value)].tokens[0].value;
-    this.setState({ token: token, tokenAddress: token }, () => {
+      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === value)].tokens[0].value;
+    this.setState({ token, tokenAddress: token }, () => {
       this.props.onChange({ network: value, token: this.state.tokenAddress });
     });
-  };
+  }
 
   _onTokenChange = ({ value }) => {
     this.setState({ token: value, tokenAddress: '' });
     const token = value === CUSTOM_TOKEN ? '' : value;
     this.props.onChange({ token, network: this.props.asset.network });
-  };
+  }
 
   _onAddressChange = (e: Event) => {
     const value = e.target.value;
     this.setState({ tokenAddress: value });
     this.props.onChange({ token: value, network: this.props.asset.network });
-  };
+  }
 
   _isCustomToken = (network, token) => {
     const tokensOptions =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === network)].tokens;
+      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === network)].tokens;
     return tokensOptions.findIndex(({ value }) => value === token) === -1;
-  };
+  }
 }
