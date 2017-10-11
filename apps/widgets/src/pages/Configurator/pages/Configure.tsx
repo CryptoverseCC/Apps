@@ -10,6 +10,7 @@ import { WIDGET_TYPES } from '../components/sections/Type';
 import { WIDGET_IMPRESSIONS } from '../components/sections/Impression';
 import { WIDGET_NETWORKS } from '../components/sections/Token';
 import { WIDGET_ALGORITHM } from '../components/sections/Algorithm';
+import CreateWidget from '../components/CreateWidget';
 import Icon from '@userfeeds/apps-components/src/Icon';
 import NewToken from '../components/sections/NewToken';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
@@ -62,7 +63,7 @@ export default class Configurator extends Component<IProps, IState> {
       const params = new URLSearchParams(props.location.search);
       const state: any = Array.from(params.entries()).reduce(
         (acc, [k, v]) => ({ ...acc, [k]: v }),
-        {}
+        {},
       );
       this.state = state;
     } else {
@@ -74,8 +75,18 @@ export default class Configurator extends Component<IProps, IState> {
     }
   }
 
-  onChange = key => ({ target: { value } }) => this.setState({ [key]: value });
-  onOldChange = key => ({ value }) => this.setState({ [key]: value });
+  widgetSettings = () => {
+    const settings = {
+      ...this.state,
+      network: this.state.asset.network,
+      token: this.state.asset.token,
+    };
+    delete settings.asset;
+    return settings;
+  }
+
+  onChange = (key) => ({ target: { value } }) => this.setState({ [key]: value });
+  onOldChange = (key) => ({ value }) => this.setState({ [key]: value });
 
   render() {
     const { onChange, onOldChange } = this;
@@ -193,7 +204,7 @@ export default class Configurator extends Component<IProps, IState> {
           <div className={fieldInput}>
             <NewToken
               asset={asset}
-              onChange={asset => {
+              onChange={(asset) => {
                 this.setState({ asset });
               }}
             />
@@ -207,21 +218,12 @@ export default class Configurator extends Component<IProps, IState> {
               disabled
               placeholder="Algorithm"
               value={algorithm}
-              onChange={() => {}}
+              onChange={() => null}
               options={[{ value: 'links', label: 'Ad Ether / total ether - time' }]}
             />
           </div>
         </Field>
-        <Button
-          style={{
-            width: '100%',
-            marginTop: '30px',
-            height: '60px',
-            borderRadius: '3px',
-          }}
-        >
-          Create my widget!
-        </Button>
+        <CreateWidget widgetSettings={this.widgetSettings()} />
       </div>
     );
   }
