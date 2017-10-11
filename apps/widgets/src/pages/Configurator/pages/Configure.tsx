@@ -6,11 +6,18 @@ import { input as fieldInput } from '../components/field.scss';
 import { Field, Title, Description, RadioGroup } from '../components/Field';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 import Icon from '@userfeeds/apps-components/src/Icon';
+import NewToken from '../components/sections/NewToken';
+import Dropdown from '@userfeeds/apps-components/src/Dropdown';
+import Button from '@userfeeds/apps-components/src/Button';
 
 export default class Configurator extends Component<{}, {}> {
   render() {
     return (
       <div>
+        <h1>Create widget</h1>
+        <p style={{ marginBottom: '10px' }}>
+          Provide essential information to get your widget up and running!
+        </p>
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Add description here about userfeed address</Description>
@@ -75,6 +82,41 @@ export default class Configurator extends Component<{}, {}> {
             </Radio>
           </RadioGroup>
         </Field>
+        <Field>
+          <Title>Choose token</Title>
+          <Description>I think it would be nice to put here a short description</Description>
+          <div className={fieldInput}>
+            <NewToken
+              network="ethereum"
+              token="eth"
+              onNetworkChange={() => {}}
+              onTokenChange={() => {}}
+            />
+          </div>
+        </Field>
+        <Field>
+          <Title>Choose algorithm</Title>
+          <Description>Add description here about algorithms</Description>
+          <div className={fieldInput}>
+            <Dropdown
+              disabled
+              placeholder="Algorithm"
+              value={'links'}
+              onChange={() => {}}
+              options={[{ value: 'links', label: 'Ad Ether / total ether - time' }]}
+            />
+          </div>
+        </Field>
+        <Button
+          style={{
+            width: '100%',
+            marginTop: '30px',
+            height: '60px',
+            borderRadius: '3px',
+          }}
+        >
+          Create my widget!
+        </Button>
       </div>
     );
   }
