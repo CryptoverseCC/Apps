@@ -39,31 +39,33 @@ export const WIDGET_NETWORKS = [
   },
 ];
 
-interface ITokenProps {
-  network: string;
-  onNetworkChange(network: { value: string });
-  token: string;
-  onTokenChange(token: { value: string });
+type asset = { token: string; network: string };
+
+interface IAssetProps {
+  asset: asset;
+  onChange(asset: asset);
 }
 
-interface ITokenState {
+interface IAssetState {
   token: string;
   tokenAddress?: string;
 }
 
-export default class NewToken extends Component<ITokenProps, ITokenState> {
+export default class Asset extends Component<IAssetProps, IAssetState> {
   constructor(props) {
     super(props);
 
-    const token = this._isCustomToken(props.network, props.token) ? CUSTOM_TOKEN : props.token;
-    this.state = { token, tokenAddress: props.token };
+    const token = this._isCustomToken(props.asset.network, props.asset.token)
+      ? CUSTOM_TOKEN
+      : props.asset.token;
+    this.state = { token, tokenAddress: props.asset.token };
   }
 
   render() {
-    const { network, onNetworkChange, onTokenChange } = this.props;
+    const { asset, onChange } = this.props;
     const { token, tokenAddress } = this.state;
     const tokensOptions =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === network)].tokens;
+      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === asset.network)].tokens;
 
     const ContractAddress =
       token === CUSTOM_TOKEN ? (
@@ -78,8 +80,8 @@ export default class NewToken extends Component<ITokenProps, ITokenState> {
         <Dropdown
           style={{ minWidth: '200px' }}
           placeholder="Network"
-          value={network}
-          onChange={onNetworkChange}
+          value={asset.network}
+          onChange={this._onNetworkChange}
           options={WIDGET_NETWORKS}
         />
         <Dropdown
@@ -94,23 +96,29 @@ export default class NewToken extends Component<ITokenProps, ITokenState> {
     ];
   }
 
-  _isCustomToken = (network, token) => {
-    const tokensOptions =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === network)].tokens;
-    return tokensOptions.findIndex(({ value }) => value === token) === -1;
+  _onNetworkChange = ({ value }) => {
+    const token =
+      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === value)].tokens[0].value;
+    this.setState({ token: token, tokenAddress: token }, () => {
+      this.props.onChange({ network: value, token: this.state.tokenAddress });
+    });
+  };
+
+  _onTokenChange = ({ value }) => {
+    this.setState({ token: value, tokenAddress: '' });
+    const token = value === CUSTOM_TOKEN ? '' : value;
+    this.props.onChange({ token, network: this.props.asset.network });
   };
 
   _onAddressChange = (e: Event) => {
     const value = e.target.value;
     this.setState({ tokenAddress: value });
-    this.props.onTokenChange({ value });
+    this.props.onChange({ token: value, network: this.props.asset.network });
   };
 
-  _onTokenChange = ({ value }) => {
-    this.setState({ token: value, tokenAddress: '' });
-
-    if (value !== CUSTOM_TOKEN) {
-      this.props.onTokenChange(value);
-    }
+  _isCustomToken = (network, token) => {
+    const tokensOptions =
+      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex(e => e.value === network)].tokens;
+    return tokensOptions.findIndex(({ value }) => value === token) === -1;
   };
 }
