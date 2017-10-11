@@ -6,7 +6,7 @@ import { input as fieldInput } from '../components/field.scss';
 import { Field, Title, Description, RadioGroup } from '../components/Field';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 import CreateWidget from '../components/CreateWidget';
-import NewToken, { WIDGET_NETWORKS } from '../components/sections/NewToken';
+import NewToken, { WIDGET_NETWORKS } from '../components/Asset';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
