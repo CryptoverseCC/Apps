@@ -2,7 +2,7 @@
 
 .self {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 20px; // TODO: Get rid of margins in inputs
   margin-top: 20px;
   width: 100%;
   font-family:'PT Sans';
@@ -12,7 +12,7 @@
 
   .input {
     font-size: 14px;
-    padding: 15px;
+    padding: 15px 20px;
     width: calc(100% - 30px);
     background-color: $aqua-haze;
     border: 1px solid $alto;
@@ -40,8 +40,8 @@
 
   .placeholder {
     position: absolute;
-    top: 20px;
-    left: 14px;
+    top: 15px;
+    left: 20px;
     color: $dusty-gray;
     font-size: 14px;
     transition: 0.2s;

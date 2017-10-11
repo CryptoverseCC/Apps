@@ -1,0 +1,56 @@
+.Field {
+  display: flex;
+  flex-direction: column;
+  & + .Field {
+    margin-top: 30px;
+  }
+}
+
+.Header {
+  color: #a6aeb8;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.5em;
+}
+
+.Description {
+  font-size: 14px;
+  color: #586881;
+}
+
+.Error {
+  color: red;
+}
+
+.InputGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .Input {
+    margin-top: 20px;
+  }
+}
+
+.Header + .Description {
+  margin-top: 5px;
+}
+
+.Description + .Input {
+  margin-top: 10px;
+}
+
+.Header + .Input {
+  margin-top: 5px;
+}
+
+.Input + .Error {
+  margin-top: 5px;
+}
+
+.Description + .InputGroup,
+.Header + .InputGroup {
+  margin-top: -10px;
+}

@@ -10,10 +10,18 @@ interface IDropdownProps {
   value: any;
   onChange(value: any): void;
   options: any;
+  className?: string;
   style?: React.StyleHTMLAttributes<HTMLDivElement>;
 }
 
-const Dropdown = ({ disabled, placeholder, value, onChange, options, ...restProps }: IDropdownProps) => (
+const Dropdown = ({
+  disabled,
+  placeholder,
+  value,
+  onChange,
+  options,
+  ...restProps,
+}: IDropdownProps) => (
   <Select
     disabled={disabled}
     clearable={false}

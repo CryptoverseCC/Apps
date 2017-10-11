@@ -1,15 +1,14 @@
-@import '~@userfeeds/apps-components/styles/colors';
-
 .self {
-  display: flex;
-  margin-top: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
 
   .paper {
+    margin: 20px auto;
     min-width: 400px;
-    max-width:600px;
-    padding: 50px;
+    max-width:660px;
+    padding: 30px 50px;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 }

@@ -1,0 +1,72 @@
+.Radio {
+  position: relative;
+  padding: 15px 10px;
+  border: 1px solid #ccd0dc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #657092;
+
+  &.checked {
+    border: 1px solid #263fff;
+    color: #263fff;
+
+    .FakeInput {
+      border-color: #263fff;
+      opacity: 1;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 18px;
+        height: 18px;
+        background-color: #263fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px 0 rgba(50, 93, 255, 0.25);
+      }
+    }
+  }
+
+  &.disabled {
+    color: #a6aeb8;
+    cursor: not-allowed;
+  }
+}
+
+.Input {
+  left: -10000px;
+  opacity: 0;
+}
+
+.FakeInput {
+  border-radius: 50%;
+  border: 1px solid #ccd0dc;
+  background-color: #f2f2f2;
+  opacity: 0.5;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.Soon {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  transform: translateY(-50%);
+  background-color: #fff;
+  color: #a6aeb8 !important;
+}
+
+.Icon {
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  color: #dbe2e9;
+  margin-left: auto;
+}
