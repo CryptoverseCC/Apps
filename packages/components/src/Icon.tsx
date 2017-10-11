@@ -6,10 +6,18 @@ import * as style from './icon.scss';
 
 type TIconProps = React.HTMLAttributes<HTMLSpanElement> & {
   name: string;
+  type: string;
 };
 
 const Icon = ({ name, className, ...restProps }: TIconProps) => (
-  <span className={classnames(style.self, className, 'oi')} data-glyph={name} aria-hidden="true" {...restProps} />
+  <span
+    className={classnames(style.self, className, 'oi')}
+    data-glyph={name}
+    aria-hidden="true"
+    {...restProps}
+  />
 );
+
+Icon.defaultProps = { type: 'Icon' };
 
 export default Icon;

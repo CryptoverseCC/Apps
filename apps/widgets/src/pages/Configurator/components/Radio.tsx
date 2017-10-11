@@ -15,7 +15,7 @@ const Radio = ({ checked, disabled, soon, children, className, style, ...props }
     [RadioStyles.disabled]: disabled,
   });
   const decoratedChildren = React.Children.map(children, (child) => {
-    return child && child.type && child.type.name === 'Icon'
+    return child && child.props && child.props.type === 'Icon'
       ? React.cloneElement(child, { className: classnames(child.className, RadioStyles.Icon) })
       : child;
   });
