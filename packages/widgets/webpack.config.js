@@ -85,6 +85,7 @@ module.exports = {
         ecma: 6,
         compress: true,
       },
+      sourceMap: true,
     }) : null,
   ].filter((p) => !!p),
   devServer: {

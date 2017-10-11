@@ -1,12 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'inline-source-map',
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -61,16 +62,7 @@ module.exports = {
     }, {
       test: /\.(woff|ttf|eot|svg|otf)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
       loader: 'url-loader?limit=100000',
-    },
-    // {
-    //   test: /\.svg$/,
-    //   loader: 'svg-inline-loader',
-    //   options: {
-    //     removeTags: true,
-    //     removeSVGTagAttrs: true,
-    //   },
-    // }
-    ],
+    }],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -84,7 +76,14 @@ module.exports = {
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
-  ],
+    process.env.NODE_ENV === 'production' ? new UglifyJsPlugin({
+      uglifyOptions: {
+        ecma: 6,
+        compress: true,
+      },
+      sourceMap: true,
+    }) : null,
+  ].filter((p) => !!p),
   devServer: {
     historyApiFallback: true,
     disableHostCheck: true,

@@ -1,12 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'inline-source-map',
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -74,8 +75,14 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || 'development',
     }),
     new webpack.NamedModulesPlugin(),
-    // new webpack.optimize.ModuleConcatenationPlugin(),
-  ],
+    process.env.NODE_ENV === 'production' ? new UglifyJsPlugin({
+      uglifyOptions: {
+        ecma: 6,
+        compress: true,
+      },
+      sourceMap: true,
+    }) : null,
+  ].filter((p) => !!p),
   devServer: {
     compress: true,
     historyApiFallback: true,
