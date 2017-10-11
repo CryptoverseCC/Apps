@@ -8,7 +8,7 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "lint": "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "test": "yarn lint",
-    "build": "cross-env NODE_ENV=production webpack || exit 0"
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js"
   },
   "author": "",
   "license": "ISC",
@@ -41,10 +41,10 @@
     "tslint": "^5.6.0",
     "tslint-react": "^3.2.0",
     "typescript": "^2.5.3",
-    "typings-for-css-modules-loader": "^1.5.0",
+    "typings-for-css-modules-loader": "^1.7.0",
     "url-loader": "^0.5.9",
-    "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.6.1",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1",
     "uglifyjs-webpack-plugin": "1.0.0-beta.3"
   }
 }
