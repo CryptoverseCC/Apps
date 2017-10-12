@@ -1,10 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
+import BoldText from '@userfeeds/apps-components/src/BoldText';
 import * as styles from './field.scss';
 
 export const Field = (props) => <div {...props} className={styles.Field} />;
 
-export const Title = ({ children }) => <div className={styles.Header}>{children}</div>;
+export const Title = ({ children }) => <BoldText className={styles.Header}>{children}</BoldText>;
 
 export const Description = ({ children }) => <p className={styles.Description}>{children}</p>;
 
