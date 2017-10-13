@@ -1,14 +1,84 @@
 .self {
   width: 100%;
-  height: 100%;
-  display: flex;
-  margin-top: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
-  .paper {
-    width: 70%;
-    padding: 10px;
+  * {
+    box-sizing: border-box;
   }
+}
+
+.container {
+  width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 60px;
+  padding: 20px;
+}
+
+.header {
+  font-size: 18px;
+  line-height: 23px;
+  color: #1b2437;
+  font-weight: normal;
+  margin: 0;
+}
+
+.counter {
+  color: #263fff !important;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+}
+
+.header > .counter {
+  margin-left: 20px;
+}
+
+.sort {
+  margin-left: auto;
+}
+
+.head + .body {
+  border-top: 1px solid #eef1f2;
+}
+
+.Button {
+  background-color: rgba(9, 213, 124, 0.2);
+  color: #07bb6c;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 5px 10px 0 rgba(9, 213, 124, 0.2);
+  transition: color 0.1s linear, background-color 0.1s linear, box-shadow 0.1s linear;
+
+  &:active {
+    box-shadow: none;
+  }
+
+  &:hover,
+  &:focus {
+    color: white;
+    background-color: rgba(9, 213, 124, 0.6);
+  }
+}
+
+.ButtonInnerWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.ButtonIcon {
+  display: inline-block;
+  margin-right: 5px;
 }

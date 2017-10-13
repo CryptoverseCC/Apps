@@ -1,125 +1,82 @@
 import React, { Component } from 'react';
-import debounce from 'lodash.debounce';
-
-import core from '@userfeeds/core/src';
-import web3 from '@userfeeds/utils/src/web3';
-
-import Input from '@userfeeds/apps-components/src/Input';
-import Paper from '@userfeeds/apps-components/src/Paper';
-import LinksList from './components/LinksList';
-
 import * as style from './whitelist.scss';
+import Paper from '@userfeeds/apps-components/src/Paper';
+import BoldText from '@userfeeds/apps-components/src/BoldText';
+import Link from '@userfeeds/apps-components/src/Link';
+import Pill from '../../../../widgets/src/pages/Configurator/components/Pill';
+import A from './components/A';
+import Icon from '@userfeeds/apps-components/src/Icon';
 
-interface IWhitelistProps {
-  location: any;
-}
+const Button = ({ children, ...props }) => {
+  const decoratedChildren = React.Children.map(children, (child) => {
+    return child && child.props && child.props.type === 'Icon'
+      ? React.cloneElement(child, { className: style.ButtonIcon })
+      : child;
+  });
+  return (
+    <button className={style.Button}>
+      <div className={style.ButtonInnerWrapper}>{decoratedChildren}</div>
+    </button>
+  );
+};
 
-interface IWhitelistState {
-  links: any[];
-  fetching: boolean;
-  asset: string;
-  assetFromParams: boolean;
-  recipientAddress: string;
-  algorithm: string;
-  whitelist: string;
-  recipientAddressFromParams: boolean;
-  whitelistFromParams: boolean;
-}
-
-export default class Creator extends Component<IWhitelistProps, IWhitelistState> {
-
-  constructor(props) {
-    super(props);
-
-    const params = new URLSearchParams(props.location.search);
-
-    this.state = {
-      links: [],
-      fetching: false,
-      asset: params.get('asset') || '',
-      recipientAddress: params.get('recipientAddress') || '',
-      algorithm: params.get('algorithm') || 'links',
-      whitelist: params.get('whitelist') || '',
-      recipientAddressFromParams: params.has('recipientAddress'),
-      whitelistFromParams: params.has('whitelist'),
-      assetFromParams: params.has('asset'),
-    };
-  }
-
-  componentWillMount() {
-    if (this.state.recipientAddressFromParams) {
-      this._fetchLinks();
-    }
-  }
-
+export default class Creator extends Component<{}, {}> {
   render() {
     return (
       <div className={style.self}>
-        <Paper className={style.paper}>
-          <Input
-            placeholder="Asset"
-            value={this.state.asset}
-            onInput={this._onChange('asset')}
-            disabled={this.state.assetFromParams}
-          />
-          <Input
-            placeholder="Recipient Address"
-            value={this.state.recipientAddress}
-            onInput={this._onChange('recipientAddress')}
-            disabled={this.state.recipientAddressFromParams}
-          />
-          <Input
-            placeholder="Whitelist"
-            value={this.state.whitelist}
-            onInput={this._onChange('whitelist')}
-            disabled={this.state.whitelistFromParams}
-          />
-          <LinksList links={this.state.links} onItemClick={this._onLinkClick} />
+        <Paper className={style.container}>
+          <div className={style.head}>
+            <h2 className={style.header}>
+              Waiting for approval
+              <Pill className={style.counter}>3</Pill>
+            </h2>
+            <div className={style.sort}>
+              <BoldText>SORTED BY</BoldText> Total Spent
+            </div>
+          </div>
+
+          <div className={style.body}>
+            <table style={{ width: '100%' }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: 'left', padding: '12px 20px' }}>
+                    <BoldText>Sent by</BoldText>
+                  </th>
+                  <th style={{ textAlign: 'left', padding: '12px 20px' }}>
+                    <BoldText>Content</BoldText>
+                  </th>
+                  <th style={{ textAlign: 'left', padding: '12px 20px' }}>
+                    <BoldText>Total spent</BoldText>
+                  </th>
+                </tr>
+              </thead>
+              <tbody style={{ textAlign: 'left', fontSize: '14px' }}>
+                <tr>
+                  <td style={{ padding: '12px 20px' }}>
+                    <A href="https://etherscan.io/address/0x0">0x0000000000000000000</A>
+                  </td>
+                  <td style={{ padding: '12px 20px' }}>
+                    <b>Creative outdoor</b>
+                    <p style={{ color: '#89939F', margin: 0 }}>
+                      Over the last few months, usage of the content content content content content
+                      content content
+                    </p>
+                    <A>www.linkplace.com</A>
+                  </td>
+                  <td style={{ padding: '12px 20px' }}>
+                    <b>1.5 ETH</b>
+                  </td>
+                  <td style={{ padding: '12px 20px', minWidth: '200px' }}>
+                    <Button>
+                      <Icon name="check" />Accept
+                    </Button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </Paper>
       </div>
     );
-  }
-
-  _onChange = (fieldName) => (e) => {
-    this.setState({ [fieldName]: e.target.value });
-    this._fetchLinks();
-  }
-
-  _fetchLinks = debounce(async () => {
-    const { recipientAddress, algorithm, whitelist, asset } = this.state;
-
-    this.setState({ fetching: true });
-
-    const baseURL = 'https://api.userfeeds.io/ranking';
-
-    try {
-      const allLinksRequest = fetch(`${baseURL}/${asset}:${recipientAddress}/${algorithm}/`)
-        .then((res) => res.json());
-      const whitelistParam = whitelist ? `?whitelist=${asset}:${whitelist}` : '';
-      const whitelistedLinksRequest = fetch(`${baseURL}/${asset}:${recipientAddress}/${algorithm}/${whitelistParam}`)
-        .then((res) => res.json());
-
-      const [allLinks, whitelistedLinks] = await Promise.all([
-        allLinksRequest,
-        whitelistedLinksRequest,
-      ]);
-
-      const links = allLinks.items.map((link) => {
-        const whitelisted = !!whitelistedLinks.items.find((a) => link.id === a.id);
-
-        return { ...link, whitelisted };
-      });
-      this.setState({ links, fetching: false });
-    } catch (_) {
-      this.setState({ fetching: false });
-    }
-  }, 500);
-
-  _onLinkClick = (link) => {
-    const claim = {
-      claim: { target: link.id },
-    };
-
-    core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
   }
 }
