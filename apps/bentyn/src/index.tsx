@@ -7,6 +7,6 @@ const App = () => {
       <h4>It's Bentyn project</h4>
     </div>
   );
-}
+};
 
 render(<App />, document.querySelector('.root'));
