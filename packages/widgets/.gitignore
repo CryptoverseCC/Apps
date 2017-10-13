@@ -63,3 +63,4 @@ typings/
 build
 
 *.scss.d.ts
+errorShots/
