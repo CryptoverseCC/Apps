@@ -20,6 +20,7 @@ import EthereumLogo from '../../components/EthereumLogo';
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';
 import RootToast from './containers/RootToast';
+import RandomLinkProvider from './containers/RandomLinkProvider';
 
 import * as style from './banner.scss';
 
@@ -56,7 +57,7 @@ interface IBannerState {
 
 class Banner extends Component<IBannerProps, IBannerState> {
 
-  _timeout: number | null = null;
+  linkProvider: RandomLinkProvider;
   state: IBannerState = {
     optionsOpen: false,
   };
@@ -68,15 +69,8 @@ class Banner extends Component<IBannerProps, IBannerState> {
     props.fetchLinks();
   }
 
-  componentWillReceiveProps(newProps: IBannerProps) {
-    if (newProps.links !== this.props.links && newProps.links.length > 0) {
-      this.setState({ currentLink: this._getRandomLink(newProps.links) });
-      this._setTimeout(newProps.links);
-    }
-  }
-
   render() {
-    const { links, size, fetched } = this.props;
+    const { links, size, fetched, timeslot } = this.props;
     const { currentLink, optionsOpen } = this.state;
     if (!fetched) {
       return <div />;
@@ -112,6 +106,12 @@ class Banner extends Component<IBannerProps, IBannerState> {
             </Switch.Case>
           </Switch>
         </div>
+        <RandomLinkProvider
+          ref={(ref: RandomLinkProvider) => this.linkProvider = ref}
+          links={links}
+          timeslot={timeslot}
+          onLink={this._onLink}
+        />
         <RootModal />
         <RootToast />
       </div>
@@ -133,52 +133,15 @@ class Banner extends Component<IBannerProps, IBannerState> {
   }
 
   _onPrevClick = () => {
-    const { links } = this.props;
-    const { currentLink } = this.state;
-    if (currentLink) {
-      const currentIndex = links.indexOf(currentLink);
-
-      this.setState({
-        currentLink: links[currentIndex - 1 < 0 ? links.length - 1 : currentIndex - 1],
-      }, () => this._setTimeout(this.props.links));
-    }
+    this.linkProvider.prev();
   }
 
   _onNextClick = () => {
-    const { links } = this.props;
-    const { currentLink } = this.state;
-    if (currentLink) {
-      const currentIndex = links.indexOf(currentLink);
-
-      this.setState({
-        currentLink: links[currentIndex + 1 >= links.length ? 0 : currentIndex + 1],
-      }, () => this._setTimeout(this.props.links));
-    }
+    this.linkProvider.next();
   }
 
-  _setTimeout(links) {
-    if (this._timeout) {
-      clearTimeout(this._timeout);
-    }
-
-    this._timeout = window.setTimeout(() => {
-      this.setState({
-        currentLink: this._getRandomLink(links),
-      }, () => this._setTimeout(this.props.links));
-    }, this.props.timeslot * 1000);
-  }
-
-  _getRandomLink(links: ILink[]) {
-    let randomScore = Math.random() * links.reduce((acc, { score }) => acc + score, 0);
-
-    if (randomScore === 0) {
-      return links[Math.round(Math.random() * (links.length - 1))];
-    }
-
-    return links.find(({ score }) => {
-      randomScore -= score;
-      return randomScore < 0;
-    });
+  _onLink = (currentLink: ILink) => {
+    this.setState({ currentLink });
   }
 }
 

@@ -6,7 +6,7 @@ import * as style from './icon.scss';
 
 type TIconProps = React.HTMLAttributes<HTMLSpanElement> & {
   name: string;
-  type: string;
+  type?: string;
 };
 
 const Icon: React.StatelessComponent<TIconProps> = ({ name, className, ...restProps }) => (
