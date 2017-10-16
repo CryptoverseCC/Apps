@@ -17,6 +17,7 @@ interface IWhitelistProps {
 interface IWhitelistState {
   links: any[];
   fetching: boolean;
+  apiUrl: string;
   asset: string;
   assetFromParams: boolean;
   recipientAddress: string;
@@ -36,6 +37,7 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
     this.state = {
       links: [],
       fetching: false,
+      apiUrl: params.get('apiUrl') || 'https://api.userfeeds.io',
       asset: params.get('asset') || '',
       recipientAddress: params.get('recipientAddress') || '',
       algorithm: params.get('algorithm') || 'links',
@@ -86,17 +88,15 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
   }
 
   _fetchLinks = debounce(async () => {
-    const { recipientAddress, algorithm, whitelist, asset } = this.state;
+    const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
 
     this.setState({ fetching: true });
 
-    const baseURL = 'https://api.userfeeds.io/ranking';
-
     try {
-      const allLinksRequest = fetch(`${baseURL}/${asset}:${recipientAddress}/${algorithm}/`)
+      const allLinksRequest = fetch(`${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`)
         .then((res) => res.json());
-      const whitelistParam = whitelist ? `?whitelist=${asset}:${whitelist}` : '';
-      const whitelistedLinksRequest = fetch(`${baseURL}/${asset}:${recipientAddress}/${algorithm}/${whitelistParam}`)
+      const whitelistParam = whitelist ? `?whitelist=${whitelist}` : '';
+      const whitelistedLinksRequest = fetch(`${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/${whitelistParam}`)
         .then((res) => res.json());
 
       const [allLinks, whitelistedLinks] = await Promise.all([

@@ -48,6 +48,7 @@ interface IStatusProps {
 
 interface IStatusState {
   mobileOrTablet: boolean;
+  apiUrl: string;
   link?: any;
   linkId: string;
   asset: string;
@@ -69,6 +70,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     super(props);
     const params = new URLSearchParams(props.location.search);
 
+    const apiUrl = params.get('apiUrl') || 'https://api.userfeeds.io';
     const recipientAddress = params.get('recipientAddress') || '';
     const asset = params.get('asset') || '';
     const algorithm = params.get('algorithm') || '';
@@ -79,6 +81,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
 
     this.state = {
       mobileOrTablet: mobileOrTablet(),
+      apiUrl,
       linkId,
       recipientAddress,
       asset,
@@ -154,16 +157,14 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   }
 
   // ToDo fix - when network is unavailable
-  _fetchLinks = async (recipientAddress, asset, algorithm, whitelist) => {
-    const baseURL = 'https://api.userfeeds.io/ranking';
-
+  _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
     try {
       const allLinksRequest = fetch(
-        `${baseURL}/${asset}:${recipientAddress}/${algorithm}/`,
+        `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`,
         { cache: 'no-store' })
         .then((res) => res.json());
       const whitelistedLinksRequest = fetch(
-        `${baseURL}/${asset}:${recipientAddress}/${algorithm}/?whitelist=${asset}:${whitelist}`,
+        `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/?whitelist=${whitelist}`,
         { cache: 'no-store' })
         .then((res) => res.json());
 
