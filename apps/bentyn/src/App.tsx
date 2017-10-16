@@ -26,7 +26,6 @@ const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 type TAppProps = typeof State2Props & typeof Dispatch2Props;
 
-
 class App extends Component<TAppProps, IAppState> {
 
   state: IAppState = {};
