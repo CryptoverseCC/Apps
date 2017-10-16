@@ -1,3 +1,26 @@
 .self {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: white;
+  font-weight: 700;
 
+  .token {
+    margin-left: auto;
+  }
+
+  .tokenSymbol {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5em;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: monospace;
+    width: 3em;
+    height: 3em;
+    border-radius: 3em;
+    background-color: white;
+    color: black;
+  }
 }

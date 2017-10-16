@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import qs from 'qs';
 
+import './styles/all.scss';
 import getStore from './store';
 import App from './App';
 
