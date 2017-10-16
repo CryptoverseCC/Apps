@@ -3,20 +3,25 @@ import * as memoize from 'lodash/memoize';
 
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
-import { IRootState } from '../ducks';
+import { ILinksState, IWidgetState } from '../ducks';
+
+interface IState {
+  links: ILinksState;
+  widget: IWidgetState;
+}
 
 const hashFunction = (...args) => args.reduce((acc, val) => acc + '-' + JSON.stringify(val), '');
 
 // ToDo optimize this?
 const createSelector = createSelectorCreator(memoize, hashFunction);
 
-const whitelistedLinks = ({ links }: IRootState) => links.links;
-const allLinks = ({ links }: IRootState) => links.allLinks;
+const whitelistedLinks = ({ links }: IState) => links.links;
+const allLinks = ({ links }: IState) => links.allLinks;
 
 export const visibleLinks = createSelector(
   whitelistedLinks,
   allLinks,
-  ({ widget }: IRootState) => widget,
+  ({ widget }: IState) => widget,
   (whitelistedLinks, allLinks, widget) => {
     if (widget.whitelist !== '') {
       return calculateProbabilities(whitelistedLinks.slice(0, widget.slots));
