@@ -96,7 +96,8 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
       const allLinksRequest = fetch(`${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`)
         .then((res) => res.json());
       const whitelistParam = whitelist ? `?whitelist=${whitelist}` : '';
-      const whitelistedLinksRequest = fetch(`${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/${whitelistParam}`)
+      const fullWhitelistUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/${whitelistParam}`;
+      const whitelistedLinksRequest = fetch(fullWhitelistUrl)
         .then((res) => res.json());
 
       const [allLinks, whitelistedLinks] = await Promise.all([
