@@ -6,7 +6,7 @@ import * as style from './icon.scss';
 
 type TIconProps = React.HTMLAttributes<HTMLSpanElement> & {
   name: string;
-  type?: string;
+  displayName?: string;
 };
 
 const Icon: React.StatelessComponent<TIconProps> = ({ name, className, ...restProps }) => (
@@ -18,6 +18,6 @@ const Icon: React.StatelessComponent<TIconProps> = ({ name, className, ...restPr
   />
 );
 
-Icon.defaultProps = { type: 'Icon' };
+Icon.defaultProps = { displayName: 'Icon' };
 
 export default Icon;

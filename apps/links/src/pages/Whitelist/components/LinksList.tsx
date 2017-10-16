@@ -1,46 +1,61 @@
 import React from 'react';
-
-import web3 from '@userfeeds/utils/src/web3';
-
-import Button from '@userfeeds/apps-components/src/Button';
-
 import * as style from './linksList.scss';
+import BoldText from '@userfeeds/apps-components/src/BoldText';
+import A from './A';
+import Button from './Button';
+import Icon from '@userfeeds/apps-components/src/Icon';
 
-const noop = () => null;
-
-interface ILinkProps {
-  link: any;
-  onClick(item: any): void;
+interface ILink {
+  sentBy: string;
+  title: string;
+  description: string;
+  link: string;
+  totalSpent: string;
+  onClick: () => any;
 }
 
-const Ad = ({ link, onClick }: ILinkProps) => (
-  <div className={style.row}>
-    <div>
-      <div>URL: <a href={link.target}>{link.target}</a></div>
-      <div>score: {web3.fromWei(link.score, 'ether')}</div>
-      <div>{link.title}</div>
-      <div>{link.summary}</div>
-    </div>
-    <div className={style.button}>
-      <Button
-        onClick={onClick.bind(null, link)}
-        disabled={link.whitelisted}
-      >
-        Add to whitelist
-      </Button>
-    </div>
-  </div>
-);
-
-interface ILinksListProps {
-  links: any[];
-  onItemClick?: (item: any) => void;
-}
-
-const LinksList = ({ links = [], onItemClick = noop }: ILinksListProps) => (
-  <div className={style.self}>
-    {links.map((ad) => (<Ad link={ad} onClick={onItemClick} />))}
-  </div>
-);
+const LinksList = (props: { links: ILink[] }) => {
+  return (
+    <table className={style.Table}>
+      <thead>
+        <tr>
+          <th>
+            <BoldText>Sent by</BoldText>
+          </th>
+          <th>
+            <BoldText>Content</BoldText>
+          </th>
+          <th>
+            <BoldText>Total spent</BoldText>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.links.map((link) => (
+          <tr>
+            <td>
+              <A bold href={`https://etherscan.io/address/${link.sentBy}`}>
+                {link.sentBy}
+              </A>
+            </td>
+            <td>
+              <b>{link.title}</b>
+              <p style={{ color: '#89939F', margin: 0 }}>{link.description}</p>
+              <A>{link.link}</A>
+            </td>
+            <td style={{ minWidth: '140px' }}>
+              <b>{link.totalSpent}</b>
+            </td>
+            <td style={{ minWidth: '200px' }}>
+              <Button onClick={link.onClick}>
+                <Icon classname="check" /> Accept
+              </Button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 export default LinksList;

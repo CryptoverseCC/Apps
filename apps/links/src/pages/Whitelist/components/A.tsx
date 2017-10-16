@@ -5,11 +5,12 @@ import classnames from 'classnames';
 interface IProps {
   className?: string;
   children?: string | JSX.Element;
+  bold?: boolean;
   href?: string;
 }
 
-const A = ({ className, ...props }: IProps) => (
-  <a className={classnames(styles.self, className)} {...props} />
+const A = ({ className, bold, ...props }: IProps = { bold: false }) => (
+  <a className={classnames(styles.self, className, { [styles.bold]: bold })} {...props} />
 );
 
 export default A;

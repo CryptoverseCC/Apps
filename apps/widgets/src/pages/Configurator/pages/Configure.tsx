@@ -6,7 +6,7 @@ import { input as fieldInput } from '../components/field.scss';
 import { Field, Title, Description, RadioGroup } from '../components/Field';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 import CreateWidget from '../components/CreateWidget';
-import NewToken, { WIDGET_NETWORKS } from '../components/Asset';
+import Asset, { WIDGET_NETWORKS } from '../components/Asset';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
@@ -106,38 +106,22 @@ export default class Configurator extends Component<IProps, IState> {
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Add description here about userfeed address</Description>
-          <Input
-            type="text"
-            className={fieldInput}
-            value={recipientAddress}
-            onChange={onChange('recipientAddress')}
-          />
+          <Input type="text" value={recipientAddress} onChange={onChange('recipientAddress')} />
         </Field>
         <Field>
           <Title>Whitelist</Title>
           <Description>Add description here about whitelist identifier</Description>
-          <Input
-            type="text"
-            className={fieldInput}
-            value={whitelistId}
-            onChange={onChange('whitelistId')}
-          />
+          <Input type="text" value={whitelistId} onChange={onChange('whitelistId')} />
         </Field>
         <Field>
           <Title>Title</Title>
           <Description>Add description here about title</Description>
-          <Input type="text" className={fieldInput} value={title} onChange={onChange('title')} />
+          <Input type="text" value={title} onChange={onChange('title')} />
         </Field>
         <Field>
           <Title>Description</Title>
           <Description>Add description here about description</Description>
-          <Input
-            type="text"
-            className={fieldInput}
-            multiline
-            value={description}
-            onChange={onChange('description')}
-          />
+          <Input type="text" multiline value={description} onChange={onChange('description')} />
         </Field>
         <Field>
           <Title>Declared Amount of Impressions</Title>
@@ -158,12 +142,7 @@ export default class Configurator extends Component<IProps, IState> {
         </Field>
         <Field>
           <Title>Preferred Contact Method</Title>
-          <Input
-            type="text"
-            className={fieldInput}
-            value={contactMethod}
-            onChange={onChange('contactMethod')}
-          />
+          <Input type="text" value={contactMethod} onChange={onChange('contactMethod')} />
         </Field>
         <Field>
           <Title>Select Size</Title>
@@ -197,7 +176,7 @@ export default class Configurator extends Component<IProps, IState> {
           <Title>Choose token</Title>
           <Description>I think it would be nice to put here a short description</Description>
           <div className={fieldInput}>
-            <NewToken
+            <Asset
               asset={asset}
               onChange={(asset) => {
                 this.setState({ asset });
@@ -209,7 +188,6 @@ export default class Configurator extends Component<IProps, IState> {
           <Title>Choose algorithm</Title>
           <Description>Add description here about algorithms</Description>
           <Dropdown
-            className={fieldInput}
             disabled
             placeholder="Algorithm"
             value={algorithm}

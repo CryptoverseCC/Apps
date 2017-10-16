@@ -3,7 +3,15 @@ import classnames from 'classnames';
 import BoldText from '@userfeeds/apps-components/src/BoldText';
 import * as styles from './field.scss';
 
-export const Field = (props) => <div {...props} className={styles.Field} />;
+export const Field = ({ children, ...props }) => (
+  <div {...props} className={styles.Field}>
+    {React.Children.map(children, (child) => {
+      return child && child.props && child.props.displayName === 'Input'
+        ? React.cloneElement(child, { className: styles.Input })
+        : child;
+    })}
+  </div>
+);
 
 export const Title = ({ children }) => <BoldText className={styles.Header}>{children}</BoldText>;
 
