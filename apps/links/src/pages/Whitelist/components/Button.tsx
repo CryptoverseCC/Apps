@@ -8,7 +8,7 @@ const Button = ({ children, ...props }) => {
       : child;
   });
   return (
-    <button className={style.Button}>
+    <button className={style.Button} {...props}>
       <div className={style.ButtonInnerWrapper}>{decoratedChildren}</div>
     </button>
   );

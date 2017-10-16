@@ -12,6 +12,7 @@ interface ILink {
   link: string;
   totalSpent: string;
   onClick: () => any;
+  id: string;
 }
 
 const LinksList = (props: { links: ILink[] }) => {
@@ -32,7 +33,7 @@ const LinksList = (props: { links: ILink[] }) => {
       </thead>
       <tbody>
         {props.links.map((link) => (
-          <tr>
+          <tr key={link.id}>
             <td>
               <A bold href={`https://etherscan.io/address/${link.sentBy}`}>
                 {link.sentBy}
@@ -41,7 +42,7 @@ const LinksList = (props: { links: ILink[] }) => {
             <td>
               <b>{link.title}</b>
               <p style={{ color: '#89939F', margin: 0 }}>{link.description}</p>
-              <A>{link.link}</A>
+              <A href={link.link}>{link.link}</A>
             </td>
             <td style={{ minWidth: '140px' }}>
               <b>{link.totalSpent}</b>
