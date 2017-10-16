@@ -100,7 +100,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
 
     const setTimeoutForFetch = (timeout: number | undefined) => {
       setTimeout(() => {
-        this._fetchLinks(recipientAddress, asset, algorithm, whitelist)
+        this._fetchLinks(apiUrl, recipientAddress, asset, algorithm, whitelist)
           .then(this._findLinkById(linkId))
           .then((link) => link && !link.whitelisted && setTimeoutForFetch(5000));
       }, timeout);
