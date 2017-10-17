@@ -14,6 +14,8 @@ import {
 } from '../../../../widgets/src/pages/Configurator/components/Field';
 import { input as fieldInput } from '../../../../widgets/src/pages/Configurator/components/field.scss';
 import Input from '../../../../widgets/src/pages/Configurator/components/Input';
+import Icon from '@userfeeds/apps-components/src/Icon';
+import Loader from '@userfeeds/apps-components/src/Loader';
 import Asset, {
   WIDGET_NETWORKS,
 } from '../../../../widgets/src/pages/Configurator/components/Asset';
@@ -110,16 +112,64 @@ export default class Whitelist extends Component<IProps, IState> {
           <div className={style.head}>
             <h2 className={style.header}>
               Waiting for approval
-              <Pill className={style.counter}>{this.state.links.length}</Pill>
+              {this._linksWaitingForApproval().length > 0 && (
+                <Pill className={style.counter}>{this._linksWaitingForApproval().length}</Pill>
+              )}
             </h2>
           </div>
           <div className={style.body}>
-            <LinksList links={this.state.links} />
+            {this.state.fetching ? (
+              <Loader
+                containerStyle={{
+                  margin: '20px auto',
+                }}
+              />
+            ) : this._linksWaitingForApproval().length > 0 ? (
+              <LinksList links={this._linksWaitingForApproval()} />
+            ) : (
+              <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
+                <Icon name="link-broken" style={{ fontSize: '50px', opacity: '0.5' }} />
+                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
+                  There are no links matching this data
+                </h3>
+              </div>
+            )}
+          </div>
+        </Paper>
+        <Paper className={style.container}>
+          <div className={style.head}>
+            <h2 className={style.header}>
+              Approved
+              {this._linksApproved().length > 0 && (
+                <Pill className={style.counter}>{this._linksApproved().length}</Pill>
+              )}
+            </h2>
+          </div>
+          <div className={style.body}>
+            {this.state.fetching ? (
+              <Loader
+                containerStyle={{
+                  margin: '20px auto',
+                }}
+              />
+            ) : this._linksApproved().length > 0 ? (
+              <LinksList links={this._linksApproved()} />
+            ) : (
+              <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
+                <Icon name="link-broken" style={{ fontSize: '50px', opacity: '0.5' }} />
+                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
+                  There are no links matching this data
+                </h3>
+              </div>
+            )}
           </div>
         </Paper>
       </div>
     );
   }
+
+  _linksWaitingForApproval = () => this.state.links.filter((link) => !link.whitelisted);
+  _linksApproved = () => this.state.links.filter((link) => link.whitelisted);
 
   _onChange = (key) => (e) => {
     this.setState({ [key]: e.target.value }, () => {
@@ -129,12 +179,12 @@ export default class Whitelist extends Component<IProps, IState> {
 
   _onOldChange = (key) => (value) => {
     this.setState({ [key]: value }, () => {
-      this._debouncedFetchLinks();
+      this._fetchLinks();
     });
   }
 
   _fetchLinks = async () => {
-    this.setState({ fetching: true });
+    this.setState({ fetching: true, links: [] });
     try {
       const [allLinks, whitelistedLinks] = await Promise.all([
         this._fetchAllLinks(),
@@ -166,18 +216,18 @@ export default class Whitelist extends Component<IProps, IState> {
     const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
     const assetString = asset.token ? `${asset.network}:${asset.token}` : asset.network;
 
-    return fetch(`${apiUrl}/ranking/${assetString}:${recipientAddress}/${algorithm}/`).then((res) =>
-      res.json(),
-    );
+    return fetch(
+      `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`,
+    ).then((res) => res.json());
   }
 
   _fetchWhitelistedLinks = async () => {
-    const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
+    const { apiUrl, recipientAddress, algorithm, whitelistId, asset } = this.state;
     const assetString = asset.token ? `${asset.network}:${asset.token}` : asset.network;
-    const whitelistParam = whitelist ? `?whitelist=${whitelist}` : '';
+    const whitelistParam = whitelistId ? `?whitelist=${whitelistId.toLowerCase()}` : '';
 
     return fetch(
-      `${apiUrl}/ranking/${assetString}:${recipientAddress}/${algorithm}/${whitelistParam}`,
+      `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/${whitelistParam}`,
     ).then((res) => res.json());
   }
 

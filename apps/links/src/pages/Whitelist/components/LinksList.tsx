@@ -13,6 +13,7 @@ interface ILink {
   totalSpent: string;
   onClick: () => any;
   id: string;
+  whitelisted: boolean;
 }
 
 const LinksList = (props: { links: ILink[] }) => {
@@ -34,7 +35,7 @@ const LinksList = (props: { links: ILink[] }) => {
       <tbody>
         {props.links.map((link) => (
           <tr key={link.id}>
-            <td>
+            <td style={{ width: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               <A bold href={`https://etherscan.io/address/${link.sentBy}`}>
                 {link.sentBy}
               </A>
@@ -44,14 +45,16 @@ const LinksList = (props: { links: ILink[] }) => {
               <p style={{ color: '#89939F', margin: 0 }}>{link.description}</p>
               <A href={link.link}>{link.link}</A>
             </td>
-            <td style={{ minWidth: '140px' }}>
+            <td style={{ width: '140px' }}>
               <b>{link.totalSpent}</b>
             </td>
-            <td style={{ minWidth: '200px' }}>
-              <Button onClick={link.onClick}>
-                <Icon classname="check" /> Accept
-              </Button>
-            </td>
+            {!link.whitelisted && (
+              <td style={{ width: '200px', textAlign: 'right' }}>
+                <Button onClick={link.onClick}>
+                  <Icon classname="check" /> Accept
+                </Button>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
