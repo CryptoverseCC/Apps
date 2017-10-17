@@ -13,7 +13,7 @@ export default class LinkProvider extends PureComponent<ILinkProviderProps> {
 
   static defaultProps = {
     minTimeslot: 1000,
-    timeslot: 5 * 1000 * 60,
+    timeslot: 5 * 1000,
   };
 
   _timeout: number | null = null;
@@ -50,14 +50,11 @@ export default class LinkProvider extends PureComponent<ILinkProviderProps> {
       clearTimeout(this._timeout);
     }
 
-    const totalScore = links.reduce((acc, { score }) => acc + score, 0);
-    if (totalScore === 0) {
-      this._timeouts = links.map(() => 1 / links.length * this.props.timeslot);
-    } else {
-      this._timeouts = links
-        .map(({ score }) => score / totalScore * this.props.timeslot)
-        .filter((timeout) => timeout > this.props.minTimeslot);
-    }
+    this._timeouts = calculateTimeSlots(
+      links.map(({ score }) => score),
+      this.props.timeslot!,
+      this.props.minTimeslot!,
+    );
 
     this._run(0, links);
   }
@@ -96,5 +93,5 @@ export const calculateTimeSlots = (scores: number[], totalTime: number, shortest
     toDistribute = totalTime - roundedDownProbabilities.reduce((acc, probability) => acc + probability, 0);
   }
 
-  return scores.map((link, i) => roundedDownProbabilities[i] || 0);
+  return roundedDownProbabilities;
 };

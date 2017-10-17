@@ -42,6 +42,6 @@ describe('basic', () => {
     expect(result[0]).toBe(5);
     expect(result[1]).toBe(5);
     expect(result[2]).toBe(5);
-    expect(result[3]).toBe(0);
+    expect(result[3]).toBeUndefined();
   });
 });
