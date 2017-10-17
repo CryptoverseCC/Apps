@@ -16,7 +16,7 @@
     "no-shadowed-variable": false,
     "member-ordering": [false],
     "no-console": [true, "log", "error"],
-    "max-classes-per-file": [true, 2]
+    "max-classes-per-file": [true, 3]
   },
   "rulesDirectory": []
 }

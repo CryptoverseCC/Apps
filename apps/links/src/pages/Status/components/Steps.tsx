@@ -1,3 +1,4 @@
+import { findDOMNode } from 'react-dom';
 import React, { Component, PureComponent } from 'react';
 import classnames from 'classnames/bind';
 
@@ -29,39 +30,64 @@ class Step extends PureComponent<IStepProps> {
   }
 }
 
-const Progress = ({ step0State, step1State, step2State,
-  step0Ref, step1Ref, step2Ref }) => {
+interface IProgressProps {
+  step0State: string;
+  step1State: string;
+  step2State: string;
+  step0Ref: any;
+  step1Ref: any;
+  step2Ref: any;
+}
 
-  const lastDoneStep = [step2State, step1State, step0State].indexOf('done');
-  const lastDoneElement = [step2Ref, step1Ref, step0Ref][lastDoneStep];
+interface IProgressState {
+  fillStyle?: any;
+}
 
-  const fillStyle = {
-    width: 0,
-    height: 0,
-    maxWidth: 0,
-    maxHeight: 0,
-  };
+class Progress extends Component<IProgressProps, IProgressState> {
 
-  if (lastDoneElement) {
-    const rowDirection = step0Ref.base.offsetTop === step1Ref.base.offsetTop;
+  state: IProgressState = {};
 
-    fillStyle.width = fillStyle.maxWidth = rowDirection
-      ? lastDoneElement.base.offsetLeft + lastDoneElement.base.offsetWidth / 2
-      : '100%';
+  componentWillReceiveProps(newProps) {
+    const { step0State, step1State, step2State, step0Ref, step1Ref, step2Ref } = newProps;
 
-    fillStyle.height = fillStyle.maxHeight = !rowDirection
-      ? lastDoneElement.base.offsetTop + lastDoneElement.base.offsetHeight / 2
-      : '100%';
+    const lastDoneStep = [step2State, step1State, step0State].indexOf('done');
+    const lastDoneElement = [step2Ref, step1Ref, step0Ref][lastDoneStep];
+
+    const fillStyle = {
+      width: '0',
+      height: '0',
+      maxWidth: '0',
+      maxHeight: '0',
+    };
+
+    if (lastDoneElement) {
+      const step0DOMNode = findDOMNode(step0Ref) as HTMLElement;
+      const step1DOMNode = findDOMNode(step1Ref) as HTMLElement;
+      const lastDoneDOMNode = findDOMNode(lastDoneElement) as HTMLElement;
+      const rowDirection = step0DOMNode.offsetTop === step1DOMNode.offsetTop;
+
+      fillStyle.width = fillStyle.maxWidth = rowDirection
+        ? `${lastDoneDOMNode.offsetLeft + lastDoneDOMNode.offsetWidth / 2}px`
+        : '100%';
+
+      fillStyle.height = fillStyle.maxHeight = !rowDirection
+        ? `${lastDoneDOMNode.offsetTop + lastDoneDOMNode.offsetHeight / 2}px`
+        : '100%';
+    }
+
+    this.setState({ fillStyle });
   }
 
-  return (
-    <div className={style.progressCotainer}>
-      <div className={style.progress}>
-        <div className={style.progressFill} style={fillStyle} />
+  render() {
+    return (
+      <div className={style.progressCotainer}>
+        <div className={style.progress}>
+          <div className={style.progressFill} style={this.state.fillStyle} />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 interface IStepsProps {
   link?: any;

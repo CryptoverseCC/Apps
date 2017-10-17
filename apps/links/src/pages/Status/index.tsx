@@ -96,6 +96,10 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       },
     };
 
+  }
+
+  componentDidMount() {
+    const { linkId, apiUrl, recipientAddress, asset, algorithm, whitelist } = this.state;
     this._observeBlockchainState(linkId);
 
     const setTimeoutForFetch = (timeout: number | undefined) => {
@@ -107,6 +111,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     };
 
     setTimeoutForFetch(0);
+
   }
 
   render() {
@@ -160,11 +165,11 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
     try {
       const allLinksRequest = fetch(
-        `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`,
+        `${apiUrl}/ranking/${asset.toLowerCase()}:${recipientAddress.toLowerCase()}/${algorithm}/`,
         { cache: 'no-store' })
         .then((res) => res.json());
       const whitelistedLinksRequest = fetch(
-        `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/?whitelist=${whitelist}`,
+        `${apiUrl}/ranking/${asset}:${recipientAddress.toLowerCase()}/${algorithm}/?whitelist=${whitelist}`,
         { cache: 'no-store' })
         .then((res) => res.json());
 
@@ -210,7 +215,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   }
 
   _findLinkById = (linkId) => (links) => {
-    const link = links.find((l) => l.id === linkId);
+    const link = links.find((l) => l.id.startsWith(linkId));
     this.setState({ link });
 
     return link;
