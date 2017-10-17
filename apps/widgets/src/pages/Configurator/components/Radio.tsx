@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import * as RadioStyles from './radio.scss';
 import Pill from './Pill';
+import { isType } from '@userfeeds/utils/src/index';
 
 type TRadio = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
   checked?: boolean;
@@ -14,11 +15,11 @@ const Radio = ({ checked, disabled, soon, children, className, style, ...props }
     [RadioStyles.checked]: checked,
     [RadioStyles.disabled]: disabled,
   });
-  const decoratedChildren = React.Children.map(children, (child) => {
-    return child && child.props && child.props.displayName === 'Icon'
-      ? React.cloneElement(child, { className: RadioStyles.Icon })
-      : child;
-  });
+  const decoratedChildren = React.Children.map(
+    children,
+    (child) =>
+      isType(child, 'Icon') ? React.cloneElement(child, { className: RadioStyles.Icon }) : child,
+  );
   return (
     <label className={labelClassNames} style={style}>
       <input

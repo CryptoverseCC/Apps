@@ -33,7 +33,10 @@ export const WIDGET_NETWORKS = [
       { value: '0xaec2e87e0a235266d9c5adc9deb4b2e29b54d009', label: 'SingularDTV (SNGLS)' },
       { value: '0xb63b606ac810a52cca15e44bb630fd42d8d1d83d', label: 'Monaco (MCO)' },
       { value: '0x960b236A07cf122663c4303350609A66A7B288C0', label: 'Aragon Network Token (ANT)' },
-      { value: '0x108c05cac356d93b351375434101cfd3e14f7e44', label: 'Token of Szczepan Bentyn (BEN)' },
+      {
+        value: '0x108c05cac356d93b351375434101cfd3e14f7e44',
+        label: 'Token of Szczepan Bentyn (BEN)',
+      },
       OTHER_ERC20_TOKEN,
     ],
   },
@@ -125,7 +128,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     const token =
       WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === value)].tokens[0].value;
     this.setState({ token, tokenAddress: token }, () => {
-      this.props.onChange({ network: value, token: this.state.tokenAddress });
+      this.props.onChange({ network: value, token: this.state.tokenAddress || '' });
     });
   }
 
@@ -135,8 +138,8 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     this.props.onChange({ token, network: this.props.asset.network });
   }
 
-  _onAddressChange = (e: Event) => {
-    const value = e.target.value;
+  _onAddressChange = (e: React.FormEvent<any>) => {
+    const { value } = e.currentTarget;
     this.setState({ tokenAddress: value });
     this.props.onChange({ token: value, network: this.props.asset.network });
   }

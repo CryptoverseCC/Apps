@@ -1,15 +1,16 @@
 import React from 'react';
 import classnames from 'classnames';
 import BoldText from '@userfeeds/apps-components/src/BoldText';
+import { isType } from '@userfeeds/utils/src/index';
 import * as styles from './field.scss';
 
 export const Field = ({ children, ...props }) => (
   <div {...props} className={styles.Field}>
-    {React.Children.map(children, (child) => {
-      return child && child.props && child.props.displayName === 'Input'
-        ? React.cloneElement(child, { className: styles.Input })
-        : child;
-    })}
+    {React.Children.map(
+      children,
+      (child) =>
+        isType(child, 'Input') ? React.cloneElement(child, { className: styles.Input }) : child,
+    )}
   </div>
 );
 
@@ -21,7 +22,7 @@ export const Error = ({ children }) => <p className={styles.Error}>{children}</p
 
 export const RadioGroup = ({ children, radioWidth, onChange, value, name }) => (
   <div className={styles.inputGroup}>
-    {React.Children.map(children, (radio) =>
+    {React.Children.map(children, (radio: React.ReactElement<any>) =>
       React.cloneElement(radio, {
         className: styles.Input,
         style: { width: radioWidth },

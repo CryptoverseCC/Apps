@@ -51,7 +51,7 @@ const LinksList = (props: { links: ILink[] }) => {
             {!link.whitelisted && (
               <td style={{ width: '200px', textAlign: 'right' }}>
                 <Button onClick={link.onClick}>
-                  <Icon classname="check" /> Accept
+                  <Icon name="check" /> Accept
                 </Button>
               </td>
             )}

@@ -46,16 +46,19 @@ export default class Whitelist extends Component<IProps, IState> {
     super(props);
 
     const params = new URLSearchParams(props.location.search);
-    const asset = params.get('asset')
-      ? {
-          network: params.get('asset').split(':')[0],
-          token: params.get('asset').split(':')[1],
-        }
-      : {
-          token: WIDGET_NETWORKS[0].tokens[0].value,
-          network: WIDGET_NETWORKS[0].value,
-        };
-
+    const paramsAsset = params.get('asset');
+    let asset;
+    if (paramsAsset) {
+      asset = {
+        network: paramsAsset.split(':')[0],
+        token: paramsAsset.split(':')[1],
+      };
+    } else {
+      asset = {
+        token: WIDGET_NETWORKS[0].tokens[0].value,
+        network: WIDGET_NETWORKS[0].value,
+      };
+    }
     this.state = {
       links: [],
       fetching: false,
@@ -128,7 +131,7 @@ export default class Whitelist extends Component<IProps, IState> {
               <LinksList links={this._linksWaitingForApproval()} />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
-                <Icon name="link-broken" style={{ fontSize: '50px', opacity: '0.5' }} />
+                <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
                 <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
                   There are no links matching this data
                 </h3>
@@ -156,7 +159,7 @@ export default class Whitelist extends Component<IProps, IState> {
               <LinksList links={this._linksApproved()} />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
-                <Icon name="link-broken" style={{ fontSize: '50px', opacity: '0.5' }} />
+                <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
                 <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
                   There are no links matching this data
                 </h3>
@@ -213,7 +216,7 @@ export default class Whitelist extends Component<IProps, IState> {
   }
 
   _fetchAllLinks = async () => {
-    const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
+    const { apiUrl, recipientAddress, algorithm, asset } = this.state;
     const assetString = asset.token ? `${asset.network}:${asset.token}` : asset.network;
 
     return fetch(

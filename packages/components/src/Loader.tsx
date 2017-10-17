@@ -11,7 +11,7 @@ interface ILoaderProps {
 
 const Loader = ({ className, containerClassName, containerStyle }: ILoaderProps) => {
   return (
-    <div className={classnames(style.container, containerClassName)} style={containerStyle}>
+    <div className={classnames(containerClassName)} style={containerStyle}>
       <div className={classnames(style.self, className)} />
     </div>
   );
