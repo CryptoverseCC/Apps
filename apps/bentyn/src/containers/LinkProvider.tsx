@@ -5,7 +5,7 @@ import { ILink } from '@userfeeds/types/link';
 interface ILinkProviderProps {
   onLink(link: ILink): void;
   links: ILink[];
-  minTimeslot?; number;
+  minTimeslot?: number;
   timeslot?: number;
 }
 

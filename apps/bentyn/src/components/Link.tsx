@@ -7,14 +7,14 @@ import { ILink } from '@userfeeds/types/link';
 import * as style from './link.scss';
 
 interface ILinkProps {
-  tokenSymbol: string;
+  tokenSymbol?: string;
   link: ILink;
 }
 
 const Link = ({ link, tokenSymbol}: ILinkProps) => (
   <div className={style.self}>
     <div>
-      <p>{link.title}: {link.summary}</p>
+      <p className={style.title}>{link.title}: {link.summary}</p>
       <a>{link.target}</a>
     </div>
     <div className={style.token}>
