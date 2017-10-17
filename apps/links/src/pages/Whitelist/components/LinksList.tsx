@@ -2,7 +2,7 @@ import React from 'react';
 import * as style from './linksList.scss';
 import BoldText from '@userfeeds/apps-components/src/BoldText';
 import A from './A';
-import Button from './Button';
+import Button from '@userfeeds/apps-components/src/NewButton';
 import Icon from '@userfeeds/apps-components/src/Icon';
 
 interface ILink {

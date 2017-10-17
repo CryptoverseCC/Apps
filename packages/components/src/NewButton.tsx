@@ -1,6 +1,6 @@
 import React from 'react';
 import { isType } from '@userfeeds/utils/src/index';
-import * as style from './button.scss';
+import * as style from './newButton.scss';
 
 const Button = ({ children, ...props }) => {
   const decoratedChildren = React.Children.map(
