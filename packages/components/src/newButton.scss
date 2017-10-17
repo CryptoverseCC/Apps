@@ -1,33 +1,77 @@
-.Button {
-  background-color: rgba(9, 213, 124, 0.2);
-  color: #07bb6c;
-  font-weight: bold;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 3px;
-  outline: none;
-  cursor: pointer;
-  box-shadow: 0 5px 10px 0 rgba(9, 213, 124, 0.2);
-  transition: color 0.1s linear, background-color 0.1s linear, box-shadow 0.1s linear;
+@import '../styles/colors';
 
-  &:active {
+.Button {
+  border: none;
+  outline: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border-radius: 3px;
+
+  &.medium {
+    padding: 12px 20px;
+  }
+
+  &.small {
+    padding: 2px 20px;
+    font-weight: normal;
+
+    .ButtonIcon {
+      margin-right: 5px;
+    }
+  }
+
+  &:disabled {
+    background-color: $dusty-gray;
+    opacity: 0.4;
+    cursor: not-allowed;
+    color: $white;
+  }
+
+  &.primary {
+    background-color: $dodger-blue;
+    color: $white;
+
+    &:active {
+      background-color: $dodger-blue;
+    }
+
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      cursor: pointer;
+      color: $white;
+      background-color: $dodger-blue;
+      box-shadow: 0px 5px 15px $shadow-button;
+      transform: translateY(-1px);
+    }
+  }
+
+  &.success {
+    background-color: rgba(9, 213, 124, 0.2);
+    color: #07bb6c;
+    font-weight: bold;
+
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      color: white;
+      background-color: rgba(9, 213, 124, 0.6);
+    }
+  }
+
+  &.outline {
+    border: 1px solid #d9e0e7;
+    background: none;
+    color: #89939f;
     box-shadow: none;
   }
 
-  &:hover,
-  &:focus {
-    color: white;
-    background-color: rgba(9, 213, 124, 0.6);
+  .ButtonIcon {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 8px;
   }
 }
 
 .ButtonInnerWrapper {
   display: flex;
   align-items: center;
-}
-
-.ButtonIcon {
-  display: inline-block;
-  margin-right: 5px;
-  font-size: 8px;
 }
