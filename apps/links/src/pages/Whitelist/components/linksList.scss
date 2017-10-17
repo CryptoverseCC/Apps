@@ -1,12 +1,13 @@
-.self {
-
-  .row {
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
+.Table {
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  tr {
+    vertical-align: top;
   }
 
-  .button {
-    margin-left: auto;
+  th,
+  td {
+    padding: 12px 20px;
   }
 }

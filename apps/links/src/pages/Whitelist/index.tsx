@@ -1,49 +1,74 @@
 import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
-
 import core from '@userfeeds/core/src';
 import web3 from '@userfeeds/utils/src/web3';
-
-import Input from '@userfeeds/apps-components/src/Input';
+import * as style from './whitelist.scss';
 import Paper from '@userfeeds/apps-components/src/Paper';
+import Link from '@userfeeds/apps-components/src/Link';
+import Pill from '../../../../widgets/src/pages/Configurator/components/Pill';
+import {
+  Field,
+  Title,
+  Description,
+  RadioGroup,
+} from '../../../../widgets/src/pages/Configurator/components/Field';
+import { input as fieldInput } from '../../../../widgets/src/pages/Configurator/components/field.scss';
+import Input from '../../../../widgets/src/pages/Configurator/components/Input';
+import Icon from '@userfeeds/apps-components/src/Icon';
+import Loader from '@userfeeds/apps-components/src/Loader';
+import Asset, {
+  WIDGET_NETWORKS,
+} from '../../../../widgets/src/pages/Configurator/components/Asset';
 import LinksList from './components/LinksList';
 
-import * as style from './whitelist.scss';
-
-interface IWhitelistProps {
-  location: any;
-}
-
-interface IWhitelistState {
+interface IState {
   links: any[];
   fetching: boolean;
   apiUrl: string;
-  asset: string;
-  assetFromParams: boolean;
   recipientAddress: string;
-  algorithm: string;
-  whitelist: string;
   recipientAddressFromParams: boolean;
-  whitelistFromParams: boolean;
+  whitelistId: string;
+  whitelistIdFromParams: boolean;
+  asset: {
+    token: string;
+    network: string;
+  };
+  assetFromParams: boolean;
+  algorithm: string;
 }
 
-export default class Creator extends Component<IWhitelistProps, IWhitelistState> {
+interface IProps {
+  location: any;
+}
 
+export default class Whitelist extends Component<IProps, IState> {
   constructor(props) {
     super(props);
 
     const params = new URLSearchParams(props.location.search);
-
+    const paramsAsset = params.get('asset');
+    let asset;
+    if (paramsAsset) {
+      asset = {
+        network: paramsAsset.split(':')[0],
+        token: paramsAsset.split(':')[1],
+      };
+    } else {
+      asset = {
+        token: WIDGET_NETWORKS[0].tokens[0].value,
+        network: WIDGET_NETWORKS[0].value,
+      };
+    }
     this.state = {
       links: [],
       fetching: false,
-      apiUrl: params.get('apiUrl') || 'https://api.userfeeds.io',
-      asset: params.get('asset') || '',
+      apiUrl: params.get('apiUrl') || 'https://api-dev.userfeeds.io',
+      asset,
       recipientAddress: params.get('recipientAddress') || '',
       algorithm: params.get('algorithm') || 'links',
-      whitelist: params.get('whitelist') || '',
+      whitelistId: params.get('whitelist') || '',
       recipientAddressFromParams: params.has('recipientAddress'),
-      whitelistFromParams: params.has('whitelist'),
+      whitelistIdFromParams: params.has('whitelist'),
       assetFromParams: params.has('asset'),
     };
   }
@@ -57,64 +82,159 @@ export default class Creator extends Component<IWhitelistProps, IWhitelistState>
   render() {
     return (
       <div className={style.self}>
-        <Paper className={style.paper}>
-          <Input
-            placeholder="Asset"
-            value={this.state.asset}
-            onInput={this._onChange('asset')}
-            disabled={this.state.assetFromParams}
-          />
-          <Input
-            placeholder="Recipient Address"
-            value={this.state.recipientAddress}
-            onInput={this._onChange('recipientAddress')}
-            disabled={this.state.recipientAddressFromParams}
-          />
-          <Input
-            placeholder="Whitelist"
-            value={this.state.whitelist}
-            onInput={this._onChange('whitelist')}
-            disabled={this.state.whitelistFromParams}
-          />
-          <LinksList links={this.state.links} onItemClick={this._onLinkClick} />
+        <Paper className={style.container}>
+          <div className={style.head}>
+            <h2 className={style.header}>Input the data for your whitelist</h2>
+          </div>
+          <div className={style.body} style={{ padding: '20px' }}>
+            <Field>
+              <Title>Recipient Address</Title>
+              <Input
+                type="text"
+                value={this.state.recipientAddress}
+                onChange={this._onChange('recipientAddress')}
+              />
+            </Field>
+            <Field>
+              <Title>Whitelist Address</Title>
+              <Input
+                type="text"
+                value={this.state.whitelistId}
+                onChange={this._onChange('whitelistId')}
+              />
+            </Field>
+            <Field>
+              <Title>Choose token</Title>
+              <div className={fieldInput}>
+                <Asset asset={this.state.asset} onChange={this._onOldChange('asset')} />
+              </div>
+            </Field>
+          </div>
+        </Paper>
+        <Paper className={style.container}>
+          <div className={style.head}>
+            <h2 className={style.header}>
+              Waiting for approval
+              {this._linksWaitingForApproval().length > 0 && (
+                <Pill className={style.counter}>{this._linksWaitingForApproval().length}</Pill>
+              )}
+            </h2>
+          </div>
+          <div className={style.body}>
+            {this.state.fetching ? (
+              <Loader
+                containerStyle={{
+                  margin: '20px auto',
+                }}
+              />
+            ) : this._linksWaitingForApproval().length > 0 ? (
+              <LinksList links={this._linksWaitingForApproval()} />
+            ) : (
+              <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
+                <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
+                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
+                  There are no links matching this data
+                </h3>
+              </div>
+            )}
+          </div>
+        </Paper>
+        <Paper className={style.container}>
+          <div className={style.head}>
+            <h2 className={style.header}>
+              Approved
+              {this._linksApproved().length > 0 && (
+                <Pill className={style.counter}>{this._linksApproved().length}</Pill>
+              )}
+            </h2>
+          </div>
+          <div className={style.body}>
+            {this.state.fetching ? (
+              <Loader
+                containerStyle={{
+                  margin: '20px auto',
+                }}
+              />
+            ) : this._linksApproved().length > 0 ? (
+              <LinksList links={this._linksApproved()} />
+            ) : (
+              <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
+                <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
+                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
+                  There are no links matching this data
+                </h3>
+              </div>
+            )}
+          </div>
         </Paper>
       </div>
     );
   }
 
-  _onChange = (fieldName) => (e) => {
-    this.setState({ [fieldName]: e.target.value });
-    this._fetchLinks();
+  _linksWaitingForApproval = () => this.state.links.filter((link) => !link.whitelisted);
+  _linksApproved = () => this.state.links.filter((link) => link.whitelisted);
+
+  _onChange = (key) => (e) => {
+    this.setState({ [key]: e.target.value }, () => {
+      this._debouncedFetchLinks();
+    });
   }
 
-  _fetchLinks = debounce(async () => {
-    const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
+  _onOldChange = (key) => (value) => {
+    this.setState({ [key]: value }, () => {
+      this._fetchLinks();
+    });
+  }
 
-    this.setState({ fetching: true });
-
+  _fetchLinks = async () => {
+    this.setState({ fetching: true, links: [] });
     try {
-      const allLinksRequest = fetch(`${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`)
-        .then((res) => res.json());
-      const whitelistParam = whitelist ? `?whitelist=${whitelist}` : '';
-      const fullWhitelistUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/${whitelistParam}`;
-      const whitelistedLinksRequest = fetch(fullWhitelistUrl)
-        .then((res) => res.json());
-
       const [allLinks, whitelistedLinks] = await Promise.all([
-        allLinksRequest,
-        whitelistedLinksRequest,
+        this._fetchAllLinks(),
+        this._fetchWhitelistedLinks(),
       ]);
 
       const links = allLinks.items.map((link) => {
         const whitelisted = !!whitelistedLinks.items.find((a) => link.id === a.id);
-
-        return { ...link, whitelisted };
+        const sentBy = link.id.split(':')[1];
+        const parsedLink = {
+          id: link.id,
+          whitelisted,
+          sentBy,
+          title: link.title,
+          description: link.summary,
+          link: link.target,
+          totalSpent: link.total,
+          onClick: () => this._onLinkClick(link),
+        };
+        return parsedLink;
       });
       this.setState({ links, fetching: false });
     } catch (_) {
       this.setState({ fetching: false });
     }
-  }, 500);
+  }
+
+  _fetchAllLinks = async () => {
+    const { apiUrl, recipientAddress, algorithm, asset } = this.state;
+    const assetString = asset.token ? `${asset.network}:${asset.token}` : asset.network;
+
+    return fetch(
+      `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`,
+    ).then((res) => res.json());
+  }
+
+  _fetchWhitelistedLinks = async () => {
+    const { apiUrl, recipientAddress, algorithm, whitelistId, asset } = this.state;
+    const assetString = asset.token ? `${asset.network}:${asset.token}` : asset.network;
+    const whitelistParam = whitelistId ? `?whitelist=${whitelistId.toLowerCase()}` : '';
+
+    return fetch(
+      `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/${whitelistParam}`,
+    ).then((res) => res.json());
+  }
+
+  _debouncedFetchLinks = debounce(this._fetchLinks, 500);
 
   _onLinkClick = (link) => {
     const claim = {
