@@ -3,20 +3,25 @@ import * as memoize from 'lodash/memoize';
 
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
-import { IRootState } from '../ducks';
+import { ILinksState, IWidgetState } from '../ducks';
+
+interface IState {
+  links: ILinksState;
+  widget: IWidgetState;
+}
 
 const hashFunction = (...args) => args.reduce((acc, val) => acc + '-' + JSON.stringify(val), '');
 
 // ToDo optimize this?
 const createSelector = createSelectorCreator(memoize, hashFunction);
 
-const whitelistedLinks = ({ links }: IRootState) => links.links;
-const allLinks = ({ links }: IRootState) => links.allLinks;
+const whitelistedLinks = ({ links }: IState) => links.links;
+const allLinks = ({ links }: IState) => links.allLinks;
 
 export const visibleLinks = createSelector(
   whitelistedLinks,
   allLinks,
-  ({ widget }: IRootState) => widget,
+  ({ widget }: IState) => widget,
   (whitelistedLinks, allLinks, widget) => {
     if (widget.whitelist !== '') {
       return calculateProbabilities(whitelistedLinks.slice(0, widget.slots));
@@ -38,23 +43,26 @@ export const allLinksCount = createSelector(
 
 // ToDo rething function name
 const calculateProbabilities = (links: IRemoteLink[]): ILink[] => {
+  const MAX = 60;
+  const BLOCK_TIME = 1;
+
   const scoreSum = links.reduce((acc, { score }) => acc + score, 0);
 
   let probabilities: number[];
   if (scoreSum !== 0) {
-    probabilities = links.map(({ score }) => score / scoreSum * 100);
+    probabilities = links.map(({ score }) => score / scoreSum * MAX);
   } else {
-    probabilities = links.map(({ score }) => 1 / links.length * 100);
+    probabilities = links.map(({ score }) => 1 / links.length * MAX);
   }
 
   const roundedDownProbabilities = probabilities.map((probability) => Math.floor(probability));
   const roundedDownProbabilitiesSum = roundedDownProbabilities.reduce((acc, probability) => acc + probability, 0);
 
   let roundedProbabilities: number[];
-  if (roundedDownProbabilitiesSum === 100) {
+  if (roundedDownProbabilitiesSum === MAX) {
     roundedProbabilities = roundedDownProbabilities;
   } else {
-    const toDistribute = 100 - roundedDownProbabilitiesSum;
+    const toDistribute = MAX - roundedDownProbabilitiesSum;
     const toRoundUp = roundedDownProbabilities
       .map((p, i) => ([probabilities[i] - p, i]))
       .sort(([p1], [p2]) => p2 - p1)

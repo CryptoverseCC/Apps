@@ -7,7 +7,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "lint": "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
-    "test": "yarn lint",
+    "pretest": "yarn lint",
+    "test": "jest",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js || exit 0"
   },
   "author": "",
@@ -17,20 +18,26 @@
     "@userfeeds/apps-components": "^0.0.14",
     "@userfeeds/core": "^0.0.34",
     "@userfeeds/utils": "^0.0.4",
+    "@userfeeds/types": "^0.0.2",
     "classnames": "^2.2.5",
+    "qs": "^6.5.0",
     "react": "16.0.0",
     "react-dom": "16.0.0",
     "react-router-dom": "^4.1.2"
   },
   "devDependencies": {
+    "@types/jest": "^20.0.4",
     "@types/react": "16.0.10",
     "@types/react-dom": "16.0.1",
+    "@types/react-redux": "5.0.10",
     "autoprefixer": "^7.1.2",
     "awesome-typescript-loader": "^3.2.3",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
     "html-webpack-plugin": "^2.29.0",
     "node-sass": "^4.5.3",
+    "jest": "^20.0.4",
+    "ts-jest": "^20.0.7",
     "postcss-loader": "^2.0.6",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
@@ -43,5 +50,24 @@
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1",
     "uglifyjs-webpack-plugin": "1.0.0-beta.3"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "../../node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(.*\\.(test|spec))\\.(ts|tsx)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@userfeeds).*"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "../../tsconfig.json"
+      }
+    }
   }
 }

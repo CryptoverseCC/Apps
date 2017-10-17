@@ -215,15 +215,18 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   _createClaim() {
     const { target, title, summary } = this.state;
+    const { href } = window.location;
+    const location = href.startsWith('https://linkexchange.io/apps/') && href.indexOf('?') > 0
+      ? window.location.href.split('?')[0]
+      : window.location.href;
+
     return {
       type: ['link'],
       claim: { target, title, summary },
-      credits: [
-        {
-          type: 'interface',
-          value: window.location.href,
-        },
-      ],
+      credits: [{
+        type: 'interface',
+        value: location,
+      }],
     };
   }
 

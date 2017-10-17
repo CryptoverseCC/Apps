@@ -172,12 +172,16 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const { asset, recipientAddress } = this.props;
     const { id } = this.props.link;
     const { value } = this.state;
+    const { href } = window.location;
+    const location = href.startsWith('https://linkexchange.io/apps/') && href.indexOf('?') > 0
+      ? window.location.href.split('?')[0]
+      : window.location.href;
 
     const claim = {
       claim: { target: id },
       credits: [{
         type: 'interface',
-        value: window.location.href,
+        value: location,
       }],
     };
 
