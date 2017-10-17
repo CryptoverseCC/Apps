@@ -48,6 +48,7 @@ interface IStatusProps {
 
 interface IStatusState {
   mobileOrTablet: boolean;
+  apiUrl: string;
   link?: any;
   linkId: string;
   asset: string;
@@ -69,6 +70,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     super(props);
     const params = new URLSearchParams(props.location.search);
 
+    const apiUrl = params.get('apiUrl') || 'https://api.userfeeds.io';
     const recipientAddress = params.get('recipientAddress') || '';
     const asset = params.get('asset') || '';
     const algorithm = params.get('algorithm') || '';
@@ -79,6 +81,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
 
     this.state = {
       mobileOrTablet: mobileOrTablet(),
+      apiUrl,
       linkId,
       recipientAddress,
       asset,
@@ -93,17 +96,22 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       },
     };
 
+  }
+
+  componentDidMount() {
+    const { linkId, apiUrl, recipientAddress, asset, algorithm, whitelist } = this.state;
     this._observeBlockchainState(linkId);
 
     const setTimeoutForFetch = (timeout: number | undefined) => {
       setTimeout(() => {
-        this._fetchLinks(recipientAddress, asset, algorithm, whitelist)
+        this._fetchLinks(apiUrl, recipientAddress, asset, algorithm, whitelist)
           .then(this._findLinkById(linkId))
           .then((link) => link && !link.whitelisted && setTimeoutForFetch(5000));
       }, timeout);
     };
 
     setTimeoutForFetch(0);
+
   }
 
   render() {
@@ -154,16 +162,14 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   }
 
   // ToDo fix - when network is unavailable
-  _fetchLinks = async (recipientAddress, asset, algorithm, whitelist) => {
-    const baseURL = 'https://api.userfeeds.io/ranking';
-
+  _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
     try {
       const allLinksRequest = fetch(
-        `${baseURL}/${asset}:${recipientAddress}/${algorithm}/`,
+        `${apiUrl}/ranking/${asset.toLowerCase()}:${recipientAddress.toLowerCase()}/${algorithm}/`,
         { cache: 'no-store' })
         .then((res) => res.json());
       const whitelistedLinksRequest = fetch(
-        `${baseURL}/${asset}:${recipientAddress}/${algorithm}/?whitelist=${asset}:${whitelist}`,
+        `${apiUrl}/ranking/${asset}:${recipientAddress.toLowerCase()}/${algorithm}/?whitelist=${whitelist}`,
         { cache: 'no-store' })
         .then((res) => res.json());
 
@@ -209,7 +215,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   }
 
   _findLinkById = (linkId) => (links) => {
-    const link = links.find((l) => l.id === linkId);
+    const link = links.find((l) => l.id.startsWith(linkId));
     this.setState({ link });
 
     return link;
