@@ -63,11 +63,11 @@ class LinkexchangeLink extends HTMLElement {
       ? EWidgetSize.rectangle
       : EWidgetSize.leaderboard;
     const timeslot = parseInt(this.getAttribute('timeslot') || '5', 10);
-    const recipientAddress = this.getAttribute('recipient-address') || '';
+    const recipientAddress = this.getAttribute('recipient-address') || this._throwErrorRecipientAddressNotDefined();
     const whitelist = this.getAttribute('whitelist') || undefined;
-    const asset = this.getAttribute('asset') || 'rinkeby';
+    const asset = this.getAttribute('asset') || 'ropsten';
     const slots = parseInt(this.getAttribute('slots') || '10', 10);
-    const algorithm = this.getAttribute('algorithm') || '';
+    const algorithm = this.getAttribute('algorithm') || 'links';
     const contactMethod = this.getAttribute('contact-method') || undefined;
     const publisherNote = this.getAttribute('publisher-note') || undefined;
     const title = this.getAttribute('widget-title') || undefined;
@@ -78,19 +78,23 @@ class LinkexchangeLink extends HTMLElement {
     return {
       apiUrl,
       algorithm,
-      recipientAddress,
-      asset,
+      recipientAddress: recipientAddress.toLowerCase(),
+      asset: asset.toLowerCase(),
       publisherNote,
       contactMethod,
       size,
       timeslot,
-      whitelist,
+      whitelist: whitelist ? whitelist.toLowerCase() : whitelist,
       slots,
       title,
       description,
       impression,
       tillDate,
     };
+  }
+
+  static _throwErrorRecipientAddressNotDefined() {
+    throw new Error('recipient-address not defined.');
   }
 }
 

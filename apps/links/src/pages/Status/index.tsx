@@ -164,14 +164,11 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   // ToDo fix - when network is unavailable
   _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
     try {
-      const allLinksRequest = fetch(
-        `${apiUrl}/ranking/${asset.toLowerCase()}:${recipientAddress.toLowerCase()}/${algorithm}/`,
-        { cache: 'no-store' })
+      const rankingApiUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`;
+      const allLinksRequest = fetch(rankingApiUrl, { cache: 'no-store' })
         .then((res) => res.json());
-      const queryParams = whitelist ? `?whitelist=${whitelist}` : '';
-      const whitelistedLinksRequest = fetch(
-        `${apiUrl}/ranking/${asset.toLowerCase()}:${recipientAddress.toLowerCase()}/${algorithm}/${queryParams}`,
-        { cache: 'no-store' })
+      const whitelistQueryParam = whitelist ? `?whitelist=${whitelist}` : '';
+      const whitelistedLinksRequest = fetch(`${rankingApiUrl}${whitelistQueryParam}`, { cache: 'no-store' })
         .then((res) => res.json());
 
       const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest, whitelistedLinksRequest]);
