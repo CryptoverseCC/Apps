@@ -168,8 +168,9 @@ export default class Status extends Component<IStatusProps, IStatusState> {
         `${apiUrl}/ranking/${asset.toLowerCase()}:${recipientAddress.toLowerCase()}/${algorithm}/`,
         { cache: 'no-store' })
         .then((res) => res.json());
+      const queryParams = whitelist ? `?whitelist=${whitelist}` : '';
       const whitelistedLinksRequest = fetch(
-        `${apiUrl}/ranking/${asset}:${recipientAddress.toLowerCase()}/${algorithm}/?whitelist=${whitelist}`,
+        `${apiUrl}/ranking/${asset.toLowerCase()}:${recipientAddress.toLowerCase()}/${algorithm}/${queryParams}`,
         { cache: 'no-store' })
         .then((res) => res.json());
 
