@@ -3,10 +3,9 @@ import { Action } from 'redux';
 import * as isEqual from 'lodash/isEqual';
 
 import core from '@userfeeds/core/src';
+import web3 from '@userfeeds/utils/src/web3';
 
 import { IRootState } from './';
-
-import web3 from '../utils/web3';
 
 const acf = actionCreatorFactory('web3');
 

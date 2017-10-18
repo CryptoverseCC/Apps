@@ -5,9 +5,9 @@ import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import { IRemoteLink } from '@userfeeds/types/link';
+import web3 from '@userfeeds/utils/src/web3';
 
 import { R, validate } from '../utils/validation';
-import web3 from '../utils/web3';
 
 import If from './utils/If';
 

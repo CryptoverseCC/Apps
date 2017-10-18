@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import Link from '@userfeeds/apps-components/src/Link';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
-
-import web3 from '../../../utils/web3';
+import web3 from '@userfeeds/utils/src/web3';
 
 import * as style from './simpleLinksList.scss';
 

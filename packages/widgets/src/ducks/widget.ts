@@ -36,14 +36,16 @@ export const updateWidgetSettings = (newSettings: Partial<IWidgetState>) => (dis
 };
 
 export const loadTokenDetails = () => async (dispatch, getState: () => IRootState) => {
-  const { widget, web3 } = getState();
+  const { widget } = getState();
   const token = widget.asset.split(':')[1];
   if (!token) {
     return;
   }
 
-  while(!web3.available) {
+  let { web3: web3State } = getState();
+  while (!web3State.available) {
     await wait(1000);
+    web3State = getState().web3;
   }
 
   const [decimals, balance, symbol, name] = await Promise.all([
