@@ -6,9 +6,7 @@ import 'highlight.js/styles/androidstudio.css';
 const Snippet = ({ widgetSettings }) => {
   const whitelistProperty = widgetSettings.whitelistId ? `
     whitelist="${widgetSettings.whitelistId}"` : '';
-  const assetId = widgetSettings.token === 'eth'
-    ? widgetSettings.network
-    : `${widgetSettings.network}:${widgetSettings.token}`;
+  const assetId = !widgetSettings.token ? widgetSettings.network : `${widgetSettings.network}:${widgetSettings.token}`;
 
   return (
     <Highlight

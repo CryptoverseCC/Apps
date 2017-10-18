@@ -4,7 +4,7 @@ import Input from '@userfeeds/apps-components/src/Input';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 import Wrapper from './Wrapper';
 
-export const ETH = 'eth';
+export const ETHER = '';
 export const CUSTOM_TOKEN = 'custom';
 const OTHER_ERC20_TOKEN = { value: CUSTOM_TOKEN, label: 'Other ERC20 Token' };
 
@@ -13,7 +13,7 @@ export const WIDGET_NETWORKS = [
     value: 'ethereum',
     label: 'Mainnet',
     tokens: [
-      { value: ETH, label: 'ETH' },
+      { value: ETHER, label: 'ETH' },
       { value: '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07', label: 'OmiseGO (OMG)' },
       { value: '0x9a642d6b3368ddc662CA244bAdf32cDA716005BC', label: 'Qtum' },
       { value: '0xc66ea802717bfb9833400264dd12c2bceaa34a6d', label: 'Maker (MKR)' },
@@ -33,10 +33,7 @@ export const WIDGET_NETWORKS = [
       { value: '0xaec2e87e0a235266d9c5adc9deb4b2e29b54d009', label: 'SingularDTV (SNGLS)' },
       { value: '0xb63b606ac810a52cca15e44bb630fd42d8d1d83d', label: 'Monaco (MCO)' },
       { value: '0x960b236A07cf122663c4303350609A66A7B288C0', label: 'Aragon Network Token (ANT)' },
-      {
-        value: '0x108c05cac356d93b351375434101cfd3e14f7e44',
-        label: 'Token of Szczepan Bentyn (BEN)',
-      },
+      { value: '0x108c05cac356d93b351375434101cfd3e14f7e44', label: 'Token of Szczepan Bentyn (BEN)' },
       OTHER_ERC20_TOKEN,
     ],
   },
@@ -44,7 +41,7 @@ export const WIDGET_NETWORKS = [
     value: 'rinkeby',
     label: 'Rinkeby',
     tokens: [
-      { value: ETH, label: 'ETH (rinkeby)' },
+      { value: ETHER, label: 'ETH (rinkeby)' },
       { value: '0x5301f5b1af6f00a61e3a78a9609d1d143b22bb8d', label: 'MG6T' },
       { value: '0x52e89f277d1624db80d8c56dd7780e99fa4d5ef6', label: 'WLS' },
       OTHER_ERC20_TOKEN,
@@ -54,7 +51,7 @@ export const WIDGET_NETWORKS = [
     value: 'ropsten',
     label: 'Ropsten',
     tokens: [
-      { value: ETH, label: 'ETH (ropsten)' },
+      { value: ETHER, label: 'ETH (ropsten)' },
       { value: '0x31d46d605703f66bd3ea95f699ddec9114fe9b89', label: 'JST' },
       { value: '0x95642c3bcabfbd1cefd7d9f6dff4e9a96197e26c', label: 'MG6T' },
       OTHER_ERC20_TOKEN,
@@ -73,31 +70,30 @@ interface IAssetProps {
 }
 
 interface IAssetState {
-  token: string;
-  tokenAddress?: string;
+  dropdownTokenSelection: string;
 }
 
 export default class Asset extends Component<IAssetProps, IAssetState> {
   constructor(props) {
     super(props);
 
-    const token = this._isCustomToken(props.asset.network, props.asset.token)
+    const dropdownTokenSelection = this._isCustomToken(props.asset.network, props.asset.token)
       ? CUSTOM_TOKEN
       : props.asset.token;
-    this.state = { token, tokenAddress: props.asset.token };
+    this.state = { dropdownTokenSelection };
   }
 
   render() {
-    const { asset, onChange } = this.props;
-    const { token, tokenAddress } = this.state;
-    const tokensOptions =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === asset.network)].tokens;
+    const { asset } = this.props;
+    const { dropdownTokenSelection } = this.state;
+    const tokensOptions = this._getTokensOptions(asset.network);
 
     const ContractAddress =
-      token === CUSTOM_TOKEN ? (
+      dropdownTokenSelection !== ETHER ? (
         <Input
           placeholder="Contract address"
-          value={tokenAddress}
+          value={asset.token}
+          disabled={dropdownTokenSelection !== CUSTOM_TOKEN}
           onInput={this._onAddressChange}
         />
       ) : null;
@@ -105,16 +101,16 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
       <Wrapper>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Dropdown
-            style={{ minWidth: '200px' }}
+            style={{ minWidth: '150px' }}
             placeholder="Network"
             value={asset.network}
             onChange={this._onNetworkChange}
             options={WIDGET_NETWORKS}
           />
           <Dropdown
-            style={{ minWidth: '200px' }}
+            style={{ minWidth: '250px' }}
             placeholder="ERC20 Token Address"
-            value={token}
+            value={dropdownTokenSelection}
             onChange={this._onTokenChange}
             options={tokensOptions}
           />
@@ -125,28 +121,28 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
   }
 
   _onNetworkChange = ({ value }) => {
-    const token =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === value)].tokens[0].value;
-    this.setState({ token, tokenAddress: token }, () => {
-      this.props.onChange({ network: value, token: this.state.tokenAddress || '' });
-    });
+    const dropdownTokenSelection = this._getTokensOptions(value)[0].value;
+    this.setState({ dropdownTokenSelection });
+    this.props.onChange({ network: value, token: '' });
   }
 
   _onTokenChange = ({ value }) => {
-    this.setState({ token: value, tokenAddress: '' });
-    const token = value === CUSTOM_TOKEN ? '' : value;
-    this.props.onChange({ token, network: this.props.asset.network });
+    this.setState({ dropdownTokenSelection: value });
+    const token = (value === CUSTOM_TOKEN) ? '' : value;
+    this.props.onChange({ network: this.props.asset.network, token });
   }
 
   _onAddressChange = (e: React.FormEvent<any>) => {
     const { value } = e.currentTarget;
-    this.setState({ tokenAddress: value });
-    this.props.onChange({ token: value, network: this.props.asset.network });
+    this.props.onChange({ network: this.props.asset.network, token: value });
   }
 
   _isCustomToken = (network, token) => {
-    const tokensOptions =
-      WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === network)].tokens;
+    const tokensOptions = this._getTokensOptions(network);
     return tokensOptions.findIndex(({ value }) => value === token) === -1;
+  }
+
+  _getTokensOptions = (network) => {
+    return WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === network)].tokens;
   }
 }

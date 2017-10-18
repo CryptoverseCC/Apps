@@ -81,10 +81,9 @@ export default class Configurator extends Component<IProps, IState> {
   }
 
   onChange = (key) => ({ target: { value } }) => this.setState({ [key]: value });
-  onOldChange = (key) => ({ value }) => this.setState({ [key]: value });
 
   render() {
-    const { onChange, onOldChange } = this;
+    const { onChange } = this;
     const {
       recipientAddress,
       whitelistId,
