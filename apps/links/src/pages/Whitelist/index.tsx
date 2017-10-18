@@ -217,7 +217,7 @@ export default class Whitelist extends Component<IProps, IState> {
 
   _fetchAllLinks = async () => {
     const { apiUrl, recipientAddress, algorithm, asset } = this.state;
-    const assetString = asset.token ? `${asset.network}:${asset.token}` : asset.network;
+    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
 
     return fetch(
       `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`,
@@ -226,7 +226,7 @@ export default class Whitelist extends Component<IProps, IState> {
 
   _fetchWhitelistedLinks = async () => {
     const { apiUrl, recipientAddress, algorithm, whitelistId, asset } = this.state;
-    const assetString = asset.token ? `${asset.network}:${asset.token}` : asset.network;
+    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
     const whitelistParam = whitelistId ? `?whitelist=${whitelistId.toLowerCase()}` : '';
 
     return fetch(
