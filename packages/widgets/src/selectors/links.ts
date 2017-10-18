@@ -48,9 +48,9 @@ const calculateProbabilities = (links: IRemoteLink[]): ILink[] => {
 
   let probabilities: number[];
   if (scoreSum !== 0) {
-    probabilities = links.map(({ score }) => score / scoreSum * MAX);
+    probabilities = links.map(({ score }) => score / scoreSum * 100);
   } else {
-    probabilities = links.map(({ score }) => 1 / links.length * MAX);
+    probabilities = links.map(({ score }) => 1 / links.length * 100);
   }
 
   const roundedDownProbabilities = probabilities.map((probability) => Math.floor(probability));
