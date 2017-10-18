@@ -8,7 +8,7 @@ describe('basic', () => {
 
     const result = calculateTimeSlots([5, 5, 5, 5], max, min);
 
-    expect(result.reduce((acc, r) => acc + r, 0)).toBe(max);
+    expect(result[0] + result[1] + result[2] + result[3]).toBe(max);
   });
 
   it('should give equal slots', () => {
@@ -17,9 +17,10 @@ describe('basic', () => {
 
     const result = calculateTimeSlots([5, 5, 5, 5], max, min);
 
-    expect(result[0]).toBe(result[1]);
-    expect(result[1]).toBe(result[2]);
-    expect(result[2]).toBe(result[3]);
+    expect(result[0]).toBe(1);
+    expect(result[1]).toBe(1);
+    expect(result[2]).toBe(1);
+    expect(result[3]).toBe(1);
   });
 
   it('should round up first item', () => {
