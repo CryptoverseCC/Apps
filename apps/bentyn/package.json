@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/app-bentyn",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/widgets": "^0.0.115",
+    "@linkexchange/widgets": "^0.0.116",
     "@userfeeds/apps-components": "^0.0.15",
     "@userfeeds/core": "^0.0.34",
     "@userfeeds/types": "^0.0.2",
