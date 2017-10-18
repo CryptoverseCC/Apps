@@ -1,19 +1,18 @@
 {
   "private": true,
   "name": "@userfeeds/apps-components",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint":
-      "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "lint": "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "test": "yarn lint"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@userfeeds/types": "^0.0.2",
-    "@userfeeds/utils": "^0.0.4",
+    "@userfeeds/utils": "^0.0.5",
     "classnames": "^2.2.5",
     "highlight.js": "^9.11.0",
     "open-iconic": "^1.1.1",

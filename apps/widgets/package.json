@@ -1,24 +1,22 @@
 {
   "private": true,
   "name": "@linkechange/app-widget",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":
-      "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
-    "lint":
-      "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
+    "lint": "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
     "test": "yarn lint",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js || exit 0"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/widgets": "^0.0.114",
-    "@userfeeds/apps-components": "^0.0.14",
+    "@linkexchange/widgets": "^0.0.115",
+    "@userfeeds/apps-components": "^0.0.15",
     "@userfeeds/core": "^0.0.34",
-    "@userfeeds/utils": "^0.0.4",
+    "@userfeeds/utils": "^0.0.5",
     "classnames": "^2.2.5",
     "qs": "^6.5.0",
     "react": "16.0.0",
@@ -45,9 +43,9 @@
     "tslint-react": "^3.2.0",
     "typescript": "^2.5.3",
     "typings-for-css-modules-loader": "^1.7.0",
+    "uglifyjs-webpack-plugin": "1.0.0-beta.3",
     "url-loader": "^0.5.9",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1",
-    "uglifyjs-webpack-plugin": "1.0.0-beta.3"
+    "webpack-dev-server": "^2.9.1"
   }
 }

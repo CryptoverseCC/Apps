@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@userfeeds/utils",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -11,11 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "web3": "0.20.2" 
+    "web3": "0.20.2"
   },
   "devDependencies": {
-    "web3-typescript-typings": "0.6.2",
     "tslint": "^5.6.0",
-    "tslint-react": "^3.2.0"
+    "tslint-react": "^3.2.0",
+    "web3-typescript-typings": "0.6.2"
   }
 }
