@@ -14,6 +14,9 @@
 .LowerHead {
   border-top: 1px solid #eef1f2;
   display: flex;
+  flex-wrap: wrap;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 
 .UpperHead + .LowerHead {
@@ -44,33 +47,56 @@
   margin-left: 20px;
 }
 
+.Summary {
+  padding-right: 20px;
+}
+
 .Header + .NewWindowButton {
   margin-left: 10px;
 }
 
 .NewButtonContainer {
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .SummaryField {
-  flex: 1;
-  padding-top: 20px;
+  flex: 25% 1 1;
+  max-width: 25%;
+  box-sizing: border-box;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
 
   & + .SummaryField {
-    .InnerSummaryField {
+    border-left: 1px solid #eef1f2;
+  }
+
+  @media screen and (max-width: 1000px) {
+    flex-basis: 50%;
+    max-width: 50%;
+    border-left: 0;
+
+    &:nth-child(2n) {
       border-left: 1px solid #eef1f2;
-      padding-left: 20px;
     }
   }
 
-  &:not(:last-child) {
-    padding-right: 20px;
+  @media screen and (max-width: 800px) {
+    flex-basis: 100%;
+    max-width: 100%;
+    border-left: 0;
   }
 }
 
 .InnerSummaryField {
   line-height: 23px;
   color: #a6aeb8;
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .RegularText {
