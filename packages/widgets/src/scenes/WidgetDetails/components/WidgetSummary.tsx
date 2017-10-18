@@ -2,7 +2,8 @@ import React from 'react';
 // import classnames from 'classnames';
 //
 import Icon from '@userfeeds/apps-components/src/Icon';
-// import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import A from '@userfeeds/apps-components/src/A';
+import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 // import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 //
 import { IWidgetState } from '../../../ducks/widget';
@@ -31,63 +32,64 @@ const WidgetSummary = ({
   openInNewWindowHidden,
 }: IWidgetSummaryProps) => (
   <div className={style.Head}>
-    <EthereumLogo className={style.Logo} />
-    <div className={style.Summary}>
-      <div className={style.HeaderContainer}>
-        <h1 className={style.Header}>{widgetSettings.title}</h1>
-        <Button outline size="small" className={style.NewWindowButton}>
-          <Icon name="external-link" />New Window
-        </Button>
+    <div className={style.UpperHead}>
+      <EthereumLogo className={style.Logo} />
+      <div className={style.Summary}>
+        <div className={style.HeaderContainer}>
+          <h1 className={style.Header}>{widgetSettings.title}</h1>
+          {!openInNewWindowHidden && (
+            <Button
+              outline
+              size="small"
+              className={style.NewWindowButton}
+              onClick={onOpenInSeparateWindow}
+            >
+              <Icon name="external-link" />New Window
+            </Button>
+          )}
+        </div>
+        <p className={style.Description}>{widgetSettings.description}</p>
       </div>
-      <p className={style.Description}>{widgetSettings.description}</p>
+      <Tooltip className={style.NewButtonContainer} text={web3Enabled.reason}>
+        <Button onClick={onAddClick} disabled={!web3Enabled.enabled}>
+          <Icon name="plus" /> Create new link
+        </Button>
+      </Tooltip>
     </div>
-    <Button className={style.CreateNewLinkButton}>
-      <Icon name="plus" /> Create new link
-    </Button>
+    <div className={style.lowerHead}>
+      <div className={style.SummaryField}>
+        <div className={style.InnerSummaryField}>
+          <Icon name="eye" /> Declared impressions:
+          <p>
+            <span className={style.RegularText}>{widgetSettings.impression}</span>
+          </p>
+        </div>
+      </div>
+      <div className={style.SummaryField}>
+        <div className={style.InnerSummaryField}>
+          <Icon name="link-intact" /> Source Domain:
+          <p>
+            <A href={widgetSettings.location}>{widgetSettings.location}</A>
+          </p>
+        </div>
+      </div>
+      <div className={style.SummaryField}>
+        <div className={style.InnerSummaryField}>
+          <Icon name="envelope-open" /> Contact:
+          <p>
+            <span className={style.RegularText}>{widgetSettings.contactMethod || '-'}</span>
+          </p>
+        </div>
+      </div>
+      <div className={style.SummaryField}>
+        <div className={style.InnerSummaryField}>
+          <Icon name="calendar" /> Valid till:
+          <p>
+            <span className={style.RegularText}>{widgetSettings.tillDate || '-'}</span>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 );
-// <div className={style.self}>
-//   <div className={style.header}>
-//     <div>
-//       <div className={style.title}>
-//         <EthereumLogo className={style.logo} />
-//         <div>
-//           <h2>{widgetSettings.title}</h2>
-//           <p>{widgetSettings.description}</p>
-//         </div>
-//         {!openInNewWindowHidden && <button onClick={onOpenInSeparateWindow} className={style.openInNewWindow}>
-//           <Icon name="external-link" />
-//         </button>}
-//       </div>
-//     </div>
-//     <Tooltip className={style.addButtonContainer} text={web3Enabled.reason}>
-//       <Button className={style.addButton} disabled={!web3Enabled.enabled} onClick={onAddClick}>
-//         ⊕ Add New Link
-//       </Button>
-//     </Tooltip>
-//   </div>
-//   <div className={style.boxes}>
-//     <TextWithLabel
-//       className={style.box}
-//       label={<span><Icon name="eye" /> Impressions per day</span>}
-//       text={widgetSettings.impression}
-//     />
-//     <TextWithLabel
-//       className={style.box}
-//       label={<span><Icon name="link-intact" /> Widget location</span>}
-//     >
-//       <a href={widgetSettings.location}>{widgetSettings.location}</a>
-//     </TextWithLabel>
-//     <TextWithLabel
-//       className={style.box}
-//       label={<span><Icon name="envelope-open" /> Contact</span>}
-//       text={widgetSettings.contactMethod || '-'}
-//     />
-//     <TextWithLabel
-//       className={style.box}
-//       label={<span><Icon name="calendar" /> Valid till</span>}
-//       text={widgetSettings.tillDate || '-'}
-//     />
-//   </div>
-// </div>
 export default WidgetSummary;

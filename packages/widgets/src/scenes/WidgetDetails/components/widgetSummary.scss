@@ -4,8 +4,20 @@
   background-color: white;
   box-shadow: 0 5px 20px 0 rgba(19, 38, 110, 0.08);
   padding: 20px;
+}
+
+.UpperHead {
   display: flex;
   align-items: center;
+}
+
+.LowerHead {
+  border-top: 1px solid #eef1f2;
+  display: flex;
+}
+
+.UpperHead + .LowerHead {
+  margin-top: 20px;
 }
 
 .Logo {
@@ -36,8 +48,33 @@
   margin-left: 10px;
 }
 
-.CreateNewLinkButton {
+.NewButtonContainer {
   margin-left: auto;
+}
+
+.SummaryField {
+  flex: 1;
+  padding-top: 20px;
+
+  & + .SummaryField {
+    .InnerSummaryField {
+      border-left: 1px solid #eef1f2;
+      padding-left: 20px;
+    }
+  }
+
+  &:not(:last-child) {
+    padding-right: 20px;
+  }
+}
+
+.InnerSummaryField {
+  line-height: 23px;
+  color: #a6aeb8;
+}
+
+.RegularText {
+  color: #1b2437;
 }
 
 // .self {

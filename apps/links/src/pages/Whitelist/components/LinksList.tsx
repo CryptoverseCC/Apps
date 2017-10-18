@@ -1,7 +1,7 @@
 import React from 'react';
 import * as style from './linksList.scss';
 import BoldText from '@userfeeds/apps-components/src/BoldText';
-import A from './A';
+import A from '@userfeeds/apps-components/src/A';
 import Button from '@userfeeds/apps-components/src/NewButton';
 import Icon from '@userfeeds/apps-components/src/Icon';
 
