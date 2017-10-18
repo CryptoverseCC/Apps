@@ -196,11 +196,9 @@ export default class Whitelist extends Component<IProps, IState> {
 
       const links = allLinks.items.map((link) => {
         const whitelisted = !!whitelistedLinks.items.find((a) => link.id === a.id);
-        const sentBy = link.id.split(':')[1];
         const parsedLink = {
           id: link.id,
           whitelisted,
-          sentBy,
           title: link.title,
           description: link.summary,
           link: link.target,

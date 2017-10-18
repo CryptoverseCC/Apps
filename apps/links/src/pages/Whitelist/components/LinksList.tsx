@@ -6,7 +6,6 @@ import Button from '@userfeeds/apps-components/src/NewButton';
 import Icon from '@userfeeds/apps-components/src/Icon';
 
 interface ILink {
-  sentBy: string;
   title: string;
   description: string;
   link: string;
@@ -22,9 +21,6 @@ const LinksList = (props: { links: ILink[] }) => {
       <thead>
         <tr>
           <th>
-            <BoldText>Sent by</BoldText>
-          </th>
-          <th>
             <BoldText>Content</BoldText>
           </th>
           <th>
@@ -35,11 +31,6 @@ const LinksList = (props: { links: ILink[] }) => {
       <tbody>
         {props.links.map((link) => (
           <tr key={link.id}>
-            <td style={{ width: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              <A bold href={`https://etherscan.io/address/${link.sentBy}`}>
-                {link.sentBy}
-              </A>
-            </td>
             <td>
               <b>{link.title}</b>
               <p style={{ color: '#89939F', margin: 0 }}>{link.description}</p>
