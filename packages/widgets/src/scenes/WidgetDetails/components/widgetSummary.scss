@@ -9,6 +9,21 @@
 .UpperHead {
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 800px) {
+    flex-wrap: wrap;
+
+    .Summary {
+      flex-basis: calc(100% - 60px);
+      max-width: calc(100% - 60px);
+      padding-right: 0;
+    }
+
+    .NewButtonContainer {
+      margin-left: 0;
+      margin-top: 20px;
+    }
+  }
 }
 
 .LowerHead {
@@ -24,6 +39,8 @@
 }
 
 .Logo {
+  flex-basis: 40px;
+  max-width: 40px;
   height: 40px;
 }
 
@@ -49,6 +66,7 @@
 
 .Summary {
   padding-right: 20px;
+  box-sizing: border-box;
 }
 
 .Header + .NewWindowButton {
