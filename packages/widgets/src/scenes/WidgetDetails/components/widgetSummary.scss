@@ -98,12 +98,6 @@
       border-left: 1px solid #eef1f2;
     }
   }
-
-  @media screen and (max-width: 800px) {
-    flex-basis: 100%;
-    max-width: 100%;
-    border-left: 0;
-  }
 }
 
 .InnerSummaryField {
