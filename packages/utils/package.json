@@ -11,9 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "web3": "0.19.1"
+    "web3": "0.20.2" 
   },
   "devDependencies": {
+    "web3-typescript-typings": "0.6.2",
     "tslint": "^5.6.0",
     "tslint-react": "^3.2.0"
   }

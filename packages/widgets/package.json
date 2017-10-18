@@ -29,8 +29,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
-    "typescript-fsa": "^2.3.1",
-    "web3": "0.19.1"
+    "typescript-fsa": "^2.3.1"
   },
   "devDependencies": {
     "@types/jest": "^20.0.4",

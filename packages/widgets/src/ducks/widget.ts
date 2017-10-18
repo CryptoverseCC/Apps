@@ -7,6 +7,7 @@ import { IRootState } from './';
 import core from '@userfeeds/core/src';
 import { fetchLinks } from './links';
 import web3 from '@userfeeds/utils/src/web3';
+import wait from '@userfeeds/utils/src/wait';
 
 const {
   erc20ContractDecimals,
@@ -34,18 +35,24 @@ export const updateWidgetSettings = (newSettings: Partial<IWidgetState>) => (dis
   }
 };
 
-export const loadTokenDetails = () => async (dispatch, getState) => {
-  const state = getState();
-  const token = state.widget.asset.split(':')[1];
+export const loadTokenDetails = () => async (dispatch, getState: () => IRootState) => {
+  const { widget, web3 } = getState();
+  const token = widget.asset.split(':')[1];
   if (!token) {
     return;
   }
+
+  while(!web3.available) {
+    await wait(1000);
+  }
+
   const [decimals, balance, symbol, name] = await Promise.all([
     erc20ContractDecimals(web3, token),
     erc20ContractBalance(web3, token),
     erc20ContractSymbol(web3, token),
     erc20ContractName(web3, token),
   ]);
+
   dispatch(widgetActions.tokenDetailsLoaded({ loaded: true, decimals, balance, symbol, name }));
 };
 
