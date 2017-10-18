@@ -61,37 +61,18 @@ export default class LinkProvider extends PureComponent<ILinkProviderProps> {
 }
 
 export const calculateTimeSlots = (scores: number[], totalTime: number, shortestTimeslot: number) => {
+  const toDistribute = totalTime - (scores.length * shortestTimeslot);
+  if (toDistribute < 0) {
+    throw Error(`Total time (${totalTime}) is smaller than ${scores.length}*${shortestTimeslot}`);
+  }
   const scoreSum = scores.reduce((acc, score) => acc + score, 0);
 
-  let probabilities: number[];
+  let timeslots: number[];
   if (scoreSum !== 0) {
-    probabilities = scores.map((score) => score / scoreSum * totalTime);
+    timeslots = scores.map((score) => score / scoreSum * toDistribute);
   } else {
-    probabilities = scores.map((score) => 1 / scores.length * totalTime);
+    timeslots = scores.map((score) => 1 / scores.length * toDistribute);
   }
 
-  let roundedDownProbabilities = probabilities
-    .map((probability) => Math.floor(probability))
-    .filter((probability) => probability >= shortestTimeslot);
-
-  const roundedDownProbabilitiesSum = roundedDownProbabilities.reduce((acc, probability) => acc + probability, 0);
-
-  let toDistribute = totalTime - roundedDownProbabilitiesSum;
-  while (toDistribute > 0) {
-    const toRoundUp = roundedDownProbabilities
-      .map((p, i) => ([probabilities[i] - p, i]))
-      .sort(([p1], [p2]) => p2 - p1)
-      .slice(0, Math.min(toDistribute, scores.length))
-      .reduce((acc: { [key: number]: boolean }, [_, i]) => {
-        acc[i] = true;
-        return acc;
-      }, []);
-
-    roundedDownProbabilities = roundedDownProbabilities
-      .map((probability, index) => toRoundUp[index] ? probability + 1 : probability);
-
-    toDistribute = totalTime - roundedDownProbabilities.reduce((acc, probability) => acc + probability, 0);
-  }
-
-  return roundedDownProbabilities;
+  return timeslots.map((t) => t + shortestTimeslot);
 };
