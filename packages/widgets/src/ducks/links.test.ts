@@ -48,20 +48,18 @@ describe('links actions', () => {
       }],
     };
 
-    const asset = 'ether';
     const whitelist = 'my-whitelist';
 
     nock('https://api.userfeeds.io')
       .get(/ranking.*/)
-      .query({ whitelist, asset })
+      .query({ whitelist })
       .reply(200, { items: []})
       .get(/ranking.*/)
-      .query({ asset })
       .reply(200, mockedData);
 
     const store = mockStore({
       links: {},
-      widget: { recipientAddress: '0x666', asset, algorithm: 'alg-links', whitelist },
+      widget: { recipientAddress: '0x666', asset: 'ethereum', algorithm: 'alg-links', whitelist },
     });
 
     await store.dispatch(fetchLinks());
