@@ -18,6 +18,18 @@
     .ButtonIcon {
       margin-right: 5px;
     }
+
+    @media screen and (max-width: 800px) {
+      padding: 8px;
+
+      .ButtonIcon {
+        margin-right: 0;
+      }
+
+      .Children {
+        display: none;
+      }
+    }
   }
 
   &:disabled {
@@ -66,8 +78,11 @@
 
   .ButtonIcon {
     display: inline-block;
-    margin-right: 10px;
     font-size: 8px;
+  }
+
+  .ButtonIcon + .Children {
+    margin-left: 10px;
   }
 }
 

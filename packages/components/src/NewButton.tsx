@@ -17,11 +17,15 @@ const Button = ({
   color = 'primary',
   ...props,
 }: TButtonProps) => {
-  const decoratedChildren = React.Children.map(
-    children,
-    (child) =>
-      isType(child, 'Icon') ? React.cloneElement(child, { className: style.ButtonIcon }) : child,
-  );
+  let icon;
+  const decoratedChildren = React.Children.map(children, (child) => {
+    if (isType(child, 'Icon')) {
+      icon = React.cloneElement(child, { className: style.ButtonIcon });
+      return null;
+    } else {
+      return child;
+    }
+  });
   return (
     <button
       className={classnames(style.Button, className, style[size], style[color], {
@@ -29,7 +33,10 @@ const Button = ({
       })}
       {...props}
     >
-      <div className={style.ButtonInnerWrapper}>{decoratedChildren}</div>
+      <div className={style.ButtonInnerWrapper}>
+        {icon}
+        <div className={style.Children}>{decoratedChildren}</div>
+      </div>
     </button>
   );
 };

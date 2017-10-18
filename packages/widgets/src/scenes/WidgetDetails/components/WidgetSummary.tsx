@@ -48,8 +48,9 @@ const WidgetSummary = ({
             </Button>
           )}
         </div>
-        <p className={style.Description}>{widgetSettings.description}</p>
+        <p className={style.BigScreenDescription}>{widgetSettings.description}</p>
       </div>
+      <p className={style.SmallScreenDescription}>{widgetSettings.description}</p>
       <Tooltip className={style.NewButtonContainer} text={web3Enabled.reason}>
         <Button onClick={onAddClick} disabled={!web3Enabled.enabled}>
           <Icon name="plus" /> Create new link

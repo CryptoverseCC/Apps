@@ -21,7 +21,7 @@
 
     .NewButtonContainer {
       margin-left: 0;
-      margin-top: 20px;
+      margin-top: 10px;
     }
   }
 }
@@ -55,11 +55,6 @@
   color: #1b2437;
 }
 
-.Description {
-  color: #89939f;
-  margin-top: 4px;
-}
-
 .Logo + .Summary {
   margin-left: 20px;
 }
@@ -71,6 +66,10 @@
 
 .Header + .NewWindowButton {
   margin-left: 10px;
+
+  @media screen and (max-width: 800px) {
+    margin-left: auto;
+  }
 }
 
 .NewButtonContainer {
@@ -119,6 +118,29 @@
 
 .RegularText {
   color: #1b2437;
+}
+
+.BigScreenDescription,
+.SmallScreenDescription {
+  color: #89939f;
+}
+
+.BigScreenDescription {
+  display: block;
+  margin-top: 4px;
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+}
+
+.SmallScreenDescription {
+  display: none;
+  margin-top: 10px;
+
+  @media screen and (max-width: 800px) {
+    display: block;
+  }
 }
 
 // .self {
