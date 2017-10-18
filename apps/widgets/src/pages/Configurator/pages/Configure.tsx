@@ -21,10 +21,8 @@ interface IState {
   impression: string;
   size: string;
   type: string;
-  asset: {
-    token: string;
-    network: string;
-  };
+  token: string;
+  network: string;
   algorithm: string;
 }
 
@@ -40,10 +38,8 @@ const initialState = {
   size: 'leaderboard',
   type: 'text',
   impression: 'N/A',
-  asset: {
-    token: WIDGET_NETWORKS[0].tokens[0].value,
-    network: WIDGET_NETWORKS[0].value,
-  },
+  token: WIDGET_NETWORKS[0].tokens[0].value,
+  network: WIDGET_NETWORKS[0].value,
   algorithm: 'links',
 };
 
@@ -70,16 +66,6 @@ export default class Configurator extends Component<IProps, IState> {
     }
   }
 
-  widgetSettings = () => {
-    const settings = {
-      ...this.state,
-      network: this.state.asset.network,
-      token: this.state.asset.token,
-    };
-    delete settings.asset;
-    return settings;
-  }
-
   onChange = (key) => ({ target: { value } }) => this.setState({ [key]: value });
 
   render() {
@@ -93,7 +79,8 @@ export default class Configurator extends Component<IProps, IState> {
       contactMethod,
       size,
       type,
-      asset,
+      network,
+      token,
       algorithm,
     } = this.state;
     return (
@@ -176,9 +163,9 @@ export default class Configurator extends Component<IProps, IState> {
           <Description>I think it would be nice to put here a short description</Description>
           <div className={fieldInput}>
             <Asset
-              asset={asset}
+              asset={{network, token}}
               onChange={(asset) => {
-                this.setState({ asset });
+                this.setState(asset);
               }}
             />
           </div>
@@ -194,7 +181,7 @@ export default class Configurator extends Component<IProps, IState> {
             options={[{ value: 'links', label: 'Ad Ether / total ether - time' }]}
           />
         </Field>
-        <CreateWidget widgetSettings={this.widgetSettings()} />
+        <CreateWidget widgetSettings={this.state} />
       </div>
     );
   }
