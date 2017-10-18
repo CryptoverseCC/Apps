@@ -93,7 +93,7 @@ class LinkexchangeLink extends HTMLElement {
     };
   }
 
-  static _throwErrorRecipientAddressNotDefined() {
+  _throwErrorRecipientAddressNotDefined(): never {
     throw new Error('recipient-address not defined.');
   }
 }
