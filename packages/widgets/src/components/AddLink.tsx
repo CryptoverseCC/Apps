@@ -7,9 +7,9 @@ import Loader from '@userfeeds/apps-components/src/Loader';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import Checkbox from '@userfeeds/apps-components/src/Checkbox';
 import { IBaseLink } from '@userfeeds/types/link';
+import web3 from '@userfeeds/utils/src/web3';
 
 import { R, validate } from '../utils/validation';
-import web3 from '../utils/web3';
 
 import * as style from './addLink.scss';
 import TokenDetailsProvider from './TokenDetailsProvider';

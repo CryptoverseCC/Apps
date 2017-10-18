@@ -14,7 +14,8 @@
     ]
   },
   "typeRoots": [
-    "./node_modules/@types"
+    "./node_modules/@types",
+    "./node_modules/web3-typescript-typings"
   ],
   "files": [
     "./global.d.ts"
