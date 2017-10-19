@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import Pill from '@userfeeds/apps-components/src/Pill';
 
@@ -13,49 +14,45 @@ interface ISideMenuProps {
   hasWhitelist: boolean;
   activeItem: TViewType;
   onItemClick(name: TViewType): void;
+  className?: string;
 }
+const SideMenuItem = ({ active, onClick, children }) => (
+  <li onClick={onClick} className={active ? style.active : null}>
+    <div className={style.Ball} />
+    <div className={style.SideMenuItemContent}>{children}</div>
+  </li>
+);
 
-const SideMenu = ({ activeItem, onItemClick, hasWhitelist, slots,
-  whitelistedLinksCount, allLinksCount }: ISideMenuProps) => {
+const SideMenu = ({
+  activeItem,
+  onItemClick,
+  hasWhitelist,
+  slots,
+  whitelistedLinksCount,
+  allLinksCount,
+  className,
+}: ISideMenuProps) => {
   const notify = (name: TViewType) => (event) => {
     onItemClick(name);
     event.stopPropagation();
   };
 
   return (
-    <ul className={style.self}>
-      <li
-        className={activeItem === 'Links.Slots' ? style.active : ''}
-        onClick={notify('Links.Slots')}
-      >
-        Slots <Pill>{slots}</Pill>
-      </li>
-      <li
-        className={activeItem === 'Links.Whitelist' ? style.active : ''}
-        onClick={notify('Links.Whitelist')}
-      >
-        Whitelist <Pill>{whitelistedLinksCount}</Pill>
-      </li>
-      {!hasWhitelist && (
-        <li
-          className={activeItem === 'Links.Algorithm' ? style.active : ''}
-          onClick={notify('Links.Algorithm')}
-        >
-          Algorithm <Pill>{allLinksCount}</Pill>
-        </li>
-      )}
-      <li
-        className={activeItem === 'Specification' ? style.active : ''}
-        onClick={notify('Specification')}
-      >
-        Widget Specification
-      </li>
-      <li
-        className={activeItem === 'Userfeed' ? style.active : ''}
-        onClick={notify('Userfeed')}
-      >
-        Userfeed
-      </li>
+    <ul className={classnames(style.SideMenu, className)}>
+      <SideMenuItem onClick={notify('Links.Slots')} active={activeItem === 'Links.Slots'}>
+        <span className={style.SideMenuItemText}>Slots</span>
+        <Pill style={{ marginLeft: '10px' }}>{slots}</Pill>
+      </SideMenuItem>
+      <SideMenuItem onClick={notify('Links.Whitelist')} active={activeItem === 'Links.Whitelist'}>
+        <span className={style.SideMenuItemText}>Whitelist</span>
+        <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
+      </SideMenuItem>
+      <SideMenuItem onClick={notify('Specification')} active={activeItem === 'Specification'}>
+        <span className={style.SideMenuItemText}>Specification</span>
+      </SideMenuItem>
+      <SideMenuItem onClick={notify('Userfeed')} active={activeItem === 'Userfeed'}>
+        <span className={style.SideMenuItemText}>Userfeed</span>
+      </SideMenuItem>
     </ul>
   );
 };

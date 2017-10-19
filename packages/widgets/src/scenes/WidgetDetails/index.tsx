@@ -28,10 +28,14 @@ import WidgetSummary from './components/WidgetSummary';
 import { openLinkexchangeUrl } from '../../utils/openLinkexchangeUrl';
 
 import * as style from './widgetDetails.scss';
-import {loadTokenDetails} from '../../ducks/widget';
+import { loadTokenDetails } from '../../ducks/widget';
 
-export type TViewType = 'Userfeed' | 'Specification' | 'Links.Algorithm'
-  | 'Links.Whitelist' | 'Links.Slots';
+export type TViewType =
+  | 'Userfeed'
+  | 'Specification'
+  | 'Links.Algorithm'
+  | 'Links.Whitelist'
+  | 'Links.Slots';
 
 interface IWidgetDetailsState {
   viewType: TViewType;
@@ -53,9 +57,12 @@ const mapStateToProps = (state: IRootState) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showAddLinkModal: () => dispatch(modalActions.open({
-    modalName: 'addLink',
-  })),
+  showAddLinkModal: () =>
+    dispatch(
+      modalActions.open({
+        modalName: 'addLink',
+      }),
+    ),
   openToast(message: string, type?: TToastType) {
     dispatch(openToast(message, type));
   },
@@ -67,13 +74,13 @@ const mapDispatchToProps = (dispatch) => ({
 const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
-type TWidgetDetailsProps = typeof State2Props & typeof Dispatch2Props & {
-  className?: string;
-  standaloneMode?: boolean;
-};
+type TWidgetDetailsProps = typeof State2Props &
+  typeof Dispatch2Props & {
+    className?: string;
+    standaloneMode?: boolean;
+  };
 
 class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
-
   detailsListCmp: DetailsLists;
 
   constructor(props: TWidgetDetailsProps) {
@@ -89,8 +96,16 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
   }
 
   render() {
-    const { web3Enabled, widgetSettings, whitelistedLinks, allLinks, links, whitelistedLinksCount, allLinksCount,
-      standaloneMode } = this.props;
+    const {
+      web3Enabled,
+      widgetSettings,
+      whitelistedLinks,
+      allLinks,
+      links,
+      whitelistedLinksCount,
+      allLinksCount,
+      standaloneMode,
+    } = this.props;
     const { viewType, mobileOrTablet } = this.state;
 
     return (
@@ -125,6 +140,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
                 allLinksCount={allLinksCount}
                 activeItem={this.state.viewType}
                 onItemClick={this._menuItemClicked}
+                className={style.sideMenu}
               />
               <DetailsLists
                 web3Enabled={web3Enabled}
@@ -176,7 +192,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
     this.props.openToast('Transation rejected');
   }
 
-  _onDetailsListRef = (ref) => this.detailsListCmp = ref;
+  _onDetailsListRef = (ref) => (this.detailsListCmp = ref);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WidgetDetails);

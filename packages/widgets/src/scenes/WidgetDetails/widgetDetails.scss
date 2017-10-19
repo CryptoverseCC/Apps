@@ -21,4 +21,9 @@
     background-color: $aqua-haze;
     border-radius: 3px;
   }
+
+  .sideMenu {
+    flex-basis: 200px;
+    min-width: 200px;
+  }
 }

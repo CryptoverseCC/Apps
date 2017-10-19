@@ -1,28 +1,97 @@
 @import '~@userfeeds/apps-components/styles/colors';
 
-.self {
-  list-style: none;
-  min-width: 200px;
-  max-width: 250px;
-  -webkit-margin-before: 0;
-  -webkit-margin-after: 0;
-  -webkit-margin-start: 0;
-  -webkit-margin-end: 0;
-  -webkit-padding-start: 0;
-  margin-left: 2em;
+.SideMenu {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
 
-  li {
-    padding-top: 1em;
-    padding-bottom: 1em;
+.SideMenu > li {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  line-height: 40px;
+  position: relative;
+  cursor: pointer;
+
+  & + li:before {
+    content: '';
+    width: 1px;
+    height: 60px;
+    position: absolute;
+    left: 3.5px;
+    bottom: 50%;
+    background-color: #d9e0e7;
   }
 
-  & > li.active {
-    color: $dodger-blue;
-    font-size: 22px;
+  &.active {
+    .SideMenuItemContent {
+      transform: translateX(20px);
+    }
+
+    .SideMenuItemText {
+      font-size: 22px;
+      color: #263fff;
+    }
+
+    .Ball:after {
+      width: 20px;
+    }
+
+    .Ball:before {
+      transform: translate(calc(20px - 50%), -50%);
+    }
+  }
+}
+
+.SideMenuItemContent {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.SideMenuItemText {
+  line-height: 40px;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: all 0.1s linear;
+}
+
+.Ball {
+  width: 8px;
+  height: 8px;
+  background-color: #d9e0e7;
+  box-sizing: border-box;
+  border-radius: 50%;
+  position: relative;
+
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    position: absolute;
+    left: 0%;
+    top: 50%;
+    background-color: #d9e0e7;
+    transform: translateY(-50%);
+    transition: width 0.2s ease-in-out;
   }
 
-  & > li:hover {
-    cursor: pointer;
-    color: $dodger-blue;
+  &:before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: #ffffff;
+    border: 1px solid #d9e0e7;
+    box-sizing: border-box;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s ease-in-out;
+    z-index: 1;
   }
 }
