@@ -8,6 +8,7 @@ import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import Pill from '@userfeeds/apps-components/src/Pill';
 import { ILink } from '@userfeeds/types/link';
 
 import { IRootState } from '../../ducks';
@@ -20,7 +21,7 @@ import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../select
 
 import Switch from '../../components/utils/Switch';
 
-import SideMenu from './components/SideMenu';
+import SideMenu, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
 import DetailsLists from './components/DetailsLists';
 import DetailsAccordion from './components/DetailsAccordion';
 import WidgetSummary from './components/WidgetSummary';
@@ -134,14 +135,25 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
           <Switch.Case condition={'desktop'}>
             <div className={style.details}>
               <SideMenu
-                slots={widgetSettings.slots}
-                whitelistedLinksCount={whitelistedLinksCount}
-                hasWhitelist={!!widgetSettings.whitelist}
-                allLinksCount={allLinksCount}
                 activeItem={this.state.viewType}
                 onItemClick={this._menuItemClicked}
                 className={style.sideMenu}
-              />
+              >
+                <SideMenuItem name="Links.Slots">
+                  <SideMenuItemText>Slots</SideMenuItemText>
+                  <Pill style={{ marginLeft: '10px' }}>{widgetSettings.slots}</Pill>
+                </SideMenuItem>
+                <SideMenuItem name="Links.Whitelist">
+                  <SideMenuItemText>Whitelist</SideMenuItemText>
+                  <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
+                </SideMenuItem>
+                <SideMenuItem name="Specification">
+                  <SideMenuItemText>Specification</SideMenuItemText>
+                </SideMenuItem>
+                <SideMenuItem name="Userfeed">
+                  <SideMenuItemText>Userfeed</SideMenuItemText>
+                </SideMenuItem>
+              </SideMenu>
               <DetailsLists
                 web3Enabled={web3Enabled}
                 initialView={viewType}

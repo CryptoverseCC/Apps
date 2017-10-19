@@ -7,54 +7,42 @@ import { TViewType } from '../';
 
 import * as style from './sideMenu.scss';
 
-interface ISideMenuProps {
-  slots: number;
-  whitelistedLinksCount: number;
-  allLinksCount: number;
-  hasWhitelist: boolean;
-  activeItem: TViewType;
-  onItemClick(name: TViewType): void;
-  className?: string;
-}
-const SideMenuItem = ({ active, onClick, children }) => (
-  <li onClick={onClick} className={active ? style.active : null}>
+export const SideMenuItemText = ({
+  className,
+  ...props,
+}: React.HTMLAttributes<HTMLSpanElement>) => (
+  <span className={classnames(style.SideMenuItemText, className)} {...props} />
+);
+
+export const SideMenuItem = ({
+  active,
+  onItemClick,
+  children,
+}: React.HTMLAttributes<HTMLLIElement> & {
+  active?: boolean;
+  name: string;
+  onItemClick?: () => void;
+}) => (
+  <li onClick={onItemClick} className={active ? style.active : undefined}>
     <div className={style.Ball} />
     <div className={style.SideMenuItemContent}>{children}</div>
   </li>
 );
 
-const SideMenu = ({
-  activeItem,
-  onItemClick,
-  hasWhitelist,
-  slots,
-  whitelistedLinksCount,
-  allLinksCount,
-  className,
-}: ISideMenuProps) => {
+const SideMenu = ({ activeItem, onItemClick, className, children }) => {
   const notify = (name: TViewType) => (event) => {
     onItemClick(name);
     event.stopPropagation();
   };
 
-  return (
-    <ul className={classnames(style.SideMenu, className)}>
-      <SideMenuItem onClick={notify('Links.Slots')} active={activeItem === 'Links.Slots'}>
-        <span className={style.SideMenuItemText}>Slots</span>
-        <Pill style={{ marginLeft: '10px' }}>{slots}</Pill>
-      </SideMenuItem>
-      <SideMenuItem onClick={notify('Links.Whitelist')} active={activeItem === 'Links.Whitelist'}>
-        <span className={style.SideMenuItemText}>Whitelist</span>
-        <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
-      </SideMenuItem>
-      <SideMenuItem onClick={notify('Specification')} active={activeItem === 'Specification'}>
-        <span className={style.SideMenuItemText}>Specification</span>
-      </SideMenuItem>
-      <SideMenuItem onClick={notify('Userfeed')} active={activeItem === 'Userfeed'}>
-        <span className={style.SideMenuItemText}>Userfeed</span>
-      </SideMenuItem>
-    </ul>
+  const decoratedChildren = React.Children.map(children, (child: React.ReactElement<any>) =>
+    React.cloneElement(child, {
+      active: activeItem === child.props.name,
+      onItemClick: notify(child.props.name),
+    }),
   );
+
+  return <ul className={classnames(style.SideMenu, className)}>{decoratedChildren}</ul>;
 };
 
 export default SideMenu;
