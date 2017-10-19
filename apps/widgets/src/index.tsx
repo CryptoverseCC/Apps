@@ -8,15 +8,17 @@ import App from './App';
 
 import '../styles/all.scss';
 
-const root = document.querySelector('.root');
-
 const [, searchParams] = document.location.href.split('?');
 const store = getStore(qs.parse(searchParams));
 
-if (root) {
-  render((
-    <Provider store={store}>
-      <App />
-    </Provider>),
-    root);
-}
+render((
+  <Provider store={store}>
+    <App />
+  </Provider>),
+  document.querySelector('.root'),
+  () => {
+    if (process.env.NODE_ENV !== 'development' && typeof window.Intercom !== 'undefined') {
+      window.Intercom('boot', { app_id: 'xdam3he4' });
+    }
+  },
+);
