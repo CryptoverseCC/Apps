@@ -6,7 +6,7 @@
 
   & .text {
     position: absolute;
-    visibility: hidden;
+    display: none;
     min-width: 120px;
     max-width: 100%;
     background-color: $black;
@@ -19,7 +19,7 @@
   }
 
   &:hover .text {
-    visibility: visible;
+    display: block;
     transition-delay: 0.5s;
   }
 }
