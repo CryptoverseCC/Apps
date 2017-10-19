@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
+
 import core from '@userfeeds/core/src';
 import web3 from '@userfeeds/utils/src/web3';
-import * as style from './whitelist.scss';
-import Paper from '@userfeeds/apps-components/src/Paper';
 import Link from '@userfeeds/apps-components/src/Link';
+import Icon from '@userfeeds/apps-components/src/Icon';
+import Paper from '@userfeeds/apps-components/src/Paper';
+import Loader from '@userfeeds/apps-components/src/Loader';
+import { IRemoteLink } from '@userfeeds/types/link';
+
 import Pill from '../../../../widgets/src/pages/Configurator/components/Pill';
 import {
   Field,
@@ -14,15 +18,20 @@ import {
 } from '../../../../widgets/src/pages/Configurator/components/Field';
 import { input as fieldInput } from '../../../../widgets/src/pages/Configurator/components/field.scss';
 import Input from '../../../../widgets/src/pages/Configurator/components/Input';
-import Icon from '@userfeeds/apps-components/src/Icon';
-import Loader from '@userfeeds/apps-components/src/Loader';
 import Asset, {
   WIDGET_NETWORKS,
 } from '../../../../widgets/src/pages/Configurator/components/Asset';
 import LinksList from './components/LinksList';
 
+import * as style from './whitelist.scss';
+
+export type TWhitelistableClickableLink = IRemoteLink & {
+  whitelisted: boolean;
+  onClick(): void;
+};
+
 interface IState {
-  links: any[];
+  links: TWhitelistableClickableLink[];
   fetching: boolean;
   apiUrl: string;
   recipientAddress: string;
@@ -35,6 +44,7 @@ interface IState {
   };
   assetFromParams: boolean;
   algorithm: string;
+  decimals?: string;
 }
 
 interface IProps {
@@ -70,6 +80,7 @@ export default class Whitelist extends Component<IProps, IState> {
       recipientAddressFromParams: params.has('recipientAddress'),
       whitelistIdFromParams: params.has('whitelist'),
       assetFromParams: params.has('asset'),
+      decimals: params.get('tokenDetails[decimals]') || undefined,
     };
   }
 
@@ -197,12 +208,13 @@ export default class Whitelist extends Component<IProps, IState> {
       const links = allLinks.items.map((link) => {
         const whitelisted = !!whitelistedLinks.items.find((a) => link.id === a.id);
         const parsedLink = {
+          ...link,
           id: link.id,
           whitelisted,
           title: link.title,
-          description: link.summary,
-          link: link.target,
-          totalSpent: link.total,
+          summary: link.summary,
+          target: link.target,
+          total: this._totalSpentFromTokensWei(link.total, this.state.decimals),
           onClick: () => this._onLinkClick(link),
         };
         return parsedLink;
@@ -219,7 +231,7 @@ export default class Whitelist extends Component<IProps, IState> {
 
     return fetch(
       `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`,
-    ).then((res) => res.json());
+    ).then<{ items: IRemoteLink[] }>((res) => res.json());
   }
 
   _fetchWhitelistedLinks = async () => {
@@ -229,7 +241,11 @@ export default class Whitelist extends Component<IProps, IState> {
 
     return fetch(
       `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/${whitelistParam}`,
-    ).then((res) => res.json());
+    ).then<{ items: IRemoteLink[] }>((res) => res.json());
+  }
+
+  _totalSpentFromTokensWei = (tokenWei: number, decimals: string = '18') => {
+    return web3.toBigNumber(tokenWei).shift(-web3.toBigNumber(decimals)).toString();
   }
 
   _debouncedFetchLinks = debounce(this._fetchLinks, 500);

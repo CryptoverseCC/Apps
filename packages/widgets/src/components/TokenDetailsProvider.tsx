@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { returntypeof } from 'react-redux-typescript';
 
+import web3 from '@userfeeds/utils/src/web3';
+
 import { IRootState } from '../ducks/index';
 import { ITokenDetailsState, loadTokenDetails } from '../ducks/widget';
 
 const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
   tokenDetails: {
     ...tokenDetails,
-    balanceWithDecimalPoint: tokenDetails.balance
-      .shift(-tokenDetails.decimals.toNumber())
+    balanceWithDecimalPoint: web3.toBigNumber(tokenDetails.balance)
+      .shift(-web3.toBigNumber(tokenDetails.decimals))
       .toNumber(),
   },
 });
