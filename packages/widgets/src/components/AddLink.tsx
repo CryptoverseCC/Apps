@@ -10,6 +10,7 @@ import { IBaseLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 
 import { R, validate } from '../utils/validation';
+import {locationWithoutQueryParamsIfLinkExchangeApp} from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import * as style from './addLink.scss';
 import TokenDetailsProvider from './TokenDetailsProvider';
@@ -215,10 +216,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
 
   _createClaim() {
     const { target, title, summary } = this.state;
-    const { href } = window.location;
-    const location = href.startsWith('https://linkexchange.io/apps/') && href.indexOf('?') > 0
-      ? window.location.href.split('?')[0]
-      : window.location.href;
+    const location = locationWithoutQueryParamsIfLinkExchangeApp();
 
     return {
       type: ['link'],

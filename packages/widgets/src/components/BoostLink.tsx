@@ -8,6 +8,7 @@ import { IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 
 import { R, validate } from '../utils/validation';
+import {locationWithoutQueryParamsIfLinkExchangeApp} from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import If from './utils/If';
 
@@ -172,10 +173,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const { asset, recipientAddress } = this.props;
     const { id } = this.props.link;
     const { value } = this.state;
-    const { href } = window.location;
-    const location = href.startsWith('https://linkexchange.io/apps/') && href.indexOf('?') > 0
-      ? window.location.href.split('?')[0]
-      : window.location.href;
+    const location = locationWithoutQueryParamsIfLinkExchangeApp();
 
     const claim = {
       claim: { target: id },
