@@ -16,6 +16,7 @@
     "@userfeeds/apps-components": "^0.0.17",
     "@userfeeds/core": "^0.0.34",
     "@userfeeds/utils": "^0.0.6",
+    "@userfeeds/types": "^0.0.2",
     "classnames": "^2.2.5",
     "lodash.debounce": "^4.0.8",
     "normalize.css": "7.0.0",

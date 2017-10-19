@@ -1,21 +1,19 @@
 import React from 'react';
-import * as style from './linksList.scss';
+
 import BoldText from '@userfeeds/apps-components/src/BoldText';
 import A from '@userfeeds/apps-components/src/A';
 import Button from '@userfeeds/apps-components/src/NewButton';
 import Icon from '@userfeeds/apps-components/src/Icon';
 
-interface ILink {
-  title: string;
-  description: string;
-  link: string;
-  totalSpent: string;
-  onClick: () => any;
-  id: string;
-  whitelisted: boolean;
+import { TWhitelistableClickableLink } from '../';
+
+import * as style from './linksList.scss';
+
+interface ILinksListProps {
+  links: TWhitelistableClickableLink[];
 }
 
-const LinksList = (props: { links: ILink[] }) => {
+const LinksList = (props: ILinksListProps) => {
   return (
     <table className={style.Table}>
       <thead>
@@ -33,11 +31,11 @@ const LinksList = (props: { links: ILink[] }) => {
           <tr key={link.id}>
             <td>
               <b>{link.title}</b>
-              <p style={{ color: '#89939F', margin: 0 }}>{link.description}</p>
-              <A href={link.link}>{link.link}</A>
+              <p style={{ color: '#89939F', margin: 0 }}>{link.summary}</p>
+              <A href={link.target}>{link.target}</A>
             </td>
             <td style={{ width: '140px' }}>
-              <b>{link.totalSpent}</b>
+              <b>{link.total}</b>
             </td>
             {!link.whitelisted && (
               <td style={{ width: '200px', textAlign: 'right' }}>

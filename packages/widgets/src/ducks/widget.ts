@@ -55,7 +55,13 @@ export const loadTokenDetails = () => async (dispatch, getState: () => IRootStat
     erc20ContractName(web3, token),
   ]);
 
-  dispatch(widgetActions.tokenDetailsLoaded({ loaded: true, decimals, balance, symbol, name }));
+  dispatch(widgetActions.tokenDetailsLoaded({
+    loaded: true,
+    decimals: decimals.toString(),
+    balance: balance.toString(),
+    symbol,
+    name,
+  }));
 };
 
 export interface ITokenDetailsState {
