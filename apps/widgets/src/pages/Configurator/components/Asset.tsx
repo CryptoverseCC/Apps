@@ -54,6 +54,8 @@ export const WIDGET_NETWORKS = [
       { value: ETHER, label: 'ETH (ropsten)' },
       { value: '0x31d46d605703f66bd3ea95f699ddec9114fe9b89', label: 'JST' },
       { value: '0x95642c3bcabfbd1cefd7d9f6dff4e9a96197e26c', label: 'MG6T' },
+      { value: '0x53Fb38a8EC4eCF22948E5970F93D7E2338A47114', label: 'MG6T2' },
+      { value: '0x9E5063133518DeDC881150baf2481DAf3FfeE324', label: 'MG6T2.5' },
       OTHER_ERC20_TOKEN,
     ],
   },
