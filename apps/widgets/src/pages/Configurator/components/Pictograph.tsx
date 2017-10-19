@@ -1,6 +1,6 @@
 import React from 'react';
 import * as styles from './pictograph.scss';
-import Pill from './Pill';
+import Pill from '@userfeeds/apps-components/src/Pill';
 
 export const PictographLeaderboard = () => (
   <div className={styles.Wrapper}>

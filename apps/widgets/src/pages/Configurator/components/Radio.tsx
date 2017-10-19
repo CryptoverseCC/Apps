@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import * as RadioStyles from './radio.scss';
-import Pill from './Pill';
+import Pill from '@userfeeds/apps-components/src/Pill';
 import { isType } from '@userfeeds/utils/src/index';
 
 type TRadio = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {

@@ -1,12 +1,9 @@
-@import '../styles/colors';
-
-.self {
-  line-height: 1.2em;
-  font-size: 0.8em;
+.Pill {
+  border: 1px solid #d9e0e7;
+  border-radius: 50px;
+  padding: 4px 15px;
+  font-size: 12px;
+  line-height: 1em;
   font-weight: bold;
-  color: $dusty-gray;
-  border-radius: 20px;
-  border: 1px solid $dusty-gray;
-  margin-left: 0.2em;
-  padding: 0.15em 0.8em;
+  color: #1b2437;
 }

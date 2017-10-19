@@ -8,8 +8,8 @@ import Icon from '@userfeeds/apps-components/src/Icon';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Loader from '@userfeeds/apps-components/src/Loader';
 import { IRemoteLink } from '@userfeeds/types/link';
+import Pill from '@userfeeds/apps-components/src/Pill';
 
-import Pill from '../../../../widgets/src/pages/Configurator/components/Pill';
 import {
   Field,
   Title,
@@ -227,7 +227,9 @@ export default class Whitelist extends Component<IProps, IState> {
 
   _fetchAllLinks = async () => {
     const { apiUrl, recipientAddress, algorithm, asset } = this.state;
-    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
+    const assetString = asset.token
+      ? `${asset.network}:${asset.token.toLowerCase()}`
+      : asset.network;
 
     return fetch(
       `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`,
@@ -236,7 +238,9 @@ export default class Whitelist extends Component<IProps, IState> {
 
   _fetchWhitelistedLinks = async () => {
     const { apiUrl, recipientAddress, algorithm, whitelistId, asset } = this.state;
-    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
+    const assetString = asset.token
+      ? `${asset.network}:${asset.token.toLowerCase()}`
+      : asset.network;
     const whitelistParam = whitelistId ? `?whitelist=${whitelistId.toLowerCase()}` : '';
 
     return fetch(
@@ -245,7 +249,10 @@ export default class Whitelist extends Component<IProps, IState> {
   }
 
   _totalSpentFromTokensWei = (tokenWei: number, decimals: string = '18') => {
-    return web3.toBigNumber(tokenWei).shift(-web3.toBigNumber(decimals)).toString();
+    return web3
+      .toBigNumber(tokenWei)
+      .shift(-web3.toBigNumber(decimals))
+      .toString();
   }
 
   _debouncedFetchLinks = debounce(this._fetchLinks, 500);

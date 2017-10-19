@@ -1,15 +1,8 @@
 import React from 'react';
+import * as styles from './pill.scss';
+import classnames from 'classnames';
 
-import * as style from './pill.scss';
-
-const Pill = (props) => {
-  if (!props.children) {
-    return null;
-  }
-
-  return (
-    <span className={style.self}>{props.children}</span>
-  );
-};
+const Pill = ({ className, ...props }) =>
+  props.children ? <span className={classnames(styles.Pill, className)} {...props} /> : null;
 
 export default Pill;
