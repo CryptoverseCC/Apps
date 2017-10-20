@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Input from '@userfeeds/apps-components/src/Form/Input';
 import Radio from '@userfeeds/apps-components/src/Form/Radio';
 import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
-import { Field, Title, Description, RadioGroup } from '@userfeeds/apps-components/src/Form/Field';
+import { Field, Title, Description, RadioGroup, Error } from '@userfeeds/apps-components/src/Form/Field';
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 import web3 from '@userfeeds/utils/src/web3';
