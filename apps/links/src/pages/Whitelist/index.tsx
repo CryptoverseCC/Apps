@@ -9,6 +9,7 @@ import Paper from '@userfeeds/apps-components/src/Paper';
 import Loader from '@userfeeds/apps-components/src/Loader';
 import { IRemoteLink } from '@userfeeds/types/link';
 import Pill from '@userfeeds/apps-components/src/Pill';
+import Intercom from '@userfeeds/apps-components/src/Intercom';
 
 import {
   Field,
@@ -93,6 +94,7 @@ export default class Whitelist extends Component<IProps, IState> {
   render() {
     return (
       <div className={style.self}>
+        <Intercom settings={{ app_id: 'xdam3he4' }} />
         <Paper className={style.container}>
           <div className={style.head}>
             <h2 className={style.header}>Input the data for your whitelist</h2>

@@ -16,9 +16,4 @@ render((
     <App />
   </Provider>),
   document.querySelector('.root'),
-  () => {
-    if (process.env.NODE_ENV !== 'development' && typeof window.Intercom !== 'undefined') {
-      window.Intercom('boot', { app_id: 'xdam3he4' });
-    }
-  },
 );
