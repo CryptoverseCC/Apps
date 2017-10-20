@@ -10,6 +10,7 @@ import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 import Pill from '@userfeeds/apps-components/src/Pill';
 import { ILink } from '@userfeeds/types/link';
+import Intercom from '@userfeeds/apps-components/src/Intercom';
 
 import { IRootState } from '../../ducks';
 import { EWidgetSize } from '../../types';
@@ -112,6 +113,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
 
     return (
       <div className={classnames(style.self, this.props.className)}>
+        <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
         <WidgetSummary
           openInNewWindowHidden={standaloneMode}
           widgetSettings={widgetSettings}

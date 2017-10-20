@@ -9,6 +9,7 @@ import Paper from '@userfeeds/apps-components/src/Paper';
 import Loader from '@userfeeds/apps-components/src/Loader';
 import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import Intercom from '@userfeeds/apps-components/src/Intercom';
 
 import Steps from './components/Steps';
 
@@ -122,6 +123,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const { mobileOrTablet, linkId, asset, recipientAddress, link, blockchain, location } = this.state;
     return (
       <div className={style.self}>
+        <Intercom settings={{ app_id: 'xdam3he4' }} />
         <div>
           <p className={style.previewTitle}>Link preview:</p>
           <Paper className={style.preview}>
