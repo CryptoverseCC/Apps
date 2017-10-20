@@ -19,7 +19,6 @@ interface IState {
   contactMethod: string;
   title: string;
   description: string;
-  publisherNote: string;
   impression: string;
   size: string;
   type: string;
@@ -30,7 +29,6 @@ interface IState {
   algorithm: string;
   errors: {
     recipientAddress?: string;
-    publisherNote?: string;
     title?: string;
     description?: string;
     contactMethod?: string;
@@ -43,7 +41,6 @@ interface IProps {
 }
 
 const initialState = {
-  publisherNote: '',
   title: '',
   description: 'I accept only links that are about science and technology. I like trains',
   contactMethod: '',
@@ -60,7 +57,6 @@ const initialState = {
 
 const rules = {
   recipientAddress: [R.required, R.value((v) => web3.isAddress(v), 'Has to be valid eth address')],
-  publisherNote: [R.required],
   title: [R.required],
   description: [R.required],
   contactMethod: [R.required],
