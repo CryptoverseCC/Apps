@@ -108,6 +108,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
       standaloneMode,
     } = this.props;
     const { viewType, mobileOrTablet } = this.state;
+    const hasWhitelist = !!widgetSettings.whitelist;
 
     return (
       <div className={classnames(style.self, this.props.className)}>
@@ -124,7 +125,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
               recipientAddress={widgetSettings.recipientAddress}
               slots={widgetSettings.slots}
               whitelistedLinksCount={whitelistedLinksCount}
-              hasWhitelist={!!widgetSettings.whitelist}
+              hasWhitelist={hasWhitelist}
               allLinksCount={allLinksCount}
               size={widgetSettings.size}
               links={links}
@@ -143,10 +144,17 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
                   <SideMenuItemText>Slots</SideMenuItemText>
                   <Pill style={{ marginLeft: '10px' }}>{widgetSettings.slots}</Pill>
                 </SideMenuItem>
-                <SideMenuItem name="Links.Whitelist">
-                  <SideMenuItemText>Whitelist</SideMenuItemText>
-                  <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
-                </SideMenuItem>
+                {hasWhitelist ? (
+                  <SideMenuItem name="Links.Whitelist">
+                    <SideMenuItemText>Whitelist</SideMenuItemText>
+                    <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
+                  </SideMenuItem>
+                ) : (
+                  <SideMenuItem name="Links.Algorithm">
+                    <SideMenuItemText>Algorithm</SideMenuItemText>
+                    <Pill style={{ marginLeft: '10px' }}>{allLinksCount}</Pill>
+                  </SideMenuItem>
+                )}
                 <SideMenuItem name="Specification">
                   <SideMenuItemText>Specification</SideMenuItemText>
                 </SideMenuItem>
@@ -162,7 +170,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
                 ref={this._onDetailsListRef}
                 asset={widgetSettings.asset}
                 recipientAddress={widgetSettings.recipientAddress}
-                hasWhitelist={!!widgetSettings.whitelist}
+                hasWhitelist={hasWhitelist}
                 size={widgetSettings.size}
                 links={links}
                 whitelistedLinks={whitelistedLinks}

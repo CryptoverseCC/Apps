@@ -34,8 +34,7 @@ interface IDetailsListsinkProps {
 }
 
 export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
-
-  componentsRefs: { [key: string]: any; } = {};
+  componentsRefs: { [key: string]: any } = {};
 
   scrollTo(to: TViewType) {
     findDOMNode(this.componentsRefs[to]).scrollIntoView(true);
@@ -48,10 +47,20 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
   }
 
   render() {
-    const { web3Enabled, asset, recipientAddress, size,
-      algorithm, links, hasWhitelist,
-      whitelistedLinks, allLinks, allLinksCount,
-      onBoostError, onBoostSuccess } = this.props;
+    const {
+      web3Enabled,
+      asset,
+      recipientAddress,
+      size,
+      algorithm,
+      links,
+      hasWhitelist,
+      whitelistedLinks,
+      allLinks,
+      allLinksCount,
+      onBoostError,
+      onBoostSuccess,
+    } = this.props;
 
     return (
       <div className={style.self} onScroll={this._onScroll}>
@@ -66,19 +75,21 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
           onBoostError={onBoostError}
           ref={this._onRef('Links.Slots')}
         />
-        <LinksList
-          label="Whitelist"
-          showProbability={false}
-          asset={asset}
-          recipientAddress={recipientAddress}
-          links={whitelistedLinks}
-          boostDisabled={!web3Enabled.enabled}
-          boostDisabledReason={web3Enabled.reason}
-          onBoostSuccess={onBoostSuccess}
-          onBoostError={onBoostError}
-          ref={this._onRef('Links.Whitelist')}
-        />
-        {!hasWhitelist && (
+
+        {hasWhitelist ? (
+          <LinksList
+            label="Whitelist"
+            showProbability={false}
+            asset={asset}
+            recipientAddress={recipientAddress}
+            links={whitelistedLinks}
+            boostDisabled={!web3Enabled.enabled}
+            boostDisabledReason={web3Enabled.reason}
+            onBoostSuccess={onBoostSuccess}
+            onBoostError={onBoostError}
+            ref={this._onRef('Links.Whitelist')}
+          />
+        ) : (
           <LinksList
             label="Algorithm"
             showProbability={false}
@@ -92,11 +103,7 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
             ref={this._onRef('Links.Algorithm')}
           />
         )}
-        <WidgetSpecification
-          size={size}
-          algorithm={algorithm}
-          ref={this._onRef('Specification')}
-        />
+        <WidgetSpecification size={size} algorithm={algorithm} ref={this._onRef('Specification')} />
         <UserfeedAddressInfo
           recipientAddress={recipientAddress}
           linksNumber={allLinksCount}
@@ -116,25 +123,29 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
     this._onScrollThrottled(event.currentTarget);
   }
 
-  _onScrollThrottled = throttle((element) => {
-    const viewport = {
-      top: element.scrollTop,
-      bottom: element.scrollTop + element.offsetHeight,
-    };
+  _onScrollThrottled = throttle(
+    (element) => {
+      const viewport = {
+        top: element.scrollTop,
+        bottom: element.scrollTop + element.offsetHeight,
+      };
 
-    const visibleSections = Object.entries(this.componentsRefs)
-      .filter(([, ref]) => {
-        const node = findDOMNode(ref) as HTMLElement;
-        const bounds = {
-          top: node.offsetTop,
-          bottom: node.offsetTop + node.offsetHeight,
-        };
+      const visibleSections = Object.entries(this.componentsRefs)
+        .filter(([, ref]) => {
+          const node = findDOMNode(ref) as HTMLElement;
+          const bounds = {
+            top: node.offsetTop,
+            bottom: node.offsetTop + node.offsetHeight,
+          };
 
-        return ((bounds.top <= viewport.bottom) && (bounds.bottom >= viewport.top));
-      })
-      .map(([name]) => name);
+          return bounds.top <= viewport.bottom && bounds.bottom >= viewport.top;
+        })
+        .map(([name]) => name);
 
-    const closedView = visibleSections[0] as TViewType;
-    this.props.scrolledTo(closedView);
-  }, 100, { leading: false });
+      const closedView = visibleSections[0] as TViewType;
+      this.props.scrolledTo(closedView);
+    },
+    100,
+    { leading: false },
+  );
 }
