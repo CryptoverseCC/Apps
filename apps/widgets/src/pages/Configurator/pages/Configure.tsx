@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+
 import Input from '@userfeeds/apps-components/src/Form/Input';
 import Radio from '@userfeeds/apps-components/src/Form/Radio';
 import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
-import { Field, Title, Description, RadioGroup } from '@userfeeds/apps-components/src/Form/Field';
-import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
-import CreateWidget from '../components/CreateWidget';
-import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
-
+import { Field, Title, Description, RadioGroup, Error } from '@userfeeds/apps-components/src/Form/Field';
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
+import web3 from '@userfeeds/utils/src/web3';
+import { R, validate, validateMultipe } from '@userfeeds/utils/src/validation';
+import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
+
+import CreateWidget from '../components/CreateWidget';
+import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 
 interface IState {
   recipientAddress: string;
@@ -17,13 +20,21 @@ interface IState {
   contactMethod: string;
   title: string;
   description: string;
-  publisherNote: string;
   impression: string;
   size: string;
   type: string;
-  token: string;
-  network: string;
+  asset: {
+    token: string;
+    network: string;
+  };
   algorithm: string;
+  errors: {
+    recipientAddress?: string;
+    title?: string;
+    description?: string;
+    contactMethod?: string;
+    asset?: string;
+  };
 }
 
 interface IProps {
@@ -31,24 +42,36 @@ interface IProps {
 }
 
 const initialState = {
-  publisherNote: '',
   title: '',
   description: 'I accept only links that are about science and technology. I like trains',
   contactMethod: '',
   size: 'leaderboard',
   type: 'text',
   impression: 'N/A',
-  token: WIDGET_NETWORKS[0].tokens[0].value,
-  network: WIDGET_NETWORKS[0].value,
+  asset: {
+    token: WIDGET_NETWORKS[0].tokens[0].value,
+    network: WIDGET_NETWORKS[0].value,
+  },
   algorithm: 'links',
+  errors: {},
+};
+
+const rules = {
+  recipientAddress: [R.required, R.value((v) => web3.isAddress(v), 'Has to be valid eth address')],
+  title: [R.required],
+  description: [R.required],
+  contactMethod: [R.required],
+  asset: [
+    R.value(({ network, token, isCustom }) => !isCustom || web3.isAddress(token), 'Has to be valid eth address'),
+  ],
 };
 
 export default class Configurator extends Component<IProps, IState> {
   constructor(props) {
     super(props);
 
-    const web3 = window.web3;
-    const recipientAddress = web3 && web3.eth.accounts.length > 0 ? web3.eth.accounts[0] : '';
+    const injectedWeb3 = window.web3;
+    const recipientAddress = injectedWeb3 && injectedWeb3.eth.accounts.length > 0 ? injectedWeb3.eth.accounts[0] : '';
 
     if (props.location.search) {
       const params = new URLSearchParams(props.location.search);
@@ -66,7 +89,39 @@ export default class Configurator extends Component<IProps, IState> {
     }
   }
 
-  onChange = (key) => ({ target: { value } }) => this.setState({ [key]: value });
+  onChange = (key) => ({ target: { value } }) => {
+    this.setState({ [key]: value });
+    this.validate(key, value);
+  }
+
+  onCreateClick = () => {
+    if (!this.validateAll()) {
+      return;
+    }
+
+    const searchParams = Object.entries(this.state)
+      .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+      .join('&');
+    this.props.history.push({
+      pathname: '/configurator/summary',
+      search: `?${searchParams}`,
+    });
+  }
+
+  validate = (name: string, value: any) => {
+    this.setState(({ errors }) => ({
+      errors: {
+        ...errors,
+        [name]: validate(rules[name], value),
+      },
+    }));
+  }
+
+  validateAll = () => {
+    const errors = validateMultipe(rules, this.state);
+    this.setState({ errors });
+    return Object.keys(errors).length === 0;
+  }
 
   render() {
     const { onChange } = this;
@@ -79,9 +134,9 @@ export default class Configurator extends Component<IProps, IState> {
       contactMethod,
       size,
       type,
-      network,
-      token,
+      asset,
       algorithm,
+      errors,
     } = this.state;
     return (
       <div>
@@ -93,6 +148,7 @@ export default class Configurator extends Component<IProps, IState> {
           <Title>Userfeed Address</Title>
           <Description>Add description here about userfeed address</Description>
           <Input type="text" value={recipientAddress} onChange={onChange('recipientAddress')} />
+          {errors.recipientAddress && <Error>{errors.recipientAddress}</Error>}
         </Field>
         <Field>
           <Title>Whitelist</Title>
@@ -103,11 +159,13 @@ export default class Configurator extends Component<IProps, IState> {
           <Title>Title</Title>
           <Description>Add description here about title</Description>
           <Input type="text" value={title} onChange={onChange('title')} />
+          {errors.title && <Error>{errors.title}</Error>}
         </Field>
         <Field>
           <Title>Description</Title>
           <Description>Add description here about description</Description>
           <Input type="text" multiline value={description} onChange={onChange('description')} />
+          {errors.description && <Error>{errors.description}</Error>}
         </Field>
         <Field>
           <Title>Declared Amount of Impressions</Title>
@@ -129,6 +187,7 @@ export default class Configurator extends Component<IProps, IState> {
         <Field>
           <Title>Preferred Contact Method</Title>
           <Input type="text" value={contactMethod} onChange={onChange('contactMethod')} />
+          {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
         </Field>
         <Field>
           <Title>Select Size</Title>
@@ -163,11 +222,13 @@ export default class Configurator extends Component<IProps, IState> {
           <Description>I think it would be nice to put here a short description</Description>
           <div className={fieldInput}>
             <Asset
-              asset={{ network, token }}
+              asset={asset}
               onChange={(asset) => {
-                this.setState(asset);
+                this.setState({ asset });
+                this.validate('asset', asset);
               }}
             />
+            {errors.asset && <Error>{errors.asset}</Error>}
           </div>
         </Field>
         <Field>
@@ -181,7 +242,7 @@ export default class Configurator extends Component<IProps, IState> {
             options={[{ value: 'links', label: 'Ad Ether / total ether - time' }]}
           />
         </Field>
-        <CreateWidget widgetSettings={this.state} />
+        <CreateWidget onClick={this.onCreateClick} />
       </div>
     );
   }

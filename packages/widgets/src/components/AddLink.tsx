@@ -8,9 +8,9 @@ import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import Checkbox from '@userfeeds/apps-components/src/Checkbox';
 import { IBaseLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
+import { R, validate } from '@userfeeds/utils/src/validation';
 
 import Web3StateProvider from './Web3StateProvider';
-import { R, validate } from '../utils/validation';
 import { locationWithoutQueryParamsIfLinkExchangeApp } from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import * as style from './addLink.scss';
