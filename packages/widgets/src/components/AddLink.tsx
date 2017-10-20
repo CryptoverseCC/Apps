@@ -9,8 +9,9 @@ import Checkbox from '@userfeeds/apps-components/src/Checkbox';
 import { IBaseLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 
+import Web3StateProvider from './Web3StateProvider';
 import { R, validate } from '../utils/validation';
-import {locationWithoutQueryParamsIfLinkExchangeApp} from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
+import { locationWithoutQueryParamsIfLinkExchangeApp } from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import * as style from './addLink.scss';
 import TokenDetailsProvider from './TokenDetailsProvider';
@@ -18,10 +19,6 @@ import TokenDetailsProvider from './TokenDetailsProvider';
 interface IAddLinkProps {
   asset: string;
   recipientAddress: string;
-  web3State: {
-    enabled: boolean;
-    reason?: string;
-  };
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: IBaseLink) => void;
@@ -78,7 +75,6 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
   };
 
   render() {
-    const { web3State } = this.props;
     const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
@@ -133,11 +129,15 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           {posting ? (
             <Loader />
           ) : (
-            <Tooltip text={web3State.reason}>
-              <Button disabled={!web3State.enabled} onClick={this._onSubmit}>
-                Send
-              </Button>
-            </Tooltip>
+            <Web3StateProvider
+              render={({ enabled, reason }) => (
+                <Tooltip text={reason}>
+                  <Button disabled={!enabled} onClick={this._onSubmit}>
+                    Send
+                  </Button>
+                </Tooltip>
+              )}
+            />
           )}
         </div>
       </div>
@@ -221,10 +221,12 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     return {
       type: ['link'],
       claim: { target, title, summary },
-      credits: [{
-        type: 'interface',
-        value: location,
-      }],
+      credits: [
+        {
+          type: 'interface',
+          value: location,
+        },
+      ],
     };
   }
 

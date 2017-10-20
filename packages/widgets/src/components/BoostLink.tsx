@@ -4,6 +4,7 @@ import core from '@userfeeds/core/src';
 import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import Wrapper from '@userfeeds/apps-components/src/Wrapper';
 import { IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 import Web3StateProvider from './Web3StateProvider';
@@ -72,53 +73,59 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       <div ref={this._onButtonRef} className={style.self}>
         <Web3StateProvider
           render={({ enabled, reason }) => (
-            <Tooltip text={reason}>
-              <Button
-                secondary
-                className={style.boostButton}
-                disabled={!enabled}
-                onClick={this._onBoostClick}
-              >
-                Boost
-              </Button>
-            </Tooltip>
+            <Wrapper>
+              <Tooltip text={reason}>
+                <Button
+                  secondary
+                  className={style.boostButton}
+                  disabled={!enabled}
+                  onClick={this._onBoostClick}
+                >
+                  Boost
+                </Button>
+              </Tooltip>
+              <If condition={visible && enabled}>
+                <div className={style.overlay} onClick={this._onOverlayClick} />
+                <div
+                  ref={this._onFormRef}
+                  className={style.form}
+                  style={{ top: formTop, left: formLeft, opacity: formOpacity }}
+                >
+                  <div className={style.inputRow}>
+                    <Input
+                      placeholder="Value"
+                      value={value}
+                      onChange={this._onValueChange}
+                      errorMessage={validationError}
+                    />
+                    <p className={style.equalSign}>=</p>
+                    <Input
+                      placeholder="Estimated Probability"
+                      disabled
+                      value={`${probability} %`}
+                    />
+                  </div>
+                  {this._getTokenAddress() && (
+                    <TokenDetailsProvider
+                      render={(tokenDetails) => (
+                        <p>
+                          Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+                        </p>
+                      )}
+                    />
+                  )}
+                  <Button
+                    disabled={!!validationError || !value}
+                    style={{ marginLeft: 'auto' }}
+                    onClick={this._onSendClick}
+                  >
+                    Send
+                  </Button>
+                </div>
+              </If>
+            </Wrapper>
           )}
         />
-        <If condition={visible}>
-          <div className={style.overlay} onClick={this._onOverlayClick} />
-          <div
-            ref={this._onFormRef}
-            className={style.form}
-            style={{ top: formTop, left: formLeft, opacity: formOpacity }}
-          >
-            <div className={style.inputRow}>
-              <Input
-                placeholder="Value"
-                value={value}
-                onChange={this._onValueChange}
-                errorMessage={validationError}
-              />
-              <p className={style.equalSign}>=</p>
-              <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
-            </div>
-            {this._getTokenAddress() && (
-              <TokenDetailsProvider
-                render={(tokenDetails) => (
-                  <p>
-                    Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-                  </p>
-                )}
-              />
-            )}
-            <Button
-              disabled={!!validationError || !value}
-              style={{ marginLeft: 'auto' }}
-              onClick={this._onSendClick}
-            >
-              Send
-            </Button>
-          </div>
-        </If>
       </div>
     );
   }

@@ -6,8 +6,6 @@ import { IBaseLink } from '@userfeeds/types/link';
 import Paper from '@userfeeds/apps-components/src/Paper';
 import Link from '@userfeeds/apps-components/src/Link';
 
-import { web3Enabled } from '../../selectors/web3';
-
 import { IRootState } from '../../ducks';
 import { modalActions } from '../../ducks/modal';
 import { openToast, TToastType } from '../../ducks/toast';
@@ -24,7 +22,6 @@ import * as style from './addLink.scss';
 
 const mapsStateToProps = (state: IRootState) => ({
   widgetSettings: state.widget,
-  web3State: web3Enabled(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -57,14 +54,13 @@ const DEFAULT_LINK = {
 };
 
 class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
-
   state: IAddLinkModalState = {
     step: 'form',
     link: DEFAULT_LINK,
   };
 
   render() {
-    const { widgetSettings, web3State } = this.props;
+    const { widgetSettings } = this.props;
     const { step, link, linkId } = this.state;
 
     return (
@@ -85,7 +81,6 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
                   <AddLink
                     asset={widgetSettings.asset}
                     recipientAddress={widgetSettings.recipientAddress}
-                    web3State={web3State}
                     onChange={this._onFormEdit}
                     onSuccess={this._onSuccess}
                     onError={this._onError}
@@ -105,9 +100,9 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   _onFormEdit = (link: IBaseLink) => {
     const notEmptyProperties = Object.entries(link)
       .filter(([, value]) => !!value)
-      .reduce((acc, [k, v]) => ({ ...acc, [k]: v}), {});
+      .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
 
-    this.setState({ link: { ...DEFAULT_LINK, ...notEmptyProperties }});
+    this.setState({ link: { ...DEFAULT_LINK, ...notEmptyProperties } });
   }
 
   _onSuccess = (linkId) => {
