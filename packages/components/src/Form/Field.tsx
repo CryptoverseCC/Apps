@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import BoldText from '@userfeeds/apps-components/src/BoldText';
+import BoldText from '../BoldText';
 import { isType } from '@userfeeds/utils/src/index';
 import * as styles from './field.scss';
 

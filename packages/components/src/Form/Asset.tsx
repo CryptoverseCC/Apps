@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Input from '@userfeeds/apps-components/src/Input';
-import Dropdown from '@userfeeds/apps-components/src/Dropdown';
-import Wrapper from './Wrapper';
+import Input from '../Input';
+import Dropdown from '../Dropdown';
+import Wrapper from '../Wrapper';
 
 export const ETHER = '';
 export const CUSTOM_TOKEN = 'custom';
@@ -33,7 +33,10 @@ export const WIDGET_NETWORKS = [
       { value: '0xaec2e87e0a235266d9c5adc9deb4b2e29b54d009', label: 'SingularDTV (SNGLS)' },
       { value: '0xb63b606ac810a52cca15e44bb630fd42d8d1d83d', label: 'Monaco (MCO)' },
       { value: '0x960b236A07cf122663c4303350609A66A7B288C0', label: 'Aragon Network Token (ANT)' },
-      { value: '0x108c05cac356d93b351375434101cfd3e14f7e44', label: 'Token of Szczepan Bentyn (BEN)' },
+      {
+        value: '0x108c05cac356d93b351375434101cfd3e14f7e44',
+        label: 'Token of Szczepan Bentyn (BEN)',
+      },
       OTHER_ERC20_TOKEN,
     ],
   },
@@ -130,7 +133,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
 
   _onTokenChange = ({ value }) => {
     this.setState({ dropdownTokenSelection: value });
-    const token = (value === CUSTOM_TOKEN) ? '' : value;
+    const token = value === CUSTOM_TOKEN ? '' : value;
     this.props.onChange({ network: this.props.asset.network, token });
   }
 

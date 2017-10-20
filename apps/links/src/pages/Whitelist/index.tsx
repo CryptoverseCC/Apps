@@ -11,17 +11,10 @@ import { IRemoteLink } from '@userfeeds/types/link';
 import Pill from '@userfeeds/apps-components/src/Pill';
 import Intercom from '@userfeeds/apps-components/src/Intercom';
 
-import {
-  Field,
-  Title,
-  Description,
-  RadioGroup,
-} from '../../../../widgets/src/pages/Configurator/components/Field';
-import { input as fieldInput } from '../../../../widgets/src/pages/Configurator/components/field.scss';
-import Input from '../../../../widgets/src/pages/Configurator/components/Input';
-import Asset, {
-  WIDGET_NETWORKS,
-} from '../../../../widgets/src/pages/Configurator/components/Asset';
+import { Field, Title, Description, RadioGroup } from '@userfeeds/apps-components/src/Form/Field';
+import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
+import Input from '@userfeeds/apps-components/src/Form/Input';
+import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 import LinksList from './components/LinksList';
 
 import * as style from './whitelist.scss';

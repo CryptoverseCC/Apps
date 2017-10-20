@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import Input from '../components/Input';
-import Radio from '../components/Radio';
-import { input as fieldInput } from '../components/field.scss';
-import { Field, Title, Description, RadioGroup } from '../components/Field';
+import Input from '@userfeeds/apps-components/src/Form/Input';
+import Radio from '@userfeeds/apps-components/src/Form/Radio';
+import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
+import { Field, Title, Description, RadioGroup } from '@userfeeds/apps-components/src/Form/Field';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 import CreateWidget from '../components/CreateWidget';
-import Asset, { WIDGET_NETWORKS } from '../components/Asset';
+import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
@@ -163,7 +163,7 @@ export default class Configurator extends Component<IProps, IState> {
           <Description>I think it would be nice to put here a short description</Description>
           <div className={fieldInput}>
             <Asset
-              asset={{network, token}}
+              asset={{ network, token }}
               onChange={(asset) => {
                 this.setState(asset);
               }}
