@@ -7,7 +7,7 @@ interface IIntercomComponentProps {
 export default class IntercomComponent extends Component<IIntercomComponentProps, {}> {
   componentDidMount() {
     if (process.env.NODE_ENV === 'development') {
-      // return;
+      return;
     }
 
     if (window.Intercom) {
