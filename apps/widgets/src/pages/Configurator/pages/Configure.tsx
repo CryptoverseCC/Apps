@@ -9,9 +9,10 @@ import Icon from '@userfeeds/apps-components/src/Icon';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
 import web3 from '@userfeeds/utils/src/web3';
 import { R, validate, validateMultipe } from '@userfeeds/utils/src/validation';
+import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 
 import CreateWidget from '../components/CreateWidget';
-import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
+import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 
 interface IState {
   recipientAddress: string;
@@ -221,11 +222,7 @@ export default class Configurator extends Component<IProps, IState> {
           <Description>I think it would be nice to put here a short description</Description>
           <div className={fieldInput}>
             <Asset
-<<<<<<< HEAD
-              asset={{ network, token }}
-=======
               asset={asset}
->>>>>>> [app/configurator] validation
               onChange={(asset) => {
                 this.setState({ asset });
                 this.validate('asset', asset);

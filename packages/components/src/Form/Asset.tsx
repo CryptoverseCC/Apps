@@ -79,6 +79,9 @@ interface IAssetState {
 }
 
 export default class Asset extends Component<IAssetProps, IAssetState> {
+
+  input: Input;
+
   constructor(props) {
     super(props);
 
@@ -96,6 +99,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     const ContractAddress =
       dropdownTokenSelection !== ETHER ? (
         <Input
+          ref={this._onInputRef}
           placeholder="Contract address"
           value={asset.token}
           disabled={dropdownTokenSelection !== CUSTOM_TOKEN}
@@ -136,6 +140,10 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     const isCustom = value === CUSTOM_TOKEN;
     const token = isCustom ? '' : value;
     this.props.onChange({ network: this.props.asset.network, token, isCustom });
+
+    if (isCustom) {
+      setTimeout(() => this.input.input.focus());
+    }
   }
 
   _onAddressChange = (e: React.FormEvent<any>) => {
@@ -151,4 +159,6 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
   _getTokensOptions = (network) => {
     return WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === network)].tokens;
   }
+
+  _onInputRef = (ref: Input) => this.input = ref;
 }
