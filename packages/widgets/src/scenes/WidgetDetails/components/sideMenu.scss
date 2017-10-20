@@ -24,6 +24,20 @@
     background-color: #d9e0e7;
   }
 
+  &:hover {
+    .SideMenuItemContent {
+      transform: translateX(10px);
+    }
+
+    .Ball:after {
+      width: 10px;
+    }
+
+    .Ball:before {
+      transform: translate(calc(10px - 50%), -50%);
+    }
+  }
+
   &.active {
     .SideMenuItemContent {
       transform: translateX(20px);
