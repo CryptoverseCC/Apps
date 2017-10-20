@@ -17,7 +17,6 @@ import { EWidgetSize } from '../../types';
 
 import { openToast, TToastType } from '../../ducks/toast';
 import { modalActions } from '../../ducks/modal';
-import { web3Enabled } from '../../selectors/web3';
 import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
@@ -48,7 +47,6 @@ const mapStateToProps = (state: IRootState) => {
   const { links, widget } = state;
 
   return {
-    web3Enabled: web3Enabled(state),
     widgetSettings: widget,
     links: visibleLinks(state),
     whitelistedLinks: state.links.links,
@@ -99,7 +97,6 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
 
   render() {
     const {
-      web3Enabled,
       widgetSettings,
       whitelistedLinks,
       allLinks,
@@ -117,7 +114,6 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
         <WidgetSummary
           openInNewWindowHidden={standaloneMode}
           widgetSettings={widgetSettings}
-          web3Enabled={web3Enabled}
           onAddClick={this._onAddLinkClick}
           onOpenInSeparateWindow={this._onOpenInSeparateWindowClick}
         />
@@ -165,7 +161,6 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
                 </SideMenuItem>
               </SideMenu>
               <DetailsLists
-                web3Enabled={web3Enabled}
                 initialView={viewType}
                 algorithm={widgetSettings.algorithm}
                 scrolledTo={this._onScrolledTo}

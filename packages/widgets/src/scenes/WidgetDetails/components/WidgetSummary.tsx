@@ -1,23 +1,15 @@
 import React from 'react';
-// import classnames from 'classnames';
-//
 import Icon from '@userfeeds/apps-components/src/Icon';
 import A from '@userfeeds/apps-components/src/A';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
-// import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
-//
 import { IWidgetState } from '../../../ducks/widget';
-//
 import EthereumLogo from '../../../components/EthereumLogo';
+import Web3StateProvider from '../../../components/Web3StateProvider';
 
 import * as style from './widgetSummary.scss';
 import Button from '@userfeeds/apps-components/src/NewButton';
 
 interface IWidgetSummaryProps {
-  web3Enabled: {
-    enabled: boolean;
-    reason?: string;
-  };
   openInNewWindowHidden?: boolean;
   widgetSettings: IWidgetState;
   onAddClick(): void;
@@ -25,7 +17,6 @@ interface IWidgetSummaryProps {
 }
 
 const WidgetSummary = ({
-  web3Enabled,
   widgetSettings,
   onAddClick,
   onOpenInSeparateWindow,
@@ -51,11 +42,15 @@ const WidgetSummary = ({
         <p className={style.BigScreenDescription}>{widgetSettings.description}</p>
       </div>
       <p className={style.SmallScreenDescription}>{widgetSettings.description}</p>
-      <Tooltip className={style.NewButtonContainer} text={web3Enabled.reason}>
-        <Button onClick={onAddClick} disabled={!web3Enabled.enabled}>
-          <Icon name="plus" /> Create new link
-        </Button>
-      </Tooltip>
+      <Web3StateProvider
+        render={({ enabled, reason }) => (
+          <Tooltip className={style.NewButtonContainer} text={reason}>
+            <Button onClick={onAddClick} disabled={!enabled}>
+              <Icon name="plus" /> Create new link
+            </Button>
+          </Tooltip>
+        )}
+      />
     </div>
     <div className={style.lowerHead}>
       <div className={style.SummaryField}>

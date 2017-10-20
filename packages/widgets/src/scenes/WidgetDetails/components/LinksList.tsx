@@ -15,8 +15,6 @@ interface ILinksListProps {
   links: ILink[] | IRemoteLink[];
   asset: string;
   recipientAddress: string;
-  boostDisabled: boolean;
-  boostDisabledReason?: string;
   onBoostSuccess?: (transationId: string) => void;
   onBoostError?: (error: any) => void;
   showProbability?: boolean;
@@ -27,38 +25,41 @@ interface ILinksListState {
 }
 
 export default class LinksList extends Component<ILinksListProps, {}> {
-
   // ToDo make it better
-  columns = [{
-    name: 'NO',
-    prop: (_, index) => index + 1,
-  }, {
-    name: 'Probability',
-    prop: (link: ILink) => typeof link.probability === 'number' ? `${link.probability}%` : '-',
-  }, {
-    name: 'Content',
-    prop: (link: ILink) => <Link style={{ maxWidth: '200px' }} link={link} />,
-  }, {
-    name: 'Current Score',
-    prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),
-  }, {
-    name: 'Bids',
-    prop: (link: ILink) => (
-      <div className={style.boostCell}>
-        {link.group_count || 0}
-        <BoostLink
-          disabled={this.props.boostDisabled}
-          disabledReason={this.props.boostDisabledReason}
-          asset={this.props.asset}
-          recipientAddress={this.props.recipientAddress}
-          onSuccess={this.props.onBoostSuccess}
-          onError={this.props.onBoostError}
-          link={link}
-          links={this.props.links}
-        />
-      </div>
-    ),
-  }];
+  columns = [
+    {
+      name: 'NO',
+      prop: (_, index) => index + 1,
+    },
+    {
+      name: 'Probability',
+      prop: (link: ILink) => (typeof link.probability === 'number' ? `${link.probability}%` : '-'),
+    },
+    {
+      name: 'Content',
+      prop: (link: ILink) => <Link style={{ maxWidth: '200px' }} link={link} />,
+    },
+    {
+      name: 'Current Score',
+      prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),
+    },
+    {
+      name: 'Bids',
+      prop: (link: ILink) => (
+        <div className={style.boostCell}>
+          {link.group_count || 0}
+          <BoostLink
+            asset={this.props.asset}
+            recipientAddress={this.props.recipientAddress}
+            onSuccess={this.props.onBoostSuccess}
+            onError={this.props.onBoostError}
+            link={link}
+            links={this.props.links}
+          />
+        </div>
+      ),
+    },
+  ];
 
   state = {
     maxRows: 5,
@@ -95,9 +96,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   _renderHeader = () => {
     return (
       <thead className={style.tableHeader}>
-        <tr>
-          {this.columns.map(({ name }) => <th key={name}>{name}</th>)}
-        </tr>
+        <tr>{this.columns.map(({ name }) => <th key={name}>{name}</th>)}</tr>
       </thead>
     );
   }
@@ -105,7 +104,9 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   _renderRow = (link: ILink, index: number) => {
     return (
       <tr key={link.id}>
-        {this.columns.map(({ prop, name }) => <td key={`${name}_${link.id}`}>{prop(link, index)}</td>)}
+        {this.columns.map(({ prop, name }) => (
+          <td key={`${name}_${link.id}`}>{prop(link, index)}</td>
+        ))}
       </tr>
     );
   }

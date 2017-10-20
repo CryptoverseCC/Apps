@@ -6,9 +6,10 @@ import Button from '@userfeeds/apps-components/src/Button';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import { IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
+import Web3StateProvider from './Web3StateProvider';
 
 import { R, validate } from '../utils/validation';
-import {locationWithoutQueryParamsIfLinkExchangeApp} from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
+import { locationWithoutQueryParamsIfLinkExchangeApp } from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import If from './utils/If';
 
@@ -16,8 +17,6 @@ import * as style from './boostLink.scss';
 import TokenDetailsProvider from './TokenDetailsProvider';
 
 interface IBidLinkProps {
-  disabled?: boolean;
-  disabledReason?: string;
   link: IRemoteLink;
   links: IRemoteLink[];
   asset: string;
@@ -37,17 +36,20 @@ interface IBidLinkState {
   formOpacity?: number;
 }
 
-const valueValidationRules = [R.required, R.number, R.value((v: number) => v > 0, 'Have to be positive value'),
+const valueValidationRules = [
+  R.required,
+  R.number,
+  R.value((v: number) => v > 0, 'Have to be positive value'),
   R.value((v: string) => {
     const dotIndex = v.indexOf('.');
     if (dotIndex !== -1) {
       return v.length - 1 - dotIndex <= 18;
     }
     return true;
-  }, 'Invalid value')];
+  }, 'Invalid value'),
+];
 
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
-
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
@@ -56,15 +58,32 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   render() {
-    const { link, disabled, disabledReason } = this.props;
-    const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
+    const { link } = this.props;
+    const {
+      visible,
+      value,
+      validationError,
+      probability,
+      formLeft,
+      formTop,
+      formOpacity,
+    } = this.state;
     return (
       <div ref={this._onButtonRef} className={style.self}>
-        <Tooltip text={disabledReason}>
-          <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>
-            Boost
-          </Button>
-        </Tooltip>
+        <Web3StateProvider
+          render={({ enabled, reason }) => (
+            <Tooltip text={reason}>
+              <Button
+                secondary
+                className={style.boostButton}
+                disabled={!enabled}
+                onClick={this._onBoostClick}
+              >
+                Boost
+              </Button>
+            </Tooltip>
+          )}
+        />
         <If condition={visible}>
           <div className={style.overlay} onClick={this._onOverlayClick} />
           <div
@@ -80,19 +99,17 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                 errorMessage={validationError}
               />
               <p className={style.equalSign}>=</p>
-              <Input
-                placeholder="Estimated Probability"
-                disabled
-                value={`${probability} %`}
-              />
+              <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
             </div>
-            {this._getTokenAddress() &&
+            {this._getTokenAddress() && (
               <TokenDetailsProvider
-                render={(tokenDetails) => (<p>
-                  Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-                </p>)}
+                render={(tokenDetails) => (
+                  <p>
+                    Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+                  </p>
+                )}
               />
-            }
+            )}
             <Button
               disabled={!!validationError || !value}
               style={{ marginLeft: 'auto' }}
@@ -106,7 +123,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     );
   }
 
-  _onButtonRef = (ref) => this._buttonRef = ref;
+  _onButtonRef = (ref) => (this._buttonRef = ref);
 
   _onFormRef = (ref: HTMLDivElement) => {
     if (!ref) {
@@ -177,20 +194,32 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
     const claim = {
       claim: { target: id },
-      credits: [{
-        type: 'interface',
-        value: location,
-      }],
+      credits: [
+        {
+          type: 'interface',
+          value: location,
+        },
+      ],
     };
 
     const token = this._getTokenAddress();
     let sendClaimPromise;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
-        web3, recipientAddress, token, value, false, claim,
+        web3,
+        recipientAddress,
+        token,
+        value,
+        false,
+        claim,
       );
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(
+        web3,
+        recipientAddress,
+        value,
+        claim,
+      );
     }
     sendClaimPromise
       .then((transactionId: string) => {

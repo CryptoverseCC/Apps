@@ -14,10 +14,6 @@ import UserfeedAddressInfo from './UserfeedsAddressInfo';
 import * as style from './detailsLists.scss';
 
 interface IDetailsListsinkProps {
-  web3Enabled: {
-    enabled: boolean;
-    reason?: string;
-  };
   initialView: TViewType;
   asset: string;
   recipientAddress: string;
@@ -48,7 +44,6 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
 
   render() {
     const {
-      web3Enabled,
       asset,
       recipientAddress,
       size,
@@ -69,8 +64,6 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
           asset={asset}
           recipientAddress={recipientAddress}
           links={links}
-          boostDisabled={!web3Enabled.enabled}
-          boostDisabledReason={web3Enabled.reason}
           onBoostSuccess={onBoostSuccess}
           onBoostError={onBoostError}
           ref={this._onRef('Links.Slots')}
@@ -83,8 +76,6 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
             asset={asset}
             recipientAddress={recipientAddress}
             links={whitelistedLinks}
-            boostDisabled={!web3Enabled.enabled}
-            boostDisabledReason={web3Enabled.reason}
             onBoostSuccess={onBoostSuccess}
             onBoostError={onBoostError}
             ref={this._onRef('Links.Whitelist')}
@@ -96,8 +87,6 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
             asset={asset}
             recipientAddress={recipientAddress}
             links={allLinks}
-            boostDisabled={!web3Enabled.enabled}
-            boostDisabledReason={web3Enabled.reason}
             onBoostSuccess={onBoostSuccess}
             onBoostError={onBoostError}
             ref={this._onRef('Links.Algorithm')}
