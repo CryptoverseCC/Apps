@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
+import qs from 'qs';
+import { History, Location } from 'history';
 
 import core from '@userfeeds/core/src';
 import web3 from '@userfeeds/utils/src/web3';
@@ -42,7 +44,8 @@ interface IState {
 }
 
 interface IProps {
-  location: any;
+  history: History;
+  location: Location;
 }
 
 export default class Whitelist extends Component<IProps, IState> {
@@ -183,12 +186,28 @@ export default class Whitelist extends Component<IProps, IState> {
   _onChange = (key) => (e) => {
     this.setState({ [key]: e.target.value }, () => {
       this._debouncedFetchLinks();
+      this._setQueryParamsFromState();
     });
   }
 
   _onOldChange = (key) => (value) => {
     this.setState({ [key]: value }, () => {
       this._fetchLinks();
+      this._setQueryParamsFromState();
+    });
+  }
+
+  _setQueryParamsFromState = () => {
+    const { asset, recipientAddress, whitelistId } = this.state;
+    const queryParams = qs.stringify({
+      asset: `${asset.network}:${asset.token}`,
+      recipientAddress: recipientAddress || null,
+      whitelist: whitelistId || null,
+    }, { skipNulls: true });
+
+    this.props.history.replace({
+      pathname: '/whitelist',
+      search: queryParams,
     });
   }
 
