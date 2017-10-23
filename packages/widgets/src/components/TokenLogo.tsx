@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import * as bat from '../images/bat.png';
 import * as eos from '../images/eos.png';
@@ -37,15 +37,9 @@ interface ITokenLogoProps {
   asset: string;
 }
 
-class TokenLogo extends Component<ITokenLogoProps, {}> {
-
-  render() {
-    return <img className={this.props.className} src={this._getIcon()} />;
-  }
-
-  _getIcon() {
-    return assetToIconMap.get(this.props.asset) || erc20;
-  }
-}
+const TokenLogo = ({asset, className}) => {
+  const icon = assetToIconMap.get(asset) || erc20;
+  return <img className={className} src={icon} />;
+};
 
 export default TokenLogo;
