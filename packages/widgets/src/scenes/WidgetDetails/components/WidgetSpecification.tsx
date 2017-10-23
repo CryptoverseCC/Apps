@@ -6,9 +6,9 @@ import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 import { EWidgetSize } from '../../../types';
 
 import TokenLogo from '../../../components/TokenLogo';
+import TokenName from '../../../components/TokenName';
 
 import * as style from './widgetSpecification.scss';
-import { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 
 interface IWidgetSpecificationProps {
   size: EWidgetSize;
@@ -36,8 +36,9 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
         <div className={style.row}>
           <Paper style={{ flex: 1, marginRight: '15px' }}>
             <TextWithLabel label="Token">
-              <TokenLogo className={style.tokenLogo} asset={asset} /> {this._getTokenName()}
-        </TextWithLabel>
+              <TokenLogo className={style.tokenLogo} asset={asset} />
+              <TokenName asset={asset} />
+            </TextWithLabel>
           </Paper>
           <Paper style={{ flex: 1, marginLeft: '15px' }}>
             <TextWithLabel label="Algorithm">
@@ -47,19 +48,5 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
         </div>
       </div>
     );
-  }
-
-  _getTokenName() {
-    const [network, token] = this.props.asset.split(':');
-    if (typeof token === 'undefined') {
-      return 'Ether';
-    }
-    const tokens = WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value.toLowerCase() === network)].tokens;
-    const index = tokens.findIndex((e) => e.value.toLowerCase() === token);
-    if (index >= 0) {
-      return tokens[index].label;
-    } else {
-      return `ERC20 (${token})`;
-    }
   }
 }

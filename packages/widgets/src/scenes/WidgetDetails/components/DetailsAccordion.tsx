@@ -9,12 +9,12 @@ import { ILink, IRemoteLink } from '@userfeeds/types/link';
 import { EWidgetSize } from '../../../types';
 
 import TokenLogo from '../../../components/TokenLogo';
+import TokenName from '../../../components/TokenName';
 
 import SimpleLinksList from './SimpleLinksList';
 import UserfeedsAddressInfo from './UserfeedsAddressInfo';
 
 import * as style from './detailsAccordion.scss';
-import { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 
 interface IDetailsAccordinProps {
   recipientAddress: string;
@@ -73,7 +73,8 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
               <TextWithLabel label="Size" text={size} />
               <TextWithLabel label="Type" text="Text" />
               <TextWithLabel label="Token">
-                <TokenLogo className={style.tokenLogo} asset={asset} /> {this._getTokenName()}
+                <TokenLogo className={style.tokenLogo} asset={asset} />
+                <TokenName asset={asset} />
               </TextWithLabel>
               <TextWithLabel label="Algorithm" text="Text" />
             </div>
@@ -91,19 +92,5 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
 
       </div>
     );
-  }
-
-  _getTokenName() {
-    const [network, token] = this.props.asset.split(':');
-    if (typeof token === 'undefined') {
-      return 'Ether';
-    }
-    const tokens = WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value.toLowerCase() === network)].tokens;
-    const index = tokens.findIndex((e) => e.value.toLowerCase() === token);
-    if (index >= 0) {
-      return tokens[index].label;
-    } else {
-      return `ERC20 (${token})`;
-    }
   }
 }
