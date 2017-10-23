@@ -3,8 +3,8 @@ import Icon from '@userfeeds/apps-components/src/Icon';
 import A from '@userfeeds/apps-components/src/A';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import { IWidgetState } from '../../../ducks/widget';
-import EthereumLogo from '../../../components/EthereumLogo';
 import Web3StateProvider from '../../../components/Web3StateProvider';
+import TokenLogo from '../../../components/TokenLogo';
 
 import * as style from './widgetSummary.scss';
 import Button from '@userfeeds/apps-components/src/NewButton';
@@ -24,7 +24,7 @@ const WidgetSummary = ({
 }: IWidgetSummaryProps) => (
   <div className={style.Head}>
     <div className={style.UpperHead}>
-      <EthereumLogo className={style.Logo} />
+      <TokenLogo className={style.Logo} asset={widgetSettings.asset} />
       <div className={style.Summary}>
         <div className={style.HeaderContainer}>
           <h1 className={style.Header}>{widgetSettings.title}</h1>

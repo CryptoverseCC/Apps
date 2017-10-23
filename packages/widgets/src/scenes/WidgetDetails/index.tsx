@@ -122,6 +122,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
             <DetailsAccordion
               recipientAddress={widgetSettings.recipientAddress}
               slots={widgetSettings.slots}
+              asset={widgetSettings.asset}
               whitelistedLinksCount={whitelistedLinksCount}
               hasWhitelist={hasWhitelist}
               allLinksCount={allLinksCount}

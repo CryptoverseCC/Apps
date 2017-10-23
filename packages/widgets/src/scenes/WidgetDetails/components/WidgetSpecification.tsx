@@ -5,20 +5,22 @@ import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import { EWidgetSize } from '../../../types';
 
-import EthereumLogo from '../../../components/EthereumLogo';
+import TokenLogo from '../../../components/TokenLogo';
+import TokenName from '../../../components/TokenName';
 
 import * as style from './widgetSpecification.scss';
 
 interface IWidgetSpecificationProps {
   size: EWidgetSize;
   algorithm: string;
+  asset: string;
   ref?(ref: any): void;
 }
 
 export default class WidgetSpecification extends PureComponent<IWidgetSpecificationProps> {
 
   render() {
-    const { size, algorithm } = this.props;
+    const { size, algorithm, asset } = this.props;
 
     return (
       <div className={style.self}>
@@ -34,8 +36,9 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
         <div className={style.row}>
           <Paper style={{ flex: 1, marginRight: '15px' }}>
             <TextWithLabel label="Token">
-              <EthereumLogo className={style.tokenLogo} /> Ether
-        </TextWithLabel>
+              <TokenLogo className={style.tokenLogo} asset={asset} />
+              <TokenName asset={asset} />
+            </TextWithLabel>
           </Paper>
           <Paper style={{ flex: 1, marginLeft: '15px' }}>
             <TextWithLabel label="Algorithm">

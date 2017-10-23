@@ -8,7 +8,8 @@ import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
 import { EWidgetSize } from '../../../types';
 
-import EthereumLogo from '../../../components/EthereumLogo';
+import TokenLogo from '../../../components/TokenLogo';
+import TokenName from '../../../components/TokenName';
 
 import SimpleLinksList from './SimpleLinksList';
 import UserfeedsAddressInfo from './UserfeedsAddressInfo';
@@ -18,6 +19,7 @@ import * as style from './detailsAccordion.scss';
 interface IDetailsAccordinProps {
   recipientAddress: string;
   size: EWidgetSize;
+  asset: string;
   slots: number;
   whitelistedLinksCount: number;
   allLinksCount: number;
@@ -30,7 +32,7 @@ interface IDetailsAccordinProps {
 export default class DetailsAccordion extends Component<IDetailsAccordinProps, {}> {
 
   render() {
-    const { recipientAddress, size, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
+    const { recipientAddress, size, asset, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
       links, whitelistedLinks, allLinks } = this.props;
 
     return (
@@ -71,7 +73,8 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
               <TextWithLabel label="Size" text={size} />
               <TextWithLabel label="Type" text="Text" />
               <TextWithLabel label="Token">
-                <EthereumLogo className={style.tokenLogo} /> Ether
+                <TokenLogo className={style.tokenLogo} asset={asset} />
+                <TokenName asset={asset} />
               </TextWithLabel>
               <TextWithLabel label="Algorithm" text="Text" />
             </div>
