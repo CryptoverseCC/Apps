@@ -85,7 +85,7 @@ export async function sendClaimTokenTransfer(
 }
 
 function valueToTokenWei(web3Instance, value, decimals) {
-  return web3Instance.toBigNumber(value).shift(-decimals);
+  return web3Instance.toBigNumber(value).shift(decimals);
 }
 
 function getResolveOrRejectOnErrorFunc(resolve, reject) {
