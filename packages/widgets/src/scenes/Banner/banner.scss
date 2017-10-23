@@ -73,7 +73,7 @@
   }
 
   .options.open~.container {
-    height: calc(100% - #{$menu_height});
+    // height: calc(100% - #{$menu_height});
     transform: translateY(#{$menu_height - $initial_menu_height});
   }
 
