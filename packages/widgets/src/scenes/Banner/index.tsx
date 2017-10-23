@@ -14,7 +14,7 @@ import { fetchLinks } from '../../ducks/links';
 import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
-import EthereumLogo from '../../components/EthereumLogo';
+import TokenLogo from '../../components/TokenLogo';
 
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';
@@ -33,6 +33,7 @@ const mapStateToProps = (state: IRootState) => {
     links: visibleLinks(state),
     size: widget.size,
     timeslot: widget.timeslot,
+    asset: widget.asset,
   };
 };
 
@@ -64,7 +65,7 @@ class Banner extends Component<IBannerProps, IBannerState> {
   }
 
   render() {
-    const { links, size, fetched, timeslot } = this.props;
+    const { links, size, fetched, timeslot, asset } = this.props;
     const { currentLink, optionsOpen } = this.state;
     if (!fetched) {
       return <div />;
@@ -89,7 +90,7 @@ class Banner extends Component<IBannerProps, IBannerState> {
         </div>
         <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
           <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
-            Sponsored with <EthereumLogo className={style.icon} />
+            Sponsored with <TokenLogo className={style.icon} asset={asset} />
           </div>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>

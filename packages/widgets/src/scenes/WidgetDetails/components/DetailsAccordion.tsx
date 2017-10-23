@@ -8,16 +8,18 @@ import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
 import { EWidgetSize } from '../../../types';
 
-import EthereumLogo from '../../../components/EthereumLogo';
+import TokenLogo from '../../../components/TokenLogo';
 
 import SimpleLinksList from './SimpleLinksList';
 import UserfeedsAddressInfo from './UserfeedsAddressInfo';
 
 import * as style from './detailsAccordion.scss';
+import { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 
 interface IDetailsAccordinProps {
   recipientAddress: string;
   size: EWidgetSize;
+  asset: string;
   slots: number;
   whitelistedLinksCount: number;
   allLinksCount: number;
@@ -30,7 +32,7 @@ interface IDetailsAccordinProps {
 export default class DetailsAccordion extends Component<IDetailsAccordinProps, {}> {
 
   render() {
-    const { recipientAddress, size, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
+    const { recipientAddress, size, asset, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
       links, whitelistedLinks, allLinks } = this.props;
 
     return (
@@ -71,7 +73,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
               <TextWithLabel label="Size" text={size} />
               <TextWithLabel label="Type" text="Text" />
               <TextWithLabel label="Token">
-                <EthereumLogo className={style.tokenLogo} /> Ether
+                <TokenLogo className={style.tokenLogo} asset={asset} /> {this._getTokenName()}
               </TextWithLabel>
               <TextWithLabel label="Algorithm" text="Text" />
             </div>
@@ -89,5 +91,19 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
 
       </div>
     );
+  }
+
+  _getTokenName() {
+    const [network, token] = this.props.asset.split(':');
+    if (typeof token === 'undefined') {
+      return 'Ether';
+    }
+    const tokens = WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value.toLowerCase() === network)].tokens;
+    const index = tokens.findIndex((e) => e.value.toLowerCase() === token);
+    if (index >= 0) {
+      return tokens[index].label;
+    } else {
+      return `ERC20 (${token})`;
+    }
   }
 }

@@ -92,7 +92,7 @@ export default class DetailsLists extends Component<IDetailsListsinkProps, {}> {
             ref={this._onRef('Links.Algorithm')}
           />
         )}
-        <WidgetSpecification size={size} algorithm={algorithm} ref={this._onRef('Specification')} />
+        <WidgetSpecification size={size} algorithm={algorithm} asset={asset} ref={this._onRef('Specification')} />
         <UserfeedAddressInfo
           recipientAddress={recipientAddress}
           linksNumber={allLinksCount}
