@@ -75,7 +75,7 @@ export async function sendClaimTokenTransfer(
   claim,
 ) {
   const decimals = await erc20ContractDecimals(web3Instance, token);
-  const tokenWei = valueToTokenWei(value, decimals);
+  const tokenWei = valueToTokenWei(web3Instance, value, decimals);
   const allowance = await allowanceUserfeedsContractTokenTransfer(web3Instance, token);
   if (tokenWei >= allowance) {
     const approveValue = unlimitedApproval ? 1e66 : tokenWei;
@@ -84,8 +84,8 @@ export async function sendClaimTokenTransfer(
   return sendClaimTokenTransferImpl(web3Instance, recipientAddress, token, tokenWei, claim);
 }
 
-function valueToTokenWei(value, decimals) {
-  return Math.floor(parseFloat(value) * Math.pow(10, decimals));
+function valueToTokenWei(web3Instance, value, decimals) {
+  return web3Instance.toBigNumber(value).shift(-decimals);
 }
 
 function getResolveOrRejectOnErrorFunc(resolve, reject) {
