@@ -17,6 +17,8 @@ export const web3Actions = {
   }>('UPDATE_AVAILABILITY'),
 };
 
+let observeWeb3IntervalId;
+
 export const observeInjectedWeb3 = () => (dispatch, getState: () => IRootState) => {
   const check = () => {
     web3.eth.getAccounts(async (error, accounts = []) => {
@@ -34,8 +36,7 @@ export const observeInjectedWeb3 = () => (dispatch, getState: () => IRootState) 
       }
     });
   };
-
-  setInterval(check, 1000);
+  if (!observeWeb3IntervalId) { observeWeb3IntervalId = setInterval(check, 1000); }
 };
 
 export interface IWeb3State {

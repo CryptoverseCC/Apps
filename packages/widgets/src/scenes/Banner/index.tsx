@@ -11,7 +11,6 @@ import { ILink } from '@userfeeds/types/link';
 
 import { IRootState } from '../../ducks';
 import { fetchLinks } from '../../ducks/links';
-import { observeInjectedWeb3 } from '../../ducks/web3';
 import { visibleLinks } from '../../selectors/links';
 
 import Switch from '../../components/utils/Switch';
@@ -41,9 +40,6 @@ const mapDispatchToProps = (dispatch) => ({
   fetchLinks(): void {
     dispatch(fetchLinks());
   },
-  observeWeb3(): void {
-    dispatch(observeInjectedWeb3());
-  },
 });
 
 const State2Props = returntypeof(mapStateToProps);
@@ -56,7 +52,6 @@ interface IBannerState {
 }
 
 class Banner extends Component<IBannerProps, IBannerState> {
-
   linkProvider: RandomLinkProvider;
   state: IBannerState = {
     optionsOpen: false,
@@ -65,7 +60,6 @@ class Banner extends Component<IBannerProps, IBannerState> {
   constructor(props: IBannerProps) {
     super(props);
 
-    props.observeWeb3();
     props.fetchLinks();
   }
 
@@ -84,17 +78,17 @@ class Banner extends Component<IBannerProps, IBannerState> {
             <div className={style.probability}>{currentLink && `${currentLink.probability}%`}</div>
           </div>
           <div className={style.arrows}>
-            <div className={cx('arrow', 'left')} onClick={this._onPrevClick}><Icon name="arrow-left" /></div>
-            <div className={cx('arrow', 'right')} onClick={this._onNextClick}><Icon name="arrow-right" /></div>
+            <div className={cx('arrow', 'left')} onClick={this._onPrevClick}>
+              <Icon name="arrow-left" />
+            </div>
+            <div className={cx('arrow', 'right')} onClick={this._onNextClick}>
+              <Icon name="arrow-right" />
+            </div>
           </div>
           <Menu />
         </div>
         <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
-          <div
-            className={style.info}
-            onMouseEnter={this._onInfoEnter}
-            onClick={this._onInfoEnter}
-          >
+          <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
             Sponsored with <EthereumLogo className={style.icon} />
           </div>
           <Switch expresion={fetched && !!currentLink}>
@@ -107,7 +101,7 @@ class Banner extends Component<IBannerProps, IBannerState> {
           </Switch>
         </div>
         <RandomLinkProvider
-          ref={(ref: RandomLinkProvider) => this.linkProvider = ref}
+          ref={(ref: RandomLinkProvider) => (this.linkProvider = ref)}
           links={links}
           timeslot={timeslot}
           onLink={this._onLink}
