@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Location } from 'history';
 
 import web3 from '@userfeeds/utils/src/web3';
 
@@ -44,7 +45,7 @@ const getBlockNumber: () => Promise<number> = () => {
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 interface IStatusProps {
-  location: any;
+  location: Location;
 }
 
 interface IStatusState {
@@ -67,7 +68,7 @@ interface IStatusState {
 
 export default class Status extends Component<IStatusProps, IStatusState> {
 
-  constructor(props) {
+  constructor(props: IStatusProps) {
     super(props);
     const params = new URLSearchParams(props.location.search);
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { History, Location } from 'history';
 
 import Input from '@userfeeds/apps-components/src/Form/Input';
 import Radio from '@userfeeds/apps-components/src/Form/Radio';
@@ -38,7 +39,8 @@ interface IState {
 }
 
 interface IProps {
-  location: any;
+  location: Location;
+  history: History;
 }
 
 const initialState = {
@@ -67,7 +69,7 @@ const rules = {
 };
 
 export default class Configurator extends Component<IProps, IState> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
 
     const injectedWeb3 = window.web3;
@@ -102,9 +104,10 @@ export default class Configurator extends Component<IProps, IState> {
     const searchParams = Object.entries(this.state)
       .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
       .join('&');
+
     this.props.history.push({
       pathname: '/configurator/summary',
-      search: `?${searchParams}`,
+      search: searchParams,
     });
   }
 
