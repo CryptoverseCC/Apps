@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import qs from 'qs';
 import classnames from 'classnames';
 import { History, Location } from 'history';
 
@@ -76,12 +77,11 @@ export default class Configurator extends Component<IProps, IState> {
     const recipientAddress = injectedWeb3 && injectedWeb3.eth.accounts.length > 0 ? injectedWeb3.eth.accounts[0] : '';
 
     if (props.location.search) {
-      const params = new URLSearchParams(props.location.search);
-      const state: any = Array.from(params.entries()).reduce(
-        (acc, [k, v]) => ({ ...acc, [k]: v }),
-        {},
-      );
-      this.state = state;
+      const params = qs.parse(props.location.search.replace('?', ''));
+      this.state = {
+        ...initialState,
+        ...params,
+      };
     } else {
       this.state = {
         ...initialState,
@@ -101,9 +101,10 @@ export default class Configurator extends Component<IProps, IState> {
       return;
     }
 
-    const searchParams = Object.entries(this.state)
-      .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-      .join('&');
+    const searchParams = qs.stringify({
+      ...this.state,
+      errors: null,
+    }, { skipNulls: true });
 
     this.props.history.push({
       pathname: '/configurator/summary',

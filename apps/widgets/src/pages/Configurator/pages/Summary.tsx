@@ -1,18 +1,18 @@
 import React from 'react';
+import qs from 'qs';
 import { Link } from 'react-router-dom';
-import Tabs from '@userfeeds/apps-components/src/Tabs';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.scss';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Snippet from '@userfeeds/apps-components/src/Snippet';
-import AndroidSnippet from '@userfeeds/apps-components/src/AndroidSnippet';
 
 import * as style from './summary.scss';
 
 const heartSvg = require('../../../../images/heart.svg');
 
 const Summary = (props) => {
-  const params = new URLSearchParams(props.location.search);
-  const widgetSettings = Array.from(params.entries()).reduce((acc, [k, v]) => ({...acc, [k]: v}), {});
+  const widgetSettings = qs.parse(props.location.search.replace('?', ''));
 
   return (
     <div className={style.self}>
@@ -23,26 +23,25 @@ const Summary = (props) => {
           search: props.location.search,
         }}
       >
-        <Icon name="arrow-circle-left" /> Go Back
+        <Icon name="arrow-left" /> Edit
       </Link>
       <div className={style.congratulations}>
         <img src={heartSvg} />
         <h2>Congratulactions!</h2>
-        <span>Your widget is ready to use</span>
+        <span className={style.subCongratulations}>Your widget is ready to use</span>
       </div>
-      <Tabs
-        className={style.tabs}
-        tabListClass={style.tabList}
-        selectedTabClass={style.selectedTab}
-        tabs={{
-          HTML: () => (
-            <Snippet widgetSettings={widgetSettings} />
-          ),
-          Android: () => (
-            <AndroidSnippet widgetSettings={widgetSettings} />
-          ),
-        }}
-      />
+      <Tabs className={style.tabs}>
+        <TabList className={style.tabList}>
+          <Tab selectedClassName={style.selectedTab}>HTML</Tab>
+          <Tab disabled disabledClassName={style.disabledTab}>
+            Android <sup>Coming soon</sup>
+          </Tab>
+        </TabList>
+        <TabPanel>
+          <Snippet widgetSettings={widgetSettings} />
+        </TabPanel>
+        <TabPanel />
+      </Tabs>
     </div>
   );
 };
