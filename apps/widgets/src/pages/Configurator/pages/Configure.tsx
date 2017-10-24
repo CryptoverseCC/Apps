@@ -172,6 +172,11 @@ export default class Configurator extends Component<IProps, IState> {
           {errors.description && <Error>{errors.description}</Error>}
         </Field>
         <Field>
+          <Title>Preferred Contact Method</Title>
+          <Input type="text" value={contactMethod} onChange={onChange('contactMethod')} />
+          {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
+        </Field>
+        <Field>
           <Title>Declared Amount of Impressions</Title>
           <Description>Add description here about declared amount of impressions</Description>
           <RadioGroup
@@ -187,11 +192,6 @@ export default class Configurator extends Component<IProps, IState> {
             <Radio value="100.001 - 1 milion">100.001 - 1 milion</Radio>
             <Radio value="1 milion - ∞">1 milion - ∞</Radio>
           </RadioGroup>
-        </Field>
-        <Field>
-          <Title>Preferred Contact Method</Title>
-          <Input type="text" value={contactMethod} onChange={onChange('contactMethod')} />
-          {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
         </Field>
         <Field>
           <Title>Select Size</Title>
