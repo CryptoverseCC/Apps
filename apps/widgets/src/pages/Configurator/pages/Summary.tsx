@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
-import { Location } from 'history';
+import { Location, History } from 'history';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.scss';
 
@@ -22,6 +22,7 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 type TSummaryProps = typeof Dispatch2Props & {
   widgetSettings: any; // ToDo Fix it
   location: Location;
+  history: History;
 };
 
 const Summary = (props: TSummaryProps) => {
@@ -29,18 +30,12 @@ const Summary = (props: TSummaryProps) => {
 
   return (
     <div className={style.self}>
-      <Link
-        className={style.back}
-        to={{
-          pathname: '/configurator',
-          search: props.location.search,
-        }}
-      >
+      <div className={style.back} onClick={() => props.history.goBack()}>
         <Icon name="arrow-left" /> Edit
-      </Link>
+      </div>
       <div className={style.congratulations}>
         <img src={heartSvg} />
-        <h2>Congratulactions!</h2>
+        <h2>Congratulations!</h2>
         <span className={style.subCongratulations}>Your widget is ready to use</span>
       </div>
       <Tabs className={style.tabs}>

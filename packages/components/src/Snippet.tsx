@@ -8,16 +8,14 @@ import Highlight from './Highlight';
 import * as style from './snippet.scss';
 
 const Snippet = ({ widgetSettings, onCopy }) => {
-  const whitelistProperty = widgetSettings.whitelistId ? `
-    whitelist="${widgetSettings.whitelistId}"` : '';
-  const { network, token } = widgetSettings.asset;
-  const assetId = !token ? network : `${network}:${token}`;
+  const whitelistProperty = widgetSettings.whitelist ? `
+    whitelist="${widgetSettings.whitelist}"` : '';
   const code = `
   <linkexchange-link
     size="${widgetSettings.size}"
     type="${widgetSettings.type}"
     recipient-address="${widgetSettings.recipientAddress}" ${whitelistProperty}
-    asset="${assetId}"
+    asset="${widgetSettings.asset}"
     widget-title="${widgetSettings.title}"
     description="${widgetSettings.description}"
     impression="${widgetSettings.impression}"
