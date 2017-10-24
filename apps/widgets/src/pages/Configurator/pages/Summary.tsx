@@ -35,7 +35,7 @@ const Summary = (props: TSummaryProps) => {
       </div>
       <div className={style.congratulations}>
         <img src={heartSvg} />
-        <h2>Congratulactions!</h2>
+        <h2>Congratulations!</h2>
         <span className={style.subCongratulations}>Your widget is ready to use</span>
       </div>
       <Tabs className={style.tabs}>
