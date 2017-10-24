@@ -56,7 +56,8 @@ export default class Whitelist extends Component<IProps, IState> {
     const paramsAsset = params.asset;
     let asset;
     if (paramsAsset) {
-      asset = paramsAsset;
+      const [network, token = ''] = paramsAsset.split(':');
+      asset = { network, token };
     } else {
       asset = {
         token: WIDGET_NETWORKS[0].tokens[0].value,
@@ -112,7 +113,7 @@ export default class Whitelist extends Component<IProps, IState> {
             <Field>
               <Title>Choose token</Title>
               <div className={fieldInput}>
-                <Asset asset={this.state.asset} onChange={this._onOldChange('asset')} />
+                <Asset asset={this.state.asset} onChange={this._onAssetChange} />
               </div>
             </Field>
           </div>
@@ -188,10 +189,10 @@ export default class Whitelist extends Component<IProps, IState> {
     });
   }
 
-  _onOldChange = (key) => (value) => {
-    this.setState({ [key]: value }, () => {
+  _onAssetChange = (value) => {
+    this.setState({ asset: value }, () => {
       this._fetchLinks();
-      this._setQueryParams(key, value);
+      this._setQueryParams('asset', `${value.network}:${value.token}`);
     });
   }
 
