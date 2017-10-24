@@ -43,7 +43,6 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
       android:layout_height="wrap_content"
       userfeeds:context="${widgetSettings.network}:${widgetSettings.recipientAddress}"
       userfeeds:whitelist="${whitelist}"
-      userfeeds:publisherNote="${widgetSettings.publisherNote}"
       userfeeds:algorithm="${widgetSettings.algorithm}"/>
         `}
         />

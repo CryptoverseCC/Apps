@@ -17,7 +17,6 @@ const Congratulations = ({ linkId, widgetSettings }) => {
       <img src={heartSvg} />
       <h2>Congratulations!</h2>
       <p>Thanks you for sending the link</p>
-      <TextWithLabel label="Publisher note" text={widgetSettings.publisherNote} />
       <TextWithLabel label="Contact method" text={widgetSettings.contactMethod} />
       <Button onClick={goToLinkStatus}>Link Status</Button>
     </div>

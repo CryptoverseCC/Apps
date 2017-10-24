@@ -69,7 +69,6 @@ class LinkexchangeLink extends HTMLElement {
     const slots = parseInt(this.getAttribute('slots') || '10', 10);
     const algorithm = this.getAttribute('algorithm') || 'links';
     const contactMethod = this.getAttribute('contact-method') || undefined;
-    const publisherNote = this.getAttribute('publisher-note') || undefined;
     const title = this.getAttribute('widget-title') || undefined;
     const description = this.getAttribute('description') || undefined;
     const impression = this.getAttribute('impression') || undefined;
@@ -80,7 +79,6 @@ class LinkexchangeLink extends HTMLElement {
       algorithm,
       recipientAddress: recipientAddress.toLowerCase(),
       asset: asset.toLowerCase(),
-      publisherNote,
       contactMethod,
       size,
       timeslot,

@@ -57,7 +57,6 @@ interface IStatusState {
   recipientAddress: string;
   algorithm: string;
   whitelist: string;
-  publisherNote: string;
   location: string;
   blockchain: {
     web3Available: boolean;
@@ -78,7 +77,6 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const algorithm = params.get('algorithm') || '';
     const whitelist = params.get('whitelist') || '';
     const linkId = params.get('linkId') || '';
-    const publisherNote = params.get('publisherNote') || '';
     const location = params.get('location') || '';
 
     this.state = {
@@ -89,7 +87,6 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       asset,
       algorithm,
       whitelist,
-      publisherNote,
       location,
       blockchain: {
         web3Available: false,
