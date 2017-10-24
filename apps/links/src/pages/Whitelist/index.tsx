@@ -12,6 +12,7 @@ import Loader from '@userfeeds/apps-components/src/Loader';
 import { IRemoteLink } from '@userfeeds/types/link';
 import Pill from '@userfeeds/apps-components/src/Pill';
 import Intercom from '@userfeeds/apps-components/src/Intercom';
+import updateQueryParam, { IUpdateQueryParamProp } from '@userfeeds/apps-components/src/containers/updateQueryParam';
 
 import { Field, Title, Description, RadioGroup } from '@userfeeds/apps-components/src/Form/Field';
 import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
@@ -32,8 +33,8 @@ interface IState {
   apiUrl: string;
   recipientAddress: string;
   recipientAddressFromParams: boolean;
-  whitelistId: string;
-  whitelistIdFromParams: boolean;
+  whitelist: string;
+  whitelistFromParams: boolean;
   asset: {
     token: string;
     network: string;
@@ -43,13 +44,13 @@ interface IState {
   decimals?: string;
 }
 
-interface IProps {
+type TProps = IUpdateQueryParamProp & {
   history: History;
   location: Location;
-}
+};
 
-export default class Whitelist extends Component<IProps, IState> {
-  constructor(props) {
+class Whitelist extends Component<TProps, IState> {
+  constructor(props: TProps) {
     super(props);
 
     const params = qs.parse(props.location.search.replace('?', ''));
@@ -71,9 +72,9 @@ export default class Whitelist extends Component<IProps, IState> {
       asset,
       recipientAddress: params.recipientAddress || '',
       algorithm: params.algorithm || 'links',
-      whitelistId: params.whitelist || '',
+      whitelist: params.whitelist || '',
       recipientAddressFromParams: !!params.recipientAddress,
-      whitelistIdFromParams: !!params.whitelist,
+      whitelistFromParams: !!params.whitelist,
       assetFromParams: !!params.asset,
       decimals: params.tokenDetails && params.tokenDetails.decimals || undefined,
     };
@@ -106,8 +107,8 @@ export default class Whitelist extends Component<IProps, IState> {
               <Title>Whitelist Address</Title>
               <Input
                 type="text"
-                value={this.state.whitelistId}
-                onChange={this._onChange('whitelistId')}
+                value={this.state.whitelist}
+                onChange={this._onChange('whitelist')}
               />
             </Field>
             <Field>
@@ -185,28 +186,15 @@ export default class Whitelist extends Component<IProps, IState> {
     const { value } = e.target;
     this.setState({ [key]: value }, () => {
       this._debouncedFetchLinks();
-      this._setQueryParams(key, value);
     });
+    this.props.updateQueryParam(key, value);
   }
 
   _onAssetChange = (value) => {
     this.setState({ asset: value }, () => {
       this._fetchLinks();
-      this._setQueryParams('asset', `${value.network}:${value.token}`);
     });
-  }
-
-  _setQueryParams = (name, value) => {
-    const oldQueryParams = qs.parse(this.props.location.search.replace('?', ''));
-    const queryParams = qs.stringify({
-      ...oldQueryParams,
-      [name]: value,
-    }, { skipNulls: true });
-
-    this.props.history.replace({
-      pathname: '/whitelist',
-      search: queryParams,
-    });
+    this.props.updateQueryParam('asset', `${value.network}:${value.token}`);
   }
 
   _fetchLinks = async () => {
@@ -249,11 +237,11 @@ export default class Whitelist extends Component<IProps, IState> {
   }
 
   _fetchWhitelistedLinks = async () => {
-    const { apiUrl, recipientAddress, algorithm, whitelistId, asset } = this.state;
+    const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
     const assetString = asset.token
       ? `${asset.network}:${asset.token.toLowerCase()}`
       : asset.network;
-    const whitelistParam = whitelistId ? `?whitelist=${whitelistId.toLowerCase()}` : '';
+    const whitelistParam = whitelist ? `?whitelist=${whitelist.toLowerCase()}` : '';
 
     return fetch(
       `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/${whitelistParam}`,
@@ -277,3 +265,5 @@ export default class Whitelist extends Component<IProps, IState> {
     core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
   }
 }
+
+export default updateQueryParam(Whitelist);
