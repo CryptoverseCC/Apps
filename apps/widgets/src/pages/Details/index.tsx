@@ -5,8 +5,6 @@ import { returntypeof } from 'react-redux-typescript';
 import { fetchLinks } from '@linkexchange/widgets/src/ducks/links';
 
 import WidgetDetails from '@linkexchange/widgets/src/scenes/WidgetDetails';
-import RootModal from '@linkexchange/widgets/src/scenes/Banner/containers/RootModal'; // Extract it
-import RootToast from '@linkexchange/widgets/src/scenes/Banner/containers/RootToast'; // Extract it
 
 import * as style from './details.scss';
 
@@ -26,8 +24,6 @@ class Details extends Component<TDetailsProps, {}> {
     return (
       <div className={style.self}>
         <WidgetDetails standaloneMode className={style.details} />
-        <RootModal />
-        <RootToast />
       </div>
     );
   }

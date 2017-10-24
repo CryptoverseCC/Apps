@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import qs from 'qs';
 import classnames from 'classnames';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
 
+import { openToast } from '@linkexchange/widgets/src/ducks/toast';
 import Input from '@userfeeds/apps-components/src/Form/Input';
 import Radio from '@userfeeds/apps-components/src/Form/Radio';
 import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
@@ -39,11 +43,6 @@ interface IState {
   };
 }
 
-interface IProps {
-  location: Location;
-  history: History;
-}
-
 const initialState = {
   title: '',
   description: 'I accept only links that are about science and technology. I like trains',
@@ -69,8 +68,16 @@ const rules = {
   ],
 };
 
-export default class Configurator extends Component<IProps, IState> {
-  constructor(props: IProps) {
+const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
+const Dispatch2Props = returntypeof(mapDispatchToProps);
+
+type TProps = typeof Dispatch2Props & {
+  location: Location;
+  history: History;
+};
+
+class Configure extends Component<TProps, IState> {
+  constructor(props: TProps) {
     super(props);
 
     const injectedWeb3 = window.web3;
@@ -98,6 +105,7 @@ export default class Configurator extends Component<IProps, IState> {
 
   onCreateClick = () => {
     if (!this.validateAll()) {
+      this.props.toast('Validation error 😅');
       return;
     }
 
@@ -251,3 +259,5 @@ export default class Configurator extends Component<IProps, IState> {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(Configure);

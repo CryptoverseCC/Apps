@@ -1,17 +1,30 @@
 import React from 'react';
 import qs from 'qs';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { returntypeof } from 'react-redux-typescript';
+import { Location } from 'history';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.scss';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Snippet from '@userfeeds/apps-components/src/Snippet';
+import { openToast } from '@linkexchange/widgets/src/ducks/toast';
 
 import * as style from './summary.scss';
 
 const heartSvg = require('../../../../images/heart.svg');
 
-const Summary = (props) => {
+const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
+const Dispatch2Props = returntypeof(mapDispatchToProps);
+
+type TSummaryProps = typeof Dispatch2Props & {
+  widgetSettings: any; // ToDo Fix it
+  location: Location;
+};
+
+const Summary = (props: TSummaryProps) => {
   const widgetSettings = qs.parse(props.location.search.replace('?', ''));
 
   return (
@@ -38,7 +51,10 @@ const Summary = (props) => {
           </Tab>
         </TabList>
         <TabPanel>
-          <Snippet widgetSettings={widgetSettings} />
+          <Snippet
+            widgetSettings={widgetSettings}
+            onCopy={() => props.toast('Snippet copied! 🚀', 'success', 1000)}
+          />
         </TabPanel>
         <TabPanel />
       </Tabs>
@@ -46,4 +62,4 @@ const Summary = (props) => {
   );
 };
 
-export default Summary;
+export default connect(null, mapDispatchToProps)(Summary);
