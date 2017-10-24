@@ -17,6 +17,7 @@ import web3 from '@userfeeds/utils/src/web3';
 import { R, validate, validateMultipe } from '@userfeeds/utils/src/validation';
 import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 
+import updateQueryParam, { IUpdateQueryParamProp } from '../../../containers/updateQueryParam';
 import CreateWidget from '../components/CreateWidget';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 
@@ -71,7 +72,7 @@ const rules = {
 const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
-type TProps = typeof Dispatch2Props & {
+type TProps = typeof Dispatch2Props & IUpdateQueryParamProp & {
   location: Location;
   history: History;
 };
@@ -101,6 +102,7 @@ class Configure extends Component<TProps, IState> {
   onChange = (key) => ({ target: { value } }) => {
     this.setState({ [key]: value });
     this.validate(key, value);
+    this.props.updateQueryParam('kuba', value);
   }
 
   onCreateClick = () => {
@@ -260,4 +262,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Configure);
+export default connect(null, mapDispatchToProps)(updateQueryParam(Configure));
