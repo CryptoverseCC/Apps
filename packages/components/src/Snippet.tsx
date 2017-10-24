@@ -7,7 +7,7 @@ import Highlight from './Highlight';
 
 import * as style from './snippet.scss';
 
-const Snippet = ({ widgetSettings }) => {
+const Snippet = ({ widgetSettings, onCopy }) => {
   const whitelistProperty = widgetSettings.whitelistId ? `
     whitelist="${widgetSettings.whitelistId}"` : '';
   const { network, token } = widgetSettings.asset;
@@ -31,7 +31,7 @@ const Snippet = ({ widgetSettings }) => {
   return (
     <div className={style.self}>
       <div className={style.copy}>
-        <CopyToClipboard text={code}>
+        <CopyToClipboard text={code} onCopy={onCopy}>
           <Icon name="clipboard" className={style.icon}/>
         </CopyToClipboard>
       </div>
