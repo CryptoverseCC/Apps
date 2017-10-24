@@ -6,10 +6,17 @@ const updateQueryParams = (Component) => (props) => {
   const { location, history } = props;
 
   const onUpdateQueryParam = (name, value) => {
+    let toUpdate;
+    if (typeof name === 'object') {
+      toUpdate = name;
+    } else {
+      toUpdate = { [name]: value };
+    }
+
     const oldQueryParams = qs.parse(location.search.replace('?', ''));
     const queryParams = qs.stringify({
       ...oldQueryParams,
-      [name]: value,
+      ...toUpdate,
     }, { skipNulls: true });
 
     history.replace({
@@ -22,6 +29,7 @@ const updateQueryParams = (Component) => (props) => {
 
 export interface IUpdateQueryParamProp {
   updateQueryParam(name: string, value: any): void;
+  updateQueryParam(params: { [key: string]: any; }): void;
 }
 
 export default updateQueryParams;

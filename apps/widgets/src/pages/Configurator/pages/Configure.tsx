@@ -17,13 +17,13 @@ import web3 from '@userfeeds/utils/src/web3';
 import { R, validate, validateMultipe } from '@userfeeds/utils/src/validation';
 import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
 
-import updateQueryParam, { IUpdateQueryParamProp } from '../../../containers/updateQueryParam';
+import updateQueryParam, { IUpdateQueryParamProp } from '@userfeeds/apps-components/src/containers/updateQueryParam';
 import CreateWidget from '../components/CreateWidget';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 
 interface IState {
   recipientAddress: string;
-  whitelistId: string;
+  whitelist: string;
   contactMethod: string;
   title: string;
   description: string;
@@ -78,31 +78,45 @@ type TProps = typeof Dispatch2Props & IUpdateQueryParamProp & {
 };
 
 class Configure extends Component<TProps, IState> {
+
   constructor(props: TProps) {
     super(props);
 
     const injectedWeb3 = window.web3;
     const recipientAddress = injectedWeb3 && injectedWeb3.eth.accounts.length > 0 ? injectedWeb3.eth.accounts[0] : '';
 
+    // ToDo do something with this
+    let fromParams: Partial<IState & { asset: string | any }> = {};
     if (props.location.search) {
-      const params = qs.parse(props.location.search.replace('?', ''));
-      this.state = {
-        ...initialState,
-        ...params,
-      };
-    } else {
-      this.state = {
-        ...initialState,
-        recipientAddress,
-        whitelistId: recipientAddress,
-      };
+      fromParams = qs.parse(props.location.search.replace('?', ''));
+      if (fromParams.asset) {
+        const [network, token = ''] = fromParams.asset.split(':');
+        fromParams.asset = { network, token };
+      }
     }
+
+    if (recipientAddress) {
+      props.updateQueryParam({ recipientAddress, whitelist: recipientAddress });
+    }
+
+    this.state = {
+      ...initialState,
+      recipientAddress,
+      whitelist: recipientAddress,
+      ...fromParams,
+    };
   }
 
   onChange = (key) => ({ target: { value } }) => {
     this.setState({ [key]: value });
     this.validate(key, value);
-    this.props.updateQueryParam('kuba', value);
+    this.props.updateQueryParam(key, value);
+  }
+
+  onAssetChange = (asset) => {
+    this.setState({ asset });
+    this.validate('asset', asset);
+    this.props.updateQueryParam('asset', `${asset.network}:${asset.token}`);
   }
 
   onCreateClick = () => {
@@ -111,8 +125,10 @@ class Configure extends Component<TProps, IState> {
       return;
     }
 
+    const { asset } = this.state;
     const searchParams = qs.stringify({
       ...this.state,
+      asset: asset.token ? `${asset.network}:${asset.token}` : asset.network,
       errors: null,
     }, { skipNulls: true });
 
@@ -141,7 +157,7 @@ class Configure extends Component<TProps, IState> {
     const { onChange } = this;
     const {
       recipientAddress,
-      whitelistId,
+      whitelist,
       title,
       description,
       impression,
@@ -167,7 +183,7 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Whitelist</Title>
           <Description>Add description here about whitelist identifier</Description>
-          <Input type="text" value={whitelistId} onChange={onChange('whitelistId')} />
+          <Input type="text" value={whitelist} onChange={onChange('whitelist')} />
         </Field>
         <Field>
           <Title>Title</Title>
@@ -237,10 +253,7 @@ class Configure extends Component<TProps, IState> {
           <div className={fieldInput}>
             <Asset
               asset={asset}
-              onChange={(asset) => {
-                this.setState({ asset });
-                this.validate('asset', asset);
-              }}
+              onChange={this.onAssetChange}
             />
             {errors.asset && <Error>{errors.asset}</Error>}
           </div>
