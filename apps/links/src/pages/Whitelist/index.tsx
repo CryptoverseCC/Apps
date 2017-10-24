@@ -5,6 +5,7 @@ import { History, Location } from 'history';
 
 import core from '@userfeeds/core/src';
 import web3 from '@userfeeds/utils/src/web3';
+import wait from '@userfeeds/utils/src/wait';
 import Link from '@userfeeds/apps-components/src/Link';
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Paper from '@userfeeds/apps-components/src/Paper';
@@ -199,6 +200,7 @@ class Whitelist extends Component<TProps, IState> {
 
   _fetchLinks = async () => {
     this.setState({ fetching: true, links: [] });
+    const startTime = Date.now();
     try {
       const [allLinks, whitelistedLinks] = await Promise.all([
         this._fetchAllLinks(),
@@ -219,10 +221,16 @@ class Whitelist extends Component<TProps, IState> {
         };
         return parsedLink;
       });
-      this.setState({ links, fetching: false });
+      this.setState({ links });
     } catch (_) {
-      this.setState({ fetching: false });
+      // ToDo Show error toast?
     }
+    const totalTime = Date.now() - startTime;
+    if (totalTime < 1000) {
+      await wait(1000 - totalTime);
+    }
+
+    this.setState({ fetching: false });
   }
 
   _fetchAllLinks = async () => {
