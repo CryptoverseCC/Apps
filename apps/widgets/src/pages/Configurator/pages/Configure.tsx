@@ -105,7 +105,7 @@ class Configure extends Component<TProps, IState> {
 
   onCreateClick = () => {
     if (!this.validateAll()) {
-      this.props.toast('Validation error ☹');
+      this.props.toast('Validation error 😅');
       return;
     }
 
