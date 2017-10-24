@@ -52,14 +52,12 @@ export default class Whitelist extends Component<IProps, IState> {
   constructor(props) {
     super(props);
 
-    const params = new URLSearchParams(props.location.search);
-    const paramsAsset = params.get('asset');
+    const params = qs.parse(props.location.search.replace('?', ''));
+    const paramsAsset = params.asset;
     let asset;
     if (paramsAsset) {
-      asset = {
-        network: paramsAsset.split(':')[0],
-        token: paramsAsset.split(':')[1],
-      };
+      const [network, token = ''] = paramsAsset.split(':');
+      asset = { network, token };
     } else {
       asset = {
         token: WIDGET_NETWORKS[0].tokens[0].value,
@@ -69,15 +67,15 @@ export default class Whitelist extends Component<IProps, IState> {
     this.state = {
       links: [],
       fetching: false,
-      apiUrl: params.get('apiUrl') || 'https://api-dev.userfeeds.io',
+      apiUrl: params.apiUrl || 'https://api-dev.userfeeds.io',
       asset,
-      recipientAddress: params.get('recipientAddress') || '',
-      algorithm: params.get('algorithm') || 'links',
-      whitelistId: params.get('whitelist') || '',
-      recipientAddressFromParams: params.has('recipientAddress'),
-      whitelistIdFromParams: params.has('whitelist'),
-      assetFromParams: params.has('asset'),
-      decimals: params.get('tokenDetails[decimals]') || undefined,
+      recipientAddress: params.recipientAddress || '',
+      algorithm: params.algorithm || 'links',
+      whitelistId: params.whitelist || '',
+      recipientAddressFromParams: !!params.recipientAddress,
+      whitelistIdFromParams: !!params.whitelist,
+      assetFromParams: !!params.asset,
+      decimals: params.tokenDetails && params.tokenDetails.decimals || undefined,
     };
   }
 
@@ -115,7 +113,7 @@ export default class Whitelist extends Component<IProps, IState> {
             <Field>
               <Title>Choose token</Title>
               <div className={fieldInput}>
-                <Asset asset={this.state.asset} onChange={this._onOldChange('asset')} />
+                <Asset asset={this.state.asset} onChange={this._onAssetChange} />
               </div>
             </Field>
           </div>
@@ -184,25 +182,25 @@ export default class Whitelist extends Component<IProps, IState> {
   _linksApproved = () => this.state.links.filter((link) => link.whitelisted);
 
   _onChange = (key) => (e) => {
-    this.setState({ [key]: e.target.value }, () => {
-      this._debouncedFetchLinks();
-      this._setQueryParamsFromState();
-    });
-  }
-
-  _onOldChange = (key) => (value) => {
+    const { value } = e.target;
     this.setState({ [key]: value }, () => {
-      this._fetchLinks();
-      this._setQueryParamsFromState();
+      this._debouncedFetchLinks();
+      this._setQueryParams(key, value);
     });
   }
 
-  _setQueryParamsFromState = () => {
-    const { asset, recipientAddress, whitelistId } = this.state;
+  _onAssetChange = (value) => {
+    this.setState({ asset: value }, () => {
+      this._fetchLinks();
+      this._setQueryParams('asset', `${value.network}:${value.token}`);
+    });
+  }
+
+  _setQueryParams = (name, value) => {
+    const oldQueryParams = qs.parse(this.props.location.search.replace('?', ''));
     const queryParams = qs.stringify({
-      asset: `${asset.network}:${asset.token}`,
-      recipientAddress: recipientAddress || null,
-      whitelist: whitelistId || null,
+      ...oldQueryParams,
+      [name]: value,
     }, { skipNulls: true });
 
     this.props.history.replace({
