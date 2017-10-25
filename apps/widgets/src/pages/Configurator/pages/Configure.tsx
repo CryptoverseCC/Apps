@@ -41,7 +41,7 @@ interface IState {
     network: string;
   };
   algorithm: string;
-  tillDate?: moment.Moment;
+  tillDate: moment.Moment | null;
   errors: {
     recipientAddress?: string;
     title?: string;
@@ -65,6 +65,7 @@ const initialState = {
   },
   algorithm: 'links',
   errors: {},
+  tillDate: null,
 };
 
 const MIN_DATE = moment().add(1, 'day');
@@ -89,6 +90,12 @@ type TProps = typeof Dispatch2Props & IUpdateQueryParamProp & {
 };
 
 class Configure extends Component<TProps, IState> {
+
+  inputsRefs: {
+    [key: string]: {
+      setFocus(): void;
+    };
+  } = {};
 
   constructor(props: TProps) {
     super(props);
@@ -134,14 +141,20 @@ class Configure extends Component<TProps, IState> {
     this.props.updateQueryParam('asset', `${asset.network}:${asset.token}`);
   }
 
-  onTillDateChange = (tillDate: moment.Moment) => {
+  onTillDateChange = (tillDate: moment.Moment | null) => {
     this.setState({ tillDate });
-    this.props.updateQueryParam('tillDate', tillDate.format('M/D/YYYY'));
+    this.props.updateQueryParam(
+      'tillDate',
+      tillDate ? tillDate.format('M/D/YYYY') : null,
+    );
   }
 
   onCreateClick = () => {
-    if (!this.validateAll()) {
+    const errors = this.validateAll();
+    if (Object.keys(errors).length !== 0) {
+      this.setState({ errors });
       this.props.toast('Validation error 😅');
+      this.focusOnFirstError(errors);
       return;
     }
 
@@ -149,7 +162,7 @@ class Configure extends Component<TProps, IState> {
     const searchParams = qs.stringify({
       ...this.state,
       asset: asset.token ? `${asset.network}:${asset.token}` : asset.network,
-      tillDate: tillDate.format('M/D/YYYY'),
+      tillDate: tillDate!.format('M/D/YYYY'),
       errors: null,
     }, { skipNulls: true });
 
@@ -157,6 +170,12 @@ class Configure extends Component<TProps, IState> {
       pathname: '/configurator/summary',
       search: searchParams,
     });
+  }
+
+  focusOnFirstError = (errors) => {
+    const firstError = ['recipientAddress', 'whitelist', 'title', 'description', 'contactMethod', 'tillDate']
+      .find((field) => !!errors[field]);
+    this.inputsRefs[firstError!].setFocus();
   }
 
   validate = (name: string, value: any) => {
@@ -169,9 +188,11 @@ class Configure extends Component<TProps, IState> {
   }
 
   validateAll = () => {
-    const errors = validateMultipe(rules, this.state);
-    this.setState({ errors });
-    return Object.keys(errors).length === 0;
+    return validateMultipe(rules, this.state);
+  }
+
+  onRef = (name) => (ref) => {
+    this.inputsRefs[name] = ref;
   }
 
   render() {
@@ -198,29 +219,55 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Add description here about userfeed address</Description>
-          <Input type="text" value={recipientAddress} onChange={onChange('recipientAddress')} />
+          <Input
+            type="text"
+            value={recipientAddress}
+            onChange={onChange('recipientAddress')}
+            ref={this.onRef('recipientAddress')}
+          />
           {errors.recipientAddress && <Error>{errors.recipientAddress}</Error>}
         </Field>
         <Field>
           <Title>Whitelist</Title>
           <Description>Add description here about whitelist identifier</Description>
-          <Input type="text" value={whitelist} onChange={onChange('whitelist')} />
+          <Input
+            type="text"
+            value={whitelist}
+            onChange={onChange('whitelist')}
+            ref={this.onRef('whitelist')}
+          />
         </Field>
         <Field>
           <Title>Title</Title>
           <Description>Add description here about title</Description>
-          <Input type="text" value={title} onChange={onChange('title')} />
+          <Input
+            type="text"
+            value={title}
+            onChange={onChange('title')}
+            ref={this.onRef('title')}
+          />
           {errors.title && <Error>{errors.title}</Error>}
         </Field>
         <Field>
           <Title>Description</Title>
           <Description>Add description here about description</Description>
-          <Input type="text" multiline value={description} onChange={onChange('description')} />
+          <Input
+            type="text"
+            multiline
+            value={description}
+            onChange={onChange('description')}
+            ref={this.onRef('description')}
+          />
           {errors.description && <Error>{errors.description}</Error>}
         </Field>
         <Field>
           <Title>Preferred Contact Method</Title>
-          <Input type="text" value={contactMethod} onChange={onChange('contactMethod')} />
+          <Input
+            type="text"
+            value={contactMethod}
+            onChange={onChange('contactMethod')}
+            ref={this.onRef('contactMethod')}
+          />
           {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
         </Field>
         <Field>
@@ -231,6 +278,7 @@ class Configure extends Component<TProps, IState> {
             minDate={MIN_DATE}
             selected={this.state.tillDate}
             onChange={this.onTillDateChange}
+            ref={this.onRef('tillDate')}
           />
           {errors.tillDate && <Error>{errors.tillDate}</Error>}
         </Field>
