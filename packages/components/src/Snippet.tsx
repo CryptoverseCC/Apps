@@ -17,6 +17,7 @@ const Snippet = ({ widgetSettings, onCopy }) => {
     recipient-address="${widgetSettings.recipientAddress}" ${whitelistProperty}
     asset="${widgetSettings.asset}"
     widget-title="${widgetSettings.title}"
+    till-date="${widgetSettings.tillDate}"
     description="${widgetSettings.description}"
     impression="${widgetSettings.impression}"
     contact-method="${widgetSettings.contactMethod}"

@@ -1,7 +1,7 @@
 
 export const R = {
   required: (name, value) =>
-    value.toString().trim() ? '' : `Field ${name} is required`,
+    value && value.toString().trim() ? '' : `Field ${name} is required`,
   maxLength: (n: number) =>
     (name, value: string) => value.length <= n ? '' : `${name} has to be shorter than ${n} characters`,
   number: (name, value) =>

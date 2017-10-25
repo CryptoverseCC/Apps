@@ -5,11 +5,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import moment from 'moment';
 
 import { openToast } from '@linkexchange/widgets/src/ducks/toast';
 import Input from '@userfeeds/apps-components/src/Form/Input';
 import Radio from '@userfeeds/apps-components/src/Form/Radio';
 import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
+import { input } from '@userfeeds/apps-components/src/Form/input.scss';
 import { Field, Title, Description, RadioGroup, Error } from '@userfeeds/apps-components/src/Form/Field';
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Dropdown from '@userfeeds/apps-components/src/Dropdown';
@@ -20,6 +24,8 @@ import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asse
 import updateQueryParam, { IUpdateQueryParamProp } from '@userfeeds/apps-components/src/containers/updateQueryParam';
 import CreateWidget from '../components/CreateWidget';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
+
+import * as style from './configure.scss';
 
 interface IState {
   recipientAddress: string;
@@ -35,12 +41,14 @@ interface IState {
     network: string;
   };
   algorithm: string;
+  tillDate?: moment.Moment;
   errors: {
     recipientAddress?: string;
     title?: string;
     description?: string;
     contactMethod?: string;
     asset?: string;
+    tillDate?: string;
   };
 }
 
@@ -59,11 +67,14 @@ const initialState = {
   errors: {},
 };
 
+const MIN_DATE = moment().add(1, 'day');
+
 const rules = {
   recipientAddress: [R.required, R.value((v) => web3.isAddress(v), 'Has to be valid eth address')],
   title: [R.required],
   description: [R.required],
   contactMethod: [R.required],
+  tillDate: [R.required],
   asset: [
     R.value(({ network, token, isCustom }) => !isCustom || web3.isAddress(token), 'Has to be valid eth address'),
   ],
@@ -93,6 +104,10 @@ class Configure extends Component<TProps, IState> {
         const [network, token = ''] = fromParams.asset.split(':');
         fromParams.asset = { network, token };
       }
+
+      if (fromParams.tillDate) {
+        fromParams.tillDate = moment(fromParams.tillDate, 'M/D/YYYY');
+      }
     }
 
     if (recipientAddress) {
@@ -119,16 +134,22 @@ class Configure extends Component<TProps, IState> {
     this.props.updateQueryParam('asset', `${asset.network}:${asset.token}`);
   }
 
+  onTillDateChange = (tillDate: moment.Moment) => {
+    this.setState({ tillDate });
+    this.props.updateQueryParam('tillDate', tillDate.format('M/D/YYYY'));
+  }
+
   onCreateClick = () => {
     if (!this.validateAll()) {
       this.props.toast('Validation error 😅');
       return;
     }
 
-    const { asset } = this.state;
+    const { asset, tillDate } = this.state;
     const searchParams = qs.stringify({
       ...this.state,
       asset: asset.token ? `${asset.network}:${asset.token}` : asset.network,
+      tillDate: tillDate.format('M/D/YYYY'),
       errors: null,
     }, { skipNulls: true });
 
@@ -201,6 +222,17 @@ class Configure extends Component<TProps, IState> {
           <Title>Preferred Contact Method</Title>
           <Input type="text" value={contactMethod} onChange={onChange('contactMethod')} />
           {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
+        </Field>
+        <Field>
+          <Title>Till date</Title>
+          <Description>Add description here about till date</Description>
+          <DatePicker
+            className={classnames(input, style.DatePicker)}
+            minDate={MIN_DATE}
+            selected={this.state.tillDate}
+            onChange={this.onTillDateChange}
+          />
+          {errors.tillDate && <Error>{errors.tillDate}</Error>}
         </Field>
         <Field>
           <Title>Declared Amount of Impressions</Title>
