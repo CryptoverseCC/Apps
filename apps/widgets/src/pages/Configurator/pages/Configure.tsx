@@ -284,7 +284,9 @@ class Configure extends Component<TProps, IState> {
         </Field>
         <Field>
           <Title>Expected Traffic (Optional)</Title>
-          <Description>You can provide the expected traffic data here. It will help potential sponsors to estimate their bids.</Description>
+          <Description>
+            You can provide the expected traffic data here. It will help potential sponsors to estimate their bids.
+          </Description>
           <RadioGroup
             value={impression}
             radioWidth="175px"
