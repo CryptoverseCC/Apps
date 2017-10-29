@@ -69,7 +69,7 @@ class Whitelist extends Component<TProps, IState> {
     this.state = {
       links: [],
       fetching: false,
-      apiUrl: params.apiUrl || 'https://api-dev.userfeeds.io',
+      apiUrl: params.apiUrl || 'https://api.userfeeds.io',
       asset,
       recipientAddress: params.recipientAddress || '',
       algorithm: params.algorithm || 'links',
