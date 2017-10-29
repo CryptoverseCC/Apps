@@ -54,7 +54,7 @@ interface IState {
 
 const initialState = {
   title: '',
-  description: 'I accept only links that are about science and technology. I like trains',
+  description: 'I accept only links that are about science and technology.',
   contactMethod: '',
   size: 'leaderboard',
   type: 'text',
@@ -213,12 +213,12 @@ class Configure extends Component<TProps, IState> {
     return (
       <div>
         <h1>Create widget</h1>
-        <p style={{ marginBottom: '10px' }}>
+        <p style={{ marginBottom: '40px' }}>
           Provide essential information to get your widget up and running!
         </p>
         <Field>
           <Title>Userfeed Address</Title>
-          <Description>Add description here about userfeed address</Description>
+          <Description>Ethereum address you'll use to receive payments for links</Description>
           <Input
             type="text"
             value={recipientAddress}
@@ -229,7 +229,7 @@ class Configure extends Component<TProps, IState> {
         </Field>
         <Field>
           <Title>Whitelist</Title>
-          <Description>Add description here about whitelist identifier</Description>
+          <Description>Address that you'll use for links approval</Description>
           <Input
             type="text"
             value={whitelist}
@@ -239,7 +239,7 @@ class Configure extends Component<TProps, IState> {
         </Field>
         <Field>
           <Title>Title</Title>
-          <Description>Add description here about title</Description>
+          <Description>Name of Your Widget</Description>
           <Input
             type="text"
             value={title}
@@ -250,7 +250,7 @@ class Configure extends Component<TProps, IState> {
         </Field>
         <Field>
           <Title>Description</Title>
-          <Description>Add description here about description</Description>
+          <Description>Short Description of Your Widget (describing links you want to receive etc)</Description>
           <Input
             type="text"
             multiline
@@ -271,8 +271,8 @@ class Configure extends Component<TProps, IState> {
           {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
         </Field>
         <Field>
-          <Title>Till date</Title>
-          <Description>Add description here about till date</Description>
+          <Title>Expiration date</Title>
+          <Description>How long are you willing to host the widget? (expiration date)</Description>
           <DatePicker
             className={classnames(input, style.DatePicker)}
             minDate={MIN_DATE}
@@ -283,8 +283,8 @@ class Configure extends Component<TProps, IState> {
           {errors.tillDate && <Error>{errors.tillDate}</Error>}
         </Field>
         <Field>
-          <Title>Declared Amount of Impressions</Title>
-          <Description>Add description here about declared amount of impressions</Description>
+          <Title>Expected Traffic (Optional)</Title>
+          <Description>You can provide the expected traffic data here. It will help potential sponsors to estimate their bids.</Description>
           <RadioGroup
             value={impression}
             radioWidth="175px"

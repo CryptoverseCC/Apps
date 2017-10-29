@@ -38,8 +38,10 @@
     text-overflow: ellipsis;
     color: $dodger-blue;
     font-weight: 700;
-    font-size: 1.2em;
+    font-size: 1em;
     flex-shrink: 0;
+    padding-bottom:0.5em;
+
   }
 
   .header {
