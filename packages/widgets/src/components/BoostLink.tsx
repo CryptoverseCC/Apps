@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import core from '@userfeeds/core/src';
 import Input from '@userfeeds/apps-components/src/Input';
 import Button from '@userfeeds/apps-components/src/Button';
+import NewButton from '@userfeeds/apps-components/src/NewButton';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import Wrapper from '@userfeeds/apps-components/src/Wrapper';
 import { IRemoteLink } from '@userfeeds/types/link';
@@ -60,27 +61,14 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   render() {
     const { link } = this.props;
-    const {
-      visible,
-      value,
-      validationError,
-      probability,
-      formLeft,
-      formTop,
-      formOpacity,
-    } = this.state;
+    const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
     return (
       <div ref={this._onButtonRef} className={style.self}>
         <Web3StateProvider
           render={({ enabled, reason }) => (
             <Wrapper>
               <Tooltip text={reason}>
-                <Button
-                  secondary
-                  className={style.boostButton}
-                  disabled={!enabled}
-                  onClick={this._onBoostClick}
-                >
+                <Button secondary className={style.boostButton} disabled={!enabled} onClick={this._onBoostClick}>
                   Boost
                 </Button>
               </Tooltip>
@@ -99,11 +87,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                       errorMessage={validationError}
                     />
                     <p className={style.equalSign}>=</p>
-                    <Input
-                      placeholder="Estimated Probability"
-                      disabled
-                      value={`${probability} %`}
-                    />
+                    <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
                   </div>
                   {this._getTokenAddress() && (
                     <TokenDetailsProvider
@@ -114,13 +98,14 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                       )}
                     />
                   )}
-                  <Button
+                  <NewButton
                     disabled={!!validationError || !value}
                     style={{ marginLeft: 'auto' }}
                     onClick={this._onSendClick}
+                    color="primary"
                   >
                     Send
-                  </Button>
+                  </NewButton>
                 </div>
               </If>
             </Wrapper>
@@ -221,12 +206,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         claim,
       );
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(
-        web3,
-        recipientAddress,
-        value,
-        claim,
-      );
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }
     sendClaimPromise
       .then((transactionId: string) => {
