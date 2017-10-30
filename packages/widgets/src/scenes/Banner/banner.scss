@@ -8,7 +8,7 @@
   background-color: $white;
 
   $initial_menu_height: 2px;
-  $menu_height: 30px;
+  $menu_height: 35px;
 
   &.leaderboard {
     width: 728px;
@@ -62,24 +62,28 @@
   .options {
     position: absolute;
     top: 0;
-    width: 100%;
+    width: calc(100% - 2 * 10px);
+    padding: 0 10px;
     height: $menu_height;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     background-color: $alto;
     box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
   }
 
   .options.open~.container {
-    // height: calc(100% - #{$menu_height});
     transform: translateY(#{$menu_height - $initial_menu_height});
   }
 
   .probability-label {
     color: $dusty-gray;
     font-size: 0.8em;
+  }
+
+  .probability-container {
+    flex-basis: calc(100%/3);
   }
 
   .probability {
@@ -89,7 +93,9 @@
   }
 
   .arrows {
+    flex-basis: calc(100%/3);
     display: flex;
+    justify-content: center;
     color: $tuna;
 
     .arrow {

@@ -49,7 +49,8 @@
   }
 
   .summary {
-    color: $emperor;
+    color: #89939f;
+    font-size: 0.8em;
 
     &.lines2 {
       @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 2, $bgColor: white);
@@ -70,7 +71,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: $camarone;
+    color: #0aa360;
     font-size: 0.8em;
     flex-shrink: 0;
     outline: none;

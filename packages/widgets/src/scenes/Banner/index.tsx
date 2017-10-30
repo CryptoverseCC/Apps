@@ -74,7 +74,7 @@ class Banner extends Component<IBannerProps, IBannerState> {
     return (
       <div className={cx(['self', size])} onMouseLeave={this._onInfoLeave}>
         <div className={cx('options', { open: optionsOpen })}>
-          <div>
+          <div class={style.probabilityContainer}>
             <span className={style.probabilityLabel}>Probability: </span>
             <div className={style.probability}>{currentLink && `${currentLink.probability}%`}</div>
           </div>

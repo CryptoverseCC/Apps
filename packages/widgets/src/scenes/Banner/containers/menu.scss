@@ -1,11 +1,12 @@
 @import '~@userfeeds/apps-components/styles/colors';
 
 .self {
+  flex-basis: calc(100%/3);
+  text-align: right;
   outline: 0;
   cursor: pointer;
   color: $dodger-blue;
   background-color: transparent;
-  margin-right: 20px;
   font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
