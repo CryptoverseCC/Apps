@@ -20,6 +20,7 @@ h1, h2, h3, h4, p, a, button, input, span, img, div, ul, li, table, thead, tbody
 div {
   /* no important */
   display: block;
+  box-sizing: unset;
 }
 
 ul, li {
