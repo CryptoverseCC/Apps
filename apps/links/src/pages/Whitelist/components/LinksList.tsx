@@ -45,7 +45,7 @@ const LinksList = (props: ILinksListProps) => {
                 <TransactionProvider
                   id={link.id}
                   renderReady={(onClick) => (
-                    <Button color="success" onClick={onClick}>
+                    <Button color="ready" onClick={onClick}>
                       <Icon name="check" /> Accept
                     </Button>
                   )}

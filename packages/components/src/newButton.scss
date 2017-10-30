@@ -57,11 +57,14 @@
     }
   }
 
-  &.success {
+  &.success,
+  &.ready {
     background-color: rgba(9, 213, 124, 0.2);
     color: #07bb6c;
     font-weight: bold;
+  }
 
+  &.ready {
     &:not([disabled]):hover,
     &:not([disabled]):focus {
       color: white;
@@ -76,8 +79,8 @@
   }
 
   &.pending {
-    background-color: rgba(255, 237, 11, 0.6);
-    color: white;
+    background-color: #fefcdd;
+    color: #dfd22e;
     font-weight: bold;
   }
 
