@@ -2,14 +2,12 @@ import React from 'react';
 import * as styles from './a.scss';
 import classnames from 'classnames';
 
-interface IProps {
+type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   className?: string;
-  children?: string | JSX.Element;
   bold?: boolean;
-  href?: string;
-}
+};
 
-const A = ({ className, bold, ...props }: IProps = { bold: false }) => (
+const A = ({ className, bold, ...props }: Props = { bold: false }) => (
   <a className={classnames(styles.self, className, { [styles.bold]: bold })} {...props} />
 );
 

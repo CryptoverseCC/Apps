@@ -3,6 +3,7 @@ import QRious from 'qrious';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Paper from '@userfeeds/apps-components/src/Paper';
+import A from '@userfeeds/apps-components/src/A';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 
 import * as style from './userfeedsAddressInfo.scss';
@@ -34,7 +35,9 @@ export default class UserfeedsAddressInfo extends PureComponent<IUserfeedsAddres
           </Paper>
           <Paper style={{ flex: 1, marginLeft: '15px' }}>
             <TextWithLabel label="Etherscan">
-              <a href={etherscanUrl} target="_blank"><Icon name="external-link" /> See it on Etherscan</a>
+              <A href={etherscanUrl} target="_blank">
+                <Icon name="external-link" /> See it on Etherscan
+              </A>
             </TextWithLabel>
           </Paper>
         </div>
