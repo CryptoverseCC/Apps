@@ -99,6 +99,7 @@
     &:not([disabled]):hover,
     &:not([disabled]):focus {
       background-color: #89939f;
+      border-color: #89939f;
       color: white;
       cursor: pointer;
     }
