@@ -7,13 +7,8 @@
   all: initial;
   @import './unset';
 
-  * {
-    transition: all 200ms ease-in-out;
-  }
-
   ::selection {
     color: $white;
     background: $dodger-blue;
   }
-
 }
