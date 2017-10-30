@@ -25,7 +25,6 @@ import * as style from './whitelist.scss';
 
 export type TWhitelistableClickableLink = IRemoteLink & {
   whitelisted: boolean;
-  onClick(): void;
 };
 
 interface IState {
@@ -77,7 +76,7 @@ class Whitelist extends Component<TProps, IState> {
       recipientAddressFromParams: !!params.recipientAddress,
       whitelistFromParams: !!params.whitelist,
       assetFromParams: !!params.asset,
-      decimals: params.tokenDetails && params.tokenDetails.decimals || undefined,
+      decimals: (params.tokenDetails && params.tokenDetails.decimals) || undefined,
     };
   }
 
@@ -98,19 +97,11 @@ class Whitelist extends Component<TProps, IState> {
           <div className={style.body} style={{ padding: '20px' }}>
             <Field>
               <Title>Recipient Address</Title>
-              <Input
-                type="text"
-                value={this.state.recipientAddress}
-                onChange={this._onChange('recipientAddress')}
-              />
+              <Input type="text" value={this.state.recipientAddress} onChange={this._onChange('recipientAddress')} />
             </Field>
             <Field>
               <Title>Whitelist Address</Title>
-              <Input
-                type="text"
-                value={this.state.whitelist}
-                onChange={this._onChange('whitelist')}
-              />
+              <Input type="text" value={this.state.whitelist} onChange={this._onChange('whitelist')} />
             </Field>
             <Field>
               <Title>Choose token</Title>
@@ -141,9 +132,7 @@ class Whitelist extends Component<TProps, IState> {
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
-                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
-                  There are no links matching this data
-                </h3>
+                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>There are no links matching this data</h3>
               </div>
             )}
           </div>
@@ -169,9 +158,7 @@ class Whitelist extends Component<TProps, IState> {
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
-                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>
-                  There are no links matching this data
-                </h3>
+                <h3 style={{ margin: '20px 0 0', fontWeight: 'normal' }}>There are no links matching this data</h3>
               </div>
             )}
           </div>
@@ -202,10 +189,7 @@ class Whitelist extends Component<TProps, IState> {
     this.setState({ fetching: true, links: [] });
     const startTime = Date.now();
     try {
-      const [allLinks, whitelistedLinks] = await Promise.all([
-        this._fetchAllLinks(),
-        this._fetchWhitelistedLinks(),
-      ]);
+      const [allLinks, whitelistedLinks] = await Promise.all([this._fetchAllLinks(), this._fetchWhitelistedLinks()]);
 
       const links = allLinks.items.map((link) => {
         const whitelisted = !!whitelistedLinks.items.find((a) => link.id === a.id);
@@ -217,7 +201,6 @@ class Whitelist extends Component<TProps, IState> {
           summary: link.summary,
           target: link.target,
           total: this._totalSpentFromTokensWei(link.total, this.state.decimals),
-          onClick: () => this._onLinkClick(link),
         };
         return parsedLink;
       });
@@ -235,20 +218,16 @@ class Whitelist extends Component<TProps, IState> {
 
   _fetchAllLinks = async () => {
     const { apiUrl, recipientAddress, algorithm, asset } = this.state;
-    const assetString = asset.token
-      ? `${asset.network}:${asset.token.toLowerCase()}`
-      : asset.network;
+    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
 
-    return fetch(
-      `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`,
-    ).then<{ items: IRemoteLink[] }>((res) => res.json());
+    return fetch(`${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`).then<{
+      items: IRemoteLink[];
+    }>((res) => res.json());
   }
 
   _fetchWhitelistedLinks = async () => {
     const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
-    const assetString = asset.token
-      ? `${asset.network}:${asset.token.toLowerCase()}`
-      : asset.network;
+    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
     const whitelistParam = whitelist ? `?whitelist=${whitelist.toLowerCase()}` : '';
 
     return fetch(
@@ -264,14 +243,6 @@ class Whitelist extends Component<TProps, IState> {
   }
 
   _debouncedFetchLinks = debounce(this._fetchLinks, 500);
-
-  _onLinkClick = (link) => {
-    const claim = {
-      claim: { target: link.id },
-    };
-
-    core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
-  }
 }
 
 export default updateQueryParam(Whitelist);

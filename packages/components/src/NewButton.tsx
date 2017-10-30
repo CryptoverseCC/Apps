@@ -5,22 +5,15 @@ import classnames from 'classnames';
 
 type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: 'small' | 'medium';
-  color?: 'primary' | 'success';
+  color?: 'primary' | 'success' | 'pending' | 'metaPending' | 'error';
   outline?: boolean;
 };
 
-const Button = ({
-  children,
-  className,
-  outline,
-  size = 'medium',
-  color = 'primary',
-  ...props,
-}: TButtonProps) => {
+const Button = ({ children, className, outline, size = 'medium', color = 'primary', ...props }: TButtonProps) => {
   let icon;
   const decoratedChildren = React.Children.map(children, (child) => {
     if (isType(child, 'Icon')) {
-      icon = React.cloneElement(child, { className: style.ButtonIcon });
+      icon = React.cloneElement(child, { displayName: undefined, className: style.ButtonIcon });
       return null;
     } else {
       return child;

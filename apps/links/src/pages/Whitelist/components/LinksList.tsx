@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import BoldText from '@userfeeds/apps-components/src/BoldText';
 import A from '@userfeeds/apps-components/src/A';
 import Button from '@userfeeds/apps-components/src/NewButton';
 import Icon from '@userfeeds/apps-components/src/Icon';
+import MetaFox from '../../../../images/metafox.png';
+
+import TransactionProvider from './TransactionProvider';
 
 import { TWhitelistableClickableLink } from '../';
 
@@ -39,9 +42,22 @@ const LinksList = (props: ILinksListProps) => {
             </td>
             {!link.whitelisted && (
               <td style={{ width: '200px', textAlign: 'right' }}>
-                <Button color="success" onClick={link.onClick}>
-                  <Icon name="check" /> Accept
-                </Button>
+                <TransactionProvider
+                  id={link.id}
+                  renderReady={(onClick) => (
+                    <Button color="success" onClick={onClick}>
+                      <Icon name="check" /> Accept
+                    </Button>
+                  )}
+                  renderPending={() => <Button color="pending">Pending</Button>}
+                  renderMetaPending={() => (
+                    <Button color="metaPending">
+                      <img src={MetaFox} displayName="Icon" style={{ height: '2em' }} /> Metamask...
+                    </Button>
+                  )}
+                  renderError={() => <Button color="error">Failed :(</Button>}
+                  renderSuccess={() => <Button color="success">Success</Button>}
+                />
               </td>
             )}
           </tr>

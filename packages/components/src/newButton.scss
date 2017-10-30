@@ -69,11 +69,35 @@
     }
   }
 
+  &.metaPending {
+    background-color: rgba(247, 134, 28, 0.6);
+    color: white;
+    font-weight: bold;
+  }
+
+  &.pending {
+    background-color: rgba(255, 237, 11, 0.6);
+    color: white;
+    font-weight: bold;
+  }
+
+  &.error {
+    background-color: rgba(251, 11, 34, 0.6);
+    color: white;
+    font-weight: bold;
+  }
+
   &.outline {
     border: 1px solid #d9e0e7;
     background: none;
     color: #89939f;
     box-shadow: none;
+
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      background-color: #89939f;
+      color: white;
+    }
   }
 
   .ButtonIcon {
@@ -89,4 +113,5 @@
 .ButtonInnerWrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
