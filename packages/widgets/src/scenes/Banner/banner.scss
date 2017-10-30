@@ -8,7 +8,6 @@
   background-color: $white;
 
   $initial_menu_height: 2px;
-  $menu_height: 35px;
 
   &.leaderboard {
     width: 728px;
@@ -17,11 +16,27 @@
     @media screen and (max-width: 720px) {
       width: 100%;
     }
+
+    .options {
+      height: 35px;
+    }
+
+    .options.open~.container {
+      transform: translateY(#{35px - $initial_menu_height});
+    }
   }
 
   &.rectangle {
     width: 300px;
     height: 250px;
+
+    .options {
+      height: 48px;
+    }
+
+    .options.open~.container {
+      transform: translateY(#{48px - $initial_menu_height});
+    }
   }
 
   .container {
@@ -64,17 +79,12 @@
     top: 0;
     width: calc(100% - 2 * 10px);
     padding: 0 10px;
-    height: $menu_height;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     background-color: $alto;
     box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
-  }
-
-  .options.open~.container {
-    transform: translateY(#{$menu_height - $initial_menu_height});
   }
 
   .probability-label {
