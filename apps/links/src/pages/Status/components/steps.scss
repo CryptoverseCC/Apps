@@ -1,10 +1,15 @@
 @import '~@userfeeds/apps-components/styles/colors';
 
 @-webkit-keyframes waiting {
-  0%   { opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; }
-
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 
 .self {
@@ -12,7 +17,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top:30px;
+  margin-top: 30px;
 
   @media screen and (max-width: 1200px) {
     flex-direction: row;
@@ -81,12 +86,13 @@
       opacity: 0.5;
     }
 
-    &.waiting {
+    &.waiting .icon:before {
       opacity: 0.5;
       animation: waiting 1s ease-in-out infinite;
     }
 
-    &.done .icon, &.done path {
+    &.done .icon,
+    &.done path {
       color: $white;
       fill: white;
       background-color: $green;
