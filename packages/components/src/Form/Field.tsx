@@ -8,8 +8,7 @@ export const Field = ({ children, ...props }) => (
   <div {...props} className={styles.Field}>
     {React.Children.map(
       children,
-      (child) =>
-        isType(child, 'Input') ? React.cloneElement(child, { className: styles.Input }) : child,
+      (child) => (isType(child, 'Input') ? React.cloneElement(child, { className: styles.Input }) : child),
     )}
   </div>
 );
@@ -18,7 +17,7 @@ export const Title = ({ children }) => <BoldText className={styles.Header}>{chil
 
 export const Description = ({ children }) => <p className={styles.Description}>{children}</p>;
 
-export const Error = ({ children }) => <p className={styles.Error}>{children}</p>;
+export const Error = ({ children }) => (children ? <p className={styles.Error}>{children}</p> : null);
 
 export const RadioGroup = ({ children, radioWidth, onChange, value, name }) => (
   <div className={styles.inputGroup}>

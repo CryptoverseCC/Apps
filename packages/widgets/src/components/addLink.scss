@@ -1,6 +1,7 @@
 .self {
   display: flex;
   flex-direction: column;
+  padding: 15px;
 
   .send-button {
     align-self: flex-end;

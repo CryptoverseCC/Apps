@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 import core from '@userfeeds/core/src';
-import Input from '@userfeeds/apps-components/src/Input';
-import Button from '@userfeeds/apps-components/src/Button';
+import Input from '@userfeeds/apps-components/src/Form/Input';
+import Field, { Title, Error } from '@userfeeds/apps-components/src/Form/Field';
+import Button from '@userfeeds/apps-components/src/NewButton';
 import Loader from '@userfeeds/apps-components/src/Loader';
 import Tooltip from '@userfeeds/apps-components/src/Tooltip';
 import Checkbox from '@userfeeds/apps-components/src/Checkbox';
@@ -78,68 +79,58 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
-      <div className={style.self}>
-        <Input
-          name="title"
-          placeholder="Title"
-          value={title}
-          errorMessage={errors.title}
-          onBlur={this._onInput}
-          onChange={this._onInput}
-        />
-        <Input
-          placeholder="Summary"
-          name="summary"
-          value={summary}
-          errorMessage={errors.summary}
-          onBlur={this._onInput}
-          onChange={this._onInput}
-        />
-        <Input
-          placeholder="URL"
-          name="target"
-          value={target}
-          errorMessage={errors.target}
-          onBlur={this._onInput}
-          onChange={this._onInput}
-        />
-        <Input
-          placeholder="Value"
-          value={value}
-          name="value"
-          errorMessage={errors.value}
-          onBlur={this._onInput}
-          onChange={this._onInput}
-        />
-        {this._getTokenAddress() && [
-          <TokenDetailsProvider
-            render={(tokenDetails) => (
-              <p>
-                Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-              </p>
-            )}
-          />,
-          <Checkbox
-            label="Don't ask me again for this token on any website or wherever"
-            checked={unlimitedApproval}
-            onChange={this._onUnlimitedApprovalChange}
-          />,
-        ]}
-        <div className={style.sendButton}>
-          {posting ? (
-            <Loader />
-          ) : (
-            <Web3StateProvider
-              render={({ enabled, reason }) => (
-                <Tooltip text={reason}>
-                  <Button disabled={!enabled} onClick={this._onSubmit}>
-                    Send
-                  </Button>
-                </Tooltip>
+      <div className={style.self} style={{ width: '600px' }}>
+        <Field>
+          <Title>Headline</Title>
+          <Input name="title" type="text" value={title} onChange={this._onInput} onBlur={this._onInput} />
+          <Error>{errors.title}</Error>
+        </Field>
+        <Field>
+          <Title>Description</Title>
+          <Input multiline name="summary" type="text" value={summary} onChange={this._onInput} onBlur={this._onInput} />
+          <Error>{errors.summary}</Error>
+        </Field>
+        <Field>
+          <Title>Link</Title>
+          <Input name="target" type="text" value={target} onChange={this._onInput} onBlur={this._onInput} />
+          <Error>{errors.target}</Error>
+        </Field>
+        <Field>
+          <Title>Initial Fee</Title>
+          <Input name="value" type="text" value={value} onChange={this._onInput} onBlur={this._onInput} />
+          <Error>{errors.value}</Error>
+        </Field>
+        <Field>
+          {this._getTokenAddress() && [
+            <TokenDetailsProvider
+              render={(tokenDetails) => (
+                <p>
+                  Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+                </p>
               )}
-            />
-          )}
-        </div>
+            />,
+            <Checkbox
+              label="Don't ask me again for this token on any website or wherever"
+              checked={unlimitedApproval}
+              onChange={this._onUnlimitedApprovalChange}
+            />,
+          ]}
+        </Field>
+        {posting ? (
+          <div style={{ margin: '0 auto' }}>
+            <Loader />
+          </div>
+        ) : (
+          <Web3StateProvider
+            render={({ enabled, reason }) => (
+              <Tooltip text={reason}>
+                <Button style={{ width: '100%' }} color="primary" disabled={!enabled} onClick={this._onSubmit}>
+                  Create
+                </Button>
+              </Tooltip>
+            )}
+          />
+        )}
       </div>
     );
   }
@@ -197,12 +188,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         claim,
       );
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(
-        web3,
-        recipientAddress,
-        value,
-        claim,
-      );
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }
     sendClaimPromise
       .then((linkId) => {

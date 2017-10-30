@@ -5,15 +5,15 @@
   margin-bottom: 20px; // TODO: Get rid of margins in inputs
   margin-top: 20px;
   width: 100%;
-  font-family:'PT Sans';
+  font-family: 'PT Sans';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: none!important; // ToDo make something with it
+  transition: none !important; // ToDo make something with it
 
   .input {
     font-size: 14px;
     padding: 15px 20px;
-    width: calc(100% - 30px);
+    width: calc(100% - 40px);
     background-color: $aqua-haze;
     border: 1px solid $alto;
     border-radius: 3px;
@@ -26,7 +26,7 @@
     }
 
     &:-moz-placeholder {
-      box-shadow: none!important;
+      box-shadow: none !important;
     }
   }
 
@@ -47,7 +47,9 @@
     transition: 0.2s;
   }
 
-  .input:focus ~ .placeholder, .input:valid ~ .placeholder, .input:disabled ~ .placeholder {
+  .input:focus ~ .placeholder,
+  .input:valid ~ .placeholder,
+  .input:disabled ~ .placeholder {
     color: $black;
     font-size: 11px;
     top: -16px;
