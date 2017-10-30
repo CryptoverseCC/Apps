@@ -16,12 +16,7 @@ interface IToastProps {
 const Toast = ({ message, type, onClose }: IToastProps) => {
   const onClick = onClose.bind(null, message);
 
-  return (
-    <div className={cx('self', type)}>
-      {message}
-      <Icon className={style.ex} name="x" onClick={onClick} />
-    </div>
-  );
+  return <div className={cx('self', type)}>{message}</div>;
 };
 
 export default Toast;
