@@ -29,12 +29,7 @@ const WidgetSummary = ({
         <div className={style.HeaderContainer}>
           <h1 className={style.Header}>{widgetSettings.title}</h1>
           {!openInNewWindowHidden && (
-            <Button
-              outline
-              size="small"
-              className={style.NewWindowButton}
-              onClick={onOpenInSeparateWindow}
-            >
+            <Button outline size="small" className={style.NewWindowButton} onClick={onOpenInSeparateWindow}>
               <Icon name="external-link" />New Window
             </Button>
           )}
@@ -45,7 +40,7 @@ const WidgetSummary = ({
       <Web3StateProvider
         render={({ enabled, reason }) => (
           <Tooltip className={style.NewButtonContainer} text={reason}>
-            <Button onClick={onAddClick} disabled={!enabled}>
+            <Button onClick={onAddClick} disabled={!enabled} color="primary">
               <Icon name="plus" /> Create new link
             </Button>
           </Tooltip>
