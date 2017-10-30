@@ -79,7 +79,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
     const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
-      <div className={style.self} style={{ width: '600px' }}>
+      <div className={style.self}>
         <Field>
           <Title>Headline</Title>
           <Input name="title" type="text" value={title} onChange={this._onInput} onBlur={this._onInput} />
