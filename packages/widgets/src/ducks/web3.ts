@@ -17,7 +17,7 @@ export const web3Actions = {
   }>('UPDATE_AVAILABILITY'),
 };
 
-let observeWeb3IntervalId;
+const intervalsMaps = new Map<() => IRootState, number>();
 
 export const observeInjectedWeb3 = () => (dispatch, getState: () => IRootState) => {
   const check = () => {
@@ -36,7 +36,10 @@ export const observeInjectedWeb3 = () => (dispatch, getState: () => IRootState) 
       }
     });
   };
-  if (!observeWeb3IntervalId) { observeWeb3IntervalId = setInterval(check, 1000); }
+
+  if (!intervalsMaps.has(dispatch)) {
+    intervalsMaps.set(dispatch, window.setInterval(check, 1000));
+  }
 };
 
 export interface IWeb3State {
