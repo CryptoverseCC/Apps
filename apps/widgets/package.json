@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkechange/app-widget",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/widgets": "^0.0.120",
-    "@userfeeds/apps-components": "^0.0.19",
+    "@linkexchange/widgets": "^0.0.121",
+    "@userfeeds/apps-components": "^0.0.20",
     "@userfeeds/core": "^0.0.36",
     "@userfeeds/utils": "^0.0.8",
     "classnames": "^2.2.5",
