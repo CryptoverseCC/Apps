@@ -87,7 +87,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
         </Field>
         <Field>
           <Title>Description</Title>
-          <Input multiline name="summary" type="text" value={summary} onChange={this._onInput} onBlur={this._onInput} />
+          <Input name="summary" type="text" value={summary} onChange={this._onInput} onBlur={this._onInput} />
           <Error>{errors.summary}</Error>
         </Field>
         <Field>
