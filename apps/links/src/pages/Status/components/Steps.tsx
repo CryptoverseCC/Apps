@@ -17,13 +17,12 @@ interface IStepProps {
 }
 
 class Step extends PureComponent<IStepProps> {
-
   render() {
     const { icon, state, children } = this.props;
 
     return (
       <div className={cx(style.step, { [state]: true })}>
-        <div className={style.icon}>{icon}</div>
+        <div className={style.iconContainer}>{icon}</div>
         <div className={style.content}>{children}</div>
       </div>
     );
@@ -44,7 +43,6 @@ interface IProgressState {
 }
 
 class Progress extends Component<IProgressProps, IProgressState> {
-
   state: IProgressState = {};
 
   componentWillReceiveProps(newProps) {
@@ -99,7 +97,6 @@ interface IStepsProps {
 }
 
 export default class Steps extends Component<IStepsProps, {}> {
-
   step0Ref: JSX.Element | undefined;
   step1Ref: JSX.Element | undefined;
   step2Ref: JSX.Element | undefined;
@@ -123,13 +120,12 @@ export default class Steps extends Component<IStepsProps, {}> {
       step0Reason = 'Web is unavailable';
     }
 
-    const step1State = step0State === 'waiting'
-      ? 'notstarted'
-      : link ? 'done' : 'waiting';
+    const step1State = step0State === 'waiting' ? 'notstarted' : link ? 'done' : 'waiting';
 
-    const step2State = step1State === 'waiting' || step1State === 'notstarted'
-      ? 'notstarted'
-      : link && link.whitelisted ? 'done' : 'waiting';
+    const step2State =
+      step1State === 'waiting' || step1State === 'notstarted'
+        ? 'notstarted'
+        : link && link.whitelisted ? 'done' : 'waiting';
 
     return (
       <div className={style.self}>
@@ -145,23 +141,25 @@ export default class Steps extends Component<IStepsProps, {}> {
           <Step
             ref={this._onRef('step0Ref')}
             state={step0State}
-            icon={<Tooltip text={step0Reason}><Icon className={style.icon} name="eye" /></Tooltip>}
+            icon={
+              <Tooltip text={step0Reason}>
+                <Icon className={style.icon} name="eye" />
+              </Tooltip>}
           >
             <p>Visible on blockchain</p>
           </Step>
           <Step
             ref={this._onRef('step1Ref')}
             state={step1State}
-            icon={<Svg svg={cubeSvg} size="1.2em" viewBox="0 0 23 27" />}
+            icon={
+              <div className={style.icon}>
+                <Svg svg={cubeSvg} size="1.2em" viewBox="0 0 23 27" />
+              </div>}
           >
             <p>Userfeeds Address</p>
             <span>Visible to publisher</span>
           </Step>
-          <Step
-            ref={this._onRef('step2Ref')}
-            state={step2State}
-            icon={<Icon className={style.icon} name="check" />}
-          >
+          <Step ref={this._onRef('step2Ref')} state={step2State} icon={<Icon className={style.icon} name="check" />}>
             <p>Put on whitelist</p>
             <span>All set!</span>
           </Step>
@@ -170,5 +168,5 @@ export default class Steps extends Component<IStepsProps, {}> {
     );
   }
 
-  _onRef = (name) => (ref) => this[name] = ref;
+  _onRef = (name) => (ref) => (this[name] = ref);
 }

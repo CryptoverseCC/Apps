@@ -82,13 +82,17 @@
       cursor: not-allowed;
     }
 
-    &.notstarted {
-      opacity: 0.5;
+    &.notstarted .icon {
+      opacity: 0.2;
     }
 
-    &.waiting .icon:before {
-      opacity: 0.5;
+    &.waiting .icon {
+      opacity: 0.2;
       animation: waiting 1s ease-in-out infinite;
+    }
+
+    .icon {
+      font-size: 1em;
     }
 
     &.done .icon,
@@ -98,7 +102,7 @@
       background-color: $green;
     }
 
-    .icon {
+    .iconContainer {
       align-self: center;
       width: 3em;
       height: 3em;
@@ -119,9 +123,5 @@
         padding-left: 20px;
       }
     }
-  }
-
-  .icon {
-    font-size: 1em;
   }
 }
