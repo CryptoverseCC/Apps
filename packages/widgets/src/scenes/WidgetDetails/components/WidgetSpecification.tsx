@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 
 import Paper from '@userfeeds/apps-components/src/Paper';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import A from '@userfeeds/apps-components/src/A';
 
 import { EWidgetSize } from '../../../types';
 
@@ -18,7 +19,6 @@ interface IWidgetSpecificationProps {
 }
 
 export default class WidgetSpecification extends PureComponent<IWidgetSpecificationProps> {
-
   render() {
     const { size, algorithm, asset } = this.props;
 
@@ -42,7 +42,13 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
           </Paper>
           <Paper style={{ flex: 1, marginLeft: '15px' }}>
             <TextWithLabel label="Algorithm">
-              {algorithm}
+              <A
+                href="https://userfeeds-platform.readthedocs-hosted.com/en/latest/ref/algorithms.html#links"
+                target="_blank"
+              >
+                Links
+              </A>
+              {/*TODO: remove hardcoded link description when new algorithms show up*/}
             </TextWithLabel>
           </Paper>
         </div>
