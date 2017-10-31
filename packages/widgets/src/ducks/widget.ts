@@ -91,7 +91,7 @@ export interface IWidgetState {
   tokenDetails: ITokenDetailsState;
 }
 
-const initialState = {
+export const initialState = {
   apiUrl: 'https://api.userfeeds.io',
   recipientAddress: '0x0',
   asset: 'rinkeby',
