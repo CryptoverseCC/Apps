@@ -11,6 +11,7 @@ import Loader from '@userfeeds/apps-components/src/Loader';
 import Button from '@userfeeds/apps-components/src/Button';
 import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
 import Intercom from '@userfeeds/apps-components/src/Intercom';
+import A from '@userfeeds/apps-components/src/A';
 
 import Steps from './components/Steps';
 
@@ -66,7 +67,6 @@ interface IStatusState {
 }
 
 export default class Status extends Component<IStatusProps, IStatusState> {
-
   constructor(props: IStatusProps) {
     super(props);
     const params = new URLSearchParams(props.location.search);
@@ -94,7 +94,6 @@ export default class Status extends Component<IStatusProps, IStatusState> {
         currentBlockNumber: null,
       },
     };
-
   }
 
   componentDidMount() {
@@ -110,7 +109,6 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     };
 
     setTimeoutForFetch(0);
-
   }
 
   render() {
@@ -126,7 +124,11 @@ export default class Status extends Component<IStatusProps, IStatusState> {
           <p className={style.previewTitle}>Link preview:</p>
           <Paper className={style.preview}>
             {link && <Link link={link} />}
-            {!link && <div className={style.loader}><Loader /></div>}
+            {!link && (
+              <div className={style.loader}>
+                <Loader />
+              </div>
+            )}
           </Paper>
         </div>
         <Paper className={style.content}>
@@ -136,26 +138,23 @@ export default class Status extends Component<IStatusProps, IStatusState> {
             <p>In order to track its progress please save the link</p>
           </div>
           <div className={style.info}>
-            <TextWithLabel className={style.label} label="Link status:">
-              <div className={style.linkLabel}>
-                <a className={style.link} href={window.location.href}>{window.location.href}</a>
-                {!mobileOrTablet && <Button
-                  secondary
-                  className={style.addBookmark}
-                  onClick={this._bookmarkIt}
-                >
+            <div className={style.label}>Link status:</div>
+            <div className={style.text}>
+              <A className={style.link} href={window.location.href}>
+                {window.location.href}
+              </A>
+              {!mobileOrTablet && (
+                <Button secondary className={style.addBookmark} onClick={this._bookmarkIt}>
                   Add to bookmarks
-                </Button>}
-              </div>
-            </TextWithLabel>
-            <TextWithLabel className={style.label} label="Widget location:">
-              <a href={location}>{location}</a>
-            </TextWithLabel>
+                </Button>
+              )}
+            </div>
+            <div className={style.label}>Widget location:</div>
+            <div className={style.text}>
+              <A href={location}>{location}</A>
+            </div>
           </div>
-          <Steps
-            link={link}
-            blockchainState={blockchain}
-          />
+          <Steps link={link} blockchainState={blockchain} />
         </Paper>
       </div>
     );
@@ -165,11 +164,11 @@ export default class Status extends Component<IStatusProps, IStatusState> {
   _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
     try {
       const rankingApiUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`;
-      const allLinksRequest = fetch(rankingApiUrl, { cache: 'no-store' })
-        .then((res) => res.json());
+      const allLinksRequest = fetch(rankingApiUrl, { cache: 'no-store' }).then((res) => res.json());
       const whitelistQueryParam = whitelist ? `?whitelist=${whitelist}` : '';
-      const whitelistedLinksRequest = fetch(`${rankingApiUrl}${whitelistQueryParam}`, { cache: 'no-store' })
-        .then((res) => res.json());
+      const whitelistedLinksRequest = fetch(`${rankingApiUrl}${whitelistQueryParam}`, { cache: 'no-store' }).then((res) =>
+        res.json(),
+      );
 
       const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest, whitelistedLinksRequest]);
       // suboptimal: make a map id to link before mapping links instead
@@ -190,9 +189,9 @@ export default class Status extends Component<IStatusProps, IStatusState> {
 
   _observeBlockchainState = async (linkId: string) => {
     if (!web3.isConnected()) {
-      return this.setState({ blockchain: { ...this.state.blockchain, web3Available: false }});
+      return this.setState({ blockchain: { ...this.state.blockchain, web3Available: false } });
     }
-    this.setState({ blockchain: { ...this.state.blockchain, web3Available: true }});
+    this.setState({ blockchain: { ...this.state.blockchain, web3Available: true } });
 
     const [, tx] = linkId.split(':');
 
@@ -226,7 +225,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     if (!this.state.mobileOrTablet) {
       // Other browsers (mainly WebKit - Chrome/Safari)
       const commandKey = /Mac/i.test(navigator.userAgent) ? 'CMD' : 'Ctrl';
-      alert(`Please press ${(commandKey)} D to add this page to your bookmarks.`);
+      alert(`Please press ${commandKey} D to add this page to your bookmarks.`);
     }
   }
 }
