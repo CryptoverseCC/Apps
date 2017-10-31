@@ -13,6 +13,18 @@
   flex-direction: column;
 }
 
+.field-with-button {
+  display: flex;
+  flex-direction: row;
+
+  .input {
+    flex-grow: 1;
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
 .head {
   width: 100%;
   display: flex;

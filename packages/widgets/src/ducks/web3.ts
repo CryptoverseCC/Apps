@@ -22,9 +22,14 @@ const intervalsMaps = new Map<() => IRootState, number>();
 export const observeInjectedWeb3 = () => (dispatch, getState: () => IRootState) => {
   const check = () => {
     web3.eth.getAccounts(async (error, accounts = []) => {
-      const networkName = await core.utils.getCurrentNetworkName(web3);
+      const available = !!web3.isConnected();
+      let networkName;
+      if (available) {
+        networkName = await core.utils.getCurrentNetworkName(web3);
+      }
+
       const currentState = {
-        available: !!web3.isConnected(),
+        available,
         unlocked: accounts.length > 0,
         network: networkName,
       };

@@ -19,6 +19,8 @@ import { Field, Title, Description, RadioGroup } from '@userfeeds/apps-component
 import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
 import Input from '@userfeeds/apps-components/src/Form/Input';
 import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
+
+import CopyFromMM from './components/CopyFromMM';
 import LinksList from './components/LinksList';
 
 import * as style from './whitelist.scss';
@@ -97,11 +99,27 @@ class Whitelist extends Component<TProps, IState> {
           <div className={style.body} style={{ padding: '20px' }}>
             <Field>
               <Title>Recipient Address</Title>
-              <Input type="text" value={this.state.recipientAddress} onChange={this._onChange('recipientAddress')} />
+              <div className={style.fieldWithButton}>
+                <Input
+                  className={style.input}
+                  type="text"
+                  value={this.state.recipientAddress}
+                  onChange={this._onChange('recipientAddress')}
+                />
+                <CopyFromMM onClick={this._setAddressFromMM('recipientAddress')} />
+              </div>
             </Field>
             <Field>
               <Title>Whitelist Address</Title>
-              <Input type="text" value={this.state.whitelist} onChange={this._onChange('whitelist')} />
+              <div className={style.fieldWithButton}>
+                <Input
+                  className={style.input}
+                  type="text"
+                  value={this.state.whitelist}
+                  onChange={this._onChange('whitelist')}
+                />
+                <CopyFromMM onClick={this._setAddressFromMM('whitelist')} />
+              </div>
             </Field>
             <Field>
               <Title>Choose token</Title>
@@ -169,6 +187,14 @@ class Whitelist extends Component<TProps, IState> {
 
   _linksWaitingForApproval = () => this.state.links.filter((link) => !link.whitelisted);
   _linksApproved = () => this.state.links.filter((link) => link.whitelisted);
+
+  _setAddressFromMM = (key) => () => {
+    web3.eth.getAccounts((_, accounts = ['']) => {
+      this.setState({ [key]: accounts[0] });
+      this.props.updateQueryParam(key, accounts[0]);
+      this._fetchLinks();
+    });
+  }
 
   _onChange = (key) => (e) => {
     const { value } = e.target;
