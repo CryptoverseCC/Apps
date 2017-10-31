@@ -59,6 +59,7 @@ export const WIDGET_NETWORKS = [
       { value: '0x95642c3bcabfbd1cefd7d9f6dff4e9a96197e26c', label: 'MG6T' },
       { value: '0x53Fb38a8EC4eCF22948E5970F93D7E2338A47114', label: 'MG6T2' },
       { value: '0x9E5063133518DeDC881150baf2481DAf3FfeE324', label: 'MG6T2.5' },
+      { value: '0x6BDB3998972AD6F7a740523CCD3DE7b0B8a4a6C5', label: 'OMG (test)' },
       OTHER_ERC20_TOKEN,
     ],
   },

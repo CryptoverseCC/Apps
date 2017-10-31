@@ -30,6 +30,7 @@ const assetToIconMap = new Map([
   ['ethereum:0xf433089366899d83a9f26a773d59ec7ecf30355e', metalpay],
   ['ethereum:0xe41d2489571d322189246dafa5ebde1f4699f498', zerox],
   ['ethereum:0x744d70fdbe2ba4cf95131626614a1763df805b9e', status],
+  ['ropsten:0x6bdb3998972ad6f7a740523ccd3de7b0b8a4a6c5', omise],
 ]);
 
 interface ITokenLogoProps {
