@@ -331,7 +331,7 @@ class Configure extends Component<TProps, IState> {
         </Field>
         <Field>
           <Title>Choose token</Title>
-          <Description>I think it would be nice to put here a short description</Description>
+          <Description>Select it from the list</Description>
           <div className={fieldInput}>
             <Asset
               asset={asset}
@@ -342,7 +342,7 @@ class Configure extends Component<TProps, IState> {
         </Field>
         <Field>
           <Title>Choose algorithm</Title>
-          <Description>Add description here about algorithms</Description>
+          <Description>Choose algorithm that ranks your links</Description>
           <Dropdown
             disabled
             placeholder="Algorithm"
