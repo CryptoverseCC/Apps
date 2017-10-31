@@ -95,6 +95,7 @@
       font-size: 1em;
     }
 
+    &.done .iconContainer,
     &.done .icon,
     &.done path {
       color: $white;
