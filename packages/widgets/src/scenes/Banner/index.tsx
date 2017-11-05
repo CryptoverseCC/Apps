@@ -115,6 +115,7 @@ class Banner extends Component<IBannerProps, IBannerState> {
 
   _onInfoEnter = (e) => {
     this.setState({ optionsOpen: true });
+    e.stopPropagation();
   }
 
   _onInfoLeave = () => {
