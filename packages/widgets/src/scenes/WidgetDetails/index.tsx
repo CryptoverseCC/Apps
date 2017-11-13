@@ -195,7 +195,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
   }
 
   _onOpenInSeparateWindowClick = () => {
-    openLinkexchangeUrl('apps/widgets/#/details/', this.props.widgetSettings);
+    openLinkexchangeUrl('apps/#/details/', this.props.widgetSettings);
   }
 
   _onAddLinkClick = () => {

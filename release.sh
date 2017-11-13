@@ -20,6 +20,8 @@ rm -rf apps
 mkdir -p apps
 
 cp -r /release/apps/* apps/
+cp apps/main/* apps/ -r
+rm apps/main -rf
 
 git add apps
 git commit -m "Apps Release: $CI_COMMIT_MESSAGE $CI_COMMIT_ID [ci skip]"
