@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import Icon from './Icon';
 import Highlight from './Highlight';
 
 import 'highlight.js/styles/androidstudio.css';
 
+import * as style from './androidsnippet.scss';
+
 interface IAndroidSnippetProps {
   widgetSettings: any;
+  onCopy: any;
 }
 
 interface IAndroidSnippetState {
@@ -29,31 +34,42 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
   }
 
   render() {
-    const { widgetSettings } = this.props;
-    const whitelist = widgetSettings.whitelistId ? `${widgetSettings.network}:${widgetSettings.whitelistId}` : '';
+    const { widgetSettings, onCopy } = this.props;
+    const whitelistProperty = widgetSettings.whitelistId ? `userfeeds:whitelist="${widgetSettings.whitelistId}"` : '';
 
+    const code = `<io.userfeeds.widget.LinksViewPager
+    xmlns:userfeeds="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    userfeeds:recipientAddress="${widgetSettings.recipientAddress}"
+    userfeeds:asset="${widgetSettings.asset}" ${whitelistProperty}
+    userfeeds:algorithm="${widgetSettings.algorithm}"
+    userfeeds:title="${widgetSettings.title}"
+    userfeeds:description="${widgetSettings.description}"
+    userfeeds:contactMethod="${widgetSettings.contactMethod}"
+    userfeeds:impressions="${widgetSettings.impression}"`;
+
+    const dependencyCode = `dependencies {
+    compile 'io.userfeeds.widget:core:${this.state.latestVersion}'
+}`;
     return (
       <div>
-        <Highlight
-          language="xml"
-          code={`
-  <io.userfeeds.widget.LinksViewPager
-      xmlns:userfeeds="http://schemas.android.com/apk/res-auto"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      userfeeds:context="${widgetSettings.network}:${widgetSettings.recipientAddress}"
-      userfeeds:whitelist="${whitelist}"
-      userfeeds:algorithm="${widgetSettings.algorithm}"/>
-        `}
-        />
-        <Highlight
-          language="groovy"
-          code={`
-  dependencies {
-      compile 'io.userfeeds.widget:core:${this.state.latestVersion}'
-  }
-          `}
-        />
+        <div className={style.self}>
+          <div className={style.copy}>
+            <CopyToClipboard text={code} onCopy={onCopy}>
+              <Icon name="clipboard" className={style.icon}/>
+            </CopyToClipboard>
+          </div>
+          <Highlight language="xml" code={code}/>
+        </div>
+        <div className={style.self}>
+          <div className={style.copy}>
+            <CopyToClipboard text={dependencyCode} onCopy={onCopy}>
+              <Icon name="clipboard" className={style.icon}/>
+            </CopyToClipboard>
+          </div>
+          <Highlight language="groovy" code={dependencyCode}/>
+        </div>
       </div>
     );
   }

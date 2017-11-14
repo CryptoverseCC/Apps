@@ -1,0 +1,22 @@
+.self {
+  position: relative;
+  margin-top: 10px;
+  background-color: #282b2e;
+
+  .copy {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    .icon {
+      font-size: 1.2em;
+      color: white;
+      cursor: pointer;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

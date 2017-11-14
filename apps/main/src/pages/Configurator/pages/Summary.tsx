@@ -10,6 +10,7 @@ import 'react-tabs/style/react-tabs.scss';
 
 import Icon from '@userfeeds/apps-components/src/Icon';
 import Snippet from '@userfeeds/apps-components/src/Snippet';
+import AndroidSnippet from '@userfeeds/apps-components/src/AndroidSnippet';
 import { openToast } from '@linkexchange/widgets/src/ducks/toast';
 
 import * as style from './summary.scss';
@@ -41,12 +42,16 @@ const Summary = (props: TSummaryProps) => {
       <Tabs className={style.tabs}>
         <TabList className={style.tabList}>
           <Tab selectedClassName={style.selectedTab}>HTML</Tab>
-          <Tab disabled disabledClassName={style.disabledTab}>
-            Android <sup>Coming soon</sup>
-          </Tab>
+          <Tab selectedClassName={style.selectedTab}>Android</Tab>
         </TabList>
         <TabPanel>
           <Snippet
+            widgetSettings={widgetSettings}
+            onCopy={() => props.toast('Snippet copied! 🚀', 'success', 1000)}
+          />
+        </TabPanel>
+        <TabPanel>
+          <AndroidSnippet
             widgetSettings={widgetSettings}
             onCopy={() => props.toast('Snippet copied! 🚀', 'success', 1000)}
           />
