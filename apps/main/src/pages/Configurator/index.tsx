@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import Paper from '@userfeeds/apps-components/src/Paper';
-import Intercom from '@userfeeds/apps-components/src/Intercom';
+import Paper from '@linkexchange/components/src/Paper';
+import Intercom from '@linkexchange/components/src/Intercom';
 
 import Configure from './pages/Configure';
 import Summary from './pages/Summary';

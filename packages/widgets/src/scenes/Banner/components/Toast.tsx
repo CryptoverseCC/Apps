@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import Icon from '@userfeeds/apps-components/src/Icon';
+import Icon from '@linkexchange/components/src/Icon';
 
 import * as style from './toast.scss';
 

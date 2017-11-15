@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@linkexchange/widgets": "^0.0.128",
-    "@userfeeds/apps-components": "^0.0.23",
+    "@linkexchange/components": "^0.0.23",
     "@userfeeds/core": "^0.0.36",
     "@userfeeds/utils": "^0.0.8",
     "classnames": "^2.2.5",

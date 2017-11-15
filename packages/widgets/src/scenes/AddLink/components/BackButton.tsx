@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon from '@userfeeds/apps-components/src/Icon';
+import Icon from '@linkexchange/components/src/Icon';
 
 import * as style from './backButton.scss';
 

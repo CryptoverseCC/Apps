@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Link from '@userfeeds/apps-components/src/Link';
-import Paper from '@userfeeds/apps-components/src/Paper';
-import Button from '@userfeeds/apps-components/src/Button';
+import Link from '@linkexchange/components/src/Link';
+import Paper from '@linkexchange/components/src/Paper';
+import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 

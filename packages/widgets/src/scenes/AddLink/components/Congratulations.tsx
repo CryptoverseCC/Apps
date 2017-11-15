@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Button from '@userfeeds/apps-components/src/NewButton';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import Button from '@linkexchange/components/src/NewButton';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
 import { openLinkexchangeUrl } from '../../../utils/openLinkexchangeUrl';
 

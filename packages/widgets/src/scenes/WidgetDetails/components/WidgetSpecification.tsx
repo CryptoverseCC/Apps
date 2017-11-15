@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 
-import Paper from '@userfeeds/apps-components/src/Paper';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
-import A from '@userfeeds/apps-components/src/A';
+import Paper from '@linkexchange/components/src/Paper';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
+import A from '@linkexchange/components/src/A';
 
 import { EWidgetSize } from '../../../types';
 

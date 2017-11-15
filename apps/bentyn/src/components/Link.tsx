@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon from '@userfeeds/apps-components/src/Icon';
+import Icon from '@linkexchange/components/src/Icon';
 
 import { ILink } from '@userfeeds/types/link';
 

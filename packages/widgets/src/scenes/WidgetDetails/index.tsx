@@ -5,12 +5,12 @@ import classnames from 'classnames';
 
 import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 
-import Paper from '@userfeeds/apps-components/src/Paper';
-import Button from '@userfeeds/apps-components/src/Button';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
-import Pill from '@userfeeds/apps-components/src/Pill';
+import Paper from '@linkexchange/components/src/Paper';
+import Button from '@linkexchange/components/src/Button';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
+import Pill from '@linkexchange/components/src/Pill';
 import { ILink } from '@userfeeds/types/link';
-import Intercom from '@userfeeds/apps-components/src/Intercom';
+import Intercom from '@linkexchange/components/src/Intercom';
 
 import { IRootState } from '../../ducks';
 import { EWidgetSize } from '../../types';

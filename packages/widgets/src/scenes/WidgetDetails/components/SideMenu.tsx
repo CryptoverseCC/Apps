@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import Pill from '@userfeeds/apps-components/src/Pill';
+import Pill from '@linkexchange/components/src/Pill';
 
 import { TViewType } from '../';
 

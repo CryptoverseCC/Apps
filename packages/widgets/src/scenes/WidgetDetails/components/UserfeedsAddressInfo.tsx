@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import QRious from 'qrious';
 
-import Icon from '@userfeeds/apps-components/src/Icon';
-import Paper from '@userfeeds/apps-components/src/Paper';
-import A from '@userfeeds/apps-components/src/A';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import Icon from '@linkexchange/components/src/Icon';
+import Paper from '@linkexchange/components/src/Paper';
+import A from '@linkexchange/components/src/A';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
 import * as style from './userfeedsAddressInfo.scss';
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import Loadable from 'react-loadable';
 
-import Modal from '@userfeeds/apps-components/src/Modal';
+import Modal from '@linkexchange/components/src/Modal';
 
 import { IRootState } from '../../../ducks';
 import { modalActions } from '../../../ducks/modal';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import Icon from '@userfeeds/apps-components/src/Icon';
+import Icon from '@linkexchange/components/src/Icon';
 
 import { modalActions } from '../../../ducks/modal';
 

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {returntypeof } from 'react-redux-typescript';
 
-import Tooltip from '@userfeeds/apps-components/src/Tooltip';
-import Button from '@userfeeds/apps-components/src/NewButton';
+import Tooltip from '@linkexchange/components/src/Tooltip';
+import Button from '@linkexchange/components/src/NewButton';
 import { observeInjectedWeb3 } from '@linkexchange/widgets/src/ducks/web3';
 
 import MetaFox from '../../../../images/metafox.png';

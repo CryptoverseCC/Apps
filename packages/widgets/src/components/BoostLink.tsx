@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import core from '@userfeeds/core/src';
-import Input from '@userfeeds/apps-components/src/Input';
-import Button from '@userfeeds/apps-components/src/Button';
-import NewButton from '@userfeeds/apps-components/src/NewButton';
-import Tooltip from '@userfeeds/apps-components/src/Tooltip';
-import Wrapper from '@userfeeds/apps-components/src/Wrapper';
+import Input from '@linkexchange/components/src/Input';
+import Button from '@linkexchange/components/src/Button';
+import NewButton from '@linkexchange/components/src/NewButton';
+import Tooltip from '@linkexchange/components/src/Tooltip';
+import Wrapper from '@linkexchange/components/src/Wrapper';
 import { IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 import { R, validate } from '@userfeeds/utils/src/validation';

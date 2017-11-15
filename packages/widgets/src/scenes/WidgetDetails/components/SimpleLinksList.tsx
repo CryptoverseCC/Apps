@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import Link from '@userfeeds/apps-components/src/Link';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import Link from '@linkexchange/components/src/Link';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 

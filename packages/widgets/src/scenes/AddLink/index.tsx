@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import { IBaseLink } from '@userfeeds/types/link';
-import Paper from '@userfeeds/apps-components/src/Paper';
-import Link from '@userfeeds/apps-components/src/Link';
+import Paper from '@linkexchange/components/src/Paper';
+import Link from '@linkexchange/components/src/Link';
 
 import { IRootState } from '../../ducks';
 import { modalActions } from '../../ducks/modal';

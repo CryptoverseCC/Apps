@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
 import core from '@userfeeds/core/src';
-import Input from '@userfeeds/apps-components/src/Form/Input';
-import Field, { Title, Error } from '@userfeeds/apps-components/src/Form/Field';
-import Button from '@userfeeds/apps-components/src/NewButton';
-import Loader from '@userfeeds/apps-components/src/Loader';
-import Tooltip from '@userfeeds/apps-components/src/Tooltip';
-import Checkbox from '@userfeeds/apps-components/src/Checkbox';
+import Input from '@linkexchange/components/src/Form/Input';
+import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
+import Button from '@linkexchange/components/src/NewButton';
+import Loader from '@linkexchange/components/src/Loader';
+import Tooltip from '@linkexchange/components/src/Tooltip';
+import Checkbox from '@linkexchange/components/src/Checkbox';
 import { IBaseLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 import { R, validate } from '@userfeeds/utils/src/validation';

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Pill from '@userfeeds/apps-components/src/Pill';
-import Paper from '@userfeeds/apps-components/src/Paper';
-import Accordion from '@userfeeds/apps-components/src/Accordion';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
+import Pill from '@linkexchange/components/src/Pill';
+import Paper from '@linkexchange/components/src/Paper';
+import Accordion from '@linkexchange/components/src/Accordion';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
 import { EWidgetSize } from '../../../types';

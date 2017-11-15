@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import { returntypeof } from 'react-redux-typescript';
 
-import Icon from '@userfeeds/apps-components/src/Icon';
-import Link from '@userfeeds/apps-components/src/Link';
-import Label from '@userfeeds/apps-components/src/Label';
-import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import Icon from '@linkexchange/components/src/Icon';
+import Link from '@linkexchange/components/src/Link';
+import Label from '@linkexchange/components/src/Label';
+import Tooltip from '@linkexchange/components/src/Tooltip';
 import { ILink } from '@userfeeds/types/link';
 
 import { IRootState } from '../../ducks';
