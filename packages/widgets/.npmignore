@@ -1,4 +1,6 @@
 *
 */
-!build/dist.js
-!build/styles.css
+!build/bundle.js
+!build/bundle.js.map
+!build/*.bundle.js
+!build/*.bundle.js.map
