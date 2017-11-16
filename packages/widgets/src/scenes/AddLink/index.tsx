@@ -5,11 +5,11 @@ import { returntypeof } from 'react-redux-typescript';
 import { IBaseLink } from '@userfeeds/types/link';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
+import { modalActions } from '@linkexchange/modal/duck';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openToast, TToastType } from '@linkexchange/toast/duck';
 
 import { IRootState } from '../../ducks';
-import { modalActions } from '../../ducks/modal';
 
 import AddLink from '../../components/AddLink';
 

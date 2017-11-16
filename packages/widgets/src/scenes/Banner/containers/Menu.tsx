@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import Icon from '@linkexchange/components/src/Icon';
-
-import { modalActions } from '../../../ducks/modal';
+import { modalActions } from '@linkexchange/modal/duck';
 
 import * as style from './menu.scss';
 

@@ -68,7 +68,7 @@ const mapDispatchToProps = (dispatch) => ({
     // )
   },
   openToast(message: string, type?: TToastType) {
-    // dispatch(openToast(message, type));
+    dispatch(openToast(message, type));
   },
   loadTokenDetails() {
     dispatch(loadTokenDetails());

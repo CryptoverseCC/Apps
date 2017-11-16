@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import { returntypeof } from 'react-redux-typescript';
+import Loadable from 'react-loadable';
 
 import { ILink } from '@userfeeds/types/link';
 import Icon from '@linkexchange/components/src/Icon';
@@ -11,6 +12,7 @@ import Tooltip from '@linkexchange/components/src/Tooltip';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 
+import getRootModal from '@linkexchange/modal/RootModal';
 import RootToast from '@linkexchange/toast/RootToast';
 
 import { IRootState } from '../../ducks';
@@ -18,12 +20,33 @@ import { fetchLinks } from '../../ducks/links';
 import { visibleLinks } from '../../selectors/links';
 
 import Menu from './containers/Menu';
-import RootModal from './containers/RootModal';
 import RandomLinkProvider from './containers/RandomLinkProvider';
 
 import * as style from './banner.scss';
 
 const cx = classnames.bind(style);
+
+const Loading = (props) => {
+  if (props.pastDelay) {
+    return <div>Loading...</div>;
+  }
+  return null;
+};
+
+const LazyAddLink = Loadable({
+  loader: () => import('../AddLink'),
+  loading: Loading,
+});
+
+const LazyWidgetDatails = Loadable({
+  loader: () => import('@linkexchange/details'),
+  loading: Loading,
+});
+
+const RootModal = getRootModal({
+  addLink: LazyAddLink,
+  widgetDetails: LazyWidgetDatails,
+});
 
 const mapStateToProps = (state: IRootState) => {
   const { links, widget } = state;
