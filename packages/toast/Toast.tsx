@@ -1,8 +1,6 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import Icon from '@linkexchange/components/src/Icon';
-
 import * as style from './toast.scss';
 
 const cx = classnames.bind(style);

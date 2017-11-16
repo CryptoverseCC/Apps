@@ -11,13 +11,14 @@ import Tooltip from '@linkexchange/components/src/Tooltip';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 
+import RootToast from '@linkexchange/toast/RootToast';
+
 import { IRootState } from '../../ducks';
 import { fetchLinks } from '../../ducks/links';
 import { visibleLinks } from '../../selectors/links';
 
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';
-import RootToast from './containers/RootToast';
 import RandomLinkProvider from './containers/RandomLinkProvider';
 
 import * as style from './banner.scss';

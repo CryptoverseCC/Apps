@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
+import toast, { TToastState } from '@linkexchange/toast/duck';
 import web3, { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 import tokenDetails, { ITokenDetailsState } from '@linkechange/token-details-provider/duck';
 
 import links, { ILinksState } from './links';
 import widget, { IWidgetState } from './widget';
 import modal, { IModalState } from './modal';
-import toast, { TToastState } from './toast';
 
 export interface IRootState {
   links: ILinksState;
@@ -18,11 +18,11 @@ export interface IRootState {
 
 export { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 export { ITokenDetailsState } from '@linkechange/token-details-provider/duck';
+export { TToastState } from '@linkexchange/toast/duck';
 
 export { ILinksState } from './links';
 export { IWidgetState } from './widget';
 export { IModalState } from './modal';
-export { TToastState } from './toast';
 
 export default combineReducers<IRootState>({
   links,

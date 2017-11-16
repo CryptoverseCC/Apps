@@ -3,28 +3,27 @@ import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import classnames from 'classnames';
 
+import { ILink } from '@userfeeds/types/link';
 import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
 
+import Pill from '@linkexchange/components/src/Pill';
 import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
-import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
-import Pill from '@linkexchange/components/src/Pill';
-import { ILink } from '@userfeeds/types/link';
 import Intercom from '@linkexchange/components/src/Intercom';
+import Switch from '@linkexchange/components/src/utils/Switch';
+import { openToast, TToastType } from '@linkexchange/toast/duck';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
+import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 
 // import { IRootState } from '../../ducks';
 // import { EWidgetSize } from '../../types';
 
-// import { openToast, TToastType } from '../../ducks/toast';
 // import { modalActions } from '../../ducks/modal';
 
-import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 // import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
 const visibleLinks = () => [];
 const whitelistedLinksCount = () => 10;
 const allLinksCount = () => 12;
-
-import Switch from '@linkexchange/components/src/utils/Switch';
 
 import SideMenu, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
 import DetailsLists from './components/DetailsLists';

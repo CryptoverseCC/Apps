@@ -18,6 +18,7 @@
     "@userfeeds/core": "^0.0.36",
     "@linkexchange/web3-state-provider": "0.0.1",
     "@linkechange/token-details-provider": "0.0.1",
+    "@linkexchange/toast": "0.0.1",
     "@userfeeds/types": "^0.0.2",
     "@userfeeds/utils": "^0.0.8",
     "classnames": "^2.2.5",

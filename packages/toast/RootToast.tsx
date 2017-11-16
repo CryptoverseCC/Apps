@@ -2,14 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { IRootState } from '../../../ducks';
-import { toastActions } from '../../../ducks/toast';
+import { toastActions, TToastState } from './duck';
 
-import Toast from '../components/Toast';
+import Toast from './Toast';
 
 import * as style from './rootToast.scss';
 
-const mapStateToProps = ({ toast }: IRootState) => ({ toast });
+const mapStateToProps = ({ toast }: { toast: TToastState }) => ({ toast });
 const mapDispatchToProps = (dispatch) => ({
   closeToast(message) {
     dispatch(toastActions.close(message));
