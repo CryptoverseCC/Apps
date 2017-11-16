@@ -6,7 +6,7 @@ import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 
-import BoostLink from '../../../components/BoostLink';
+import BoostLink from './BoostLink';
 
 import * as style from './linksList.scss';
 

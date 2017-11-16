@@ -12,24 +12,28 @@ import Pill from '@linkexchange/components/src/Pill';
 import { ILink } from '@userfeeds/types/link';
 import Intercom from '@linkexchange/components/src/Intercom';
 
-import { IRootState } from '../../ducks';
-import { EWidgetSize } from '../../types';
+// import { IRootState } from '../../ducks';
+// import { EWidgetSize } from '../../types';
 
-import { openToast, TToastType } from '../../ducks/toast';
-import { modalActions } from '../../ducks/modal';
-import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
+// import { openToast, TToastType } from '../../ducks/toast';
+// import { modalActions } from '../../ducks/modal';
 
-import Switch from '../../components/utils/Switch';
+import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
+// import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
+const visibleLinks = () => [];
+const whitelistedLinksCount = () => 10;
+const allLinksCount = () => 12;
+
+import Switch from '@linkexchange/components/src/utils/Switch';
 
 import SideMenu, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
 import DetailsLists from './components/DetailsLists';
 import DetailsAccordion from './components/DetailsAccordion';
 import WidgetSummary from './components/WidgetSummary';
 
-import { openLinkexchangeUrl } from '../../utils/openLinkexchangeUrl';
+import { openLinkexchangeUrl } from '@userfeeds/utils/src/openLinkexchangeUrl';
 
 import * as style from './widgetDetails.scss';
-import { loadTokenDetails } from '../../ducks/widget';
 
 export type TViewType =
   | 'Userfeed'
@@ -57,14 +61,15 @@ const mapStateToProps = (state: IRootState) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showAddLinkModal: () =>
-    dispatch(
-      modalActions.open({
-        modalName: 'addLink',
-      }),
-    ),
+  showAddLinkModal() {
+    // dispatch(
+    //   modalActions.open({
+    //     modalName: 'addLink',
+    //   }),
+    // )
+  },
   openToast(message: string, type?: TToastType) {
-    dispatch(openToast(message, type));
+    // dispatch(openToast(message, type));
   },
   loadTokenDetails() {
     dispatch(loadTokenDetails());

@@ -21,7 +21,7 @@ const LazyAddLink = Loadable({
 });
 
 const LazyWidgetDatails = Loadable({
-  loader: () => import('../../WidgetDetails'),
+  loader: () => import('@linkexchange/details'),
   loading: Loading,
 });
 

@@ -9,14 +9,15 @@ import Wrapper from '@linkexchange/components/src/Wrapper';
 import { IRemoteLink } from '@userfeeds/types/link';
 import web3 from '@userfeeds/utils/src/web3';
 import { R, validate } from '@userfeeds/utils/src/validation';
-import Web3StateProvider from './Web3StateProvider';
+import {
+  locationWithoutQueryParamsIfLinkExchangeApp } from '@userfeeds/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
 
-import { locationWithoutQueryParamsIfLinkExchangeApp } from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
+import Web3StateProvider from '@linkexchange/web3-state-provider';
 
-import If from './utils/If';
+import If from '@linkexchange/components/src/utils/If';
 
 import * as style from './boostLink.scss';
-import TokenDetailsProvider from './TokenDetailsProvider';
+import TokenDetailsProvider from '@linkechange/token-details-provider/index.tsx';
 
 interface IBidLinkProps {
   link: IRemoteLink;

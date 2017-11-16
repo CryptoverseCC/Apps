@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react';
 
-import Paper from '@linkexchange/components/src/Paper';
-import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 import A from '@linkexchange/components/src/A';
+import Paper from '@linkexchange/components/src/Paper';
+import TokenName from '@linkexchange/components/src/TokenName';
+import TokenLogo from '@linkexchange/components/src/TokenLogo';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
 import { EWidgetSize } from '../../../types';
-
-import TokenLogo from '../../../components/TokenLogo';
-import TokenName from '../../../components/TokenName';
 
 import * as style from './widgetSpecification.scss';
 

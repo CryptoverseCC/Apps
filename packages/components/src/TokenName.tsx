@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
+
+import { WIDGET_NETWORKS } from './Form/Asset';
 
 function _getTokenName(asset: string): string {
   const [network, token] = asset.split(':');

@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import { Web3StateProvider } from './Web3StateProvider';
+import { Web3StateProvider } from './';
 
 Enzyme.configure({
   adapter: new Adapter(),

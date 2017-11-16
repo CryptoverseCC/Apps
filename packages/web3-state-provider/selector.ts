@@ -1,16 +1,14 @@
 import { createSelector } from 'reselect';
 
-import { IRootState } from '../ducks';
+import { IWeb3State } from './duck';
 
-const web3State = ({ web3 }: IRootState) => web3;
-const widgetSettings = ({ widget }: IRootState) => widget;
+const web3State = ({ web3 }: { web3: IWeb3State }) => web3;
+const network = (_, { network }: { network: string }) => network;
 
 export const web3Enabled = createSelector(
   web3State,
-  widgetSettings,
-  (web3State, { asset }) => {
-    const [network] = asset.split(':');
-
+  network,
+  (web3State, network) => {
     return {
       enabled: web3State.available && web3State.unlocked && web3State.network === network,
       reason: getReason(web3State.available, web3State.unlocked, web3State.network === network, network),

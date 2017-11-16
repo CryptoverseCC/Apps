@@ -5,10 +5,9 @@ import { returntypeof } from 'react-redux-typescript';
 
 import web3 from '@userfeeds/utils/src/web3';
 
-import { IRootState } from '../ducks/index';
-import { ITokenDetailsState, loadTokenDetails } from '../ducks/widget';
+import { ITokenDetailsState, loadTokenDetails } from './duck';
 
-const mapStateToProps = ({ widget: { tokenDetails } }: IRootState) => ({
+const mapStateToProps = ({ tokenDetails }: { tokenDetails: ITokenDetailsState }) => ({
   tokenDetails: {
     ...tokenDetails,
     balanceWithDecimalPoint: web3.toBigNumber(tokenDetails.balance)

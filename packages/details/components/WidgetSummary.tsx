@@ -1,23 +1,25 @@
 import React from 'react';
-import Icon from '@linkexchange/components/src/Icon';
+
 import A from '@linkexchange/components/src/A';
+import Icon from '@linkexchange/components/src/Icon';
 import Tooltip from '@linkexchange/components/src/Tooltip';
-import { IWidgetState } from '../../../ducks/widget';
-import Web3StateProvider from '../../../components/Web3StateProvider';
-import TokenLogo from '../../../components/TokenLogo';
+import Button from '@linkexchange/components/src/NewButton';
+import TokenLogo from '@linkexchange/components/src/TokenLogo';
+import Web3StateProvider from '@linkexchange/web3-state-provider/index.tsx';
+
+// import { IWidgetState } from '../../../ducks/widget';
 
 import * as style from './widgetSummary.scss';
-import Button from '@linkexchange/components/src/NewButton';
 
 interface IWidgetSummaryProps {
   openInNewWindowHidden?: boolean;
-  widgetSettings: IWidgetState;
+  // widgetSettings: IWidgetState;
   onAddClick(): void;
   onOpenInSeparateWindow(): void;
 }
 
 const WidgetSummary = ({
-  widgetSettings,
+  widgetSettings = {},
   onAddClick,
   onOpenInSeparateWindow,
   openInNewWindowHidden,

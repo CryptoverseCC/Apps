@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "@linkexchange/web3-state-provider",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@userfeeds/utils": "^0.0.8",    
+    "@userfeeds/core": "^0.0.36"
+  }
+}

@@ -3,18 +3,17 @@ import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import { returntypeof } from 'react-redux-typescript';
 
+import { ILink } from '@userfeeds/types/link';
 import Icon from '@linkexchange/components/src/Icon';
 import Link from '@linkexchange/components/src/Link';
 import Label from '@linkexchange/components/src/Label';
 import Tooltip from '@linkexchange/components/src/Tooltip';
-import { ILink } from '@userfeeds/types/link';
+import Switch from '@linkexchange/components/src/utils/Switch';
+import TokenLogo from '@linkexchange/components/src/TokenLogo';
 
 import { IRootState } from '../../ducks';
 import { fetchLinks } from '../../ducks/links';
 import { visibleLinks } from '../../selectors/links';
-
-import Switch from '../../components/utils/Switch';
-import TokenLogo from '../../components/TokenLogo';
 
 import Menu from './containers/Menu';
 import RootModal from './containers/RootModal';

@@ -10,7 +10,7 @@ import { IRootState } from '../../ducks';
 import { modalActions } from '../../ducks/modal';
 import { openToast, TToastType } from '../../ducks/toast';
 
-import Switch from '../../components/utils/Switch';
+import Switch from '@linkexchange/components/src/utils/Switch';
 
 import AddLink from '../../components/AddLink';
 

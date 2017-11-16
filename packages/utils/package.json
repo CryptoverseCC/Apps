@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "qs": "^6.5.0",
     "web3": "0.20.2"
   },
   "devDependencies": {
