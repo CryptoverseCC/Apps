@@ -5,10 +5,10 @@ import React from 'react';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 
-import { EWidgetSize } from './types';
+import { EWidgetSize } from '@userfeeds/types/widget';
 import getStore from './store';
 import { IRootState } from './ducks';
-import { updateWidgetSettings } from './ducks/widget';
+import { updateWidgetSettings } from '@linkexchange/ducks/widget';
 
 import Banner from './scenes/Banner';
 

@@ -1,10 +1,10 @@
 import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 
-import { EWidgetSize } from '../types';
-import { IRootState } from './';
+import { EWidgetSize } from '@userfeeds/types/widget';
+// import { IRootState } from './';
 
-import { fetchLinks } from './links';
+// import { fetchLinks } from './links';
 
 const acf = actionCreatorFactory('widget');
 
@@ -12,7 +12,8 @@ export const widgetActions = {
   update: acf<Partial<IWidgetState>>('UPDATE'),
 };
 
-export const updateWidgetSettings = (newSettings: Partial<IWidgetState>) => (dispatch, getState: () => IRootState) => {
+export const updateWidgetSettings =
+  (newSettings: Partial<IWidgetState>, onChange: () => void) => (dispatch, getState: () => IRootState) => {
   const { widget: oldSettings } = getState();
   dispatch(widgetActions.update(newSettings));
 
@@ -20,7 +21,7 @@ export const updateWidgetSettings = (newSettings: Partial<IWidgetState>) => (dis
     || newSettings.asset !== oldSettings.asset
     || newSettings.whitelist !== oldSettings.whitelist
     || newSettings.algorithm !== oldSettings.algorithm) {
-    dispatch(fetchLinks());
+    dispatch(onChange());
   }
 };
 

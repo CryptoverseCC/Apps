@@ -1,7 +1,6 @@
 {
   "private": true,
   "scripts": {
-    "postinstall": "exit 0; lerna bootstrap --hoist",
     "test": "lerna exec --concurrency 1 -- yarn test",
     "lerna": "lerna",
     "lerna-clean": "lerna clean --yes",

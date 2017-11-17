@@ -17,5 +17,8 @@
     "@linkexchange/web3-state-provider": "0.0.1",
     "@linkechange/token-details-provider": "0.0.1"
   },
+  "peerDependencies": {
+    "@linkexchange/ducks": "0.0.1"
+  },
   "license": "ISC"
 }

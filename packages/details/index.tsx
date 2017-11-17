@@ -16,11 +16,9 @@ import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 
 // import { IRootState } from '../../ducks';
-// import { EWidgetSize } from '../../types';
-
 // import { modalActions } from '../../ducks/modal';
-
 // import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
+
 const visibleLinks = () => [];
 const whitelistedLinksCount = () => 10;
 const allLinksCount = () => 12;

@@ -2,18 +2,17 @@ import React from 'react';
 
 import A from '@linkexchange/components/src/A';
 import Icon from '@linkexchange/components/src/Icon';
+import { IWidgetState } from '@linkexchange/ducks/widget';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
-import Web3StateProvider from '@linkexchange/web3-state-provider/index.tsx';
-
-// import { IWidgetState } from '../../../ducks/widget';
+import Web3StateProvider from '@linkexchange/web3-state-provider/index';
 
 import * as style from './widgetSummary.scss';
 
 interface IWidgetSummaryProps {
   openInNewWindowHidden?: boolean;
-  // widgetSettings: IWidgetState;
+  widgetSettings: IWidgetState;
   onAddClick(): void;
   onOpenInSeparateWindow(): void;
 }

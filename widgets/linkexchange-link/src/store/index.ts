@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, Middleware, Reducer, StoreEnhancer, Store
 import ReduxThunk from 'redux-thunk';
 
 import { IRootState } from '../ducks';
-import { initialState } from '../ducks/widget';
+import { initialState } from '@linkexchange/ducks/widget';
 
 import rootReducer, { IWidgetState } from '../ducks';
 

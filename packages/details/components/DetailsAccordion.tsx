@@ -8,7 +8,7 @@ import TokenName from '@linkexchange/components/src/TokenName';
 import Accordion from '@linkexchange/components/src/Accordion';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
-import { EWidgetSize } from '../../../types';
+import { EWidgetSize } from '@userfeeds/types/widget';
 
 import SimpleLinksList from './SimpleLinksList';
 import UserfeedsAddressInfo from './UserfeedsAddressInfo';

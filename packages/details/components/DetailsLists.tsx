@@ -4,7 +4,7 @@ import * as throttle from 'lodash/throttle';
 
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
 
-import { EWidgetSize } from '../../../types';
+import { EWidgetSize } from '@userfeeds/types/widget';
 import { TViewType } from '../';
 
 import LinksList from './LinksList';
