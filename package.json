@@ -1,6 +1,7 @@
 {
+  "private": true,
   "scripts": {
-    "postinstall": "lerna bootstrap --hoist",
+    "postinstall": "exit 0; lerna bootstrap --hoist",
     "test": "lerna exec --concurrency 1 -- yarn test",
     "lerna": "lerna",
     "lerna-clean": "lerna clean --yes",
@@ -8,6 +9,11 @@
     "lerna-bootstrap": "lerna bootstrap --hoist"
   },
   "devDependencies": {
-    "lerna": "^2.4.0"
-  }
+    "lerna": "^2.5.1"
+  },
+  "workspaces": [
+    "packages/*",  
+    "apps/*",      
+    "widgets/*"    
+  ]
 }
