@@ -28,10 +28,17 @@ class Web3StateProviderComponent extends Component<IProps> {
   }
 }
 
+interface IOwnProps {
+  desiredNetwork: string;
+  render(web3State: IWeb3State): any;
+}
+
 export default connect(
-  (state) => ({
-    web3State: web3Enabled(state, { network: 'rinkeby' }),
-  }),
+  (state, { desiredNetwork }) => {
+    return {
+      web3State: web3Enabled(state, { network: desiredNetwork }),
+    };
+  },
   (dispatch) => ({
     synchronizeState() {
       dispatch(observeInjectedWeb3());

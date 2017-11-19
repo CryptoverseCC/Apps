@@ -17,7 +17,7 @@ import Web3StateProvider from '@linkexchange/web3-state-provider';
 import If from '@linkexchange/components/src/utils/If';
 
 import * as style from './boostLink.scss';
-import TokenDetailsProvider from '@linkechange/token-details-provider/index.tsx';
+import TokenDetailsProvider from '@linkechange/token-details-provider/index';
 
 interface IBidLinkProps {
   link: IRemoteLink;
@@ -61,11 +61,14 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   render() {
-    const { link } = this.props;
+    const { link, asset } = this.props;
     const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
+    const [desiredNetwork] = asset.split(':');
+
     return (
       <div ref={this._onButtonRef} className={style.self}>
         <Web3StateProvider
+          desiredNetwork={desiredNetwork}
           render={({ enabled, reason }) => (
             <Wrapper>
               <Tooltip text={reason}>

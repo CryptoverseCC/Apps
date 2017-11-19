@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import { ILink } from '@userfeeds/types/link';
 import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
+import { openLinkexchangeUrl } from '@userfeeds/utils/src/openLinkexchangeUrl';
 
 import Pill from '@linkexchange/components/src/Pill';
 import Paper from '@linkexchange/components/src/Paper';
@@ -13,19 +14,17 @@ import Intercom from '@linkexchange/components/src/Intercom';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openToast, TToastType } from '@linkexchange/toast/duck';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
+
+import { IWidgetState } from '@linkexchange/ducks/widget';
 import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 
-// import { IRootState } from '../../ducks';
-// import { modalActions } from '../../ducks/modal';
-import { fetchLinks } from './duck';
+import { fetchLinks, ILinksState } from './duck';
 import { visibleLinks, whitelistedLinksCount, allLinksCount } from './selectors/links';
 
-import SideMenu, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
 import DetailsLists from './components/DetailsLists';
-import DetailsAccordion from './components/DetailsAccordion';
 import WidgetSummary from './components/WidgetSummary';
-
-import { openLinkexchangeUrl } from '@userfeeds/utils/src/openLinkexchangeUrl';
+import DetailsAccordion from './components/DetailsAccordion';
+import SideMenu, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
 
 import * as style from './widgetDetails.scss';
 
@@ -41,7 +40,7 @@ interface IWidgetDetailsState {
   mobileOrTablet: boolean;
 }
 
-const mapStateToProps = (state: IRootState) => {
+const mapStateToProps = (state: { links: ILinksState, widget: IWidgetState }) => {
   const { links, widget } = state;
 
   return {
