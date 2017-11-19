@@ -5,12 +5,12 @@ import WidgetDetailsComponent from '@linkexchange/details';
 
 import getStore from '../../store';
 
-const WidgetDetails = ({ widgetSettings }) => {
+const WidgetDetails = ({ widgetSettings, onAddLink }) => {
   const store = getStore(widgetSettings);
 
   return (
     <Provider store={store} >
-      <WidgetDetailsComponent />
+      <WidgetDetailsComponent onAddLink={onAddLink}/>
     </Provider>
   );
 };

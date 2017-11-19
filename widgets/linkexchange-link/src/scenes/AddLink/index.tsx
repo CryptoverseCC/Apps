@@ -19,24 +19,24 @@ import Congratulations from './components/Congratulations';
 
 import * as style from './addLink.scss';
 
-const mapsStateToProps = (state: IRootState) => ({
-  widgetSettings: state.widget,
-});
+// const mapsStateToProps = (state: IRootState) => ({
+//   widgetSettings: state.widget,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-  openToast(message: string, type?: TToastType) {
-    dispatch(openToast(message, type));
-  },
-  openWidgetDetails() {
-    dispatch(modalActions.open({ modalName: 'widgetDetails' }));
-  },
-  closeModal() {
-    dispatch(modalActions.close());
-  },
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   openToast(message: string, type?: TToastType) {
+//     dispatch(openToast(message, type));
+//   },
+//   openWidgetDetails() {
+//     // dispatch(modalActions.open({ modalName: 'widgetDetails' }));
+//   },
+//   closeModal() {
+//     dispatch(modalActions.close());
+//   },
+// });
 
-const State2Props = returntypeof(mapsStateToProps);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
+// const State2Props = returntypeof(mapsStateToProps);
+// const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props;
 
@@ -52,7 +52,7 @@ const DEFAULT_LINK = {
   target: 'http://',
 };
 
-class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
+export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   state: IAddLinkModalState = {
     step: 'form',
     link: DEFAULT_LINK,
@@ -116,4 +116,4 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   }
 }
 
-export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
+// export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);

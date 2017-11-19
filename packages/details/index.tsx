@@ -54,13 +54,6 @@ const mapStateToProps = (state: { links: ILinksState, widget: IWidgetState }) =>
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showAddLinkModal() {
-    // dispatch(
-    //   modalActions.open({
-    //     modalName: 'addLink',
-    //   }),
-    // )
-  },
   openToast(message: string, type?: TToastType) {
     dispatch(openToast(message, type));
   },
@@ -77,6 +70,7 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TWidgetDetailsProps = typeof State2Props &
   typeof Dispatch2Props & {
+    onAddLink(): void;
     className?: string;
     standaloneMode?: boolean;
   };
@@ -106,6 +100,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
       whitelistedLinksCount,
       allLinksCount,
       standaloneMode,
+      onAddLink,
     } = this.props;
     const { viewType, mobileOrTablet } = this.state;
     const hasWhitelist = !!widgetSettings.whitelist;
@@ -116,7 +111,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
         <WidgetSummary
           openInNewWindowHidden={standaloneMode}
           widgetSettings={widgetSettings}
-          onAddClick={this._onAddLinkClick}
+          onAddClick={onAddLink}
           onOpenInSeparateWindow={this._onOpenInSeparateWindowClick}
         />
         <Switch expresion={mobileOrTablet ? 'mobile' : 'desktop'}>
@@ -198,10 +193,6 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
 
   _onOpenInSeparateWindowClick = () => {
     openLinkexchangeUrl('apps/#/details/', this.props.widgetSettings);
-  }
-
-  _onAddLinkClick = () => {
-    this.props.showAddLinkModal();
   }
 
   _onBoostSuccess = () => {

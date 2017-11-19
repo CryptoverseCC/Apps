@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import Loadable from 'react-loadable';
-
-// import { returntypeof } from 'react-redux-typescript';
 
 import { ILink } from '@userfeeds/types/link';
 import Icon from '@linkexchange/components/src/Icon';
@@ -11,11 +8,12 @@ import Link from '@linkexchange/components/src/Link';
 import Label from '@linkexchange/components/src/Label';
 import { fetchLinks } from '@linkexchange/details/duck';
 import Tooltip from '@linkexchange/components/src/Tooltip';
-import Switch from '@linkexchange/components/src/utils/Switch';
 import Modal from '@linkexchange/components/src/Modal';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 
+import If from '@linkexchange/components/src/utils/If';
+import Switch from '@linkexchange/components/src/utils/Switch';
 // import getRootModal from '@linkexchange/modal/RootModal';
 // import RootToast from '@linkexchange/toast/RootToast';
 
@@ -38,43 +36,18 @@ const LazyWidgetDatails = Loadable({
   loading: Loading,
 });
 
-// const LazyAddLink = Loadable({
-//   loader: () => import('../AddLink'),
-//   loading: Loading,
-// });
-
-// const RootModal = getRootModal({
-//   addLink: LazyAddLink,
-//   widgetDetails: LazyWidgetDatails,
-// });
-
-// const mapStateToProps = (state: IRootState) => {
-//   const { links, widget } = state;
-
-//   return {
-//     fetched: links.fetched,
-//     links: visibleLinks(state),
-//     size: widget.size,
-//     timeslot: widget.timeslot,
-//     asset: widget.asset,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchLinks(): void {
-//     dispatch(fetchLinks());
-//   },
-// });
-
-// const State2Props = returntypeof(mapStateToProps);
-// const Dispatch2Props = returntypeof(mapDispatchToProps);
-// type IBannerProps = typeof State2Props & typeof Dispatch2Props;
+const LazyAddLink = Loadable({
+  loader: () => import('../AddLink'),
+  loading: Loading,
+});
 
 interface IBannerProps {
   widgetSettings: IWidgetState;
 }
 
 interface IBannerState {
+  isAddLinkOpen?: boolean;
+  isWidgetDetailsOpen?: boolean;
   currentLink?: ILink;
   optionsOpen: boolean;
 }
@@ -87,13 +60,12 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
   constructor(props: IBannerProps) {
     super(props);
-
     // props.fetchLinks();
   }
 
   render() {
     const { widgetSettings, links = [], fetched = true } = this.props;
-    const { currentLink, optionsOpen, isModalOpen } = this.state;
+    const { currentLink, optionsOpen, isAddLinkOpen, isWidgetDetailsOpen } = this.state;
     if (!fetched) {
       return <div />;
     }
@@ -134,17 +106,35 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
           timeslot={widgetSettings.timeslot}
           onLink={this._onLink}
         />
-        <Modal isOpen={isModalOpen}>
-          <LazyWidgetDatails widgetSettings={widgetSettings} />
+        <Modal
+          isOpen={isWidgetDetailsOpen || isAddLinkOpen}
+          onCloseRequest={this._closeModal}
+        >
+          <If condition={isWidgetDetailsOpen}>
+            <LazyWidgetDatails
+              onAddLink={this._openAddLink}
+              widgetSettings={widgetSettings}
+            />
+          </If>
+          <If condition={isAddLinkOpen}>
+            <LazyAddLink widgetSettings={widgetSettings} />
+          </If>
         </Modal>
         {/* <RootModal /> */}
-        {/* <RootToast /> */}
       </div>
     );
   }
 
   _openWidgetDetails = () => {
-    this.setState({ isModalOpen: true });
+    this.setState({ isWidgetDetailsOpen: true });
+  }
+
+  _openAddLink = () => {
+    this.setState({ isAddLinkOpen: true }); // ToDo!
+  }
+
+  _closeModal = () => {
+    this.setState({ isWidgetDetailsOpen: false, isAddLinkOpen: false });
   }
 
   _onInfoEnter = (e) => {
@@ -174,5 +164,3 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     this.setState({ currentLink });
   }
 }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Banner);
