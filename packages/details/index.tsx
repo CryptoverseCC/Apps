@@ -17,11 +17,8 @@ import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 
 // import { IRootState } from '../../ducks';
 // import { modalActions } from '../../ducks/modal';
-// import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../../selectors/links';
-
-const visibleLinks = () => [];
-const whitelistedLinksCount = () => 10;
-const allLinksCount = () => 12;
+import { fetchLinks } from './duck';
+import { visibleLinks, whitelistedLinksCount, allLinksCount } from './selectors/links';
 
 import SideMenu, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
 import DetailsLists from './components/DetailsLists';
@@ -71,6 +68,9 @@ const mapDispatchToProps = (dispatch) => ({
   loadTokenDetails() {
     dispatch(loadTokenDetails());
   },
+  fetchLinks() {
+    dispatch(fetchLinks());
+  },
 });
 
 const State2Props = returntypeof(mapStateToProps);
@@ -94,6 +94,7 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
   }
 
   componentDidMount() {
+    this.props.fetchLinks();
     this.props.loadTokenDetails();
   }
 

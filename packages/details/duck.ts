@@ -1,10 +1,15 @@
 import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 
-import { IRootState } from './';
 import { ILink, IRemoteLink } from '@userfeeds/types/link';
+import { IWidgetState } from '@linkexchange/ducks/widget';
 
-import { throwErrorOnNotOkResponse } from '../utils/fetch';
+import { throwErrorOnNotOkResponse } from '@userfeeds/utils/src/fetch';
+
+interface IState {
+  widget: IWidgetState;
+  links: ILinksState;
+}
 
 const acf = actionCreatorFactory('links');
 
@@ -17,7 +22,7 @@ export const fetchLinksActions = acf.async<
   { reason: any }
   >('FETCH_LINKS');
 
-export const fetchLinks = () => async (dispatch, getState: () => IRootState) => {
+export const fetchLinks = () => async (dispatch, getState: () => IState) => {
   const {
     widget: { apiUrl = 'https://api.userfeeds.io', recipientAddress, asset, algorithm, whitelist },
   } = getState();

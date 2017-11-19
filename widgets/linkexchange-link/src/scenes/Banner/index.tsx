@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
-import { returntypeof } from 'react-redux-typescript';
 import Loadable from 'react-loadable';
+
+// import { returntypeof } from 'react-redux-typescript';
 
 import { ILink } from '@userfeeds/types/link';
 import Icon from '@linkexchange/components/src/Icon';
 import Link from '@linkexchange/components/src/Link';
 import Label from '@linkexchange/components/src/Label';
+import { fetchLinks } from '@linkexchange/details/duck';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Switch from '@linkexchange/components/src/utils/Switch';
+import Modal from '@linkexchange/components/src/Modal';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
+import { IWidgetState } from '@linkexchange/ducks/widget';
 
-import getRootModal from '@linkexchange/modal/RootModal';
-import RootToast from '@linkexchange/toast/RootToast';
-
-import { IRootState } from '../../ducks';
-import { fetchLinks } from '../../ducks/links';
-import { visibleLinks } from '../../selectors/links';
+// import getRootModal from '@linkexchange/modal/RootModal';
+// import RootToast from '@linkexchange/toast/RootToast';
 
 import Menu from './containers/Menu';
 import RandomLinkProvider from './containers/RandomLinkProvider';
@@ -33,49 +33,53 @@ const Loading = (props) => {
   return null;
 };
 
-const LazyAddLink = Loadable({
-  loader: () => import('../AddLink'),
-  loading: Loading,
-});
-
 const LazyWidgetDatails = Loadable({
-  loader: () => import('@linkexchange/details'),
+  loader: () => import('../WidgetDetails'),
   loading: Loading,
 });
 
-const RootModal = getRootModal({
-  addLink: LazyAddLink,
-  widgetDetails: LazyWidgetDatails,
-});
+// const LazyAddLink = Loadable({
+//   loader: () => import('../AddLink'),
+//   loading: Loading,
+// });
 
-const mapStateToProps = (state: IRootState) => {
-  const { links, widget } = state;
+// const RootModal = getRootModal({
+//   addLink: LazyAddLink,
+//   widgetDetails: LazyWidgetDatails,
+// });
 
-  return {
-    fetched: links.fetched,
-    links: visibleLinks(state),
-    size: widget.size,
-    timeslot: widget.timeslot,
-    asset: widget.asset,
-  };
-};
+// const mapStateToProps = (state: IRootState) => {
+//   const { links, widget } = state;
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchLinks(): void {
-    dispatch(fetchLinks());
-  },
-});
+//   return {
+//     fetched: links.fetched,
+//     links: visibleLinks(state),
+//     size: widget.size,
+//     timeslot: widget.timeslot,
+//     asset: widget.asset,
+//   };
+// };
 
-const State2Props = returntypeof(mapStateToProps);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-type IBannerProps = typeof State2Props & typeof Dispatch2Props;
+// const mapDispatchToProps = (dispatch) => ({
+//   fetchLinks(): void {
+//     dispatch(fetchLinks());
+//   },
+// });
+
+// const State2Props = returntypeof(mapStateToProps);
+// const Dispatch2Props = returntypeof(mapDispatchToProps);
+// type IBannerProps = typeof State2Props & typeof Dispatch2Props;
+
+interface IBannerProps {
+  widgetSettings: IWidgetState;
+}
 
 interface IBannerState {
   currentLink?: ILink;
   optionsOpen: boolean;
 }
 
-class Banner extends Component<IBannerProps, IBannerState> {
+export default class Banner extends Component<IBannerProps, IBannerState> {
   linkProvider: RandomLinkProvider;
   state: IBannerState = {
     optionsOpen: false,
@@ -84,18 +88,18 @@ class Banner extends Component<IBannerProps, IBannerState> {
   constructor(props: IBannerProps) {
     super(props);
 
-    props.fetchLinks();
+    // props.fetchLinks();
   }
 
   render() {
-    const { links, size, fetched, timeslot, asset } = this.props;
-    const { currentLink, optionsOpen } = this.state;
+    const { widgetSettings, links = [], fetched = true } = this.props;
+    const { currentLink, optionsOpen, isModalOpen } = this.state;
     if (!fetched) {
       return <div />;
     }
 
     return (
-      <div className={cx(['self', size])} onMouseLeave={this._onInfoLeave}>
+      <div className={cx(['self', widgetSettings.size])} onMouseLeave={this._onInfoLeave}>
         <div className={cx('options', { open: optionsOpen })}>
           <div className={style.probabilityContainer}>
             <span className={style.probabilityLabel}>Probability: </span>
@@ -109,15 +113,15 @@ class Banner extends Component<IBannerProps, IBannerState> {
               <Icon name="arrow-right" />
             </div>
           </div>
-          <Menu />
+          <Menu onClick={this._openWidgetDetails} />
         </div>
         <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
           <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
-            Sponsored with <TokenLogo className={style.icon} asset={asset} />
+            Sponsored with <TokenLogo className={style.icon} asset={widgetSettings.asset} />
           </div>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
-              {currentLink && <Link link={currentLink} lines={size === 'rectangle' ? 8 : 2} />}
+              {currentLink && <Link link={currentLink} lines={widgetSettings.size === 'rectangle' ? 8 : 2} />}
             </Switch.Case>
             <Switch.Case condition={false}>
               <Label>No ads available</Label>
@@ -127,13 +131,20 @@ class Banner extends Component<IBannerProps, IBannerState> {
         <RandomLinkProvider
           ref={(ref: RandomLinkProvider) => (this.linkProvider = ref)}
           links={links}
-          timeslot={timeslot}
+          timeslot={widgetSettings.timeslot}
           onLink={this._onLink}
         />
-        <RootModal />
-        <RootToast />
+        <Modal isOpen={isModalOpen}>
+          <LazyWidgetDatails widgetSettings={widgetSettings} />
+        </Modal>
+        {/* <RootModal /> */}
+        {/* <RootToast /> */}
       </div>
     );
+  }
+
+  _openWidgetDetails = () => {
+    this.setState({ isModalOpen: true });
   }
 
   _onInfoEnter = (e) => {
@@ -164,4 +175,4 @@ class Banner extends Component<IBannerProps, IBannerState> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Banner);
+// export default connect(mapStateToProps, mapDispatchToProps)(Banner);
