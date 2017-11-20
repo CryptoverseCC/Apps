@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { IBaseLink } from '@userfeeds/types/link';
+import { IBaseLink } from '@linkexchange/types/link';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';

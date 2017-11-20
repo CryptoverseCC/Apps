@@ -4,13 +4,13 @@ import qs from 'qs';
 import { History, Location } from 'history';
 
 import core from '@userfeeds/core/src';
-import web3 from '@userfeeds/utils/src/web3';
-import wait from '@userfeeds/utils/src/wait';
+import web3 from '@linkexchange/utils/src/web3';
+import wait from '@linkexchange/utils/src/wait';
 import Link from '@linkexchange/components/src/Link';
 import Icon from '@linkexchange/components/src/Icon';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
-import { IRemoteLink } from '@userfeeds/types/link';
+import { IRemoteLink } from '@linkexchange/types/link';
 import Pill from '@linkexchange/components/src/Pill';
 import Intercom from '@linkexchange/components/src/Intercom';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';

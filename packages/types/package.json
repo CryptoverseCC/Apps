@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@userfeeds/types",
+  "name": "@linkexchange/types",
   "version": "0.0.2",
   "description": "",
   "main": "./",

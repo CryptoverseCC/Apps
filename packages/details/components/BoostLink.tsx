@@ -6,11 +6,11 @@ import Button from '@linkexchange/components/src/Button';
 import NewButton from '@linkexchange/components/src/NewButton';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Wrapper from '@linkexchange/components/src/Wrapper';
-import { IRemoteLink } from '@userfeeds/types/link';
-import web3 from '@userfeeds/utils/src/web3';
-import { R, validate } from '@userfeeds/utils/src/validation';
+import { IRemoteLink } from '@linkexchange/types/link';
+import web3 from '@linkexchange/utils/src/web3';
+import { R, validate } from '@linkexchange/utils/src/validation';
 import {
-  locationWithoutQueryParamsIfLinkExchangeApp } from '@userfeeds/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
+  locationWithoutQueryParamsIfLinkExchangeApp } from '@linkexchange/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 

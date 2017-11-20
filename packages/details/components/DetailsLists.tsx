@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import * as throttle from 'lodash/throttle';
 
-import { ILink, IRemoteLink } from '@userfeeds/types/link';
+import { ILink, IRemoteLink } from '@linkexchange/types/link';
 
-import { EWidgetSize } from '@userfeeds/types/widget';
+import { EWidgetSize } from '@linkexchange/types/widget';
 import { TViewType } from '../';
 
 import LinksList from './LinksList';

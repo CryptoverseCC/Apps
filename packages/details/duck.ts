@@ -1,10 +1,10 @@
 import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 
-import { ILink, IRemoteLink } from '@userfeeds/types/link';
+import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 
-import { throwErrorOnNotOkResponse } from '@userfeeds/utils/src/fetch';
+import { throwErrorOnNotOkResponse } from '@linkexchange/utils/src/fetch';
 
 interface IState {
   widget: IWidgetState;

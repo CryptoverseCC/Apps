@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import web3 from '@userfeeds/utils/src/web3';
+import web3 from '@linkexchange/utils/src/web3';
 
 import { ITokenDetailsState, loadTokenDetails } from './duck';
 

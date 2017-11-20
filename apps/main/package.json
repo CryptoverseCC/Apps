@@ -16,7 +16,7 @@
     "@linkexchange/widgets": "^0.0.128",
     "@linkexchange/components": "^0.0.23",
     "@userfeeds/core": "^0.0.36",
-    "@userfeeds/utils": "^0.0.8",
+    "@linkexchange/utils": "^0.0.8",
     "classnames": "^2.2.5",
     "lodash.debounce": "^4.0.8",
     "moment": "2.19.1",

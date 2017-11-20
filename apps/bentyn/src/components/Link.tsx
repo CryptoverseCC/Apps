@@ -2,7 +2,7 @@ import React from 'react';
 
 import Icon from '@linkexchange/components/src/Icon';
 
-import { ILink } from '@userfeeds/types/link';
+import { ILink } from '@linkexchange/types/link';
 
 import * as style from './link.scss';
 

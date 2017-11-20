@@ -5,7 +5,7 @@ import React from 'react';
 // import { Store } from 'redux';
 // import { Provider } from 'react-redux';
 
-import { EWidgetSize } from '@userfeeds/types/widget';
+import { EWidgetSize } from '@linkexchange/types/widget';
 
 // import { fetchLinks } from '@linkexchange/details/duck';
 // import { updateWidgetSettings } from '@linkexchange/ducks/widget';

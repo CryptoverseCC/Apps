@@ -17,8 +17,8 @@ import { input } from '@linkexchange/components/src/Form/input.scss';
 import { Field, Title, Description, RadioGroup, Error } from '@linkexchange/components/src/Form/Field';
 import Icon from '@linkexchange/components/src/Icon';
 import Dropdown from '@linkexchange/components/src/Dropdown';
-import web3 from '@userfeeds/utils/src/web3';
-import { R, validate, validateMultipe } from '@userfeeds/utils/src/validation';
+import web3 from '@linkexchange/utils/src/web3';
+import { R, validate, validateMultipe } from '@linkexchange/utils/src/validation';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';

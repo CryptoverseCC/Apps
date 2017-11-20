@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import classnames from 'classnames';
 
-import { ILink } from '@userfeeds/types/link';
-import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
-import { openLinkexchangeUrl } from '@userfeeds/utils/src/openLinkexchangeUrl';
+import { ILink } from '@linkexchange/types/link';
+import { mobileOrTablet } from '@linkexchange/utils/src/userAgent';
+import { openLinkexchangeUrl } from '@linkexchange/utils/src/openLinkexchangeUrl';
 
 import Pill from '@linkexchange/components/src/Pill';
 import Paper from '@linkexchange/components/src/Paper';

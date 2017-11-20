@@ -4,7 +4,7 @@ import { returntypeof } from 'react-redux-typescript';
 
 import { fetchLinks } from '@linkexchange/widgets/src/ducks/links';
 import { visibleLinks } from '@linkexchange/widgets/src/selectors/links';
-import { ILink } from '@userfeeds/types/link';
+import { ILink } from '@linkexchange/types/link';
 
 import { IRootState } from './store';
 import Link from './components/Link';

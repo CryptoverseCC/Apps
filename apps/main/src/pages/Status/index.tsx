@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Location } from 'history';
 
-import web3 from '@userfeeds/utils/src/web3';
+import web3 from '@linkexchange/utils/src/web3';
 
-import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
+import { mobileOrTablet } from '@linkexchange/utils/src/userAgent';
 import Svg from '@linkexchange/components/src/Svg';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';

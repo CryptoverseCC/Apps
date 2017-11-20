@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@userfeeds/utils",
+  "name": "@linkexchange/utils",
   "version": "0.0.8",
   "description": "",
   "main": "src/index.ts",
@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "qs": "^6.5.0",
-    "web3": "0.20.2"
+    "web3": "0.20.2",
+    "@linkexchange/types": "0.0.2"
   },
   "devDependencies": {
     "tslint": "^5.6.0",

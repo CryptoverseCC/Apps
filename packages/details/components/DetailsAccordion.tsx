@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { ILink, IRemoteLink } from '@userfeeds/types/link';
+import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import Pill from '@linkexchange/components/src/Pill';
 import Paper from '@linkexchange/components/src/Paper';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
@@ -8,7 +8,7 @@ import TokenName from '@linkexchange/components/src/TokenName';
 import Accordion from '@linkexchange/components/src/Accordion';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
-import { EWidgetSize } from '@userfeeds/types/widget';
+import { EWidgetSize } from '@linkexchange/types/widget';
 
 import SimpleLinksList from './SimpleLinksList';
 import UserfeedsAddressInfo from './UserfeedsAddressInfo';

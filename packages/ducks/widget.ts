@@ -1,7 +1,7 @@
 import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 
-import { EWidgetSize } from '@userfeeds/types/widget';
+import { EWidgetSize } from '@linkexchange/types/widget';
 // import { IRootState } from './';
 
 // import { fetchLinks } from './links';

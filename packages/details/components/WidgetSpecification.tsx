@@ -6,7 +6,7 @@ import TokenName from '@linkexchange/components/src/TokenName';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
-import { EWidgetSize } from '@userfeeds/types/widget';
+import { EWidgetSize } from '@linkexchange/types/widget';
 
 import * as style from './widgetSpecification.scss';
 

@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/types": "0.0.2"
+    "@linkexchange/types": "0.0.2"
   }
 }

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { ILink } from '@userfeeds/types/link';
+import { ILink } from '@linkexchange/types/link';
 
 interface IRandomLinkProviderProps {
   onLink(link: ILink): void;

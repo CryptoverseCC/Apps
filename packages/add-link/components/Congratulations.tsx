@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '@linkexchange/components/src/NewButton';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
-import { openLinkexchangeUrl } from '@userfeeds/utils/src/openLinkexchangeUrl';
+import { openLinkexchangeUrl } from '@linkexchange/utils/src/openLinkexchangeUrl';
 
 import * as style from './congratulations.scss';
 

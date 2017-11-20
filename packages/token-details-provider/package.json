@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/utils": "^0.0.8",
+    "@linkexchange/utils": "^0.0.8",
     "@userfeeds/core": "^0.0.36"
   }
 }
