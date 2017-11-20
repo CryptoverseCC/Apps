@@ -1,53 +1,31 @@
 import React, { Component } from 'react';
 import classnames from 'classnames/bind';
-import Loadable from 'react-loadable';
 
 import { ILink } from '@userfeeds/types/link';
 import Icon from '@linkexchange/components/src/Icon';
 import Link from '@linkexchange/components/src/Link';
 import Label from '@linkexchange/components/src/Label';
-import { fetchLinks } from '@linkexchange/details/duck';
-import Tooltip from '@linkexchange/components/src/Tooltip';
 import Modal from '@linkexchange/components/src/Modal';
-import TokenLogo from '@linkexchange/components/src/TokenLogo';
+import { fetchLinks } from '@linkexchange/details/duck';
 import { IWidgetState } from '@linkexchange/ducks/widget';
-
-import If from '@linkexchange/components/src/utils/If';
+import Tooltip from '@linkexchange/components/src/Tooltip';
+import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import Switch from '@linkexchange/components/src/utils/Switch';
-// import getRootModal from '@linkexchange/modal/RootModal';
-// import RootToast from '@linkexchange/toast/RootToast';
 
 import Menu from './containers/Menu';
 import RandomLinkProvider from './containers/RandomLinkProvider';
+import { Provider, WidgetDatails, AddLink } from './containers/Lazy';
 
 import * as style from './banner.scss';
 
 const cx = classnames.bind(style);
-
-const Loading = (props) => {
-  if (props.pastDelay) {
-    return <div>Loading...</div>;
-  }
-  return null;
-};
-
-const LazyWidgetDatails = Loadable({
-  loader: () => import('../WidgetDetails'),
-  loading: Loading,
-});
-
-const LazyAddLink = Loadable({
-  loader: () => import('../AddLink'),
-  loading: Loading,
-});
 
 interface IBannerProps {
   widgetSettings: IWidgetState;
 }
 
 interface IBannerState {
-  isAddLinkOpen?: boolean;
-  isWidgetDetailsOpen?: boolean;
+  openedModal: 'none' | 'details' | 'addLink';
   currentLink?: ILink;
   optionsOpen: boolean;
 }
@@ -55,6 +33,7 @@ interface IBannerState {
 export default class Banner extends Component<IBannerProps, IBannerState> {
   linkProvider: RandomLinkProvider;
   state: IBannerState = {
+    openedModal: 'none',
     optionsOpen: false,
   };
 
@@ -64,8 +43,8 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   }
 
   render() {
-    const { widgetSettings, links = [], fetched = true } = this.props;
-    const { currentLink, optionsOpen, isAddLinkOpen, isWidgetDetailsOpen } = this.state;
+    const { widgetSettings } = this.props;
+    const { currentLink, optionsOpen, openedModal, links = [], fetched = true } = this.state;
     if (!fetched) {
       return <div />;
     }
@@ -85,7 +64,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
               <Icon name="arrow-right" />
             </div>
           </div>
-          <Menu onClick={this._openWidgetDetails} />
+          <Menu onClick={this._openModal('details')} />
         </div>
         <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
           <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
@@ -107,35 +86,29 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
           onLink={this._onLink}
         />
         <Modal
-          isOpen={isWidgetDetailsOpen || isAddLinkOpen}
-          onCloseRequest={this._closeModal}
+          isOpen={openedModal !== 'none'}
+          onCloseRequest={this._openModal('none')}
         >
-          <If condition={isWidgetDetailsOpen}>
-            <LazyWidgetDatails
-              onAddLink={this._openAddLink}
-              widgetSettings={widgetSettings}
-            />
-          </If>
-          <If condition={isAddLinkOpen}>
-            <LazyAddLink widgetSettings={widgetSettings} />
-          </If>
+          <Provider widgetSettings={widgetSettings}>
+            <Switch expresion={openedModal}>
+              <Switch.Case condition="details">
+                <WidgetDatails
+                  onAddLink={this._openModal('addLink')}
+                />
+              </Switch.Case>
+              <Switch.Case condition="addLink">
+                <AddLink
+                  openWidgetDetails={this._openModal('details')}
+                />
+              </Switch.Case>
+            </Switch>
+          </Provider>
         </Modal>
-        {/* <RootModal /> */}
       </div>
     );
   }
 
-  _openWidgetDetails = () => {
-    this.setState({ isWidgetDetailsOpen: true });
-  }
-
-  _openAddLink = () => {
-    this.setState({ isAddLinkOpen: true }); // ToDo!
-  }
-
-  _closeModal = () => {
-    this.setState({ isWidgetDetailsOpen: false, isAddLinkOpen: false });
-  }
+  _openModal = (modalName: 'none' | 'details' | 'addLink') => () => this.setState({ openedModal: modalName });
 
   _onInfoEnter = (e) => {
     this.setState({ optionsOpen: true });

@@ -15,6 +15,7 @@
   "dependencies": {
     "@linkexchange/components": "^0.0.23",
     "@linkexchange/details": "0.0.1",
+    "@linkexchange/add-link": "0.0.1",
     "@userfeeds/core": "^0.0.36",
     "@linkexchange/web3-state-provider": "0.0.1",
     "@linkechange/token-details-provider": "0.0.1",

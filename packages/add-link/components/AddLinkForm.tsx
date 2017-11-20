@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 
 import core from '@userfeeds/core/src';
-import Input from '@linkexchange/components/src/Form/Input';
-import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
-import Button from '@linkexchange/components/src/NewButton';
+import web3 from '@userfeeds/utils/src/web3';
+import { IBaseLink } from '@userfeeds/types/link';
 import Loader from '@linkexchange/components/src/Loader';
 import Tooltip from '@linkexchange/components/src/Tooltip';
+import Input from '@linkexchange/components/src/Form/Input';
+import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
-import { IBaseLink } from '@userfeeds/types/link';
-import web3 from '@userfeeds/utils/src/web3';
 import { R, validate } from '@userfeeds/utils/src/validation';
-
-import TokenDetailsProvider from '@linkechange/token-details-provider/index.tsx';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
+import TokenDetailsProvider from '@linkechange/token-details-provider/index';
+import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
+
 import {
   locationWithoutQueryParamsIfLinkExchangeApp } from '@userfeeds/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
 
-import * as style from './addLink.scss';
+import * as style from './addLinkForm.scss';
 
-interface IAddLinkProps {
+interface IAddLinkFormProps {
   asset: string;
   recipientAddress: string;
   onSuccess(linkId: string): void;
@@ -26,7 +26,7 @@ interface IAddLinkProps {
   onChange?: (link: IBaseLink) => void;
 }
 
-interface IAddLinkState {
+interface IAddLinkFormState {
   title: string;
   summary: string;
   target: string;
@@ -66,8 +66,8 @@ const rules = {
   ],
 };
 
-export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
-  state: IAddLinkState = {
+export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFormState> {
+  state: IAddLinkFormState = {
     title: '',
     summary: '',
     target: 'http://',
@@ -77,7 +77,9 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
   };
 
   render() {
+    const { asset } = this.props;
     const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
+    const [desiredNetwork] = asset.split(':');
 
     return (
       <div className={style.self}>
@@ -123,6 +125,7 @@ export default class AddLink extends Component<IAddLinkProps, IAddLinkState> {
           </div>
         ) : (
           <Web3StateProvider
+            desiredNetwork={desiredNetwork}
             render={({ enabled, reason }) => (
               <Tooltip text={reason}>
                 <Button style={{ width: '100%' }} color="primary" disabled={!enabled} onClick={this._onSubmit}>

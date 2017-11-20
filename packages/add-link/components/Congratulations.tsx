@@ -7,7 +7,7 @@ import { openLinkexchangeUrl } from '@userfeeds/utils/src/openLinkexchangeUrl';
 
 import * as style from './congratulations.scss';
 
-const heartSvg = require('../../../images/heart.svg');
+const heartSvg = require('../images/heart.svg');
 
 const Congratulations = ({ linkId, widgetSettings }) => {
   const goToLinkStatus = () => openLinkexchangeUrl('apps/#/status/', { linkId, ...widgetSettings });

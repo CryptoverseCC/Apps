@@ -13,7 +13,7 @@ import { EWidgetSize } from '@userfeeds/types/widget';
 // import getStore from './store';
 import { IRootState } from './ducks';
 
-import Banner from './scenes/Banner';
+import Banner from './Banner';
 
 import * as style from './styles/all.scss';
 

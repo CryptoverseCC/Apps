@@ -3,40 +3,31 @@ import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
 import { IBaseLink } from '@userfeeds/types/link';
+import { IWidgetState } from '@linkexchange/ducks/widget';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
-import { modalActions } from '@linkexchange/modal/duck';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openToast, TToastType } from '@linkexchange/toast/duck';
 
-import { IRootState } from '../../ducks';
-
-import AddLink from '../../components/AddLink';
-
 import Steps from './components/Steps';
 import BackButton from './components/BackButton';
+import AddLinkForm from './components/AddLinkForm';
 import Congratulations from './components/Congratulations';
 
 import * as style from './addLink.scss';
 
-// const mapsStateToProps = (state: IRootState) => ({
-//   widgetSettings: state.widget,
-// });
+const mapsStateToProps = ({ widget }: { widget: IWidgetState }) => ({
+  widgetSettings: widget,
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//   openToast(message: string, type?: TToastType) {
-//     dispatch(openToast(message, type));
-//   },
-//   openWidgetDetails() {
-//     // dispatch(modalActions.open({ modalName: 'widgetDetails' }));
-//   },
-//   closeModal() {
-//     dispatch(modalActions.close());
-//   },
-// });
+const mapDispatchToProps = (dispatch) => ({
+  openToast(message: string, type?: TToastType) {
+    dispatch(openToast(message, type));
+  },
+});
 
-// const State2Props = returntypeof(mapsStateToProps);
-// const Dispatch2Props = returntypeof(mapDispatchToProps);
+const State2Props = returntypeof(mapsStateToProps);
+const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props;
 
@@ -52,7 +43,7 @@ const DEFAULT_LINK = {
   target: 'http://',
 };
 
-export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
+class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   state: IAddLinkModalState = {
     step: 'form',
     link: DEFAULT_LINK,
@@ -77,7 +68,7 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
             <Paper className={style.form}>
               <Switch expresion={step}>
                 <Switch.Case condition="form">
-                  <AddLink
+                  <AddLinkForm
                     asset={widgetSettings.asset}
                     recipientAddress={widgetSettings.recipientAddress}
                     onChange={this._onFormEdit}
@@ -116,4 +107,4 @@ export default class AddLinkModal extends Component<TAddLinkModalProps, IAddLink
   }
 }
 
-// export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
+export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
