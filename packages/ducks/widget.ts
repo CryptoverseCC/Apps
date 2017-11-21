@@ -2,9 +2,6 @@ import { actionCreatorFactory, isType } from 'typescript-fsa';
 import { Action } from 'redux';
 
 import { EWidgetSize } from '@linkexchange/types/widget';
-// import { IRootState } from './';
-
-// import { fetchLinks } from './links';
 
 const acf = actionCreatorFactory('widget');
 
@@ -13,7 +10,8 @@ export const widgetActions = {
 };
 
 export const updateWidgetSettings =
-  (newSettings: Partial<IWidgetState>, onChange: () => void) => (dispatch, getState: () => IRootState) => {
+  (newSettings: Partial<IWidgetState>, onChange: () => void) =>
+  (dispatch, getState: () => { widget: IWidgetState }) => {
   const { widget: oldSettings } = getState();
   dispatch(widgetActions.update(newSettings));
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import classnames from 'classnames';
@@ -53,17 +54,11 @@ const mapStateToProps = (state: { links: ILinksState, widget: IWidgetState }) =>
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  openToast(message: string, type?: TToastType) {
-    dispatch(openToast(message, type));
-  },
-  loadTokenDetails() {
-    dispatch(loadTokenDetails());
-  },
-  fetchLinks() {
-    dispatch(fetchLinks());
-  },
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  openToast,
+  loadTokenDetails,
+  fetchLinks,
+}, dispatch);
 
 const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);

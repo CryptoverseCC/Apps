@@ -2,15 +2,8 @@ import '@webcomponents/custom-elements';
 
 import { render } from 'react-dom';
 import React from 'react';
-// import { Store } from 'redux';
-// import { Provider } from 'react-redux';
-
 import { EWidgetSize } from '@linkexchange/types/widget';
 
-// import { fetchLinks } from '@linkexchange/details/duck';
-// import { updateWidgetSettings } from '@linkexchange/ducks/widget';
-
-// import getStore from './store';
 import { IRootState } from './ducks';
 
 import Banner from './Banner';
@@ -27,39 +20,21 @@ class LinkexchangeLink extends HTMLElement {
     return ['api-url', 'recipient-address', 'asset', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
   }
 
-  // storeInstance: Store<IRootState>;
-
   connectedCallback() {
     this._renderComponent();
   }
 
   attributeChangedCallback(_attr, _oldValue, _newValue) {
-    // if (this.storeInstance) {
-    //   this._updateStore();
-    // }
+    // ToDo rethink if we need react on attributes changes
   }
 
   _renderComponent() {
     this.innerHTML = `<div class="${style.root}"></div>`;
-    // this.storeInstance = getStore({
-    //   ...this._argsToState(),
-    //   location: window.location.href,
-    // });
 
     render(
       <Banner widgetSettings={this._argsToState()} />,
       this.querySelector(`.${style.root}`),
     );
-      // <Provider store={this.storeInstance}>
-      // </Provider>), this.querySelector(`.${style.root}`));
-
-    // if (process.env.NODE_ENV === 'development' && module.hot) {
-    //   module.hot.accept('./banner', () => requestAnimationFrame(init));
-    // }
-  }
-
-  _updateStore() {
-    // this.storeInstance.dispatch(updateWidgetSettings(this._argsToState(), fetchLinks));
   }
 
   _argsToState() {

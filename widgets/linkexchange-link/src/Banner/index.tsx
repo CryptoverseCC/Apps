@@ -15,7 +15,7 @@ import Switch from '@linkexchange/components/src/utils/Switch';
 import { throwErrorOnNotOkResponse } from '@linkexchange/utils/src/fetch';
 import calculateProbabilities from '@linkexchange/utils/src/links';
 
-import Menu from './containers/Menu';
+import Menu from './components/Menu';
 import RandomLinkProvider from './containers/RandomLinkProvider';
 import { Provider, WidgetDatails, AddLink } from './containers/Lazy';
 
