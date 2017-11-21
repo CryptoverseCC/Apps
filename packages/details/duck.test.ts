@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 
 global.fetch = fetch;
 
-import { fetchLinks } from './links';
+import { fetchLinks } from './duck';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

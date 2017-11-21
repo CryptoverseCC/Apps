@@ -1,18 +1,49 @@
 {
   "private": true,
   "scripts": {
-    "test": "lerna exec --concurrency 1 -- yarn test",
+    "lint": "tslint -c tslint.json `find . -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\" | grep -v \"node_modules\"`",
+    "pretest": "yarn run lint",
+    "test": "jest",
     "lerna": "lerna",
     "lerna-clean": "lerna clean --yes",
     "lerna-publish": "lerna publish",
     "lerna-bootstrap": "lerna bootstrap --hoist"
   },
   "devDependencies": {
-    "lerna": "^2.5.1"
+    "lerna": "^2.5.1",
+    "jest": "^20.0.4",
+    "ts-jest": "^21.2.3",
+    "enzyme": "3.1.0",
+    "enzyme-adapter-react-16": "1.0.1",
+    "react-test-renderer": "16.0.0",
+    "redux-mock-store": "^1.2.3",
+    "tslint": "^5.6.0",
+    "tslint-react": "^3.2.0",
+    "nock": "^9.0.14",
+    "node-fetch": "^1.7.1"
   },
   "workspaces": [
     "packages/*",  
     "apps/*",      
     "widgets/*"    
-  ]
+  ],
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(.*\\.(test|spec))\\.(ts|tsx)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@userfeeds|@linkexchange).*"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "./tsconfig.json"
+      }
+    }
+  }
 }

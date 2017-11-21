@@ -14,7 +14,8 @@ import TokenDetailsProvider from '@linkechange/token-details-provider/index';
 import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
 
 import {
-  locationWithoutQueryParamsIfLinkExchangeApp } from '@linkexchange/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
+  locationWithoutQueryParamsIfLinkExchangeApp,
+} from '@linkexchange/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import * as style from './addLinkForm.scss';
 

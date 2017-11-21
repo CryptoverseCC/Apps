@@ -10,7 +10,8 @@ import { IRemoteLink } from '@linkexchange/types/link';
 import web3 from '@linkexchange/utils/src/web3';
 import { R, validate } from '@linkexchange/utils/src/validation';
 import {
-  locationWithoutQueryParamsIfLinkExchangeApp } from '@linkexchange/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
+  locationWithoutQueryParamsIfLinkExchangeApp,
+} from '@linkexchange/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 

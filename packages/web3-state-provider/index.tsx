@@ -33,6 +33,8 @@ interface IOwnProps {
   render(web3State: IWeb3State): any;
 }
 
+export { Web3StateProviderComponent as Web3StateProvider };
+
 export default connect(
   (state, { desiredNetwork }) => {
     return {
