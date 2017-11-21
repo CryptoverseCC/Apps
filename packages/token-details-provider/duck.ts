@@ -62,7 +62,7 @@ const initialState: ITokenDetailsState = {
   decimals: 18,
 };
 
-export default function web3Reducer(state: ITokenDetailsState = initialState, action: Action) {
+export default function tokenDetails(state: ITokenDetailsState = initialState, action: Action) {
   if (isType(action, tokenDetailsActions.tokenDetailsLoaded)) {
     return { ...state, tokenDetails: action.payload };
   }

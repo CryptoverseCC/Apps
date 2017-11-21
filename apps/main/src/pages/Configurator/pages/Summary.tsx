@@ -11,7 +11,7 @@ import 'react-tabs/style/react-tabs.scss';
 import Icon from '@linkexchange/components/src/Icon';
 import Snippet from '@linkexchange/components/src/Snippet';
 import AndroidSnippet from '@linkexchange/components/src/AndroidSnippet';
-import { openToast } from '@linkexchange/widgets/src/ducks/toast';
+import { openToast } from '@linkexchange/toast/duck';
 
 import * as style from './summary.scss';
 

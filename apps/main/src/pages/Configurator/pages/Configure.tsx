@@ -9,7 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import moment from 'moment';
 
-import { openToast } from '@linkexchange/widgets/src/ducks/toast';
+import { openToast } from '@linkexchange/toast/duck';
 import Input from '@linkexchange/components/src/Form/Input';
 import Radio from '@linkexchange/components/src/Form/Radio';
 import { input as fieldInput } from '@linkexchange/components/src/Form/field.scss';

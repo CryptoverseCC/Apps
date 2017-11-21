@@ -10,7 +10,7 @@ export const web3Enabled = createSelector(
   network,
   (web3State, network) => {
     return {
-      enabled: web3State.available && web3State.unlocked && web3State.network === network,
+      enabled: web3State.available && web3State.unlocked && (network !== undefined && web3State.network === network),
       reason: getReason(web3State.available, web3State.unlocked, web3State.network === network, network),
     };
   },
@@ -21,7 +21,7 @@ const getReason = (available, unlocked, correctNetwork, desiredNetwork): undefin
     return 'Web3 is unavailable';
   } else if (!unlocked) {
     return 'Your wallet is locked';
-  } else if (!correctNetwork) {
+  } else if (!correctNetwork && desiredNetwork !== undefined) {
     return `You have to switch to ${desiredNetwork} network`;
   }
 };

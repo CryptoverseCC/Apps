@@ -29,7 +29,9 @@ const mapDispatchToProps = (dispatch) => ({
 const State2Props = returntypeof(mapsStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
-type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props;
+type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props & {
+  openWidgetDetails(): void;
+};
 
 interface IAddLinkModalState {
   step: 'form' | 'congratulations';
