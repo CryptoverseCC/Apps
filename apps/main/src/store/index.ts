@@ -7,8 +7,6 @@ import web3 from '@linkexchange/web3-state-provider/duck';
 import widget, { IWidgetState } from '@linkexchange/ducks/widget';
 import tokenDetails from '@linkechange/token-details-provider/duck';
 
-// import modal from '@linkexchange/widgets/src/ducks/modal';
-
 const middlewares: Middleware[] = [
   ReduxThunk,
 ];

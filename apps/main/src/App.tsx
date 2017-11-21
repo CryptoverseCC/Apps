@@ -4,7 +4,6 @@ import {
   Route,
 } from 'react-router-dom';
 
-// import RootModal from '@linkexchange/widgets/src/scenes/Banner/containers/RootModal'; // Extract it
 import RootToast from '@linkexchange/toast/RootToast';
 
 import Home from './pages/Home';
@@ -21,7 +20,6 @@ const App = () => (
       <Route path="/configurator" component={Configurator} />
       <Route path="/status" component={Status} />
       <Route path="/whitelist" component={Whitelist} />
-      {/* <RootModal /> */}
       <RootToast />
     </div>
   </Router>
