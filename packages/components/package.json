@@ -1,16 +1,15 @@
 {
   "private": true,
   "name": "@linkexchange/components",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/types": "^0.0.2",
-    "@linkexchange/utils": "^0.0.8",
+    "@linkexchange/types": "^0.0.3",
+    "@linkexchange/utils": "^0.0.9",
     "classnames": "^2.2.5",
     "highlight.js": "^9.11.0",
     "open-iconic": "^1.1.1",

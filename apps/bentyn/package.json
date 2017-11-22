@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkechange/app-bentyn",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,16 +11,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/widgets": "^0.0.128",
-    "@linkexchange/components": "^0.0.23",
-    "@linkexchange/toast": "0.0.1",
-    "@userfeeds/core": "^0.0.36",
-    "@linkexchange/utils": "^0.0.8",
-    "@linkexchange/web3-state-provider": "0.0.1",
-    "@linkexchange/details": "0.0.1",
-    "@linkexchange/add-link": "0.0.1",
-    "@linkexchange/ducks": "0.0.1",
-    "@linkechange/token-details-provider": "0.0.1",
+    "@linkechange/token-details-provider": "^0.0.2",
+    "@linkexchange/add-link": "^0.0.2",
+    "@linkexchange/components": "^0.0.24",
+    "@linkexchange/details": "^0.0.2",
+    "@linkexchange/ducks": "^0.0.2",
+    "@linkexchange/toast": "^0.0.2",
+    "@linkexchange/utils": "^0.0.9",
+    "@linkexchange/web3-state-provider": "^0.0.2",
+    "@linkexchange/widgets": "^0.0.129",
+    "@userfeeds/core": "^0.0.37",
     "classnames": "^2.2.5",
     "lodash.debounce": "^4.0.8",
     "moment": "2.19.1",
@@ -54,7 +54,7 @@
     "typings-for-css-modules-loader": "^1.7.0",
     "uglifyjs-webpack-plugin": "1.0.0-beta.3",
     "url-loader": "^0.5.9",
-    "webpack": "^3.8.1",    
+    "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   }
 }

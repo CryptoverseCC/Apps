@@ -1,11 +1,10 @@
 {
   "private": true,
   "name": "@linkexchange/types",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "./",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
   "license": "ISC",
   "devDependencies": {

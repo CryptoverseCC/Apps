@@ -1,22 +1,21 @@
 {
   "private": true,
   "name": "@linkexchange/add-link",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/components": "^0.0.23",
-    "@linkexchange/toast": "0.0.1",
-    "@userfeeds/core": "^0.0.36",
-    "@linkexchange/utils": "^0.0.8",
-    "@linkexchange/types": "^0.0.2",
-    "@linkexchange/web3-state-provider": "0.0.1",
-    "@linkechange/token-details-provider": "0.0.1"
+    "@linkechange/token-details-provider": "^0.0.2",
+    "@linkexchange/components": "^0.0.24",
+    "@linkexchange/toast": "^0.0.2",
+    "@linkexchange/types": "^0.0.3",
+    "@linkexchange/utils": "^0.0.9",
+    "@linkexchange/web3-state-provider": "^0.0.2",
+    "@userfeeds/core": "^0.0.37"
   },
   "peerDependencies": {
     "@linkexchange/ducks": "0.0.1"

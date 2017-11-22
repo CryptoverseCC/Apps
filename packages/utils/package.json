@@ -1,17 +1,16 @@
 {
   "private": true,
   "name": "@linkexchange/utils",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "index.ts",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@linkexchange/types": "^0.0.3",
     "qs": "^6.5.0",
-    "web3": "0.20.2",
-    "@linkexchange/types": "0.0.2"
+    "web3": "0.20.2"
   },
   "devDependencies": {
     "tslint": "^5.6.0",
