@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@linkexchange/app-bentyn",
+  "name": "@linkexchange/bentyn-widget",
   "version": "0.0.15",
   "description": "",
   "main": "src/index.ts",
