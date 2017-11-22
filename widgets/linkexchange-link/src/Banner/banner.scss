@@ -1,0 +1,132 @@
+@import '~@linkexchange/components/styles/colors';
+
+.self {
+  position: relative;
+  overflow: hidden;
+  font-family: 'PT Sans', sans-serif;
+  border: 1px solid $alto;
+  background-color: $white;
+
+  $initial_menu_height: 2px;
+
+  &.leaderboard {
+    width: 728px;
+    height: 90px;
+
+    @media screen and (max-width: 720px) {
+      width: 100%;
+    }
+
+    .options {
+      height: 35px;
+    }
+
+    .options.open~.container {
+      transform: translateY(#{35px - $initial_menu_height});
+    }
+  }
+
+  &.rectangle {
+    width: 300px;
+    height: 250px;
+
+    .options {
+      height: 48px;
+    }
+
+    .options.open~.container {
+      transform: translateY(#{48px - $initial_menu_height});
+    }
+  }
+
+  .container {
+    padding: 0 10px 0 10px;
+    height: calc(100% - #{$initial_menu_height});
+    z-index: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $white;
+    transition: all 0.2s ease;
+
+    &.clickable {
+      cursor: pointer;
+    }
+  }
+
+  .info {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    color: $dusty-gray;
+    font-size: 0.6em;
+
+    .icon {
+      opacity: 0.6;
+      width: 32px;
+      vertical-align: middle;
+    }
+
+    &:hover .icon {
+      opacity: 1;
+    }
+  }
+
+  .options {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 2 * 10px);
+    padding: 0 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $alto;
+    box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
+  }
+
+  .probability-label {
+    color: $dusty-gray;
+    font-size: 0.8em;
+  }
+
+  .probability-container {
+    flex-basis: calc(100%/3);
+  }
+
+  .probability {
+    min-width: 3em;
+    display: inline-block;
+    text-align: left;
+  }
+
+  .arrows {
+    flex-basis: calc(100%/3);
+    display: flex;
+    justify-content: center;
+    color: $tuna;
+
+    .arrow {
+      padding: 0;
+      cursor: pointer;
+
+      &.left {
+        padding-right: 0.5em;
+
+        &:hover {
+          transform:translateX(-2px);
+        }
+      }
+
+      &.right {
+        padding-left: 0.5em;
+
+        &:hover {
+          transform:translateX(2px);
+        }
+      }
+    }
+  }
+}

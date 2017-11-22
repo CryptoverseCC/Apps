@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '@userfeeds/apps-components/src/NewButton';
+import Button from '@linkexchange/components/src/NewButton';
 
 import * as style from './createWidget.scss';
 

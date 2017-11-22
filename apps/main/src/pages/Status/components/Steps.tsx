@@ -2,9 +2,9 @@ import { findDOMNode } from 'react-dom';
 import React, { Component, PureComponent } from 'react';
 import classnames from 'classnames/bind';
 
-import Svg from '@userfeeds/apps-components/src/Svg';
-import Icon from '@userfeeds/apps-components/src/Icon';
-import Tooltip from '@userfeeds/apps-components/src/Tooltip';
+import Svg from '@linkexchange/components/src/Svg';
+import Icon from '@linkexchange/components/src/Icon';
+import Tooltip from '@linkexchange/components/src/Tooltip';
 
 import * as style from './steps.scss';
 const cx = classnames.bind(style);

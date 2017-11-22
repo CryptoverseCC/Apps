@@ -9,19 +9,19 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import moment from 'moment';
 
-import { openToast } from '@linkexchange/widgets/src/ducks/toast';
-import Input from '@userfeeds/apps-components/src/Form/Input';
-import Radio from '@userfeeds/apps-components/src/Form/Radio';
-import { input as fieldInput } from '@userfeeds/apps-components/src/Form/field.scss';
-import { input } from '@userfeeds/apps-components/src/Form/input.scss';
-import { Field, Title, Description, RadioGroup, Error } from '@userfeeds/apps-components/src/Form/Field';
-import Icon from '@userfeeds/apps-components/src/Icon';
-import Dropdown from '@userfeeds/apps-components/src/Dropdown';
-import web3 from '@userfeeds/utils/src/web3';
-import { R, validate, validateMultipe } from '@userfeeds/utils/src/validation';
-import Asset, { WIDGET_NETWORKS } from '@userfeeds/apps-components/src/Form/Asset';
+import { openToast } from '@linkexchange/toast/duck';
+import Input from '@linkexchange/components/src/Form/Input';
+import Radio from '@linkexchange/components/src/Form/Radio';
+import { input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
+import { input } from '@linkexchange/components/src/Form/input.scss';
+import { Field, Title, Description, RadioGroup, Error } from '@linkexchange/components/src/Form/Field';
+import Icon from '@linkexchange/components/src/Icon';
+import Dropdown from '@linkexchange/components/src/Dropdown';
+import web3 from '@linkexchange/utils/src/web3';
+import { R, validate, validateMultipe } from '@linkexchange/utils/src/validation';
+import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 
-import updateQueryParam, { IUpdateQueryParamProp } from '@userfeeds/apps-components/src/containers/updateQueryParam';
+import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 import CreateWidget from '../components/CreateWidget';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import { IBaseLink } from '@userfeeds/types/link';
+import { IBaseLink } from '@linkexchange/types/link';
 
 import * as style from './link.scss';
 

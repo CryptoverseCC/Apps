@@ -1,0 +1,14 @@
+@import '~@linkexchange/components/styles/colors';
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
+
+.root {
+  @import './flex';
+
+  all: initial;
+  @import './unset';
+
+  ::selection {
+    color: $white;
+    background: $dodger-blue;
+  }
+}

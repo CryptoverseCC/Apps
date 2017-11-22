@@ -1,5 +1,5 @@
 import React from 'react';
-import { isType } from '@userfeeds/utils/src/index';
+import { isType } from '@linkexchange/utils/src/index';
 import * as style from './newButton.scss';
 import classnames from 'classnames';
 

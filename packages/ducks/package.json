@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "@linkexchange/ducks",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@linkexchange/types": "0.0.2"
+  }
+}

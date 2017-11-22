@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "@linkexchange/details",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {
+  },
+  "author": "",
+  "dependencies": {
+    "@linkexchange/components": "^0.0.23",
+    "@userfeeds/core": "^0.0.36",
+    "@linkexchange/types": "^0.0.2",
+    "@linkexchange/utils": "^0.0.8",
+    "@linkexchange/toast": "0.0.1",    
+    "@linkexchange/web3-state-provider": "0.0.1",
+    "@linkechange/token-details-provider": "0.0.1"
+  },
+  "peerDependencies": {
+    "@linkexchange/ducks": "0.0.1"
+  },
+  "license": "ISC"
+}

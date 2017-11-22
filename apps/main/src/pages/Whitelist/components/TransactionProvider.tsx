@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import core from '@userfeeds/core/src';
-import web3 from '@userfeeds/utils/src/web3';
+import web3 from '@linkexchange/utils/src/web3';
 
 export default class TransactionProvider extends Component<
   {

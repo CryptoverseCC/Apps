@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import BoldText from '@userfeeds/apps-components/src/BoldText';
-import A from '@userfeeds/apps-components/src/A';
-import Button from '@userfeeds/apps-components/src/NewButton';
-import Icon from '@userfeeds/apps-components/src/Icon';
+import BoldText from '@linkexchange/components/src/BoldText';
+import A from '@linkexchange/components/src/A';
+import Button from '@linkexchange/components/src/NewButton';
+import Icon from '@linkexchange/components/src/Icon';
 import MetaFox from '../../../../images/metafox.png';
 
 import TransactionProvider from './TransactionProvider';

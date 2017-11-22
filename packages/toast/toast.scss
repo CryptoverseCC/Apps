@@ -1,0 +1,28 @@
+@import '~@linkexchange/components/styles/colors';
+
+.self {
+  color: $white;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: flex-start;
+
+  &.failure {
+    background-color: $red;
+  }
+
+  &.success {
+    background-color: rgba(9, 213, 124, 0.6);
+  }
+
+  .ex {
+    opacity: 0.4;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

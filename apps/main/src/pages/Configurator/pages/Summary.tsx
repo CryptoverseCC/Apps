@@ -8,10 +8,10 @@ import { Location, History } from 'history';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.scss';
 
-import Icon from '@userfeeds/apps-components/src/Icon';
-import Snippet from '@userfeeds/apps-components/src/Snippet';
-import AndroidSnippet from '@userfeeds/apps-components/src/AndroidSnippet';
-import { openToast } from '@linkexchange/widgets/src/ducks/toast';
+import Icon from '@linkexchange/components/src/Icon';
+import Snippet from '@linkexchange/components/src/Snippet';
+import AndroidSnippet from '@linkexchange/components/src/AndroidSnippet';
+import { openToast } from '@linkexchange/toast/duck';
 
 import * as style from './summary.scss';
 

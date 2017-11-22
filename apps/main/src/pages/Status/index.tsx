@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { Location } from 'history';
 
-import web3 from '@userfeeds/utils/src/web3';
+import web3 from '@linkexchange/utils/src/web3';
 
-import { mobileOrTablet } from '@userfeeds/utils/src/userAgent';
-import Svg from '@userfeeds/apps-components/src/Svg';
-import Link from '@userfeeds/apps-components/src/Link';
-import Paper from '@userfeeds/apps-components/src/Paper';
-import Loader from '@userfeeds/apps-components/src/Loader';
-import Button from '@userfeeds/apps-components/src/Button';
-import TextWithLabel from '@userfeeds/apps-components/src/TextWithLabel';
-import Intercom from '@userfeeds/apps-components/src/Intercom';
-import A from '@userfeeds/apps-components/src/A';
+import { mobileOrTablet } from '@linkexchange/utils/src/userAgent';
+import Svg from '@linkexchange/components/src/Svg';
+import Link from '@linkexchange/components/src/Link';
+import Paper from '@linkexchange/components/src/Paper';
+import Loader from '@linkexchange/components/src/Loader';
+import Button from '@linkexchange/components/src/Button';
+import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
+import Intercom from '@linkexchange/components/src/Intercom';
+import A from '@linkexchange/components/src/A';
 
 import Steps from './components/Steps';
 

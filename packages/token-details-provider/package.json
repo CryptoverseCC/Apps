@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "@linkechange/token-details-provider",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@linkexchange/utils": "^0.0.8",
+    "@userfeeds/core": "^0.0.36"
+  }
+}

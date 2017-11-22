@@ -1,0 +1,27 @@
+@import '~@linkexchange/components/styles/colors';
+
+.self {
+
+  .accordion {
+    padding: 10px;
+  }
+
+  .accordion-header {
+    color: $dodger-blue;
+    font-size: 22px;
+  }
+
+  .token-logo {
+    height: 32px;
+  }
+
+  .widget-specification {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    & > * {
+      flex-basis: calc(50% - 33px); // - padding from TextWithLabel :(
+    }
+  }
+}

@@ -1,12 +1,10 @@
 {
   "private": true,
-  "name": "@userfeeds/types",
+  "name": "@linkexchange/types",
   "version": "0.0.2",
   "description": "",
   "main": "./",
   "scripts": {
-    "lint": "tslint -c ../../tslint.json `find . -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
-    "test": "yarn lint"
   },
   "author": "",
   "license": "ISC",

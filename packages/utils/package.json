@@ -1,17 +1,17 @@
 {
   "private": true,
-  "name": "@userfeeds/utils",
+  "name": "@linkexchange/utils",
   "version": "0.0.8",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "lint": "tslint -c ../../tslint.json `find src -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\"`",
-    "test": "yarn lint"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "web3": "0.20.2"
+    "qs": "^6.5.0",
+    "web3": "0.20.2",
+    "@linkexchange/types": "0.0.2"
   },
   "devDependencies": {
     "tslint": "^5.6.0",
