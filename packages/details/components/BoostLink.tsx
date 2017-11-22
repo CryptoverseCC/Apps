@@ -7,18 +7,18 @@ import NewButton from '@linkexchange/components/src/NewButton';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Wrapper from '@linkexchange/components/src/Wrapper';
 import { IRemoteLink } from '@linkexchange/types/link';
-import web3 from '@linkexchange/utils/src/web3';
-import { R, validate } from '@linkexchange/utils/src/validation';
+import web3 from '@linkexchange/utils/web3';
+import { R, validate } from '@linkexchange/utils/validation';
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
-} from '@linkexchange/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
+} from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import If from '@linkexchange/components/src/utils/If';
 
 import * as style from './boostLink.scss';
-import TokenDetailsProvider from '@linkechange/token-details-provider/index';
+import TokenDetailsProvider from '@linkechange/token-details-provider';
 
 interface IBidLinkProps {
   link: IRemoteLink;

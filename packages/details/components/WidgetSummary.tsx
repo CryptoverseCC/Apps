@@ -6,7 +6,7 @@ import { IWidgetState } from '@linkexchange/ducks/widget';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
-import Web3StateProvider from '@linkexchange/web3-state-provider/index';
+import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import * as style from './widgetSummary.scss';
 

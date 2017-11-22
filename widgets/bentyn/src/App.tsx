@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import { IRemoteLink, ILink } from '@linkexchange/types/link';
-import { throwErrorOnNotOkResponse } from '@linkexchange/utils/src/fetch';
-import calculateProbabilities from '@linkexchange/utils/src/links';
+import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
+import calculateProbabilities from '@linkexchange/utils/links';
 
 import Link from './components/Link';
 import LinkProvider from './containers/LinkProvider';

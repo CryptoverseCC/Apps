@@ -4,8 +4,8 @@ import qs from 'qs';
 import { History, Location } from 'history';
 
 import core from '@userfeeds/core/src';
-import web3 from '@linkexchange/utils/src/web3';
-import wait from '@linkexchange/utils/src/wait';
+import web3 from '@linkexchange/utils/web3';
+import wait from '@linkexchange/utils/wait';
 import Link from '@linkexchange/components/src/Link';
 import Icon from '@linkexchange/components/src/Icon';
 import Paper from '@linkexchange/components/src/Paper';

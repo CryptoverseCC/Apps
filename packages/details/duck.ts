@@ -4,7 +4,7 @@ import { Action } from 'redux';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 
-import { throwErrorOnNotOkResponse } from '@linkexchange/utils/src/fetch';
+import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
 
 interface IState {
   widget: IWidgetState;

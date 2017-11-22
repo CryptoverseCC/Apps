@@ -3,7 +3,7 @@
   "name": "@linkexchange/utils",
   "version": "0.0.8",
   "description": "",
-  "main": "src/index.ts",
+  "main": "index.ts",
   "scripts": {
   },
   "author": "",

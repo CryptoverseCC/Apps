@@ -3,8 +3,8 @@ import { Action } from 'redux';
 import * as isEqual from 'lodash/isEqual';
 
 import core from '@userfeeds/core/src';
-import web3 from '@linkexchange/utils/src/web3';
-import wait from '@linkexchange/utils/src/wait';
+import web3 from '@linkexchange/utils/web3';
+import wait from '@linkexchange/utils/wait';
 
 const {
   erc20ContractDecimals,

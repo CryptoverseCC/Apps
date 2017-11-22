@@ -12,8 +12,8 @@ import Tooltip from '@linkexchange/components/src/Tooltip';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import Switch from '@linkexchange/components/src/utils/Switch';
-import { throwErrorOnNotOkResponse } from '@linkexchange/utils/src/fetch';
-import calculateProbabilities from '@linkexchange/utils/src/links';
+import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
+import calculateProbabilities from '@linkexchange/utils/links';
 
 import Menu from './components/Menu';
 import RandomLinkProvider from './containers/RandomLinkProvider';

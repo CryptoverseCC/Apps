@@ -5,8 +5,8 @@ import { returntypeof } from 'react-redux-typescript';
 import classnames from 'classnames';
 
 import { ILink } from '@linkexchange/types/link';
-import { mobileOrTablet } from '@linkexchange/utils/src/userAgent';
-import { openLinkexchangeUrl } from '@linkexchange/utils/src/openLinkexchangeUrl';
+import { mobileOrTablet } from '@linkexchange/utils/userAgent';
+import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 import Pill from '@linkexchange/components/src/Pill';
 import Paper from '@linkexchange/components/src/Paper';

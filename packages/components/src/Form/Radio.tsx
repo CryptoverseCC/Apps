@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import * as RadioStyles from './radio.scss';
 import Pill from '../Pill';
-import { isType } from '@linkexchange/utils/src/index';
+import { isType } from '@linkexchange/utils';
 
 type TRadio = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
   checked?: boolean;

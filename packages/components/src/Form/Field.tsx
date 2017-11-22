@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import BoldText from '../BoldText';
-import { isType } from '@linkexchange/utils/src/index';
+import { isType } from '@linkexchange/utils';
 import * as styles from './field.scss';
 
 export const Field = ({ children, ...props }) => (

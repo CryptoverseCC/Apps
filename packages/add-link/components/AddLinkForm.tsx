@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 
 import core from '@userfeeds/core/src';
-import web3 from '@linkexchange/utils/src/web3';
+import web3 from '@linkexchange/utils/web3';
 import { IBaseLink } from '@linkexchange/types/link';
 import Loader from '@linkexchange/components/src/Loader';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
-import { R, validate } from '@linkexchange/utils/src/validation';
+import { R, validate } from '@linkexchange/utils/validation';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import TokenDetailsProvider from '@linkechange/token-details-provider/index';
+import TokenDetailsProvider from '@linkechange/token-details-provider';
 import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
 
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
-} from '@linkexchange/utils/src/locationWithoutQueryParamsIfLinkExchangeApp';
+} from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import * as style from './addLinkForm.scss';
 

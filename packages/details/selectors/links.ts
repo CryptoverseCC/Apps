@@ -3,7 +3,7 @@ import * as memoize from 'lodash/memoize';
 
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import { IWidgetState } from '@linkexchange/ducks/widget';
-import calculateProbabilities from '@linkexchange/utils/src/links';
+import calculateProbabilities from '@linkexchange/utils/links';
 
 import { ILinksState } from '../duck';
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Link from '@linkexchange/components/src/Link';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
-import web3 from '@linkexchange/utils/src/web3';
+import web3 from '@linkexchange/utils/web3';
 
 import * as style from './simpleLinksList.scss';
 
