@@ -1,0 +1,11 @@
+{
+  "name": "@linkexchange/scss-unset",
+  "version": "0.0.1",
+  "description": "",
+  "main": "unset.scss",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

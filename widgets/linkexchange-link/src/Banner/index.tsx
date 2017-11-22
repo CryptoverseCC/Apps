@@ -8,8 +8,8 @@ import Link from '@linkexchange/components/src/Link';
 import Label from '@linkexchange/components/src/Label';
 import Modal from '@linkexchange/components/src/Modal';
 import { fetchLinks } from '@linkexchange/details/duck';
-import { IWidgetState } from '@linkexchange/ducks/widget';
 import Tooltip from '@linkexchange/components/src/Tooltip';
+import { IWidgetSettings } from '@linkexchange/types/widget';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { throwErrorOnNotOkResponse } from '@linkexchange/utils/src/fetch';
@@ -24,7 +24,7 @@ import * as style from './banner.scss';
 const cx = classnames.bind(style);
 
 interface IBannerProps {
-  widgetSettings: IWidgetState;
+  widgetSettings: IWidgetSettings;
 }
 
 interface IBannerState {
