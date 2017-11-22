@@ -1,55 +1,76 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { returntypeof } from 'react-redux-typescript';
 
-import { fetchLinks } from '@linkexchange/widgets/src/ducks/links';
-import { visibleLinks } from '@linkexchange/widgets/src/selectors/links';
-import { ILink } from '@linkexchange/types/link';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { IRemoteLink, ILink } from '@linkexchange/types/link';
+import { throwErrorOnNotOkResponse } from '@linkexchange/utils/src/fetch';
+import calculateProbabilities from '@linkexchange/utils/src/links';
 
-import { IRootState } from './store';
 import Link from './components/Link';
 import LinkProvider from './containers/LinkProvider';
 
+interface IAppProps {
+  widgetSettings: IWidgetSettings;
+}
+
 interface IAppState {
+  fetched: boolean;
+  links: ILink[];
   currentLink?: ILink;
 }
 
-const mapStateToProps = (state: IRootState) => ({
-  widget: state.widget,
-  links: visibleLinks(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchLinks: () => dispatch(fetchLinks()),
-});
-
-const State2Props = returntypeof(mapStateToProps);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-type TAppProps = typeof State2Props & typeof Dispatch2Props;
-
-class App extends Component<TAppProps, IAppState> {
-
-  state: IAppState = {};
+export default class App extends Component<IAppProps, IAppState> {
+  state: IAppState = {
+    fetched: false,
+    links: [],
+  };
 
   componentDidMount() {
-    this.props.fetchLinks();
+    this._fetchLinks();
   }
 
   render() {
-    const { links, widget } = this.props;
-    const { currentLink } = this.state;
+    const { currentLink, links, fetched } = this.state;
+
+    if (!fetched) {
+      return null;
+    }
 
     return (
       <div>
-        {currentLink && <Link link={currentLink} tokenSymbol={widget.tokenDetails.symbol} />}
-        <LinkProvider links={links} onLink={this._onLink} />
+        {currentLink && <Link link={currentLink} tokenSymbol="BEN" />}
+        <LinkProvider
+          links={links}
+          onLink={this._onLink}
+          timeslot={20 * 1000}
+        />
       </div>
     );
+  }
+
+  _fetchLinks = async () => {
+    const {
+      apiUrl = 'https://api.userfeeds.io',
+      recipientAddress,
+      asset,
+      algorithm,
+      whitelist,
+    } = this.props.widgetSettings;
+    const rankingApiUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`;
+    const whitelistQueryParam = whitelist ? `?whitelist=${whitelist}` : '';
+    try {
+      const { items: links = [] } = await fetch(`${rankingApiUrl}${whitelistQueryParam}`)
+        .then(throwErrorOnNotOkResponse)
+        .then<{ items: IRemoteLink[] }>((res) => res.json());
+      this.setState({
+        fetched: true,
+        links: calculateProbabilities(links),
+      });
+    } catch (e) {
+      console.info('Something went wrong 😞');
+    }
   }
 
   _onLink = (currentLink: ILink) => {
     this.setState({ currentLink });
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);

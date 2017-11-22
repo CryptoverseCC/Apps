@@ -5,5 +5,5 @@ body {
   all: initial;
   font-family: 'PT Sans', sans-serif;
   background-color: $aqua-haze;
-  @import '~@linkexchange/widgets/src/styles/unset';
+  @import '~@linkexchange/scss-unset';
 }

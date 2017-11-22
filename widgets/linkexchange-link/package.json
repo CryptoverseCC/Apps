@@ -21,6 +21,7 @@
     "@linkexchange/ducks": "0.0.1",
     "@linkexchange/types": "^0.0.2",
     "@linkexchange/utils": "^0.0.8",
+    "@linkexchange/scss-unset": "^0.0.1",
     "classnames": "^2.2.5",
     "lodash": "~4.17.4",
     "qrious": "^4.0.2",

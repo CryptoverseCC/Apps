@@ -5,7 +5,7 @@
   @import './flex';
 
   all: initial;
-  @import './unset';
+  @import '~@linkexchange/scss-unset';
 
   ::selection {
     color: $white;
