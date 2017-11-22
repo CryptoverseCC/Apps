@@ -1,0 +1,52 @@
+@import '~@linkexchange/components/styles/colors';
+
+.self {
+  position: relative;
+
+  .congratulations {
+    text-align: center;
+    color: #1B2437;
+    font-size: 26px;
+    line-height: 33px;
+  }
+
+  .sub-congratulations {
+    color: #586881;
+    font-size: 14px;
+    line-height: 23px;
+  }
+
+  .tabs {
+    margin-top: 30px;
+    background-color: #161719;
+
+    .tab-list {
+      color: $white;
+      text-align: center;
+      border: none;
+    }
+
+    .selected-tab {
+      border-bottom: 1px solid $white;
+    }
+
+    .disabled-tab {
+      cursor: not-allowed;
+    }
+  }
+
+  .back {
+    position: absolute;
+    left: -50px;
+    color: #586881;
+    padding: 0.4em 0.8em;
+    border: 1px solid #D9E0E7;
+    border-left: none;
+    border-radius: 0 100px 100px 0;
+    text-decoration: none;
+
+    &:hover {
+      color: $dusty-gray;
+    }
+  }
+}
