@@ -4,11 +4,30 @@ const merge = require('webpack-merge');
 
 const baseConfig = require('../../config/webpack.base');
 
-module.exports = merge(baseConfig, {
+const config = merge.smart(baseConfig, {
   entry: './src/index.tsx',
   plugins: [
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(require('./package.json').version),
     }),
   ],
+  module: {
+    loaders: [{
+      test: /\.scss$/,
+      exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,
+      use: [{
+        loader: 'typings-for-css-modules-loader',
+        options: {
+          namedExport: true,
+          modules: true,
+          importLoaders: 1,
+          sourceMap: true,
+          camelCase: true,
+          localIdentName: 'LX__[name]__[local]',
+        },
+      }],
+    }],
+  },
 });
+
+module.exports = config;
