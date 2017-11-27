@@ -13,10 +13,12 @@
     "@linkexchange/types": "^0.0.3",
     "@linkexchange/utils": "^0.0.9",
     "@linkexchange/web3-state-provider": "^0.0.2",
-    "@userfeeds/core": "^0.0.37"
+    "@userfeeds/core": "^0.0.37",
+    "@linkexchange/scrollable-sections-with-menu": "^0.0.1"
   },
   "peerDependencies": {
-    "@linkexchange/ducks": "0.0.1"
+    "@linkexchange/ducks": "0.0.1",
+    "lodash": "~4.17.4"
   },
   "license": "ISC"
 }
