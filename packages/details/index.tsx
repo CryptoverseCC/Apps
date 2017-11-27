@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import classnames from 'classnames';
 
-import { isType } from '@linkexchange/utils';
-import { ILink } from '@linkexchange/types/link';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
@@ -88,6 +86,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
         <div className={style.details}>
           {details}
         </div>
+        <Intercom settings={{ app_id: 'xdam3he4', ...this.props.widgetSettings }} />
       </div>
     );
   }
