@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Children, ReactElement } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import classnames from 'classnames';
 
+import { isType } from '@linkexchange/utils';
 import { ILink } from '@linkexchange/types/link';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
@@ -22,24 +23,11 @@ import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 import { fetchLinks, ILinksState } from './duck';
 import { visibleLinks, whitelistedLinksCount, allLinksCount } from './selectors/links';
 
-import DetailsLists from './components/DetailsLists';
+import { DetailsAccordion, DetailsLists } from './containers/Lists';
+
 import WidgetSummary from './components/WidgetSummary';
-import DetailsAccordion from './components/DetailsAccordion';
-import SideMenu, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
-
-import * as style from './widgetDetails.scss';
-
-export type TViewType =
-  | 'Userfeed'
-  | 'Specification'
-  | 'Links.Algorithm'
-  | 'Links.Whitelist'
-  | 'Links.Slots';
-
-interface IWidgetDetailsState {
-  viewType: TViewType;
-  mobileOrTablet: boolean;
-}
+import DetailsListsComponent from './components/DetailsLists';
+import SideMenuComponent, { SideMenuItem, SideMenuItemText } from './components/SideMenu';
 
 const mapStateToProps = (state: { links: ILinksState, widget: IWidgetState }) => {
   const { links, widget } = state;
@@ -70,8 +58,22 @@ type TWidgetDetailsProps = typeof State2Props &
     standaloneMode?: boolean;
   };
 
-class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> {
-  detailsListCmp: DetailsLists;
+export type TViewType =
+  | 'Userfeed'
+  | 'Specification'
+  | 'Links.Algorithm'
+  | 'Links.Whitelist'
+  | 'Links.Slots';
+
+interface IDetailsState {
+  viewType: TViewType;
+  mobileOrTablet: boolean;
+}
+
+import * as style from './widgetDetails.scss';
+
+class Details extends Component<TWidgetDetailsProps, IDetailsState> {
+  detailsListCmp: DetailsListsComponent;
 
   constructor(props: TWidgetDetailsProps) {
     super(props);
@@ -88,6 +90,8 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
 
   render() {
     const {
+      children,
+      className,
       widgetSettings,
       whitelistedLinks,
       allLinks,
@@ -100,80 +104,53 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
     const { viewType, mobileOrTablet } = this.state;
     const hasWhitelist = !!widgetSettings.whitelist;
 
+    const childrenArray = Children.toArray(children);
+
+    const header = React.cloneElement(
+      childrenArray.find((c) => isType(c, 'Header')) as ReactElement<any>,
+      {
+        widgetSettings,
+        onAddClick: onAddLink,
+        openInNewWindowHidden: standaloneMode,
+        onOpenInSeparateWindow: this._onOpenInSeparateWindowClick,
+      },
+    );
+    const sideMenu = React.cloneElement(
+      childrenArray.find((c) => isType(c, 'SideMenu')) as ReactElement<any>,
+      {
+        viewType,
+        hasWhitelist,
+        widgetSettings,
+        allLinksCount,
+        whitelistedLinksCount,
+        onItemClick: this._menuItemClicked,
+      },
+    );
+    const detailsList = React.cloneElement(
+      childrenArray.find((c) => isType(c, 'List')) as ReactElement<any>,
+      {
+        viewType,
+        mobileOrTablet,
+        listRef: this._onDetailsListRef,
+        scrolledTo: this._onScrolledTo,
+        onBoostSuccess: this._onBoostSuccess,
+        onBoostError: this._onBoostError,
+      },
+    );
+
     return (
-      <div className={classnames(style.self, this.props.className)}>
-        <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
-        <WidgetSummary
-          openInNewWindowHidden={standaloneMode}
-          widgetSettings={widgetSettings}
-          onAddClick={onAddLink}
-          onOpenInSeparateWindow={this._onOpenInSeparateWindowClick}
-        />
-        <Switch expresion={mobileOrTablet ? 'mobile' : 'desktop'}>
-          <Switch.Case condition={'mobile'}>
-            <DetailsAccordion
-              recipientAddress={widgetSettings.recipientAddress}
-              slots={widgetSettings.slots}
-              asset={widgetSettings.asset}
-              whitelistedLinksCount={whitelistedLinksCount}
-              hasWhitelist={hasWhitelist}
-              allLinksCount={allLinksCount}
-              size={widgetSettings.size}
-              links={links}
-              whitelistedLinks={whitelistedLinks}
-              allLinks={allLinks}
-            />
-          </Switch.Case>
-          <Switch.Case condition={'desktop'}>
-            <div className={style.details}>
-              <SideMenu
-                activeItem={this.state.viewType}
-                onItemClick={this._menuItemClicked}
-                className={style.sideMenu}
-              >
-                <SideMenuItem name="Links.Slots">
-                  <SideMenuItemText>Slots</SideMenuItemText>
-                  <Pill style={{ marginLeft: '10px' }}>{widgetSettings.slots}</Pill>
-                </SideMenuItem>
-                {hasWhitelist ? (
-                  <SideMenuItem name="Links.Whitelist">
-                    <SideMenuItemText>Whitelist</SideMenuItemText>
-                    <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
-                  </SideMenuItem>
-                ) : (
-                  <SideMenuItem name="Links.Algorithm">
-                    <SideMenuItemText>Algorithm</SideMenuItemText>
-                    <Pill style={{ marginLeft: '10px' }}>{allLinksCount}</Pill>
-                  </SideMenuItem>
-                )}
-                <SideMenuItem name="Specification">
-                  <SideMenuItemText>Specification</SideMenuItemText>
-                </SideMenuItem>
-                <SideMenuItem name="Userfeed">
-                  <SideMenuItemText>Userfeed</SideMenuItemText>
-                </SideMenuItem>
-              </SideMenu>
-              <DetailsLists
-                initialView={viewType}
-                algorithm={widgetSettings.algorithm}
-                scrolledTo={this._onScrolledTo}
-                ref={this._onDetailsListRef}
-                asset={widgetSettings.asset}
-                recipientAddress={widgetSettings.recipientAddress}
-                hasWhitelist={hasWhitelist}
-                size={widgetSettings.size}
-                links={links}
-                whitelistedLinks={whitelistedLinks}
-                allLinks={allLinks}
-                allLinksCount={allLinksCount}
-                onBoostSuccess={this._onBoostSuccess}
-                onBoostError={this._onBoostError}
-              />
-            </div>
-          </Switch.Case>
-        </Switch>
+      <div className={classnames(style.self, className)}>
+        {header}
+        <div className={style.details}>
+          {!mobileOrTablet && sideMenu}
+          {detailsList}
+        </div>
       </div>
     );
+  }
+
+  _onOpenInSeparateWindowClick = () => {
+    openLinkexchangeUrl('apps/#/details/', this.props.widgetSettings);
   }
 
   _menuItemClicked = (name: TViewType) => {
@@ -186,10 +163,6 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
     this.setState({ viewType: name });
   }
 
-  _onOpenInSeparateWindowClick = () => {
-    openLinkexchangeUrl('apps/#/details/', this.props.widgetSettings);
-  }
-
   _onBoostSuccess = () => {
     this.props.openToast('Link boosted 💪', 'success');
   }
@@ -198,7 +171,113 @@ class WidgetDetails extends Component<TWidgetDetailsProps, IWidgetDetailsState> 
     this.props.openToast('Transation rejected');
   }
 
-  _onDetailsListRef = (ref) => (this.detailsListCmp = ref);
+  _onDetailsListRef = (ref) => (this.detailsListCmp = ref.getWrappedInstance());
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WidgetDetails);
+const ConnectedDetails = connect(mapStateToProps, mapDispatchToProps)(Details);
+export { ConnectedDetails as Details };
+
+interface IHeaderProps {
+  displayName?: string;
+  standaloneMode: boolean;
+  widgetSettings: IWidgetState;
+  onAddLink(): void;
+  onOpenInSeparateWindow(): void;
+}
+
+export const Header: React.SFC<IHeaderProps> =
+  ({ standaloneMode, widgetSettings, onAddLink, onOpenInSeparateWindow }) => (
+  <WidgetSummary
+    openInNewWindowHidden={standaloneMode}
+    widgetSettings={widgetSettings}
+    onAddClick={onAddLink}
+    onOpenInSeparateWindow={onOpenInSeparateWindow}
+  />
+);
+
+Header.defaultProps = {
+  displayName: 'Header',
+};
+
+interface ISideMenuProps {
+  displayName?: string;
+  viewType: TViewType;
+  onItemClick(): void;
+  widgetSettings: IWidgetState;
+  hasWhitelist: boolean;
+  allLinksCount: number;
+  whitelistedLinksCount: number;
+}
+
+export const SideMenu: React.SFC<ISideMenuProps> =
+  ({ viewType, onItemClick, widgetSettings, hasWhitelist, allLinksCount, whitelistedLinksCount }) => (
+  <SideMenuComponent
+    activeItem={viewType}
+    onItemClick={onItemClick}
+    className={style.sideMenu}
+  >
+    <SideMenuItem name="Links.Slots">
+      <SideMenuItemText>Slots</SideMenuItemText>
+      <Pill style={{ marginLeft: '10px' }}>{widgetSettings.slots}</Pill>
+    </SideMenuItem>
+    {hasWhitelist ? (
+      <SideMenuItem name="Links.Whitelist">
+        <SideMenuItemText>Whitelist</SideMenuItemText>
+        <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
+      </SideMenuItem>
+    ) : (
+      <SideMenuItem name="Links.Algorithm">
+        <SideMenuItemText>Algorithm</SideMenuItemText>
+        <Pill style={{ marginLeft: '10px' }}>{allLinksCount}</Pill>
+      </SideMenuItem>
+    )}
+    <SideMenuItem name="Specification">
+      <SideMenuItemText>Specification</SideMenuItemText>
+    </SideMenuItem>
+    <SideMenuItem name="Userfeed">
+      <SideMenuItemText>Userfeed</SideMenuItemText>
+    </SideMenuItem>
+  </SideMenuComponent>
+);
+
+SideMenu.defaultProps = {
+  displayName: 'SideMenu',
+};
+
+interface IDetailsListProps {
+  displayName?: string;
+  hasWhitelist: boolean;
+  viewType: TViewType;
+  scrolledTo(to: TViewType): void;
+  onBoostSuccess(): void;
+  onBoostError(): void;
+  mobileOrTablet: boolean;
+  listRef(ref: DetailsListsComponent): void;
+}
+
+export const List: React.SFC<IDetailsListProps> = ({ hasWhitelist, viewType, scrolledTo,
+  onBoostSuccess, onBoostError, listRef, mobileOrTablet }) => {
+  return (
+    <Switch expresion={mobileOrTablet ? 'mobile' : 'desktop'}>
+      <Switch.Case condition={'mobile'}>
+        <DetailsAccordion
+          hasWhitelist={hasWhitelist}
+        />
+      </Switch.Case>
+      <Switch.Case condition={'desktop'}>
+        <DetailsLists
+          ref={listRef}
+          initialView={viewType}
+          scrolledTo={scrolledTo}
+          hasWhitelist={hasWhitelist}
+          onBoostSuccess={onBoostSuccess}
+          onBoostError={onBoostError}
+        />
+      </Switch.Case>
+    </Switch>
+  );
+};
+
+List.defaultProps = {
+  displayName: 'List',
+};

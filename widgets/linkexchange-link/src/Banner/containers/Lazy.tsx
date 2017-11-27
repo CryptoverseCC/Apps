@@ -14,9 +14,9 @@ export const Provider = Loadable({
 });
 
 export const WidgetDatails = Loadable({
-  loader: () => import('@linkexchange/details/newIndex'),
+  loader: () => import('@linkexchange/details'),
   loading: Loading,
-  render: ({ Details, Header, SideMenu, List}, props) => {
+  render: ({ Details, Header, SideMenu, List }, props) => {
     return (
       <Details {...props}>
         <Header />
