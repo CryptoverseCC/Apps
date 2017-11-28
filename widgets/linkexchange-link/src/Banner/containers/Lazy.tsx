@@ -16,6 +16,14 @@ export const Provider = Loadable({
 export const WidgetDatails = Loadable({
   loader: () => import('@linkexchange/details'),
   loading: Loading,
+  render: ({ Details, Header, Lists }, props) => {
+    return (
+      <Details {...props}>
+        <Header />
+        <Lists />
+      </Details>
+    );
+  },
 });
 
 export const AddLink = Loadable({

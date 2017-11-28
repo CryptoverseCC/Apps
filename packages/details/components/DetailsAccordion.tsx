@@ -8,7 +8,7 @@ import TokenName from '@linkexchange/components/src/TokenName';
 import Accordion from '@linkexchange/components/src/Accordion';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
-import { EWidgetSize } from '@linkexchange/types/widget';
+import { EWidgetSize, IWidgetSettings } from '@linkexchange/types/widget';
 
 import SimpleLinksList from './SimpleLinksList';
 import UserfeedsAddressInfo from './UserfeedsAddressInfo';
@@ -16,10 +16,7 @@ import UserfeedsAddressInfo from './UserfeedsAddressInfo';
 import * as style from './detailsAccordion.scss';
 
 interface IDetailsAccordinProps {
-  recipientAddress: string;
-  size: EWidgetSize;
-  asset: string;
-  slots: number;
+  widgetSettings: IWidgetSettings;
   whitelistedLinksCount: number;
   allLinksCount: number;
   hasWhitelist: boolean;
@@ -31,7 +28,7 @@ interface IDetailsAccordinProps {
 export default class DetailsAccordion extends Component<IDetailsAccordinProps, {}> {
 
   render() {
-    const { recipientAddress, size, asset, slots, whitelistedLinksCount, allLinksCount, hasWhitelist,
+    const { widgetSettings, whitelistedLinksCount, allLinksCount, hasWhitelist,
       links, whitelistedLinks, allLinks } = this.props;
 
     return (
@@ -39,7 +36,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
         <Paper>
           <Accordion
             className={style.accordion}
-            title={<p className={style.accordionHeader}>Slots <Pill>{slots}</Pill></p>}
+            title={<p className={style.accordionHeader}>Slots <Pill>{widgetSettings.slots}</Pill></p>}
           >
             <SimpleLinksList links={links} />
           </Accordion>
@@ -69,11 +66,11 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             title={<p className={style.accordionHeader}>Widget Specification</p>}
           >
             <div className={style.widgetSpecification}>
-              <TextWithLabel label="Size" text={size} />
+              <TextWithLabel label="Size" text={widgetSettings.size} />
               <TextWithLabel label="Type" text="Text" />
               <TextWithLabel label="Token">
-                <TokenLogo className={style.tokenLogo} asset={asset} />
-                <TokenName asset={asset} />
+                <TokenLogo className={style.tokenLogo} asset={widgetSettings.asset} />
+                <TokenName asset={widgetSettings.asset} />
               </TextWithLabel>
               <TextWithLabel label="Algorithm" text="Text" />
             </div>
@@ -85,7 +82,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             className={style.accordion}
             title={<p className={style.accordionHeader}>Userfeed</p>}
           >
-            <TextWithLabel label="Userfeed address" text={recipientAddress} />
+            <TextWithLabel label="Userfeed address" text={widgetSettings.recipientAddress} />
           </Accordion>
         </Paper>
 
