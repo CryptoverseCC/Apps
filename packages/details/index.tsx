@@ -32,7 +32,6 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TWidgetDetailsProps = typeof State2Props &
   typeof Dispatch2Props & {
-    onAddLink(): void;
     className?: string;
     standaloneMode?: boolean;
   };
@@ -57,7 +56,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
   }
 
   render() {
-    const { children, onAddLink, className, standaloneMode } = this.props;
+    const { children, className, standaloneMode } = this.props;
     const { mobileOrTablet } = this.state;
 
     const childrenArray = Children.toArray(children);
@@ -67,7 +66,6 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
     );
     const header = headerElement
       ? React.cloneElement(headerElement as ReactElement<any>, {
-          onAddClick: onAddLink,
           openInNewWindowHidden: standaloneMode,
           onOpenInSeparateWindow: this._onOpenInSeparateWindowClick,
         })
@@ -100,7 +98,11 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
 
 const ConnectedDetails = connect(mapStateToProps, mapDispatchToProps)(Details);
 
-export const Lists = ({ mobileOrTablet }) =>
+interface IListsProps {
+  mobileOrTablet?: boolean;
+}
+
+export const Lists = ({ mobileOrTablet }: IListsProps) =>
   !mobileOrTablet ? <DetailsLists /> : <DetailsAccordion />;
 export { default as Header } from './containers/Header';
 export { ConnectedDetails as Details };

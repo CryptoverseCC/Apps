@@ -17,9 +17,10 @@ export const WidgetDatails = Loadable({
   loader: () => import('@linkexchange/details'),
   loading: Loading,
   render: ({ Details, Header, Lists }, props) => {
+    const { onAddLink, ...restProps } = props;
     return (
-      <Details {...props}>
-        <Header />
+      <Details {...restProps}>
+        <Header onAddClick={onAddLink}/>
         <Lists />
       </Details>
     );

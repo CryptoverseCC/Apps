@@ -13,8 +13,9 @@ const Home = ({ widgetSettings }) => (
   <div>
     <BlocksTillConclusion
       asset={widgetSettings.asset}
+      className={style.blocksTillConclusion}
     />
-    <Details className={style.details}>
+    <Details standaloneMode className={style.details}>
       <Lists />
     </Details>
   </div>
