@@ -8,11 +8,12 @@ import web3 from '@linkexchange/utils/web3';
 const acf = actionCreatorFactory('web3');
 
 export const web3Actions = {
-  updateAvailability: acf<{
+  updateState: acf<{
     available: boolean;
     unlocked: boolean;
     network?: string;
-  }>('UPDATE_AVAILABILITY'),
+    blockNumber?: number;
+  }>('UPDATE_STATE'),
 };
 
 const intervalsMaps = new Map<() => any, number>();
@@ -22,12 +23,15 @@ export const observeInjectedWeb3 = () => (dispatch, getState: () => { web3: IWeb
     web3.eth.getAccounts(async (error, accounts = []) => {
       const available = !!web3.isConnected();
       let networkName;
+      let blockNumber;
       if (available) {
         networkName = await core.utils.getCurrentNetworkName(web3);
+        blockNumber = await core.utils.getBlockNumber(web3);
       }
 
       const currentState = {
         available,
+        blockNumber,
         unlocked: accounts.length > 0,
         network: networkName,
       };
@@ -35,7 +39,7 @@ export const observeInjectedWeb3 = () => (dispatch, getState: () => { web3: IWeb
       const { web3: lastState } = getState();
 
       if (!isEqual(currentState, lastState)) {
-        dispatch(web3Actions.updateAvailability(currentState));
+        dispatch(web3Actions.updateState(currentState));
       }
     });
   };
@@ -49,6 +53,7 @@ export interface IWeb3State {
   available: boolean;
   unlocked: boolean;
   network?: string;
+  blockNumber?: number;
 }
 
 const initialState: IWeb3State = {
@@ -57,7 +62,7 @@ const initialState: IWeb3State = {
 };
 
 export default function web3Reducer(state: IWeb3State = initialState, action: Action) {
-  if (isType(action, web3Actions.updateAvailability)) {
+  if (isType(action, web3Actions.updateState)) {
     return action.payload;
   }
 

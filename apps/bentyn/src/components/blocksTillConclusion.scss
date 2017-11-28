@@ -1,0 +1,9 @@
+.self {
+  opacity: 0.2;
+  color: #263FFF;
+  font-size: 14px;
+
+  &.enabled {
+    opacity: 1;
+  }
+}
