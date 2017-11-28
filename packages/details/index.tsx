@@ -18,7 +18,9 @@ import DetailsAccordion from './containers/DetailsAccordion';
 
 import { fetchLinks } from './duck';
 
-const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({ widgetSettings: widget });
+const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
+  widgetSettings: widget,
+});
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   loadTokenDetails,
@@ -42,7 +44,6 @@ interface IDetailsState {
 import * as style from './widgetDetails.scss';
 
 class Details extends Component<TWidgetDetailsProps, IDetailsState> {
-
   constructor(props: TWidgetDetailsProps) {
     super(props);
     this.state = {
@@ -56,37 +57,38 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
   }
 
   render() {
-    const {
-      children,
-      onAddLink,
-      className,
-      standaloneMode,
-    } = this.props;
+    const { children, onAddLink, className, standaloneMode } = this.props;
     const { mobileOrTablet } = this.state;
 
     const childrenArray = Children.toArray(children);
 
-    const header = React.cloneElement(
-      childrenArray.find(((c: ReactElement<any>) => c.type === Header)) as ReactElement<any>,
-      {
-        onAddClick: onAddLink,
-        openInNewWindowHidden: standaloneMode,
-        onOpenInSeparateWindow: this._onOpenInSeparateWindowClick,
-      },
+    const headerElement = childrenArray.find(
+      (c: ReactElement<any>) => c.type === Header,
     );
+    const header = headerElement
+      ? React.cloneElement(headerElement as ReactElement<any>, {
+          onAddClick: onAddLink,
+          openInNewWindowHidden: standaloneMode,
+          onOpenInSeparateWindow: this._onOpenInSeparateWindowClick,
+        })
+      : null;
 
-    const details = React.cloneElement(
-      childrenArray.find((c: ReactElement<any>) => c.type === Lists) as ReactElement<any>,
-      { mobileOrTablet },
+    const listsElement = childrenArray.find(
+      (c: ReactElement<any>) => c.type === Lists,
     );
+    const lists = listsElement
+      ? React.cloneElement(listsElement as ReactElement<any>, {
+          mobileOrTablet,
+        })
+      : null;
 
     return (
       <div className={classnames(style.self, className)}>
         {header}
-        <div className={style.details}>
-          {details}
-        </div>
-        <Intercom settings={{ app_id: 'xdam3he4', ...this.props.widgetSettings }} />
+        <div className={style.details}>{lists}</div>
+        <Intercom
+          settings={{ app_id: 'xdam3he4', ...this.props.widgetSettings }}
+        />
       </div>
     );
   }
@@ -98,6 +100,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
 
 const ConnectedDetails = connect(mapStateToProps, mapDispatchToProps)(Details);
 
-export const Lists = ({ mobileOrTablet }) => !mobileOrTablet ? <DetailsLists /> : <DetailsAccordion />;
+export const Lists = ({ mobileOrTablet }) =>
+  !mobileOrTablet ? <DetailsLists /> : <DetailsAccordion />;
 export { default as Header } from './containers/Header';
 export { ConnectedDetails as Details };
