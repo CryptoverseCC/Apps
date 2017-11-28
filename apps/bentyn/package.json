@@ -21,6 +21,7 @@
     "@linkexchange/web3-state-provider": "^0.0.2",
     "@linkexchange/widgets": "^0.0.131",
     "@userfeeds/core": "^0.0.37",
+    "@linkexchange/scss-unset": "^0.0.2",
     "classnames": "^2.2.5",
     "lodash.debounce": "^4.0.8",
     "moment": "2.19.1",

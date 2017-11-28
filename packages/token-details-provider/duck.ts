@@ -5,6 +5,8 @@ import * as isEqual from 'lodash/isEqual';
 import core from '@userfeeds/core/src';
 import web3 from '@linkexchange/utils/web3';
 import wait from '@linkexchange/utils/wait';
+import { IWidgetState } from '@linkexchange/ducks/widget';
+import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
 const {
   erc20ContractDecimals,
@@ -19,7 +21,7 @@ export const tokenDetailsActions = {
   tokenDetailsLoaded: acf<ITokenDetailsState>('TOKEN_DETAILS_LOADED'),
 };
 
-export const loadTokenDetails = () => async (dispatch, getState: () => IRootState) => {
+export const loadTokenDetails = () => async (dispatch, getState: () => { widget: IWidgetState, web3: IWeb3State }) => {
   const { widget } = getState();
   const token = widget.asset.split(':')[1];
   if (!token) {

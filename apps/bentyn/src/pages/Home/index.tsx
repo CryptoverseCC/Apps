@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from '@linkexchange/components/src/Button';
+import { Details, Lists } from '@linkexchange/details';
 
 const Home = () => (
-  <div/>
+  <Details>
+    <Lists />
+  </Details>
 );
 
 export default Home;

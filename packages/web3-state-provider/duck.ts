@@ -5,8 +5,6 @@ import * as isEqual from 'lodash/isEqual';
 import core from '@userfeeds/core/src';
 import web3 from '@linkexchange/utils/web3';
 
-// import { IRootState } from './';
-
 const acf = actionCreatorFactory('web3');
 
 export const web3Actions = {

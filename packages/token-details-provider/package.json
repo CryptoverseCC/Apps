@@ -11,5 +11,9 @@
   "dependencies": {
     "@linkexchange/utils": "^0.0.9",
     "@userfeeds/core": "^0.0.37"
+  },
+  "peerDependencies": {
+    "@linkexchange/ducks": "^0.0.2",
+    "@linkexchange/web3-state-provider": "^0.0.2"
   }
 }
