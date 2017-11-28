@@ -9,6 +9,7 @@ import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
 import Wrapper from '@linkexchange/components/src/Wrapper';
+import Tooltip from '@linkexchange/components/src/Tooltip';
 
 import { IBentynState } from '../ducks/bentyn';
 
@@ -56,7 +57,11 @@ class BlocksTillConclusion extends Component<IProps, IState> {
 
     let content = null;
     if (!enabled) {
-      return null;
+      content = (
+        <Tooltip text={reason}>
+          <p>Block till start/conclusion</p>
+        </Tooltip>
+      );
     } else if (startBlock > blockNumber) {
       content = (
         <Wrapper>
@@ -84,7 +89,7 @@ class BlocksTillConclusion extends Component<IProps, IState> {
     }
 
     return (
-      <div className={cx('self', { enabled }, this.props.className)}>
+      <div className={cx(style.self, { disabled: !enabled }, this.props.className)}>
         {content}
       </div>
     );

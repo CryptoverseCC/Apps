@@ -1,11 +1,12 @@
 .self {
-  opacity: 0.2;
-  color: #263FFF;
+  color: #263fff;
   font-size: 14px;
   line-height: 25px;
 
-  &.enabled {
-    opacity: 1;
+  &.disabled {
+    background-color: rgba(137, 147, 159, 0.2);
+    color: rgba(137, 147, 159, 0.8);
+    cursor: not-allowed;
   }
 
   .block-number {
