@@ -1,16 +1,15 @@
 {
   "name": "@linkexchange/scrollable-sections-with-menu",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/utils": "^0.0.9",
-    "@linkexchange/components": "^0.0.24"
+    "@linkexchange/components": "^0.0.24",
+    "@linkexchange/utils": "^0.0.9"
   },
   "peerDependencies": {
     "lodash": "~4.17.4"

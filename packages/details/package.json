@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/details",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,12 +9,12 @@
   "dependencies": {
     "@linkechange/token-details-provider": "^0.0.2",
     "@linkexchange/components": "^0.0.24",
+    "@linkexchange/scrollable-sections-with-menu": "^0.0.2",
     "@linkexchange/toast": "^0.0.2",
     "@linkexchange/types": "^0.0.3",
     "@linkexchange/utils": "^0.0.9",
     "@linkexchange/web3-state-provider": "^0.0.2",
-    "@userfeeds/core": "^0.0.37",
-    "@linkexchange/scrollable-sections-with-menu": "^0.0.1"
+    "@userfeeds/core": "^0.0.37"
   },
   "peerDependencies": {
     "@linkexchange/ducks": "0.0.1",

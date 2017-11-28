@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkechange/app-bentyn",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,12 +14,12 @@
     "@linkechange/token-details-provider": "^0.0.2",
     "@linkexchange/add-link": "^0.0.2",
     "@linkexchange/components": "^0.0.24",
-    "@linkexchange/details": "^0.0.2",
+    "@linkexchange/details": "^0.0.3",
     "@linkexchange/ducks": "^0.0.2",
     "@linkexchange/toast": "^0.0.2",
     "@linkexchange/utils": "^0.0.9",
     "@linkexchange/web3-state-provider": "^0.0.2",
-    "@linkexchange/widgets": "^0.0.130",
+    "@linkexchange/widgets": "^0.0.131",
     "@userfeeds/core": "^0.0.37",
     "classnames": "^2.2.5",
     "lodash.debounce": "^4.0.8",

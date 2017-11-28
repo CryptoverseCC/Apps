@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkechange/app-widget",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "@linkechange/token-details-provider": "^0.0.2",
     "@linkexchange/add-link": "^0.0.2",
     "@linkexchange/components": "^0.0.24",
-    "@linkexchange/details": "^0.0.2",
+    "@linkexchange/details": "^0.0.3",
     "@linkexchange/ducks": "^0.0.2",
     "@linkexchange/scss-unset": "^0.0.2",
     "@linkexchange/toast": "^0.0.2",
