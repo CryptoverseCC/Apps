@@ -13,6 +13,8 @@ import Tooltip from '@linkexchange/components/src/Tooltip';
 
 import { IBentynState } from '../ducks/bentyn';
 
+import ProgressBar from './ProgressBar';
+
 import * as style from './blocksTillConclusion.scss';
 
 const cx = classnames.bind(style);
@@ -73,6 +75,7 @@ class BlocksTillConclusion extends Component<IProps, IState> {
         </Wrapper>
       );
     } else if (endBlock > blockNumber) {
+      const progress = ((blockNumber - startBlock) / (endBlock - startBlock) * 100).toFixed(2);
       content = (
         <Wrapper>
           <p>Blocks till conclusion</p>
@@ -80,6 +83,9 @@ class BlocksTillConclusion extends Component<IProps, IState> {
             <span className={style.blockNumber}>{endBlock - blockNumber} </span>
             (est. {this._getEstimate(endBlock - blockNumber)})
           </p>
+          <Tooltip text={`${progress}%`}>
+            <ProgressBar progress={progress} className={style.progressBar} />
+          </Tooltip>
         </Wrapper>
       );
     } else {
