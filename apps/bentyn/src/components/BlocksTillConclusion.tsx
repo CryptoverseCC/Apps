@@ -18,6 +18,7 @@ const cx = classnames.bind(style);
 
 interface IProps {
   asset: string;
+  className?: string;
   blockNumber: number;
   startBlock: number;
   endBlock: number;
@@ -60,14 +61,20 @@ class BlocksTillConclusion extends Component<IProps, IState> {
       content = (
         <Wrapper>
           <p>Auction will begin at block </p>
-          <p>{startBlock} (est. {this._getEstimate(startBlock - blockNumber)})</p>
+          <p>
+            <span className={style.blockNumber}>{startBlock} </span>
+            (est. {this._getEstimate(startBlock - blockNumber)})
+          </p>
         </Wrapper>
       );
     } else if (endBlock > blockNumber) {
       content = (
         <Wrapper>
           <p>Blocks till conclusion</p>
-          <p>{endBlock - blockNumber} (est. {this._getEstimate(endBlock - blockNumber)})</p>
+          <p>
+            <span className={style.blockNumber}>{endBlock - blockNumber} </span>
+            (est. {this._getEstimate(endBlock - blockNumber)})
+          </p>
         </Wrapper>
       );
     } else {
@@ -77,7 +84,7 @@ class BlocksTillConclusion extends Component<IProps, IState> {
     }
 
     return (
-      <div className={cx('self', { enabled })}>
+      <div className={cx('self', { enabled }, this.props.className)}>
         {content}
       </div>
     );

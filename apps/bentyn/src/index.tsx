@@ -20,8 +20,8 @@ const BENTYN_WIDGET_CONFIG = {
   impression: '100 - 1.000',
 };
 
-const startBlock = 3158896;
-// const startBlock = 2158896;
+// const startBlock = 3158896;
+const startBlock = 2158896;
 const BENTYN_CONFIG = {
   startBlock,
   endBlock: startBlock + 6 * 60 * 24 * 7,
