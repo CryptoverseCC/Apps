@@ -1,0 +1,14 @@
+.self {
+  position: relative;
+  background-color: #ffffff;
+  height: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+
+  .fill {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    background-color: #263FFF;
+  }
+}

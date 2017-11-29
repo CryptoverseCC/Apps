@@ -11,10 +11,10 @@ import Web3StateProvider from '@linkexchange/web3-state-provider';
 import * as style from './widgetSummary.scss';
 
 interface IWidgetSummaryProps {
-  openInNewWindowHidden?: boolean;
-  widgetSettings: IWidgetState;
   onAddClick(): void;
-  onOpenInSeparateWindow(): void;
+  widgetSettings?: IWidgetState;
+  openInNewWindowHidden?: boolean;
+  onOpenInSeparateWindow?: () => void;
 }
 
 const WidgetSummary = ({

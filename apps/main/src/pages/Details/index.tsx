@@ -35,8 +35,8 @@ class Details extends Component<TDetailsProps, IDetailsState> {
 
     return (
       <div className={style.self}>
-        <DetailsComponent standaloneMode className={style.details} onAddLink={this._onAddLink}>
-          <Header />
+        <DetailsComponent standaloneMode className={style.details}>
+          <Header onAddClick={this._onAddLink}/>
           <Lists />
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>

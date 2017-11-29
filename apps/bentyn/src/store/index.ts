@@ -7,6 +7,8 @@ import web3 from '@linkexchange/web3-state-provider/duck';
 import widget, { IWidgetState } from '@linkexchange/ducks/widget';
 import tokenDetails from '@linkechange/token-details-provider/duck';
 
+import bentyn, { IBentynState } from '../ducks/bentyn';
+
 const middlewares: Middleware[] = [
   ReduxThunk,
 ];
@@ -16,9 +18,9 @@ if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger);
 }
 
-const getStore = (widgetInitialState: IWidgetState) => createStore(
-  combineReducers({ web3, links, widget, toast, tokenDetails }),
-  { widget: widgetInitialState },
+const getStore = (widgetInitialState: IWidgetState, bentynInitialState: IBentynState) => createStore(
+  combineReducers({ bentyn, web3, links, widget, toast, tokenDetails }),
+  { widget: widgetInitialState, bentyn: bentynInitialState },
   applyMiddleware(...middlewares),
 );
 
