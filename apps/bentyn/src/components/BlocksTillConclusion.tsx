@@ -8,7 +8,6 @@ import web3 from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
-import Wrapper from '@linkexchange/components/src/Wrapper';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 
 import { IBentynState } from '../ducks/bentyn';
@@ -66,18 +65,18 @@ class BlocksTillConclusion extends Component<IProps, IState> {
       );
     } else if (startBlock > blockNumber) {
       content = (
-        <Wrapper>
+        <>
           <p>Auction will begin at block </p>
           <p>
             <span className={style.blockNumber}>{startBlock} </span>
             (est. {this._getEstimate(startBlock - blockNumber)})
           </p>
-        </Wrapper>
+        </>
       );
     } else if (endBlock > blockNumber) {
       const progress = ((blockNumber - startBlock) / (endBlock - startBlock) * 100).toFixed(2);
       content = (
-        <Wrapper>
+        <>
           <p>Blocks till conclusion</p>
           <p>
             <span className={style.blockNumber}>{endBlock - blockNumber} </span>
@@ -86,7 +85,7 @@ class BlocksTillConclusion extends Component<IProps, IState> {
           <Tooltip text={`${progress}%`}>
             <ProgressBar progress={progress} className={style.progressBar} />
           </Tooltip>
-        </Wrapper>
+        </>
       );
     } else {
       content = (

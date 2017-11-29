@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Input from '../Input';
 import Dropdown from '../Dropdown';
-import Wrapper from '../Wrapper';
 
 export const ETHER = '';
 export const CUSTOM_TOKEN = 'custom';
@@ -108,7 +107,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
         />
       ) : null;
     return (
-      <Wrapper>
+      <>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Dropdown
             style={{ minWidth: '150px' }}
@@ -126,7 +125,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
           />
         </div>
         {ContractAddress}
-      </Wrapper>
+      </>
     );
   }
 

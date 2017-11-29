@@ -6,7 +6,6 @@ import { openToast } from '@linkexchange/toast/duck';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 
 import Pill from '@linkexchange/components/src/Pill';
-import Wrapper from '@linkexchange/components/src/Wrapper';
 
 import ScrollableSectionsWithMenu, {
   Menu,
@@ -41,17 +40,17 @@ const DetailsLists = ({
       </MenuItem>
       <MenuItem>
         {hasWhitelist ? (
-          <Wrapper>
+          <>
             <span>Whitelist</span>
             <Pill style={{ marginLeft: '10px' }}>
               {whitelistedLinksCount}
             </Pill>
-          </Wrapper>
+          </>
         ) : (
-          <Wrapper>
+          <>
             <span>Algorithm</span>
             <Pill style={{ marginLeft: '10px' }}>{allLinksCount}</Pill>
-          </Wrapper>
+          </>
         )}
       </MenuItem>
       <MenuItem>

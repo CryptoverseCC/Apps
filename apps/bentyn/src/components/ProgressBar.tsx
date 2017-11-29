@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import * as style from './progressBar.scss';
 
 interface IProps {
-  progress: number;
+  progress: number|string;
   className?: string;
 }
 

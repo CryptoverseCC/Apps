@@ -5,7 +5,6 @@ import Input from '@linkexchange/components/src/Input';
 import Button from '@linkexchange/components/src/Button';
 import NewButton from '@linkexchange/components/src/NewButton';
 import Tooltip from '@linkexchange/components/src/Tooltip';
-import Wrapper from '@linkexchange/components/src/Wrapper';
 import { IRemoteLink } from '@linkexchange/types/link';
 import web3 from '@linkexchange/utils/web3';
 import { R, validate } from '@linkexchange/utils/validation';
@@ -71,7 +70,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         <Web3StateProvider
           desiredNetwork={desiredNetwork}
           render={({ enabled, reason }) => (
-            <Wrapper>
+            <>
               <Tooltip text={reason}>
                 <Button secondary className={style.boostButton} disabled={!enabled} onClick={this._onBoostClick}>
                   Boost
@@ -113,7 +112,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                   </NewButton>
                 </div>
               </If>
-            </Wrapper>
+            </>
           )}
         />
       </div>
