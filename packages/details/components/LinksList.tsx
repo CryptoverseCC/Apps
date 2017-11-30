@@ -4,9 +4,9 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
+import BoostLink from '@linkexchange/boost-link';
 import web3 from '@linkexchange/utils/web3';
-
-import BoostLink from './BoostLink';
+import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import * as style from './linksList.scss';
 
@@ -45,19 +45,30 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     },
     {
       name: 'Bids',
-      prop: (link: ILink) => (
-        <div className={style.boostCell}>
-          {link.group_count || 0}
-          <BoostLink
-            asset={this.props.asset}
-            recipientAddress={this.props.recipientAddress}
-            onSuccess={this.props.onBoostSuccess}
-            onError={this.props.onBoostError}
-            link={link}
-            links={this.props.links}
-          />
-        </div>
-      ),
+      prop: (link: ILink) => {
+        const [desiredNetwork] = this.props.asset.split(':');
+
+        return (
+          <div className={style.boostCell}>
+            {link.group_count || 0}
+            <Web3StateProvider
+              desiredNetwork={desiredNetwork}
+              render={({ enabled, reason }) => (
+                <BoostLink
+                  disabled={!enabled}
+                  disableReason={reason}
+                  asset={this.props.asset}
+                  recipientAddress={this.props.recipientAddress}
+                  onSuccess={this.props.onBoostSuccess}
+                  onError={this.props.onBoostError}
+                  link={link}
+                  links={this.props.links}
+                />
+              )}
+            />
+          </div>
+        );
+      },
     },
   ];
 
@@ -105,7 +116,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     return (
       <tr key={link.id}>
         {this.columns.map(({ prop, name }) => (
-          <td key={`${name}_${link.id}`}>{prop(link, index)}</td>
+          <td key={`${name}_${link.id}`}>{prop(link, index, this.props)}</td>
         ))}
       </tr>
     );

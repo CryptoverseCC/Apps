@@ -16,7 +16,8 @@ const Home = ({ widgetSettings }) => (
       className={style.blocksTillConclusion}
     />
     <Details standaloneMode className={style.details}>
-      <Lists />
+      <Lists
+      />
     </Details>
   </div>
 );

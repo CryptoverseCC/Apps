@@ -3,7 +3,7 @@
   "name": "@linkechange/token-details-provider",
   "version": "0.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {},
   "keywords": [],
   "author": "",
