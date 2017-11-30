@@ -4,16 +4,43 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
-import BoostLink from '@linkexchange/boost-link';
+import BoostLinkComponent from '@linkexchange/boost-link';
 import web3 from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import * as style from './linksList.scss';
 
+export interface IDefaultBoostLinkWrapperProps {
+  asset: string;
+  recipientAddress: string;
+  onSuccess(transationId: string): void;
+  onError(error: any): void;
+  link: ILink | IRemoteLink;
+  links: ILink[] | IRemoteLink[];
+}
+
+const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
+  const [desiredNetwork] = props.asset.split(':');
+
+  return (
+    <Web3StateProvider
+      desiredNetwork={desiredNetwork}
+      render={({ enabled, reason }) => (
+        <BoostLinkComponent
+          {...props}
+          disabled={!enabled}
+          disableReason={reason}
+        />
+      )}
+    />
+  );
+};
+
 interface ILinksListProps {
   label: string;
   links: ILink[] | IRemoteLink[];
   asset: string;
+  BoostLink?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
   recipientAddress: string;
   onBoostSuccess?: (transationId: string) => void;
   onBoostError?: (error: any) => void;
@@ -46,25 +73,18 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     {
       name: 'Bids',
       prop: (link: ILink) => {
-        const [desiredNetwork] = this.props.asset.split(':');
+        const { BoostLink = DefaultBoostLink} = this.props;
 
         return (
           <div className={style.boostCell}>
             {link.group_count || 0}
-            <Web3StateProvider
-              desiredNetwork={desiredNetwork}
-              render={({ enabled, reason }) => (
-                <BoostLink
-                  disabled={!enabled}
-                  disableReason={reason}
-                  asset={this.props.asset}
-                  recipientAddress={this.props.recipientAddress}
-                  onSuccess={this.props.onBoostSuccess}
-                  onError={this.props.onBoostError}
-                  link={link}
-                  links={this.props.links}
-                />
-              )}
+            <BoostLink
+              asset={this.props.asset}
+              recipientAddress={this.props.recipientAddress}
+              onSuccess={this.props.onBoostSuccess}
+              onError={this.props.onBoostError}
+              link={link}
+              links={this.props.links}
             />
           </div>
         );
@@ -116,7 +136,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     return (
       <tr key={link.id}>
         {this.columns.map(({ prop, name }) => (
-          <td key={`${name}_${link.id}`}>{prop(link, index, this.props)}</td>
+          <td key={`${name}_${link.id}`}>{prop(link, index)}</td>
         ))}
       </tr>
     );
