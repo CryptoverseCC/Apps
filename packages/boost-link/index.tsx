@@ -19,7 +19,7 @@ import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
   disabled?: boolean;
-  disableReason?: string;
+  disabledReason?: string;
   link: IRemoteLink;
   links: IRemoteLink[];
   asset: string;
@@ -61,13 +61,13 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   render() {
-    const { link, asset, disabled, disableReason } = this.props;
+    const { link, asset, disabled, disabledReason } = this.props;
     const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
     const [desiredNetwork] = asset.split(':');
 
     return (
       <div ref={this._onButtonRef} className={style.self}>
-        <Tooltip text={disableReason}>
+        <Tooltip text={disabledReason}>
           <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>
             Boost
           </Button>

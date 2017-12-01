@@ -101,11 +101,11 @@ const ConnectedDetails = connect(mapStateToProps, mapDispatchToProps)(Details);
 
 interface IListsProps {
   mobileOrTablet?: boolean;
-  BoostLink?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
+  boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
 }
 
-export const Lists = ({ mobileOrTablet, ...props }: IListsProps) =>
-  !mobileOrTablet ? <DetailsLists {...props} /> : <DetailsAccordion {...props}/>;
+export const Lists = ({ mobileOrTablet, ...restProps }: IListsProps) =>
+  !mobileOrTablet ? <DetailsLists {...restProps} /> : <DetailsAccordion />;
 
 export { default as Header } from './containers/Header';
 export { ConnectedDetails as Details };

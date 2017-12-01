@@ -31,7 +31,7 @@ const DetailsLists = ({
   allLinks,
   onBoostSuccess,
   onBoostError,
-  BoostLink,
+  boostLinkComponent,
 }) => (
   <ScrollableSectionsWithMenu>
     <Menu style={{ flexBasis: '200px', minWidth: '200px' }}>
@@ -68,7 +68,7 @@ const DetailsLists = ({
           asset={widgetSettings.asset}
           recipientAddress={widgetSettings.recipientAddress}
           links={links}
-          BoostLink={BoostLink}
+          boostLinkComponent={boostLinkComponent}
           onBoostSuccess={onBoostSuccess}
           onBoostError={onBoostError}
         />
@@ -81,7 +81,7 @@ const DetailsLists = ({
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
             links={whitelistedLinks}
-            BoostLink={BoostLink}
+            boostLinkComponent={boostLinkComponent}
             onBoostSuccess={onBoostSuccess}
             onBoostError={onBoostError}
           />
@@ -92,7 +92,7 @@ const DetailsLists = ({
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
             links={allLinks}
-            BoostLink={BoostLink}
+            boostLinkComponent={boostLinkComponent}
             onBoostSuccess={onBoostSuccess}
             onBoostError={onBoostError}
           />

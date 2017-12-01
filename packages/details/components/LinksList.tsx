@@ -29,7 +29,7 @@ const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
         <BoostLinkComponent
           {...props}
           disabled={!enabled}
-          disableReason={reason}
+          disabledReason={reason}
         />
       )}
     />
@@ -40,7 +40,7 @@ interface ILinksListProps {
   label: string;
   links: ILink[] | IRemoteLink[];
   asset: string;
-  BoostLink?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
+  boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
   recipientAddress: string;
   onBoostSuccess?: (transationId: string) => void;
   onBoostError?: (error: any) => void;
@@ -73,7 +73,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     {
       name: 'Bids',
       prop: (link: ILink) => {
-        const { BoostLink = DefaultBoostLink} = this.props;
+        const { boostLinkComponent: BoostLink = DefaultBoostLink} = this.props;
 
         return (
           <div className={style.boostCell}>

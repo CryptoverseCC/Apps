@@ -37,9 +37,9 @@ class BlocksTillConclusionProvider extends Component<IProps, {}> {
       return render({ enabled: false, reason: `The auction hasn't begun yet` });
     } else if (endBlock > blockNumber) {
       return render({ enabled: true });
-    } else {
-      return render({ enabled: false, reason: 'The auction is closed' });
     }
+
+    return render({ enabled: false, reason: 'The auction is closed' });
   }
 }
 

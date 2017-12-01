@@ -18,7 +18,7 @@ const BoostLink = (props: IDefaultBoostLinkWrapperProps) => (
       <BoostLinkComponent
         {...props}
         disabled={!enabled}
-        disableReason={reason}
+        disabledReason={reason}
       />
     )}
   />
@@ -31,9 +31,7 @@ const Home = ({ widgetSettings }) => (
       className={style.blocksTillConclusion}
     />
     <Details standaloneMode className={style.details}>
-      <Lists
-        BoostLink={BoostLink}
-      />
+      <Lists boostLinkComponent={BoostLink} />
     </Details>
   </div>
 );
