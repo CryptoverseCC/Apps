@@ -4,16 +4,43 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
+import BoostLinkComponent from '@linkexchange/boost-link';
 import web3 from '@linkexchange/utils/web3';
-
-import BoostLink from './BoostLink';
+import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import * as style from './linksList.scss';
+
+export interface IDefaultBoostLinkWrapperProps {
+  asset: string;
+  recipientAddress: string;
+  onSuccess(transationId: string): void;
+  onError(error: any): void;
+  link: ILink | IRemoteLink;
+  links: ILink[] | IRemoteLink[];
+}
+
+const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
+  const [desiredNetwork] = props.asset.split(':');
+
+  return (
+    <Web3StateProvider
+      desiredNetwork={desiredNetwork}
+      render={({ enabled, reason }) => (
+        <BoostLinkComponent
+          {...props}
+          disabled={!enabled}
+          disabledReason={reason}
+        />
+      )}
+    />
+  );
+};
 
 interface ILinksListProps {
   label: string;
   links: ILink[] | IRemoteLink[];
   asset: string;
+  boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
   recipientAddress: string;
   onBoostSuccess?: (transationId: string) => void;
   onBoostError?: (error: any) => void;
@@ -45,19 +72,23 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     },
     {
       name: 'Bids',
-      prop: (link: ILink) => (
-        <div className={style.boostCell}>
-          {link.group_count || 0}
-          <BoostLink
-            asset={this.props.asset}
-            recipientAddress={this.props.recipientAddress}
-            onSuccess={this.props.onBoostSuccess}
-            onError={this.props.onBoostError}
-            link={link}
-            links={this.props.links}
-          />
-        </div>
-      ),
+      prop: (link: ILink) => {
+        const { boostLinkComponent: BoostLink = DefaultBoostLink} = this.props;
+
+        return (
+          <div className={style.boostCell}>
+            {link.group_count || 0}
+            <BoostLink
+              asset={this.props.asset}
+              recipientAddress={this.props.recipientAddress}
+              onSuccess={this.props.onBoostSuccess}
+              onError={this.props.onBoostError}
+              link={link}
+              links={this.props.links}
+            />
+          </div>
+        );
+      },
     },
   ];
 

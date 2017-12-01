@@ -11,15 +11,15 @@ import { R, validate } from '@linkexchange/utils/validation';
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
-
-import Web3StateProvider from '@linkexchange/web3-state-provider';
+import TokenDetailsProvider from '@linkechange/token-details-provider';
 
 import If from '@linkexchange/components/src/utils/If';
 
 import * as style from './boostLink.scss';
-import TokenDetailsProvider from '@linkechange/token-details-provider';
 
 interface IBidLinkProps {
+  disabled?: boolean;
+  disabledReason?: string;
   link: IRemoteLink;
   links: IRemoteLink[];
   asset: string;
@@ -61,60 +61,53 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   render() {
-    const { link, asset } = this.props;
+    const { link, asset, disabled, disabledReason } = this.props;
     const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
     const [desiredNetwork] = asset.split(':');
 
     return (
       <div ref={this._onButtonRef} className={style.self}>
-        <Web3StateProvider
-          desiredNetwork={desiredNetwork}
-          render={({ enabled, reason }) => (
-            <>
-              <Tooltip text={reason}>
-                <Button secondary className={style.boostButton} disabled={!enabled} onClick={this._onBoostClick}>
-                  Boost
-                </Button>
-              </Tooltip>
-              <If condition={visible && enabled}>
-                <div className={style.overlay} onClick={this._onOverlayClick} />
-                <div
-                  ref={this._onFormRef}
-                  className={style.form}
-                  style={{ top: formTop, left: formLeft, opacity: formOpacity }}
-                >
-                  <div className={style.inputRow}>
-                    <Input
-                      placeholder="Value"
-                      value={value}
-                      onChange={this._onValueChange}
-                      errorMessage={validationError}
-                    />
-                    <p className={style.equalSign}>=</p>
-                    <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
-                  </div>
-                  {this._getTokenAddress() && (
-                    <TokenDetailsProvider
-                      render={(tokenDetails) => (
-                        <p>
-                          Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-                        </p>
-                      )}
-                    />
-                  )}
-                  <NewButton
-                    disabled={!!validationError || !value}
-                    style={{ marginLeft: 'auto' }}
-                    onClick={this._onSendClick}
-                    color="primary"
-                  >
-                    Send
-                  </NewButton>
-                </div>
-              </If>
-            </>
-          )}
-        />
+        <Tooltip text={disabledReason}>
+          <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>
+            Boost
+          </Button>
+        </Tooltip>
+        <If condition={visible && !disabled}>
+          <div className={style.overlay} onClick={this._onOverlayClick} />
+          <div
+            ref={this._onFormRef}
+            className={style.form}
+            style={{ top: formTop, left: formLeft, opacity: formOpacity }}
+          >
+            <div className={style.inputRow}>
+              <Input
+                placeholder="Value"
+                value={value}
+                onChange={this._onValueChange}
+                errorMessage={validationError}
+              />
+              <p className={style.equalSign}>=</p>
+              <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
+            </div>
+            {this._getTokenAddress() && (
+              <TokenDetailsProvider
+                render={(tokenDetails) => (
+                  <p>
+                    Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+                  </p>
+                )}
+              />
+            )}
+            <NewButton
+              disabled={!!validationError || !value}
+              style={{ marginLeft: 'auto' }}
+              onClick={this._onSendClick}
+              color="primary"
+            >
+              Send
+            </NewButton>
+          </div>
+        </If>
       </div>
     );
   }

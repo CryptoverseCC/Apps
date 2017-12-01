@@ -13,6 +13,7 @@
     "@linkexchange/toast": "^0.0.2",
     "@linkexchange/types": "^0.0.3",
     "@linkexchange/utils": "^0.0.9",
+    "@linkexchange/boost-link": "^0.0.1",
     "@linkexchange/web3-state-provider": "^0.0.2",
     "@userfeeds/core": "^0.0.37"
   },

@@ -1,0 +1,18 @@
+{
+  "name": "@linkexchange/boost-link",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@userfeeds/core": "0.0.37",
+    "@linkexchange/utils": "0.0.9",
+    "@linkexchange/types": "0.0.3",
+    "@linkexchange/components": "0.0.24",
+    "@linkechange/token-details-provider": "0.0.2"
+  }
+}

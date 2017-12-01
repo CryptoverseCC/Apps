@@ -15,6 +15,7 @@ import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 import Header from './containers/Header';
 import DetailsLists from './containers/DetailsLists';
 import DetailsAccordion from './containers/DetailsAccordion';
+import { IDefaultBoostLinkWrapperProps } from './components/LinksList';
 
 import { fetchLinks } from './duck';
 
@@ -100,9 +101,12 @@ const ConnectedDetails = connect(mapStateToProps, mapDispatchToProps)(Details);
 
 interface IListsProps {
   mobileOrTablet?: boolean;
+  boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
 }
 
-export const Lists = ({ mobileOrTablet }: IListsProps) =>
-  !mobileOrTablet ? <DetailsLists /> : <DetailsAccordion />;
+export const Lists = ({ mobileOrTablet, ...restProps }: IListsProps) =>
+  !mobileOrTablet ? <DetailsLists {...restProps} /> : <DetailsAccordion />;
+
 export { default as Header } from './containers/Header';
 export { ConnectedDetails as Details };
+export { IDefaultBoostLinkWrapperProps } from './components/LinksList';
