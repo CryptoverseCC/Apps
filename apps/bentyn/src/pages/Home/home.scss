@@ -1,11 +1,21 @@
-.details {
-  width: 100%;
-}
+.self {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 
-.blocks-till-conclusion {
-  display: inline-block;
-  margin: 5px;
-  padding: 15px;
-  border-radius: 3px;
-  background-color: rgba(212,217,255,0.4);
+  .details {
+    flex: 1;
+    width: 100%;
+  }
+
+  .blocks-till-conclusion {
+    position: absolute;
+    left: 10px;
+    top: 250px;
+    margin: 5px;
+    padding: 15px;
+    border-radius: 3px;
+    background-color: rgba(212,217,255,0.4);
+  }
 }

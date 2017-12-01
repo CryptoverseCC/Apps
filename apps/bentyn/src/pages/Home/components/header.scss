@@ -1,0 +1,105 @@
+.self {
+  display: flex;
+  flex-direction: row;
+  padding: 32px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #EDF1F2;
+
+  .token {
+    margin-left: 80px;
+    margin-right: 50px;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    color: rgb(38, 63, 255);
+    font-size: 18px;
+    letter-spacing: 3px;
+    font-weight: bold;
+    background-color: rgba(38,63,255,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .inner {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+      bottom: -15px;
+      right: -10px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      background-color: rgb(255, 255, 255);
+      box-shadow: 0 3px 8px 0 rgba(27,36,55,0.09);
+    }
+  }
+
+  .about {
+    height: 70px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .name {
+      font-size: 21px;
+      line-height: 17px;
+    }
+
+    .description {
+      color: rgb(83, 90, 105);
+    }
+  }
+
+  .media {
+    display: flex;
+    flex-direction: row;
+
+    .item {
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0px 35px;
+
+      .number {
+        font-size: 21px;
+        line-height: 17px;
+      }
+
+      a {
+        text-decoration: none;
+        color: rgb(83, 90, 105);
+        font-size: 14px;
+        line-height: 17px;
+      }
+
+      .logo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        img {
+          padding-right: 4px;
+          width: 16px;
+        }
+      }
+    }
+  }
+
+  .contet-me {
+    margin-left: auto;
+    margin-right: 80px;
+    align-self: center;
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgb(38, 63, 255);
+    background-color: rgba(38,63,255,0.2);
+  }
+}

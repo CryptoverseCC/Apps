@@ -80,6 +80,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
           mobileOrTablet,
         })
       : null;
+    const restChildren = childrenArray.filter((c) => !(c === headerElement || c === listsElement));
 
     return (
       <div className={classnames(style.self, className)}>
@@ -88,6 +89,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
         <Intercom
           settings={{ app_id: 'xdam3he4', ...this.props.widgetSettings }}
         />
+        {restChildren}
       </div>
     );
   }

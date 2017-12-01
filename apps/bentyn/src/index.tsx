@@ -9,6 +9,7 @@ import '../styles/all.scss';
 const BENTYN_WIDGET_CONFIG = {
   apiUrl: 'https://api.userfeeds.io',
   recipientAddress: '0xcd73518680ab60ec2253841909d3448bc60f0665',
+  whitelist: '0xcd73518680ab60ec2253841909d3448bc60f0665',
   asset: 'ropsten:0x31d46d605703f66bd3ea95f699ddec9114fe9b89',
   algorithm: 'links',
   size: 'leaderboard',

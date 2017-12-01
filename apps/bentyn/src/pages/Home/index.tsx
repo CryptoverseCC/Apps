@@ -1,40 +1,62 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Modal from '@linkexchange/components/src/Modal';
 import { IWidgetState } from '@linkexchange/ducks/widget';
-import BoostLinkComponent from '@linkexchange/boost-link';
-import { Details, Lists, IDefaultBoostLinkWrapperProps } from '@linkexchange/details';
+import { Details, Lists } from '@linkexchange/details';
+import AddLink from '@linkexchange/add-link';
 
 import BlocksTillConclusion from '../../components/BlocksTillConclusion';
-import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
+import BoostLink from './components/BoostLink';
+
+import Header from './components/Header';
+import AddLinkButton from './components/AddLinkButton';
 
 import * as style from './home.scss';
 
-const BoostLink = (props: IDefaultBoostLinkWrapperProps) => (
-  <BlocksTillConclusionProvider
-    asset={props.asset}
-    render={({ enabled, reason }) => (
-      <BoostLinkComponent
-        {...props}
-        disabled={!enabled}
-        disabledReason={reason}
-      />
-    )}
-  />
-);
+interface IProps {
+  widgetSettings: IWidgetState;
+}
 
-const Home = ({ widgetSettings }) => (
-  <div>
-    <BlocksTillConclusion
-      asset={widgetSettings.asset}
-      className={style.blocksTillConclusion}
-    />
-    <Details standaloneMode className={style.details}>
-      <Lists boostLinkComponent={BoostLink} />
-    </Details>
-  </div>
-);
+interface IState {
+  isModalOpen: boolean;
+}
+
+class Home extends Component<IProps, IState> {
+  state = {
+    isModalOpen: false,
+  };
+
+  render() {
+    const { widgetSettings } = this.props;
+    const { isModalOpen } = this.state;
+    return (
+      <div className={style.self}>
+        <Header />
+        <Details standaloneMode className={style.details}>
+          <AddLinkButton onClick={this._addLink} />
+          <BlocksTillConclusion
+            asset={widgetSettings.asset}
+            className={style.blocksTillConclusion}
+          />
+          <Lists boostLinkComponent={BoostLink} />
+        </Details>
+        <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>
+          <AddLink openWidgetDetails={this._closeModal} />
+        </Modal>
+      </div>
+    );
+  }
+
+  _addLink = () => {
+    this.setState({ isModalOpen: true });
+  }
+
+  _closeModal = () => {
+    this.setState({ isModalOpen: false });
+  }
+}
 
 const mapStateToProps = ({ widget }: { widget: IWidgetState}) => ({
   widgetSettings: widget,

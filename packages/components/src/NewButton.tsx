@@ -1,7 +1,9 @@
 import React from 'react';
-import { isType } from '@linkexchange/utils';
-import * as style from './newButton.scss';
 import classnames from 'classnames';
+
+import { isType } from '@linkexchange/utils';
+
+import * as style from './newButton.scss';
 
 type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: 'small' | 'medium';

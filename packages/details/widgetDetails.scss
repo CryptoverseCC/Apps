@@ -8,6 +8,7 @@
   align-content: stretch;
   justify-content: flex-start;
   align-items: stretch;
+  position: relative;
 
   @media screen and (max-width: 1200px) {
     width: 98vw;
