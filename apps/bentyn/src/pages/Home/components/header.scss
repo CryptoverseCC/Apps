@@ -1,15 +1,45 @@
 .self {
   display: flex;
   flex-direction: row;
-  padding: 32px;
+  padding: 32px 80px;
   background-color: #ffffff;
   border-bottom: 1px solid #EDF1F2;
 
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+
+  .about {
+    display: flex;
+    flex-direction: row;
+
+    @media screen and (max-width: 800px) {
+      padding-bottom: 15px;
+    }
+  }
+
+  .bio {
+    height: 70px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .name {
+      font-size: 21px;
+      line-height: 17px;
+    }
+
+    .description {
+      color: rgb(83, 90, 105);
+    }
+  }
+
   .token {
-    margin-left: 80px;
     margin-right: 50px;
     position: relative;
-    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
     height: 60px;
     border-radius: 60px;
     color: rgb(38, 63, 255);
@@ -38,26 +68,15 @@
     }
   }
 
-  .about {
-    height: 70px;
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .name {
-      font-size: 21px;
-      line-height: 17px;
-    }
-
-    .description {
-      color: rgb(83, 90, 105);
-    }
-  }
-
   .media {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    width: 250px;
+
+    @media screen and (max-width: 800px) {
+      width: auto;
+    }
 
     .item {
       height: 70px;
@@ -65,7 +84,6 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 0px 35px;
 
       .number {
         font-size: 21px;
@@ -92,14 +110,26 @@
     }
   }
 
-  .contet-me {
+  .contact-me {
+    min-width: 130px;
     margin-left: auto;
-    margin-right: 80px;
     align-self: center;
     font-weight: bold;
     font-size: 12px;
     letter-spacing: 2px;
     color: rgb(38, 63, 255);
     background-color: rgba(38,63,255,0.2);
+
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+
+    &.contact-me-mobile {
+      display: none;
+
+      @media screen and (max-width: 800px) {
+        display: block;
+      }
+    }
   }
 }

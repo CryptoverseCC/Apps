@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Modal from '@linkexchange/components/src/Modal';
+import Button from '@linkexchange/components/src/NewButton';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 import { Details, Lists } from '@linkexchange/details';
 import AddLink from '@linkexchange/add-link';
@@ -11,7 +12,6 @@ import BlocksTillConclusion from '../../components/BlocksTillConclusion';
 import BoostLink from './components/BoostLink';
 
 import Header from './components/Header';
-import AddLinkButton from './components/AddLinkButton';
 
 import * as style from './home.scss';
 
@@ -35,7 +35,7 @@ class Home extends Component<IProps, IState> {
       <div className={style.self}>
         <Header />
         <Details standaloneMode className={style.details}>
-          <AddLinkButton onClick={this._addLink} />
+          <Button className={style.addLink} color="empty" onClick={this._addLink}>Add link</Button>
           <BlocksTillConclusion
             asset={widgetSettings.asset}
             className={style.blocksTillConclusion}
