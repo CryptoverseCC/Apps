@@ -20,7 +20,7 @@ const Header = () => (
         <p className={style.name}>Szczepan Bentyn</p>
         <p className={style.description}>Talking mostly about cryptocurrencies.</p>
       </div>
-      <Button color="empty" className={classnames(style.contactMe, style.contactMeMobile)}>CONTACT ME</Button>
+      <Button color="secondary" className={classnames(style.contactMe, style.contactMeMobile)}>CONTACT ME</Button>
     </div>
     <div className={style.media}>
       <div className={style.item}>
@@ -51,7 +51,7 @@ const Header = () => (
         </a>
       </div>
     </div>
-    <Button color="empty" className={style.contactMe}>CONTACT ME</Button>
+    <Button color="secondary" className={style.contactMe}>CONTACT ME</Button>
   </div>
 );
 

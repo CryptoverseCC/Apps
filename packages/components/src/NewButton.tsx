@@ -7,7 +7,7 @@ import * as style from './newButton.scss';
 
 type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: 'small' | 'medium';
-  color?: 'primary' | 'success' | 'pending' | 'metaPending' | 'error' | 'empty';
+  color?: 'primary' | 'secondary' | 'success' | 'pending' | 'metaPending' | 'error' | 'empty';
   outline?: boolean;
 };
 
