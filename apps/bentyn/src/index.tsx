@@ -8,14 +8,14 @@ import '../styles/all.scss';
 
 const BENTYN_WIDGET_CONFIG = {
   apiUrl: 'https://api.userfeeds.io',
-  recipientAddress: '0xcd73518680ab60ec2253841909d3448bc60f0665',
-  whitelist: '0xcd73518680ab60ec2253841909d3448bc60f0665',
-  asset: 'ropsten:0x31d46d605703f66bd3ea95f699ddec9114fe9b89',
+  recipientAddress: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
+  whitelist: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
+  asset: 'ropsten:0x44da4e9196be4fe6d06b942ac4f980390f015f82',
   algorithm: 'links',
   size: 'leaderboard',
   slots: 10,
   timeslot: 5,
-  contactMethod: 'maciej.gorski@userfeeds.io',
+  contactMethod: 'ben@userfeeds.io',
   title: 'Widget title',
   description: 'I accept only links that are about science and technology. I like bicycles',
   impression: '100 - 1.000',
