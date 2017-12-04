@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Modal from '@linkexchange/components/src/Modal';
+import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { IWidgetState } from '@linkexchange/ducks/widget';
@@ -16,6 +17,7 @@ import Header from './components/Header';
 
 import * as style from './home.scss';
 import Welcome from './components/Welcome';
+import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
 interface IProps {
   widgetSettings: IWidgetState;
@@ -37,7 +39,23 @@ class Home extends Component<IProps, IState> {
       <div className={style.self}>
         <Header />
         <Details standaloneMode className={style.details}>
-          <Button className={style.addLink} color="empty" onClick={this._addLink}>Add link</Button>
+          <BlocksTillConclusionProvider
+            asset={widgetSettings.asset}
+            render={({ enabled, reason }) => (
+              <div className={style.addLinkContainer}>
+                <Tooltip text={reason}>
+                  <Button
+                    disabled={!enabled}
+                    color="empty"
+                    className={style.addLink}
+                    onClick={this._addLink}
+                  >
+                    Add link
+                  </Button>
+                </Tooltip>
+              </div>
+            )}
+          />
           <BlocksTillConclusion
             asset={widgetSettings.asset}
             className={style.blocksTillConclusion}

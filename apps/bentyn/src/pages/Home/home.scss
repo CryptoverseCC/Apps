@@ -9,11 +9,14 @@
     width: 100%;
   }
 
-  .addLink {
+  .add-link-container {
     position: absolute;
-    width: 130px;
-    right: 80px;
     top: 10px;
+    right: 80px;
+  }
+
+  .add-link {
+    width: 130px;
     color: #ffffff;
     font-size: 12px;
     letter-spacing: 2px;
