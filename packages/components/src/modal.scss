@@ -18,9 +18,5 @@
     flex-direction: column;
     background-color: $white;
     box-shadow: 0 30px 80px $shadow-modal;
-
-    @media screen and (max-width: 1200px) {
-      overflow-y: scroll;
-    }
   }
 }
