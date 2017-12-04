@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@linkexchange/bentyn-widget",
+  "name": "@linkexchange/obs-widget",
   "version": "0.0.16",
   "description": "",
   "main": "src/index.ts",
