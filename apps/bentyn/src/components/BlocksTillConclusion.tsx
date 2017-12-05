@@ -48,16 +48,16 @@ class BlocksTillConclusion extends Component<IProps, IState> {
     );
   }
 
-  _renderComponent = ({ enabled, reason }) => {
+  _renderComponent = ({ enabled: web3Enabled, reason }: { enabled: boolean, reason?: string }) => {
     // ToDo it's not the best place for this.
-    if (enabled) {
+    if (web3Enabled) {
       this._getAverageBlockTime();
     }
-
     const { blockNumber, startBlock, endBlock } = this.props;
+    const disabled = !web3Enabled || (reason && reason.startsWith('You have to switch to'));
 
     let content = null;
-    if (!enabled) {
+    if (disabled) {
       content = (
         <Tooltip text={reason}>
           <p>Block till start/conclusion</p>
@@ -94,7 +94,7 @@ class BlocksTillConclusion extends Component<IProps, IState> {
     }
 
     return (
-      <div className={cx(style.self, { disabled: !enabled }, this.props.className)}>
+      <div className={cx(style.self, { disabled }, this.props.className)}>
         {content}
       </div>
     );

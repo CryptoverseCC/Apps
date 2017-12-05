@@ -17,6 +17,7 @@ import Header from './components/Header';
 
 import * as style from './home.scss';
 import Welcome from './components/Welcome';
+import HowToBuy from './components/HowToBuy';
 import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
 interface IProps {
@@ -24,7 +25,7 @@ interface IProps {
 }
 
 interface IState {
-  openedModal: 'none' | 'Welcome' | 'AddLink';
+  openedModal: 'none' | 'Welcome' | 'HowToBuy' | 'AddLink';
 }
 
 class Home extends Component<IProps, IState> {
@@ -67,6 +68,9 @@ class Home extends Component<IProps, IState> {
             <Switch.Case condition="AddLink">
               <AddLink openWidgetDetails={this._closeModal} />
             </Switch.Case>
+            <Switch.Case condition="HowToBuy">
+              <HowToBuy />
+            </Switch.Case>
             <Switch.Case condition="Welcome">
               <Welcome
                 asset={widgetSettings.asset}
@@ -89,7 +93,7 @@ class Home extends Component<IProps, IState> {
   }
 
   _purchaseBens = () => {
-    return null;
+    this.setState({ openedModal: 'HowToBuy' });
   }
 }
 
