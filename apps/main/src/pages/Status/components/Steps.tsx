@@ -91,8 +91,8 @@ interface IStepsProps {
   link?: any;
   blockchainState: {
     web3Available: boolean;
-    blockNumber: number | null;
-    currentBlockNumber: number | null;
+    web3UnavailableReason?: string;
+    transationBlockNumber?: number;
   };
 }
 
@@ -109,7 +109,7 @@ export default class Steps extends Component<IStepsProps, {}> {
     if (link) {
       step0State = 'done';
     } else if (blockchainState.web3Available) {
-      if (blockchainState.blockNumber) {
+      if (blockchainState.transationBlockNumber) {
         step0State = 'done';
       } else {
         step0State = 'waiting';
@@ -117,7 +117,7 @@ export default class Steps extends Component<IStepsProps, {}> {
       }
     } else {
       step0State = 'disabled';
-      step0Reason = 'Web is unavailable';
+      step0Reason = blockchainState.web3UnavailableReason;
     }
 
     const step1State = step0State === 'waiting' ? 'notstarted' : link ? 'done' : 'waiting';

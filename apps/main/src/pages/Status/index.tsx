@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Location } from 'history';
 
 import web3 from '@linkexchange/utils/web3';
+import Web3StateProvider from '@linkexchange/web3-state-provider';
+import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import Svg from '@linkexchange/components/src/Svg';
@@ -31,20 +33,6 @@ const getTransactionReceipt = (tx: string) => {
   });
 };
 
-const getBlockNumber: () => Promise<number> = () => {
-  return new Promise((resolve, reject) => {
-    web3.eth.getBlockNumber((error, currentBlockNumber) => {
-      if (error) {
-        return reject(error);
-      }
-
-      resolve(currentBlockNumber);
-    });
-  });
-};
-
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 interface IStatusProps {
   location: Location;
 }
@@ -61,8 +49,8 @@ interface IStatusState {
   location: string;
   blockchain: {
     web3Available: boolean;
-    blockNumber: number | null;
-    currentBlockNumber: number | null;
+    web3UnavailableReason?: string;
+    transationBlockNumber?: number;
   };
 }
 
@@ -90,21 +78,22 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       location,
       blockchain: {
         web3Available: false,
-        blockNumber: null,
-        currentBlockNumber: null,
       },
     };
   }
 
   componentDidMount() {
     const { linkId, apiUrl, recipientAddress, asset, algorithm, whitelist } = this.state;
-    this._observeBlockchainState(linkId);
 
     const setTimeoutForFetch = (timeout: number | undefined) => {
       setTimeout(() => {
         this._fetchLinks(apiUrl, recipientAddress, asset, algorithm, whitelist)
           .then(this._findLinkById(linkId))
-          .then((link) => link && !link.whitelisted && setTimeoutForFetch(5000));
+          .then((link) => {
+            if (!link || !link.whitelisted) {
+              setTimeoutForFetch(5000);
+            }
+          });
       }, timeout);
     };
 
@@ -117,9 +106,15 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     }
 
     const { mobileOrTablet, linkId, asset, recipientAddress, link, blockchain, location } = this.state;
+    const [disaredNetwork] = asset.split(':');
+
     return (
       <div className={style.self}>
         <Intercom settings={{ app_id: 'xdam3he4' }} />
+        <Web3StateProvider
+          disaredNetwork={disaredNetwork}
+          render={this._onWeb3State}
+        />
         <div>
           <p className={style.previewTitle}>Link preview:</p>
           <Paper className={style.preview}>
@@ -138,17 +133,6 @@ export default class Status extends Component<IStatusProps, IStatusState> {
             <p>In order to track its progress please save the link</p>
           </div>
           <div className={style.info}>
-            <div className={style.label}>Link status:</div>
-            <div className={style.text}>
-              <A className={style.link} href={window.location.href}>
-                {window.location.href}
-              </A>
-              {!mobileOrTablet && (
-                <Button secondary className={style.addBookmark} onClick={this._bookmarkIt}>
-                  Add to bookmarks
-                </Button>
-              )}
-            </div>
             <div className={style.label}>Widget location:</div>
             <div className={style.text}>
               <A href={location}>{location}</A>
@@ -186,26 +170,24 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     }
   }
 
-  _observeBlockchainState = async (linkId: string) => {
-    if (!web3.isConnected()) {
-      return this.setState({ blockchain: { ...this.state.blockchain, web3Available: false } });
+  _onWeb3State = (state) => {
+    this._observeBlockchainState(state);
+    return null;
+  }
+
+  _observeBlockchainState = async ({ enabled, reason }) => {
+    const disabled = !enabled && (reason && reason !== 'Your wallet is locked');
+
+    if (disabled) {
+      return this.setState({ blockchain: { web3Available: false, web3UnavailableReason: reason } });
     }
-    this.setState({ blockchain: { ...this.state.blockchain, web3Available: true } });
+    const [, tx] = this.state.linkId.split(':');
 
-    const [, tx] = linkId.split(':');
-
-    let receipt;
-    do {
-      receipt = await getTransactionReceipt(tx);
-      await wait(1000);
-    } while (!receipt);
-
-    const currentBlockNumber = await getBlockNumber();
+    const receipt = await getTransactionReceipt(tx);
     this.setState({
       blockchain: {
-        ...this.state.blockchain,
-        blockNumber: receipt.blockNumber,
-        currentBlockNumber,
+        web3Available: true,
+        transationBlockNumber: receipt.status === '0x1' ? receipt.blockNumber : null,
       },
     });
   }
@@ -215,16 +197,5 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     this.setState({ link });
 
     return link;
-  }
-
-  _bookmarkIt = (e) => {
-    e.preventDefault();
-    const bookmarkURL = window.location.href;
-    const bookmarkTitle = document.title;
-    if (!this.state.mobileOrTablet) {
-      // Other browsers (mainly WebKit - Chrome/Safari)
-      const commandKey = /Mac/i.test(navigator.userAgent) ? 'CMD' : 'Ctrl';
-      alert(`Please press ${commandKey} D to add this page to your bookmarks.`);
-    }
   }
 }

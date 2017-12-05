@@ -19,6 +19,7 @@ const BENTYN_WIDGET_CONFIG = {
   title: 'Widget title',
   description: 'I accept only links that are about science and technology. I like bicycles',
   impression: '100 - 1.000',
+  location: 'https://linkexchange.io/apps/bentyn',
 };
 
 const startBlock = 2205093;

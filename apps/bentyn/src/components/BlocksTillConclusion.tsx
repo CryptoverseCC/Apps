@@ -54,7 +54,7 @@ class BlocksTillConclusion extends Component<IProps, IState> {
       this._getAverageBlockTime();
     }
     const { blockNumber, startBlock, endBlock } = this.props;
-    const disabled = !web3Enabled || (reason && reason.startsWith('You have to switch to'));
+    const disabled = !web3Enabled && (reason && reason !== 'Your wallet is locked');
 
     let content = null;
     if (disabled) {
