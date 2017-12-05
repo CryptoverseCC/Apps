@@ -66,7 +66,7 @@ const initialState: ITokenDetailsState = {
 
 export default function tokenDetails(state: ITokenDetailsState = initialState, action: Action) {
   if (isType(action, tokenDetailsActions.tokenDetailsLoaded)) {
-    return { ...state, tokenDetails: action.payload };
+    return action.payload;
   }
 
   return state;
