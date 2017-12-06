@@ -1,8 +1,11 @@
 import { render } from 'react-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
-import getStore from './store';
+
+import web3, { getInfura, InjectedWeb3Provider, InfuraWeb3Provider } from '@linkexchange/utils/web3';
+
 import App from './App';
+import getStore from './store';
 
 import '../styles/all.scss';
 
@@ -30,9 +33,16 @@ const BENTYN_CONFIG = {
 
 const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);
 
+const [network] = BENTYN_WIDGET_CONFIG.asset.split(':');
+const infuraWeb3 = getInfura(network);
+
 render(
   <Provider store={store}>
-    <App />
+    <InjectedWeb3Provider web3={web3}>
+      <InfuraWeb3Provider web3={infuraWeb3}>
+        <App />
+      </InfuraWeb3Provider>
+    </InjectedWeb3Provider>
   </Provider>,
   document.querySelector('.root'),
 );

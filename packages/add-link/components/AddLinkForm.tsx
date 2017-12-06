@@ -107,6 +107,8 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         <Field>
           {this._getTokenAddress() && [
             <TokenDetailsProvider
+              loadBalance
+              asset={asset}
               render={(tokenDetails) => (
                 <p>
                   Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.

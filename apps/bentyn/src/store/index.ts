@@ -5,7 +5,6 @@ import toast from '@linkexchange/toast/duck';
 import links from '@linkexchange/details/duck';
 import web3 from '@linkexchange/web3-state-provider/duck';
 import widget, { IWidgetState } from '@linkexchange/ducks/widget';
-import tokenDetails from '@linkechange/token-details-provider/duck';
 
 import bentyn, { IBentynState } from '../ducks/bentyn';
 
@@ -19,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const getStore = (widgetInitialState: IWidgetState, bentynInitialState: IBentynState) => createStore(
-  combineReducers({ bentyn, web3, links, widget, toast, tokenDetails }),
+  combineReducers({ bentyn, web3, links, widget, toast }),
   { widget: widgetInitialState, bentyn: bentynInitialState },
   applyMiddleware(...middlewares),
 );

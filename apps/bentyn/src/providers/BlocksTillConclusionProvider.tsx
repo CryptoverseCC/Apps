@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import web3 from '@linkexchange/utils/web3';
+import web3, { getInfura } from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
@@ -16,6 +16,10 @@ interface IProps {
 }
 
 class BlocksTillConclusionProvider extends Component<IProps, {}> {
+
+  componentWillMount() {
+    this.web3 = getInfura(this.props.asset.split(':'));
+  }
 
   render() {
     const [desiredNetwork] = this.props.asset.split(':');

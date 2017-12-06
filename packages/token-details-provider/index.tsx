@@ -3,42 +3,72 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { returntypeof } from 'react-redux-typescript';
 
+import core from '@userfeeds/core/src';
 import web3 from '@linkexchange/utils/web3';
+import wait from '@linkexchange/utils/wait';
 
-import { ITokenDetailsState, loadTokenDetails } from './duck';
+const {
+  erc20ContractDecimals,
+  erc20ContractBalance,
+  erc20ContractSymbol,
+  erc20ContractName,
+} = core.ethereum.erc20;
 
-const mapStateToProps = ({ tokenDetails }: { tokenDetails: ITokenDetailsState }) => ({
-  tokenDetails: {
-    ...tokenDetails,
-    balanceWithDecimalPoint: web3.toBigNumber(tokenDetails.balance)
-      .shift(-web3.toBigNumber(tokenDetails.decimals))
-      .toNumber(),
-  },
-});
+interface IProps {
+  web3?: any;
+  asset: string;
+  loadBalance?: boolean;
+  render(tokenDetails: any): any;
+}
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ loadTokenDetails }, dispatch);
+interface IState {
+  loaded: boolean;
+  decimals?: string;
+  symbol?: string;
+  name?: string;
+  balanceWithDecimalPoint?: string | null;
+}
 
-const State2Props = returntypeof(mapStateToProps);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
+export default class TokenDetailsProvider extends Component<IProps, IState> {
+  state = {
+    loaded: false,
+  };
 
-type ITokenDetailsProps = typeof State2Props & typeof Dispatch2Props & {
-  tokenDetails: ITokenDetailsState;
-  loadTokenDetails: any;
-  render: any;
-};
-
-export class TokenDetailsProvider extends Component<ITokenDetailsProps, {}> {
   componentDidMount() {
-    this.props.loadTokenDetails();
+    this._loadTokenDetails(this.props.web3 || web3, this.props.asset);
   }
 
   render() {
-    const { tokenDetails, render } = this.props;
-    return tokenDetails.loaded && render(tokenDetails);
+    return this.state.loaded && this.props.render(this.state);
+  }
+
+  _loadTokenDetails = async (web3, asset) => {
+    const [network, token] = asset.split(':');
+    if (!token) {
+      return;
+    }
+
+    while (!(web3.isConnected() && await core.utils.getCurrentNetworkName(web3) === network)) {
+      await wait(1000);
+    }
+
+    const [decimals, symbol, name, balance] = await Promise.all([
+      erc20ContractDecimals(web3, token),
+      erc20ContractSymbol(web3, token),
+      erc20ContractName(web3, token),
+      this.props.loadBalance
+        ? erc20ContractBalance(web3, token)
+        : Promise.resolve(null),
+    ]);
+
+    const balanceWithDecimalPoint = balance !== null ? balance.shift(-decimals).toString() : balance;
+
+    this.setState({
+      loaded: true,
+      decimals: decimals.toString(),
+      symbol,
+      name,
+      balanceWithDecimalPoint,
+    });
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  TokenDetailsProvider,
-);

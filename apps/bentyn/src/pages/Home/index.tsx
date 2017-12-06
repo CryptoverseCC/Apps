@@ -2,25 +2,30 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { withInfura } from '@linkexchange/utils/web3';
+import AddLink from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
+import { Details, Lists } from '@linkexchange/details';
+import { IWidgetState } from '@linkexchange/ducks/widget';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
-import { IWidgetState } from '@linkexchange/ducks/widget';
-import { Details, Lists } from '@linkexchange/details';
-import AddLink from '@linkexchange/add-link';
-
-import BlocksTillConclusion from '../../components/BlocksTillConclusion';
-import BoostLink from './components/BoostLink';
 
 import Header from './components/Header';
-
-import * as style from './home.scss';
 import Welcome from './components/Welcome';
 import HowToBuy from './components/HowToBuy';
+import BoostLink from './components/BoostLink';
+import BlocksTillConclusionComponent from '../../components/BlocksTillConclusion';
 import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
+const BlocksTillConclusion = withInfura(BlocksTillConclusionComponent);
+
+import { IBentynState } from '../../ducks/bentyn';
+
+import * as style from './home.scss';
+
 interface IProps {
+  bentyn: IBentynState;
   widgetSettings: IWidgetState;
 }
 
@@ -34,13 +39,15 @@ class Home extends Component<IProps, IState> {
   };
 
   render() {
-    const { widgetSettings } = this.props;
+    const { widgetSettings, bentyn } = this.props;
     const { openedModal } = this.state;
     return (
       <div className={style.self}>
         <Header />
         <Details standaloneMode className={style.details}>
-          <BlocksTillConclusionProvider
+          {/* <BlocksTillConclusionProvider
+            startBlock={bentyn.startBlock}
+            endBlock={bentyn.endBlock}
             asset={widgetSettings.asset}
             render={({ enabled, reason }) => (
               <div className={style.addLinkContainer}>
@@ -56,8 +63,10 @@ class Home extends Component<IProps, IState> {
                 </Tooltip>
               </div>
             )}
-          />
+          /> */}
           <BlocksTillConclusion
+            startBlock={bentyn.startBlock}
+            endBlock={bentyn.endBlock}
             asset={widgetSettings.asset}
             className={style.blocksTillConclusion}
           />
@@ -73,6 +82,8 @@ class Home extends Component<IProps, IState> {
             </Switch.Case>
             <Switch.Case condition="Welcome">
               <Welcome
+                startBlock={bentyn.startBlock}
+                endBlock={bentyn.endBlock}
                 asset={widgetSettings.asset}
                 purchaseBens={this._purchaseBens}
                 gotBens={this._closeModal}
@@ -97,7 +108,8 @@ class Home extends Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ widget }: { widget: IWidgetState}) => ({
+const mapStateToProps = ({ widget, bentyn }: { widget: IWidgetState, bentyn: IBentynState }) => ({
+  bentyn,
   widgetSettings: widget,
 });
 

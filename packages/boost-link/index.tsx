@@ -91,6 +91,8 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             </div>
             {this._getTokenAddress() && (
               <TokenDetailsProvider
+                loadBalance
+                asset={asset}
                 render={(tokenDetails) => (
                   <p>
                     Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.

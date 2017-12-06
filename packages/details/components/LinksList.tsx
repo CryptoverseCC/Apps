@@ -5,8 +5,9 @@ import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import BoostLinkComponent from '@linkexchange/boost-link';
-import web3 from '@linkexchange/utils/web3';
+import web3, { getInfura } from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
+import TokenDetailsProvider from '@linkechange/token-details-provider';
 
 import * as style from './linksList.scss';
 
@@ -68,7 +69,13 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     },
     {
       name: 'Current Score',
-      prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),
+      prop: (link: ILink) => (
+        <TokenDetailsProvider
+          web3={getInfura(this.props.asset.split(':')[0])}
+          asset={this.props.asset}
+          render={({ decimals }) => web3.toBigNumber(link.score).shift(-decimals).toString().substr(0, 5)}
+        />
+      ),
     },
     {
       name: 'Bids',
