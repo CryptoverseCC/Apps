@@ -13,9 +13,7 @@ export async function sendClaimWithoutValueTransfer(web3Instance, claim) {
 
   const contract = getContractWithoutValueTransfer(web3Instance, networkName);
 
-  return new Promise((resolve, reject) => {
-    contract.post(JSON.stringify(claim), { from }, getResolveOrRejectOnErrorFunc(resolve, reject));
-  });
+  return contract.methods.post(JSON.stringify(claim)).send({ from });
 }
 
 export async function sendClaimValueTransfer(web3Instance, address, value, claim) {
@@ -24,14 +22,9 @@ export async function sendClaimValueTransfer(web3Instance, address, value, claim
 
   const contract = getContractValueTransfer(web3Instance, networkName);
 
-  return new Promise((resolve, reject) => {
-    contract.post(
-      address,
-      JSON.stringify(claim),
-      { from, value: web3Instance.toWei(value, 'ether') },
-      getResolveOrRejectOnErrorFunc(resolve, reject),
-    );
-  });
+  return contract.methods
+    .post(address, JSON.stringify(claim))
+    .send({ from, value: web3Instance.toWei(value, 'ether') });
 }
 
 export async function approveUserfeedsContractTokenTransfer(
@@ -54,16 +47,13 @@ export async function sendClaimTokenTransferImpl(web3Instance, address, token, v
   const networkName = await getCurrentNetworkName(web3Instance);
   const [from] = await getAccounts(web3Instance);
   const contract = getContractTokenTransfer(web3Instance, networkName);
-  return new Promise((resolve, reject) => {
-    contract.post(
-      address,
-      token,
-      value,
-      JSON.stringify(claim),
-      { from },
-      getResolveOrRejectOnErrorFunc(resolve, reject),
-    );
-  });
+
+  return contract.methods.post(
+    address,
+    token,
+    value,
+    JSON.stringify(claim),
+  ).send({ from });
 }
 
 export async function sendClaimTokenTransfer(
@@ -85,15 +75,6 @@ export async function sendClaimTokenTransfer(
 }
 
 function valueToTokenWei(web3Instance, value, decimals) {
-  return web3Instance.toBigNumber(value).shift(decimals);
-}
-
-function getResolveOrRejectOnErrorFunc(resolve, reject) {
-  return (error, result) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve(result);
-    }
-  };
+  return value * Math.pow(10, decimals); // ToDo !!!
+  // return web3Instance.toBigNumber(value).shift(decimals);
 }

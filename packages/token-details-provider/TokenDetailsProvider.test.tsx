@@ -8,7 +8,7 @@ Enzyme.configure({
   adapter: new Adapter(),
 });
 
-describe('TokenDetailsProvider', () => {
+describe.skip('TokenDetailsProvider', () => {
   const defaultTokenDetails = { loaded: false, decimals: null };
 
   const renderContext = ({

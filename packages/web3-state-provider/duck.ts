@@ -21,7 +21,7 @@ const intervalsMaps = new Map<() => any, number>();
 export const observeInjectedWeb3 = () => (dispatch, getState: () => { web3: IWeb3State }) => {
   const check = () => {
     web3.eth.getAccounts(async (error, accounts = []) => {
-      const available = !!web3.isConnected();
+      const available = !!await web3.eth.net.isListening();
       let networkName;
       let blockNumber;
       if (available) {

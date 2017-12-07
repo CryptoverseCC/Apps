@@ -95,7 +95,7 @@ export default class BlocksTillConclusion extends Component<IProps, IState> {
     const { web3, asset } = this.props;
     const [network] = asset.split(':');
 
-    while (!(web3.isConnected() || await core.utils.getCurrentNetworkName(web3) === network)) {
+    while (!(await web3.eth.net.isListening() || await core.utils.getCurrentNetworkName(web3) === network)) {
       wait(1000);
     }
 
@@ -103,7 +103,7 @@ export default class BlocksTillConclusion extends Component<IProps, IState> {
       const blockNumber = await core.utils.getBlockNumber(web3);
       this.setState({ loaded: true, blockNumber });
       this._getAverageBlockTime(blockNumber);
-      await wait(this.state.average);
+      await wait(this.state.average * 1000);
     }
   }
 

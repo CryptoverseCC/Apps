@@ -5,9 +5,11 @@ import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import BoostLinkComponent from '@linkexchange/boost-link';
-import web3, { getInfura } from '@linkexchange/utils/web3';
+import web3, { withInfura } from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import TokenDetailsProvider from '@linkechange/token-details-provider';
+import TokenDetailsProviderBase from '@linkechange/token-details-provider';
+
+const BN = web3.utils.BN;
 
 import * as style from './linksList.scss';
 
@@ -36,6 +38,8 @@ const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
     />
   );
 };
+
+const TokenDetailsProvider = withInfura(TokenDetailsProviderBase);
 
 interface ILinksListProps {
   label: string;
@@ -71,9 +75,8 @@ export default class LinksList extends Component<ILinksListProps, {}> {
       name: 'Current Score',
       prop: (link: ILink) => (
         <TokenDetailsProvider
-          web3={getInfura(this.props.asset.split(':')[0])}
           asset={this.props.asset}
-          render={({ decimals }) => web3.toBigNumber(link.score).shift(-decimals).toString().substr(0, 5)}
+          render={({ decimals }) => link.score / Math.pow(10, decimals)} // Use BN here
         />
       ),
     },

@@ -18,7 +18,7 @@ interface IProps {
 class BlocksTillConclusionProvider extends Component<IProps, {}> {
 
   componentWillMount() {
-    this.web3 = getInfura(this.props.asset.split(':'));
+    // ToDo
   }
 
   render() {

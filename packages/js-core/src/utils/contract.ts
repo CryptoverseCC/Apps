@@ -24,7 +24,7 @@ export function getContractWithoutValueTransfer(web3Instance, networkName) {
   if (!contractAddress) {
     throw new Error('Contract is not available');
   }
-  const contract = web3Instance.eth.contract(withoutValueTransferAbi).at(contractAddress);
+  const contract = new web3Instance.eth.Contract(withoutValueTransferAbi, contractAddress);
   return contract;
 }
 
@@ -44,7 +44,7 @@ export function getContractValueTransfer(web3Instance, networkName) {
   if (!contractAddress) {
     throw new Error('Contract is not available');
   }
-  const contract = web3Instance.eth.contract(valueTransferAbi).at(contractAddress);
+  const contract = new web3Instance.eth.Contract(valueTransferAbi, contractAddress);
   return contract;
 }
 
@@ -64,7 +64,7 @@ export function getContractTokenTransfer(web3Instance, networkName) {
   if (!contractAddress) {
     throw new Error('Contract is not available');
   }
-  const contract = web3Instance.eth.contract(tokenTransferAbi).at(contractAddress);
+  const contract = new web3Instance.eth.Contract(tokenTransferAbi, contractAddress);
   return contract;
 }
 
@@ -93,7 +93,7 @@ const tokenTransferAbi = [
 ];
 
 export function getErc20Contract(web3Instance, contractAddress) {
-  const contract = web3Instance.eth.contract(erc20abi).at(contractAddress);
+  const contract = new web3Instance.eth.Contract(erc20abi, contractAddress);
   return contract;
 }
 

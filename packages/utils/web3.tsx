@@ -73,7 +73,7 @@ export const withInfura = (Cmp: React.ComponentType<IProviderProps>) => {
       infuraWeb3: PropTypes.object,
     };
 
-    static displayName = `withInfura(${Cmp.displayName})`;
+    static displayName = `withInfura(${Cmp.displayName || Cmp.name})`;
 
     render() {
       return <Cmp web3={this.context.infuraWeb3} {...this.props} />;
@@ -84,10 +84,10 @@ export const withInfura = (Cmp: React.ComponentType<IProviderProps>) => {
 export const withInjectedWeb3 = (Cmp: React.ComponentType<IProviderProps>) => {
   return class extends Component {
     static contextTypes = {
-      infuraWeb3: PropTypes.object,
+      injectedWeb3: PropTypes.object,
     };
 
-    static displayName = `withInjectedWeb3(${Cmp.displayName})`;
+    static displayName = `withInjectedWeb3(${Cmp.displayName || Cmp.name})`;
 
     render() {
       return <Cmp web3={this.context.injectedWeb3} {...this.props} />;

@@ -18,6 +18,8 @@ import If from '@linkexchange/components/src/utils/If';
 import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
+  web3?: any; // ToDo!!!
+  tokenDetails: any; // ToDo!!!
   disabled?: boolean;
   disabledReason?: string;
   link: IRemoteLink;
@@ -61,7 +63,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   render() {
-    const { link, asset, disabled, disabledReason } = this.props;
+    const { link, asset, disabled, disabledReason, tokenDetails } = this.props;
     const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
     const [desiredNetwork] = asset.split(':');
 
@@ -89,17 +91,9 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               <p className={style.equalSign}>=</p>
               <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
             </div>
-            {this._getTokenAddress() && (
-              <TokenDetailsProvider
-                loadBalance
-                asset={asset}
-                render={(tokenDetails) => (
-                  <p>
-                    Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-                  </p>
-                )}
-              />
-            )}
+            <p>
+              Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+            </p>
             <NewButton
               disabled={!!validationError || !value}
               style={{ marginLeft: 'auto' }}
@@ -168,7 +162,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
     if (!validationError) {
       const valueInEth = parseFloat(value);
-      const valueInWei = parseFloat(web3.toWei(valueInEth, 'ether'));
+      const valueInWei = valueInEth * Math.pow(10, this.props.tokenDetails.decimals);
       const rawProbability = (link.score + valueInWei) / (sum + valueInWei);
       const probability = (100 * rawProbability).toFixed(2);
       this.setState({ probability, validationError });
