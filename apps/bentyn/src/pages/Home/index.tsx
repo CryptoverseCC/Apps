@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { withInfura } from '@linkexchange/utils/web3';
+import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
 import AddLink from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';
@@ -19,6 +19,7 @@ import BlocksTillConclusionComponent from '../../components/BlocksTillConclusion
 import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
 const BlocksTillConclusion = withInfura(BlocksTillConclusionComponent);
+const DecoratedBlocksTillConclusionProvider = withInjectedWeb3(BlocksTillConclusionProvider);
 
 import { IBentynState } from '../../ducks/bentyn';
 
@@ -45,7 +46,7 @@ class Home extends Component<IProps, IState> {
       <div className={style.self}>
         <Header />
         <Details standaloneMode className={style.details}>
-          {/* <BlocksTillConclusionProvider
+          <DecoratedBlocksTillConclusionProvider
             startBlock={bentyn.startBlock}
             endBlock={bentyn.endBlock}
             asset={widgetSettings.asset}
@@ -63,7 +64,7 @@ class Home extends Component<IProps, IState> {
                 </Tooltip>
               </div>
             )}
-          /> */}
+          />
           <BlocksTillConclusion
             startBlock={bentyn.startBlock}
             endBlock={bentyn.endBlock}

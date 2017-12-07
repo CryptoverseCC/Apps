@@ -1,56 +1,70 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import web3, { getInfura } from '@linkexchange/utils/web3';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
-import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
-
-import { IBentynState } from '../ducks/bentyn';
+import wait from '@linkexchange/utils/wait';
+import core from '@userfeeds/core/src';
 
 interface IProps {
   asset: string;
-  render(state: { enabled: boolean, reason?: string }): JSX.Element;
-  blockNumber: number;
   startBlock: number;
   endBlock: number;
+  render(state: { enabled: boolean, reason?: string }): JSX.Element;
+  web3?: any; // ToDo type here
 }
 
-class BlocksTillConclusionProvider extends Component<IProps, {}> {
+interface IState {
+  loaded: boolean;
+  enabled?: boolean;
+  data?: string | number;
+}
 
-  componentWillMount() {
-    // ToDo
+const HASNT_STARTED = `The auction hasn't begun yet`;
+const IS_CLOSED = 'The auction is closed';
+
+export default class BlocksTillConclusionProvider extends Component<IProps, IState> {
+
+  static reasons = {
+    HASNT_STARTED,
+    IS_CLOSED,
+  };
+
+  state = {
+    loaded: false,
+  };
+
+  componentDidMount() {
+    const { web3, asset, startBlock, endBlock } = this.props;
+    load(web3, asset, startBlock, endBlock, this._onUpdate);
   }
 
   render() {
-    const [desiredNetwork] = this.props.asset.split(':');
-
-    return (
-      <Web3StateProvider
-        desiredNetwork={desiredNetwork}
-        render={this._renderComponent}
-      />
-    );
+    return this.state.loaded ? this.props.render(this.state) : null;
   }
 
-  _renderComponent = ({ enabled, reason }) => {
-    const { render, blockNumber, startBlock, endBlock } = this.props;
-
-    if (!enabled) {
-      return render({ enabled, reason });
-    } else if (startBlock > blockNumber) {
-      return render({ enabled: false, reason: `The auction hasn't begun yet` });
-    } else if (endBlock > blockNumber) {
-      return render({ enabled: true });
-    }
-
-    return render({ enabled: false, reason: 'The auction is closed' });
+  _onUpdate = ({ enabled, data }) => {
+    this.setState({ loaded: true, enabled, data });
   }
 }
 
-const mapStateToProps = ({ web3, bentyn }: { web3: IWeb3State, bentyn: IBentynState }) => ({
-  blockNumber: web3.blockNumber,
-  startBlock: bentyn.startBlock,
-  endBlock: bentyn.endBlock,
-});
+const load = async (web3, asset, startBlock, endBlock, update) => {
+  const [network] = asset.split(':');
 
-export default connect(mapStateToProps)(BlocksTillConclusionProvider);
+  while (!(
+    web3.currentProvider !== null
+    && await web3.eth.net.isListening()
+    && await core.utils.getCurrentNetworkName(web3) === network)) {
+    await wait(1000);
+  }
+
+  while (true) {
+    const blockNumber = await core.utils.getBlockNumber(web3);
+
+    if (startBlock > blockNumber) {
+      update({ enabled: false, data: HASNT_STARTED });
+    } else if (endBlock > blockNumber) {
+      update({ enabled: true, data: (blockNumber - startBlock) / (endBlock - startBlock) * 100 });
+    } else {
+      update({ enabled: false, data: IS_CLOSED });
+    }
+    await wait(10 * 1000);
+  }
+};
