@@ -105,13 +105,12 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     }
 
     const { mobileOrTablet, linkId, asset, recipientAddress, link, blockchain, location } = this.state;
-    const [disaredNetwork] = asset.split(':');
 
     return (
       <div className={style.self}>
         <Intercom settings={{ app_id: 'xdam3he4' }} />
         <Web3StateProvider
-          disaredNetwork={disaredNetwork}
+          asset={asset}
           render={this._onWeb3State}
         />
         <div>

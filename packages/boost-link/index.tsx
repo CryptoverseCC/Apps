@@ -216,8 +216,4 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         this.setState({ visible: false });
       });
   }
-
-  _getTokenAddress() {
-    return this.props.asset.split(':')[1];
-  }
 }

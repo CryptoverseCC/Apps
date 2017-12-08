@@ -4,12 +4,10 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
-import BoostLinkComponent from '@linkexchange/boost-link';
-import web3, { withInfura } from '@linkexchange/utils/web3';
+import BoostLinkComponentComponent from '@linkexchange/boost-link';
+import web3, { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import TokenDetailsProviderBase from '@linkechange/token-details-provider';
-
-const BN = web3.utils.BN;
+import TokenDetailsProviderBase, { withTokenDetails } from '@linkechange/token-details-provider';
 
 import * as style from './linksList.scss';
 
@@ -22,14 +20,17 @@ export interface IDefaultBoostLinkWrapperProps {
   links: ILink[] | IRemoteLink[];
 }
 
-const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
-  const [desiredNetwork] = props.asset.split(':');
+const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
+const BoostLinkComponent = withInjectedWeb3(withTokenDetails(BoostLinkComponentComponent));
 
+const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
   return (
-    <Web3StateProvider
-      desiredNetwork={desiredNetwork}
+    <InjectedWeb3StateProvider
+      asset={props.asset}
       render={({ enabled, reason }) => (
         <BoostLinkComponent
+          loadBalance
+          asset={props.asset}
           {...props}
           disabled={!enabled}
           disabledReason={reason}

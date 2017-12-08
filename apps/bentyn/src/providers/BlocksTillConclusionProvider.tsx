@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import Web3 from 'web3';
 
 import wait from '@linkexchange/utils/wait';
 import core from '@userfeeds/core/src';
 
 interface IProps {
+  web3: Web3;
   asset: string;
   startBlock: number;
   endBlock: number;
   render(state: { enabled: boolean, reason?: string }): JSX.Element;
-  web3?: any; // ToDo type here
 }
 
 interface IState {

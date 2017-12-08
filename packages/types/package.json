@@ -3,7 +3,7 @@
   "name": "@linkexchange/types",
   "version": "0.0.3",
   "description": "",
-  "main": "./",
+  "main": "index.ts",
   "scripts": {},
   "author": "",
   "license": "ISC",

@@ -2,7 +2,7 @@ import { render } from 'react-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import web3, { getInfura, InjectedWeb3Provider, InfuraWeb3Provider } from '@linkexchange/utils/web3';
+import web3, { getInfura, Web3Provider } from '@linkexchange/utils/web3';
 
 import App from './App';
 import getStore from './store';
@@ -38,11 +38,9 @@ const infuraWeb3 = getInfura(network);
 
 render(
   <Provider store={store}>
-    <InjectedWeb3Provider web3={web3}>
-      <InfuraWeb3Provider web3={infuraWeb3}>
-        <App />
-      </InfuraWeb3Provider>
-    </InjectedWeb3Provider>
+    <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
+      <App />
+    </Web3Provider>
   </Provider>,
   document.querySelector('.root'),
 );

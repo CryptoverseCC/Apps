@@ -21,6 +21,7 @@ import * as style from './addLinkForm.scss';
 
 interface IAddLinkFormProps {
   asset: string;
+  tokenDetails: any;
   recipientAddress: string;
   onSuccess(linkId: string): void;
   onError(error: any): void;
@@ -78,9 +79,8 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
   };
 
   render() {
-    const { asset } = this.props;
+    const { asset, tokenDetails } = this.props;
     const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
-    const [desiredNetwork] = asset.split(':');
 
     return (
       <div className={style.self}>
@@ -105,38 +105,23 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
           <Error>{errors.value}</Error>
         </Field>
         <Field>
-          {this._getTokenAddress() && [
-            <TokenDetailsProvider
-              loadBalance
-              asset={asset}
-              render={(tokenDetails) => (
-                <p>
-                  Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-                </p>
-              )}
-            />,
-            <Checkbox
-              label="Don't ask me again for this token on any website or wherever"
-              checked={unlimitedApproval}
-              onChange={this._onUnlimitedApprovalChange}
-            />,
-          ]}
+          <p>
+            Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+          </p>
+          <Checkbox
+            label="Don't ask me again for this token on any website or wherever"
+            checked={unlimitedApproval}
+            onChange={this._onUnlimitedApprovalChange}
+          />
         </Field>
         {posting ? (
           <div style={{ margin: '0 auto' }}>
             <Loader />
           </div>
         ) : (
-          <Web3StateProvider
-            desiredNetwork={desiredNetwork}
-            render={({ enabled, reason }) => (
-              <Tooltip text={reason}>
-                <Button style={{ width: '100%' }} color="primary" disabled={!enabled} onClick={this._onSubmit}>
-                  Create
-                </Button>
-              </Tooltip>
-            )}
-          />
+          <Button style={{ width: '100%' }} color="primary" disabled={!enabled} onClick={this._onSubmit}>
+            Create
+          </Button>
         )}
       </div>
     );

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3';
 
+import { Omit, Diff } from '@linkexchange/types';
+
 const web3 = new Web3();
 
 const setProviderIfAvailable = () => {
@@ -34,17 +36,22 @@ export const getInfura = (network: TNetwork) => {
 };
 
 interface IProviderProps {
-  web3: Web3;
+  injectedWeb3: Web3;
+  infuraWeb3: Web3;
 }
 
-export class InfuraWeb3Provider extends Component<IProviderProps, {}> {
+export class Web3Provider extends Component<IProviderProps, {}> {
 
   static childContextTypes = {
+    injectedWeb3: PropTypes.object,
     infuraWeb3: PropTypes.object,
   };
 
   getChildContext() {
-    return { infuraWeb3: this.props.web3 };
+    return {
+      injectedWeb3: this.props.injectedWeb3,
+      infuraWeb3: this.props.infuraWeb3,
+    };
   }
 
   render() {
@@ -52,23 +59,12 @@ export class InfuraWeb3Provider extends Component<IProviderProps, {}> {
   }
 }
 
-export class InjectedWeb3Provider extends Component<IProviderProps, {}> {
-
-  static childContextTypes = {
-    injectedWeb3: PropTypes.object,
-  };
-
-  getChildContext() {
-    return { injectedWeb3: this.props.web3 };
-  }
-
-  render() {
-    return this.props.children;
-  }
+interface IComponentProps {
+  web3: Web3;
 }
 
-export const withInfura = (Cmp: React.ComponentType<IProviderProps>) => {
-  return class extends Component {
+export const withInfura = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
+  return class extends Component<Omit<T, keyof IComponentProps>> {
     static contextTypes = {
       infuraWeb3: PropTypes.object,
     };
@@ -81,8 +77,8 @@ export const withInfura = (Cmp: React.ComponentType<IProviderProps>) => {
   };
 };
 
-export const withInjectedWeb3 = (Cmp: React.ComponentType<IProviderProps>) => {
-  return class extends Component {
+export const withInjectedWeb3 = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
+  return class extends Component<Omit<T, keyof IComponentProps>> {
     static contextTypes = {
       injectedWeb3: PropTypes.object,
     };

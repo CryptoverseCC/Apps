@@ -9,6 +9,9 @@ import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import * as style from './widgetSummary.scss';
+import { withInjectedWeb3 } from '@linkexchange/utils/web3';
+
+const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
 
 interface IWidgetSummaryProps {
   onAddClick(): void;
@@ -23,7 +26,6 @@ const WidgetSummary = ({
   onOpenInSeparateWindow,
   openInNewWindowHidden,
 }: IWidgetSummaryProps) => {
-  const [desiredNetwork] = widgetSettings.asset.split(':');
 
   return (
     <div className={style.Head}>
@@ -41,8 +43,8 @@ const WidgetSummary = ({
           <p className={style.BigScreenDescription}>{widgetSettings.description}</p>
         </div>
         <p className={style.SmallScreenDescription}>{widgetSettings.description}</p>
-        <Web3StateProvider
-          desiredNetwork={desiredNetwork}
+        <InjectedWeb3StateProvider
+          asset={widgetSettings.asset}
           render={({ enabled, reason }) => (
             <Tooltip className={style.NewButtonContainer} text={reason}>
               <Button onClick={onAddClick} disabled={!enabled} color="primary">
