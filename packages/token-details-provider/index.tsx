@@ -5,6 +5,7 @@ import { returntypeof } from 'react-redux-typescript';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
+import { Omit, Diff } from '@linkexchange/types';
 
 const {
   erc20ContractDecimals,
@@ -80,8 +81,12 @@ export default class TokenDetailsProvider extends Component<IProps, IState> {
   }
 }
 
-export const withTokenDetails = (Cmp) => {
-  return class extends Component {
+interface IComponentProps {
+  tokenDetails: any;
+}
+
+export const withTokenDetails = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
+  return class extends Component<Omit<T, keyof IComponentProps> & { loadBalance?: boolean; }> {
     static displayName = `withTokenDetails(${Cmp.displayName || Cmp.name})`;
 
     state = {

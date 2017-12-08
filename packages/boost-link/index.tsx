@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Web3 from 'web3';
 
 import core from '@userfeeds/core/src';
 import Input from '@linkexchange/components/src/Input';
@@ -18,7 +19,7 @@ import If from '@linkexchange/components/src/utils/If';
 import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
-  web3?: any; // ToDo!!!
+  web3: Web3;
   tokenDetails: any; // ToDo!!!
   disabled?: boolean;
   disabledReason?: string;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as isEqual from 'lodash/isEqual';
+import Web3 from 'web3';
 
 import wait from '@linkexchange/utils/wait';
 import core from '@userfeeds/core/src';
@@ -12,9 +13,8 @@ interface IWeb3State {
 }
 
 interface IProps {
-  web3: any; // ToDo type
+  web3: Web3;
   asset: string;
-  synchronizeState(): any;
   render(web3State: IWeb3State): any;
 }
 
