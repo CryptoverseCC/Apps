@@ -6,7 +6,6 @@ import moment from 'moment';
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
 

@@ -3,7 +3,6 @@ import { Location } from 'history';
 
 import web3 from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import Svg from '@linkexchange/components/src/Svg';

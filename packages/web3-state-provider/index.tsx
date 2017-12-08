@@ -5,7 +5,6 @@ import wait from '@linkexchange/utils/wait';
 import core from '@userfeeds/core/src';
 
 import { web3Enabled } from './selector';
-import { observeInjectedWeb3 } from './duck';
 
 interface IWeb3State {
   enabled: boolean;
