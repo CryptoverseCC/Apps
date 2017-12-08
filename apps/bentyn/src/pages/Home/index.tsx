@@ -35,7 +35,7 @@ interface IState {
 }
 
 class Home extends Component<IProps, IState> {
-  state = {
+  state: IState = {
     openedModal: 'Welcome',
   };
 

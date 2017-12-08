@@ -28,10 +28,10 @@ interface IState {
   balanceWithDecimalPoint?: string | null;
 }
 
-const loadTokenDetails = async (web3, asset, loadBalance = false) => {
+const loadTokenDetails = async (web3, asset, loadBalance, update) => {
   const [network, token] = asset.split(':');
   if (!token) {
-    return { decimals: '18', symbol: 'ETH', name: 'ETH' };
+    return update({ decimals: '18', symbol: 'ETH', name: 'ETH' });
   }
 
   while (!(
@@ -41,23 +41,27 @@ const loadTokenDetails = async (web3, asset, loadBalance = false) => {
     await wait(1000);
   }
 
-  const [decimals, symbol, name, balance] = await Promise.all([
-    erc20ContractDecimals(web3, token),
-    erc20ContractSymbol(web3, token),
-    erc20ContractName(web3, token),
-    loadBalance
-      ? erc20ContractBalance(web3, token)
-      : Promise.resolve(null),
-  ]);
+  while (true) {
+    const [decimals, symbol, name, balance] = await Promise.all([
+      erc20ContractDecimals(web3, token),
+      erc20ContractSymbol(web3, token),
+      erc20ContractName(web3, token),
+      loadBalance
+        ? erc20ContractBalance(web3, token)
+        : Promise.resolve(null),
+    ]);
 
-  const balanceWithDecimalPoint = balance !== null ? balance / Math.pow(10, decimals) : balance;
+    const balanceWithDecimalPoint = balance !== null ? balance / Math.pow(10, decimals) : balance;
 
-  return {
-    decimals,
-    symbol,
-    name,
-    balanceWithDecimalPoint,
-  };
+    update({
+      decimals,
+      symbol,
+      name,
+      balanceWithDecimalPoint,
+    });
+
+    await wait(1000);
+  }
 };
 
 export default class TokenDetailsProvider extends Component<IProps, IState> {
@@ -66,8 +70,9 @@ export default class TokenDetailsProvider extends Component<IProps, IState> {
   };
 
   componentDidMount() {
-    loadTokenDetails(this.props.web3, this.props.asset, this.props.loadBalance)
-      .then((tokenDetails) => this.setState({ loaded: true, ...tokenDetails }));
+    loadTokenDetails(this.props.web3, this.props.asset, this.props.loadBalance, (tokenDetails) => {
+      this.setState({ loaded: true, ...tokenDetails });
+    });
   }
 
   render() {
@@ -75,7 +80,7 @@ export default class TokenDetailsProvider extends Component<IProps, IState> {
   }
 }
 
-export const withTokenDetails = (Cmp: React.ComponentType<any>) => {
+export const withTokenDetails = (Cmp) => {
   return class extends Component {
     static displayName = `withTokenDetails(${Cmp.displayName || Cmp.name})`;
 
@@ -84,8 +89,9 @@ export const withTokenDetails = (Cmp: React.ComponentType<any>) => {
     };
 
     componentDidMount() {
-      loadTokenDetails(this.props.web3, this.props.asset, this.props.loadBalance)
-        .then((tokenDetails) => this.setState({ loaded: true, ...tokenDetails }));
+      loadTokenDetails(this.props.web3, this.props.asset, this.props.loadBalance, (tokenDetails) => {
+        this.setState({ loaded: true, ...tokenDetails });
+      });
     }
 
     render() {

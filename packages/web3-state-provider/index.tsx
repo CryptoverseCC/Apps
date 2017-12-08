@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { actionCreatorFactory, isType } from 'typescript-fsa';
-import { Action } from 'redux';
 import * as isEqual from 'lodash/isEqual';
+
+import wait from '@linkexchange/utils/wait';
+import core from '@userfeeds/core/src';
 
 import { web3Enabled } from './selector';
 import { observeInjectedWeb3 } from './duck';
@@ -13,37 +13,47 @@ interface IWeb3State {
 }
 
 interface IProps {
+  web3: any; // ToDo type
+  asset: string;
   synchronizeState(): any;
   render(web3State: IWeb3State): any;
+}
+
+interface IState {
   web3State: IWeb3State;
 }
 
-class Web3StateProviderComponent extends Component<IProps> {
+export default class Web3StateProviderComponent extends Component<IProps, IState> {
+  state: IState = {
+    web3State: {
+      enabled: false,
+    },
+  };
+
   componentDidMount() {
-    this.props.synchronizeState();
+    load(this.props.web3, this.props.asset, (web3State) => {
+      this.setState({ web3State });
+    });
   }
 
   render() {
-    return this.props.render(this.props.web3State);
+    return this.props.render(this.state.web3State);
   }
 }
 
-interface IOwnProps {
-  desiredNetwork: string;
-  render(web3State: IWeb3State): any;
-}
+const load = async (web3, asset, update) => {
+  const [network] = asset.split(':');
 
-export { Web3StateProviderComponent as Web3StateProvider };
-
-export default connect(
-  (state, { desiredNetwork }) => {
-    return {
-      web3State: web3Enabled(state, { network: desiredNetwork }),
-    };
-  },
-  (dispatch) => ({
-    synchronizeState() {
-      dispatch(observeInjectedWeb3());
-    }}
-  ),
-)(Web3StateProviderComponent);
+  while (true) {
+    if (!(web3.currentProvider !== null && await web3.eth.net.isListening())) {
+      update({ enabled: false, reason: 'Web3 is unavailable' });
+    } else if (await core.utils.getCurrentNetworkName(web3) !== network) {
+      update({ enabled: false, reason: `You have to switch to ${network} network`});
+    } else if ((await web3.eth.getAccounts()).length === 0) {
+      update({ enabled: false, reason: 'Your wallet is locked' });
+    } else {
+      update({ enabled: true });
+    }
+    await wait(1000);
+  }
+};

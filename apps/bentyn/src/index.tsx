@@ -28,7 +28,7 @@ const BENTYN_WIDGET_CONFIG = {
 const startBlock = 2205093;
 const BENTYN_CONFIG = {
   startBlock,
-  endBlock: startBlock + 6 * 60 * 24 * 4,
+  endBlock: startBlock + 6 * 60 * 24 * 2,
 };
 
 const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);

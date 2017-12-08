@@ -34,7 +34,7 @@ interface IState {
 
 export default class BlocksTillConclusion extends Component<IProps, IState> {
 
-  state = {
+  state: IState = {
     average: 12,
     loaded: false,
   };
@@ -53,25 +53,25 @@ export default class BlocksTillConclusion extends Component<IProps, IState> {
     // const disabled = !web3Enabled && (reason && reason !== 'Your wallet is locked');
     const disabled = false;
 
-    let content = null;
-    if (startBlock > blockNumber) {
+    let content: JSX.Element | null = null;
+    if (startBlock > blockNumber!) {
       content = (
         <>
           <p>Auction will begin at block </p>
           <p>
             <span className={style.blockNumber}>{startBlock} </span>
-            (est. {this._getEstimate(startBlock - blockNumber)})
+            (est. {this._getEstimate(startBlock - blockNumber!)})
           </p>
         </>
       );
-    } else if (endBlock > blockNumber) {
-      const progress = ((blockNumber - startBlock) / (endBlock - startBlock) * 100).toFixed(2);
+    } else if (endBlock > blockNumber!) {
+      const progress = ((blockNumber! - startBlock) / (endBlock - startBlock) * 100).toFixed(2);
       content = (
         <>
           <p>Blocks till conclusion</p>
           <p>
-            <span className={style.blockNumber}>{endBlock - blockNumber} </span>
-            (est. {this._getEstimate(endBlock - blockNumber)})
+            <span className={style.blockNumber}>{endBlock - blockNumber!} </span>
+            (est. {this._getEstimate(endBlock - blockNumber!)})
           </p>
           <Tooltip text={`${progress}%`}>
             <ProgressBar progress={progress} className={style.progressBar} />
