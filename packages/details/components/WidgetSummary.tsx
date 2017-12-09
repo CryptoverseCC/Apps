@@ -15,7 +15,7 @@ const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
 
 interface IWidgetSummaryProps {
   onAddClick(): void;
-  widgetSettings?: IWidgetState;
+  widgetSettings: IWidgetState;
   openInNewWindowHidden?: boolean;
   onOpenInSeparateWindow?: () => void;
 }

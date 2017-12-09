@@ -20,11 +20,11 @@ if (document.readyState === 'complete') {
 
 export default web3;
 
-type TNetwork = 'ropsten' | 'rinkeby' | 'kovan' | 'ethereum';
+export type TNetwork = 'ropsten' | 'rinkeby' | 'kovan' | 'ethereum';
 
 const infuraNetworkMapping = new Map<TNetwork, Web3>();
 
-export const getInfura = (network: TNetwork) => {
+export const getInfura = (network: TNetwork): Web3 => {
   if (infuraNetworkMapping.has(network)) {
     return infuraNetworkMapping.get(network);
   }
@@ -60,7 +60,7 @@ export class Web3Provider extends Component<IProviderProps, {}> {
 }
 
 interface IComponentProps {
-  web3: Web3;
+  web3?: Web3;
 }
 
 export const withInfura = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {

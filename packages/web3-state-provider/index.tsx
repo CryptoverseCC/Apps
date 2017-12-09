@@ -5,8 +5,6 @@ import Web3 from 'web3';
 import wait from '@linkexchange/utils/wait';
 import core from '@userfeeds/core/src';
 
-import { web3Enabled } from './selector';
-
 interface IWeb3State {
   enabled: boolean;
   reason?: string;

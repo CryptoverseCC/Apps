@@ -9,13 +9,14 @@ interface IProps {
   asset: string;
   startBlock: number;
   endBlock: number;
-  render(state: { enabled: boolean, reason?: string }): JSX.Element;
+  render(state: IState): JSX.Element;
 }
 
 interface IState {
   loaded: boolean;
   enabled?: boolean;
-  data?: string | number;
+  reason?: string;
+  data?: string |number;
 }
 
 const HASNT_STARTED = `The auction hasn't begun yet`;
@@ -41,8 +42,8 @@ export default class BlocksTillConclusionProvider extends Component<IProps, ISta
     return this.state.loaded ? this.props.render(this.state) : null;
   }
 
-  _onUpdate = ({ enabled, data }) => {
-    this.setState({ loaded: true, enabled, data });
+  _onUpdate = (state) => {
+    this.setState({ loaded: true, ...state });
   }
 }
 
@@ -60,9 +61,9 @@ const load = async (web3, asset, startBlock, endBlock, update) => {
     const blockNumber = await core.utils.getBlockNumber(web3);
 
     if (startBlock > blockNumber) {
-      update({ enabled: false, data: HASNT_STARTED });
+      update({ enabled: false, reason: HASNT_STARTED });
     } else if (endBlock > blockNumber) {
-      update({ enabled: true, data: (blockNumber - startBlock) / (endBlock - startBlock) * 100 });
+      update({ enabled: true, reason: (blockNumber - startBlock) / (endBlock - startBlock) * 100 });
     } else {
       update({ enabled: false, data: IS_CLOSED });
     }

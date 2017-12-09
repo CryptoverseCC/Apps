@@ -119,7 +119,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
             <Loader />
           </div>
         ) : (
-          <Button style={{ width: '100%' }} color="primary" disabled={!enabled} onClick={this._onSubmit}>
+          <Button style={{ width: '100%' }} color="primary" onClick={this._onSubmit}>
             Create
           </Button>
         )}

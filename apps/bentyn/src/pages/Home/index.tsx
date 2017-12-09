@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
+import { withTokenDetails } from '@linkechange/token-details-provider';
 import AddLink from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';
@@ -15,11 +16,12 @@ import Header from './components/Header';
 import Welcome from './components/Welcome';
 import HowToBuy from './components/HowToBuy';
 import BoostLink from './components/BoostLink';
-import BlocksTillConclusionComponent from '../../components/BlocksTillConclusion';
+import BlocksTillConclusion from '../../components/BlocksTillConclusion';
 import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
-const BlocksTillConclusion = withInfura(BlocksTillConclusionComponent);
-const DecoratedBlocksTillConclusionProvider = withInjectedWeb3(BlocksTillConclusionProvider);
+const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
+const BlocksTillConclusionProviderWithInjectedWeb3 = withInjectedWeb3(BlocksTillConclusionProvider);
+const AddLinkWithInjectedWeb3 = withInjectedWeb3(withTokenDetails(AddLink));
 
 import { IBentynState } from '../../ducks/bentyn';
 
@@ -46,7 +48,7 @@ class Home extends Component<IProps, IState> {
       <div className={style.self}>
         <Header />
         <Details standaloneMode className={style.details}>
-          <DecoratedBlocksTillConclusionProvider
+          <BlocksTillConclusionProviderWithInjectedWeb3
             startBlock={bentyn.startBlock}
             endBlock={bentyn.endBlock}
             asset={widgetSettings.asset}
@@ -65,7 +67,7 @@ class Home extends Component<IProps, IState> {
               </div>
             )}
           />
-          <BlocksTillConclusion
+          <BlocksTillConclusionWithInfura
             startBlock={bentyn.startBlock}
             endBlock={bentyn.endBlock}
             asset={widgetSettings.asset}
@@ -76,7 +78,7 @@ class Home extends Component<IProps, IState> {
         <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
           <Switch expresion={this.state.openedModal}>
             <Switch.Case condition="AddLink">
-              <AddLink openWidgetDetails={this._closeModal} />
+              <AddLinkWithInjectedWeb3 openWidgetDetails={this._closeModal} />
             </Switch.Case>
             <Switch.Case condition="HowToBuy">
               <HowToBuy />

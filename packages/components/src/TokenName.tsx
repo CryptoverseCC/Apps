@@ -16,8 +16,8 @@ function _getTokenName(asset: string): string {
   }
 }
 
-const TokenName = ({asset}) => {
-  return _getTokenName(asset);
+const TokenName = ({ asset }: { asset: string; }) => {
+  return <>_getTokenName(asset)</>;
 };
 
 export default TokenName;

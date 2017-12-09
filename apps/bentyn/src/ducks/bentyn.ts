@@ -6,7 +6,10 @@ export interface IBentynState {
   endBlock: number;
 }
 
-const initialState: IBentynState = {};
+const initialState: IBentynState = {
+  startBlock: Number.MAX_SAFE_INTEGER,
+  endBlock: Number.MAX_SAFE_INTEGER,
+};
 
 export default function bentynReducer(state: IBentynState = initialState) {
   return state;

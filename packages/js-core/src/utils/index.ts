@@ -5,6 +5,16 @@ const networkMapping = {
   42: 'kovan',
 };
 
+export function getBalance(web3Instance): Promise<number> {
+  throwIfNotConnected(web3Instance);
+  const [account] = web3Instance.eth.getAccounts();
+
+  if (!account) {
+    return Promise.resolve(0);
+  }
+  return web3Instance.eth.getBalance(account);
+}
+
 export function getBlock(web3Instance, blockNumber): Promise<{ timestamp: number; }> {
   throwIfNotConnected(web3Instance);
   return web3Instance.eth.getBlock(blockNumber);

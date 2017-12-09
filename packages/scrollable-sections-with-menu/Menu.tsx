@@ -48,7 +48,7 @@ export default class Menu extends Component<IMenuProps, {}> {
       (child, index) => {
         if (isType(child, 'MenuItem')) {
           return React.cloneElement(child, {
-            onClick: () => this.props.onItemClick(index),
+            onClick: () => this.props.onItemClick!(index)!,
             active: index === this.props.activeSection,
           });
         }

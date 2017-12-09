@@ -8,6 +8,7 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openToast, TToastType } from '@linkexchange/toast/duck';
+import { ITokenDetails } from '@linkechange/token-details-provider';
 
 import Steps from './components/Steps';
 import BackButton from './components/BackButton';
@@ -30,6 +31,7 @@ const State2Props = returntypeof(mapsStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props & {
+  tokenDetails: ITokenDetails;
   openWidgetDetails(): void;
 };
 
@@ -52,7 +54,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   };
 
   render() {
-    const { widgetSettings } = this.props;
+    const { widgetSettings, tokenDetails } = this.props;
     const { step, link, linkId } = this.state;
 
     return (
@@ -71,6 +73,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
               <Switch expresion={step}>
                 <Switch.Case condition="form">
                   <AddLinkForm
+                    tokenDetails={tokenDetails}
                     asset={widgetSettings.asset}
                     recipientAddress={widgetSettings.recipientAddress}
                     onChange={this._onFormEdit}
