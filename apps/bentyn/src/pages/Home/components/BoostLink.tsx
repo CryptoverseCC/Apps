@@ -4,7 +4,7 @@ import BoostLinkComponent from '@linkexchange/boost-link';
 import { IDefaultBoostLinkWrapperProps } from '@linkexchange/details';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { withInjectedWeb3 } from '@linkexchange/utils/web3';
-import { withTokenDetails } from '@linkechange/token-details-provider';
+import { withTokenDetails } from '@linkexchange/token-details-provider';
 
 import BlocksTillConclusionProvider from '../../../providers/BlocksTillConclusionProvider';
 

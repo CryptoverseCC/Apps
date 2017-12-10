@@ -38,7 +38,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             className={style.accordion}
             title={<p className={style.accordionHeader}>Slots <Pill>{widgetSettings.slots}</Pill></p>}
           >
-            <SimpleLinksList links={links} />
+            <SimpleLinksList asset={widgetSettings.asset} links={links}/>
           </Accordion>
         </Paper>
         <Paper>
@@ -46,7 +46,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             className={style.accordion}
             title={<p className={style.accordionHeader}>Whitelist <Pill>{whitelistedLinksCount}</Pill></p>}
           >
-            <SimpleLinksList links={whitelistedLinks} />
+            <SimpleLinksList asset={widgetSettings.asset} links={whitelistedLinks} />
           </Accordion>
         </Paper>
         { !hasWhitelist &&
@@ -55,7 +55,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
               className={style.accordion}
               title={<p className={style.accordionHeader}>Algorithm <Pill>{allLinksCount}</Pill></p>}
             >
-              <SimpleLinksList links={allLinks} />
+              <SimpleLinksList asset={widgetSettings.asset} links={allLinks} />
             </Accordion>
           </Paper>
         }

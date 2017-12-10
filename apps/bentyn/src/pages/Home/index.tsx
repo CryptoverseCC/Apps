@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
-import { withTokenDetails } from '@linkechange/token-details-provider';
+import { withTokenDetails } from '@linkexchange/token-details-provider';
 import AddLink from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';

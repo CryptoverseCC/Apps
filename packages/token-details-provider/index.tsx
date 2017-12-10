@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import flowRight from 'lodash/flowRight';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
 import { Omit, Diff } from '@linkexchange/types';
+import { withInjectedWeb3, withInfura } from '@linkexchange/utils/web3';
 
 const {
   erc20ContractDecimals,
@@ -51,6 +53,9 @@ export default class TokenDetailsProvider extends Component<IProps, IState> {
   }
 }
 
+export const TokenDetailsProviderWithInfura = withInfura(TokenDetailsProvider);
+export const TokenDetailsProviderWithInjectedWeb3 = withInjectedWeb3(TokenDetailsProvider);
+
 export const withTokenDetails = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
   return class extends Component<Omit<T, keyof IComponentProps> & { loadBalance?: boolean; }, IState> {
     static displayName = `withTokenDetails(${Cmp.displayName || Cmp.name})`;
@@ -70,6 +75,9 @@ export const withTokenDetails = <T extends IComponentProps>(Cmp: React.Component
     }
   };
 };
+
+export const withInfuraAndTokenDetails = flowRight(withInfura, withTokenDetails);
+export const withInjectedWeb3AndTokenDetails = flowRight(withInjectedWeb3, withTokenDetails);
 
 const loadTokenDetails = async (web3, asset, loadBalance, update) => {
   const [network, token] = asset.split(':');

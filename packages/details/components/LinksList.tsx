@@ -7,7 +7,7 @@ import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import BoostLinkComponentComponent from '@linkexchange/boost-link';
 import web3, { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import TokenDetailsProvider, { withTokenDetails } from '@linkechange/token-details-provider';
+import { withTokenDetails, TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
 
 import * as style from './linksList.scss';
 
@@ -39,8 +39,6 @@ const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
     />
   );
 };
-
-const TokenDetailsProviderWithInfura = withInfura(TokenDetailsProvider);
 
 interface ILinksListProps {
   label: string;

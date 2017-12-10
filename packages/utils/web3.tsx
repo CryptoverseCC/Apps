@@ -4,7 +4,7 @@ import Web3 from 'web3';
 
 import { Omit, Diff } from '@linkexchange/types';
 
-const web3 = new Web3();
+const web3 = new Web3('');
 
 const setProviderIfAvailable = () => {
   if (typeof window.web3 !== 'undefined') {
@@ -26,7 +26,7 @@ const infuraNetworkMapping = new Map<TNetwork, Web3>();
 
 export const getInfura = (network: TNetwork): Web3 => {
   if (infuraNetworkMapping.has(network)) {
-    return infuraNetworkMapping.get(network);
+    return infuraNetworkMapping.get(network)!;
   }
   const networkName = network === 'ethereum' ? 'mainnet' : network;
   const web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));

@@ -8,7 +8,7 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openToast, TToastType } from '@linkexchange/toast/duck';
-import { ITokenDetails } from '@linkechange/token-details-provider';
+import { ITokenDetails } from '@linkexchange/token-details-provider';
 
 import Steps from './components/Steps';
 import BackButton from './components/BackButton';

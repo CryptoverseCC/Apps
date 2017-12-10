@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkechange/token-details-provider": "^0.0.2",
+    "@linkexchange/token-details-provider": "^0.0.2",
     "@linkexchange/add-link": "^0.0.2",
     "@linkexchange/components": "^0.0.24",
     "@linkexchange/details": "^0.0.3",

@@ -12,7 +12,7 @@ import { R, validate } from '@linkexchange/utils/validation';
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
-import TokenDetailsProvider from '@linkechange/token-details-provider';
+import TokenDetailsProvider from '@linkexchange/token-details-provider';
 
 import If from '@linkexchange/components/src/utils/If';
 

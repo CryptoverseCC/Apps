@@ -10,7 +10,7 @@ import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
 import { R, validate } from '@linkexchange/utils/validation';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import TokenDetailsProvider from '@linkechange/token-details-provider';
+import TokenDetailsProvider from '@linkexchange/token-details-provider';
 import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
 
 import {

@@ -4,10 +4,12 @@ import Link from '@linkexchange/components/src/Link';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import web3 from '@linkexchange/utils/web3';
+import { TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
 
 import * as style from './simpleLinksList.scss';
 
 interface ISimpleLinksListProps {
+  asset: string;
   links: ILink[] | IRemoteLink[];
 }
 
@@ -29,7 +31,12 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
       prop: (link: ILink) => link.group_count,
     }, {
       name: 'Current Score',
-      prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),
+      prop: (link: ILink) => (
+        <TokenDetailsProviderWithInfura
+          asset={this.props.asset}
+          render={({ decimals }) => link.score / Math.pow(10, parseInt(decimals, 10))} // ToDo use BN
+        />
+      ),
     }];
 
   state = {
