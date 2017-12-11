@@ -6,8 +6,9 @@ import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import BoostLinkComponentComponent from '@linkexchange/boost-link';
 import web3, { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { withTokenDetails, TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
+import Web3StateProvider from '@linkexchange/web3-state-provider';
+import { fromWeiToString } from '@linkexchange/utils/balance';
 
 import * as style from './linksList.scss';
 
@@ -75,7 +76,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
       prop: (link: ILink) => (
         <TokenDetailsProviderWithInfura
           asset={this.props.asset}
-          render={({ decimals }) => link.score / Math.pow(10, parseInt(decimals, 10))} // Use BN here
+          render={({ decimals }) => fromWeiToString(link.score, decimals)}
         />
       ),
     },

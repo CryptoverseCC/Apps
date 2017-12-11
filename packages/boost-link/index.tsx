@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import { BN } from 'web3-utils';
 
 import core from '@userfeeds/core/src';
 import Input from '@linkexchange/components/src/Input';
@@ -12,7 +13,8 @@ import { R, validate } from '@linkexchange/utils/validation';
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
-import TokenDetailsProvider from '@linkexchange/token-details-provider';
+import { ITokenDetails } from '@linkexchange/token-details-provider';
+import { toWei } from '@linkexchange/utils/balance';
 
 import If from '@linkexchange/components/src/utils/If';
 
@@ -20,7 +22,7 @@ import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
   web3: Web3;
-  tokenDetails: any; // ToDo!!!
+  tokenDetails: ITokenDetails;
   disabled?: boolean;
   disabledReason?: string;
   link: IRemoteLink;
@@ -33,7 +35,7 @@ interface IBidLinkProps {
 
 interface IBidLinkState {
   visible: boolean;
-  sum: number;
+  sum: BN;
   value?: string;
   validationError?: string;
   probability: string;
@@ -59,7 +61,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
-    sum: this.props.links.reduce((acc, { score }) => acc + score, 0),
+    sum: this.props.links.reduce((acc, { score }) => acc.add(new BN(score)), new BN(0)),
     probability: '-',
   };
 
@@ -162,10 +164,10 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const validationError = validate(valueValidationRules, value);
 
     if (!validationError) {
-      const valueInEth = parseFloat(value);
-      const valueInWei = valueInEth * Math.pow(10, this.props.tokenDetails.decimals);
-      const rawProbability = (link.score + valueInWei) / (sum + valueInWei);
-      const probability = (100 * rawProbability).toFixed(2);
+      const valueInWei = toWei(value, this.props.tokenDetails.decimals);
+      const rawProbability = (new BN(link.score).add(new BN(valueInWei)).muln(10000)).div(sum.add(new BN(valueInWei)));
+      const probability =
+        `${rawProbability.divn(100).toString(10)}.${rawProbability.muln(100).toString(10).slice(0, 3)}`;
       this.setState({ probability, validationError });
     } else {
       this.setState({ probability: '-', validationError });

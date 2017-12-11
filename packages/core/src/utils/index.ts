@@ -5,12 +5,12 @@ const networkMapping = {
   42: 'kovan',
 };
 
-export async function getBalance(web3Instance): Promise<number> {
+export async function getBalance(web3Instance): Promise<string> {
   throwIfNotConnected(web3Instance);
   const [account] = await web3Instance.eth.getAccounts();
 
   if (!account) {
-    return 0;
+    return '';
   }
   return web3Instance.eth.getBalance(account);
 }

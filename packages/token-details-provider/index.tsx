@@ -4,6 +4,7 @@ import flowRight from 'lodash/flowRight';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
+import { fromWeiToString } from '@linkexchange/utils/balance';
 import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import { Omit, Diff } from '@linkexchange/types';
 import { withInjectedWeb3, withInfura } from '@linkexchange/utils/web3';
@@ -112,9 +113,9 @@ const loadTokenDetails = async (web3, [asset, loadBalance], update) => {
   if (!token && loadBalance) {
     while (true) {
       const balance = await core.utils.getBalance(web3);
-      const balanceWithDecimalPoint = balance !== null ? balance / Math.pow(10, 18) : balance;
+      const balanceWithDecimalPoint = balance !== null ? fromWeiToString(balance, 18) : balance;
 
-      update({ decimals: '18', symbol: 'ETH', name: 'ETH', balanceWithDecimalPoint }); // ToDo to BN
+      update({ decimals: '18', symbol: 'ETH', name: 'ETH', balanceWithDecimalPoint });
       await wait(1000);
     }
   }
@@ -129,7 +130,7 @@ const loadTokenDetails = async (web3, [asset, loadBalance], update) => {
         : Promise.resolve(null),
     ]);
 
-    const balanceWithDecimalPoint = balance !== null ? balance / Math.pow(10, decimals) : balance; // ToDo to BN
+    const balanceWithDecimalPoint = balance !== null ? fromWeiToString(balance, decimals) : balance;
 
     update({
       decimals,

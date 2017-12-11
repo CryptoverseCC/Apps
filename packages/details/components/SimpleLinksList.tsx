@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
+import web3 from '@linkexchange/utils/web3';
+import { fromWeiToString } from '@linkexchange/utils/balance';
+import { ILink, IRemoteLink } from '@linkexchange/types/link';
+
 import Link from '@linkexchange/components/src/Link';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
-import { ILink, IRemoteLink } from '@linkexchange/types/link';
-import web3 from '@linkexchange/utils/web3';
 import { TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
 
 import * as style from './simpleLinksList.scss';
@@ -34,7 +36,7 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
       prop: (link: ILink) => (
         <TokenDetailsProviderWithInfura
           asset={this.props.asset}
-          render={({ decimals }) => link.score / Math.pow(10, parseInt(decimals, 10))} // ToDo use BN
+          render={({ decimals }) => fromWeiToString(link.score, decimals)}
         />
       ),
     }];
