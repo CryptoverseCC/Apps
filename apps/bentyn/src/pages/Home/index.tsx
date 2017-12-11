@@ -20,7 +20,6 @@ import BlocksTillConclusion from '../../components/BlocksTillConclusion';
 import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
 const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
-const BlocksTillConclusionProviderWithInjectedWeb3 = withInjectedWeb3(BlocksTillConclusionProvider);
 const AddLink = withInjectedWeb3AndTokenDetails(AddLinkComponent);
 
 import { IBentynState } from '../../ducks/bentyn';
@@ -48,7 +47,7 @@ class Home extends Component<IProps, IState> {
       <div className={style.self}>
         <Header />
         <Details standaloneMode className={style.details}>
-          <BlocksTillConclusionProviderWithInjectedWeb3
+          <BlocksTillConclusionProvider
             startBlock={bentyn.startBlock}
             endBlock={bentyn.endBlock}
             asset={widgetSettings.asset}

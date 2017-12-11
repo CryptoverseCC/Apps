@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import * as isEqual from 'lodash/isEqual';
+import flowRight from 'lodash/flowRight';
 import Web3 from 'web3';
 
-import wait from '@linkexchange/utils/wait';
 import core from '@userfeeds/core/src';
+import wait from '@linkexchange/utils/wait';
+import { Omit, Diff } from '@linkexchange/types';
+import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 
 interface IWeb3State {
   enabled: boolean;
@@ -20,7 +23,7 @@ interface IState {
   web3State: IWeb3State;
 }
 
-export default class Web3StateProviderComponent extends Component<IProps, IState> {
+export default class Web3StateProvider extends Component<IProps, IState> {
   state: IState = {
     web3State: {
       enabled: false,
@@ -37,6 +40,38 @@ export default class Web3StateProviderComponent extends Component<IProps, IState
     return this.props.render(this.state.web3State);
   }
 }
+
+export const Web3StateProviderWithInjectedWeb3 = withInjectedWeb3(Web3StateProvider);
+
+interface IComponentProps {
+  web3State: IWeb3State;
+}
+
+export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
+  return class extends Component<Omit<T, keyof IComponentProps>, IState> {
+    static displayName = `withWeb3State(${Cmp.displayName || Cmp.name})`;
+    state: IState = {
+      web3State: {
+        enabled: false,
+      },
+    };
+
+    componentDidMount() {
+      load(this.props.web3, this.props.asset, (web3State) => {
+        this.setState({ web3State });
+      });
+    }
+
+    render() {
+      return <Cmp web3State={this.state.web3State} {...this.props} />;
+    }
+  };
+};
+
+export const withInjectedWeb3AndWeb3State = flowRight(
+  withInjectedWeb3,
+  withWeb3State,
+);
 
 const load = async (web3, asset, update) => {
   const [network] = asset.split(':');
