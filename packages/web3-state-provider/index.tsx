@@ -5,6 +5,7 @@ import Web3 from 'web3';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
+import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import { Omit, Diff } from '@linkexchange/types';
 import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 
@@ -24,6 +25,7 @@ interface IState {
 }
 
 export default class Web3StateProvider extends Component<IProps, IState> {
+  removeListener: () => void;
   state: IState = {
     web3State: {
       enabled: false,
@@ -31,9 +33,16 @@ export default class Web3StateProvider extends Component<IProps, IState> {
   };
 
   componentDidMount() {
-    load(this.props.web3, this.props.asset, (web3State) => {
-      this.setState({ web3State });
+    this.removeListener = taskRunner.run(
+      this.props.web3,
+      [this.props.asset],
+      (web3State) => {
+        this.setState({ web3State });
     });
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
   }
 
   render() {
@@ -50,6 +59,7 @@ interface IComponentProps {
 export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
   return class extends Component<Omit<T, keyof IComponentProps>, IState> {
     static displayName = `withWeb3State(${Cmp.displayName || Cmp.name})`;
+    removeListener: () => void;
     state: IState = {
       web3State: {
         enabled: false,
@@ -57,9 +67,16 @@ export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentTyp
     };
 
     componentDidMount() {
-      load(this.props.web3, this.props.asset, (web3State) => {
-        this.setState({ web3State });
+      this.removeListener = taskRunner.run(
+        this.props.web3,
+        [this.props.asset],
+        (web3State) => {
+          this.setState({ web3State });
       });
+    }
+
+    componentWillUnmount() {
+      this.removeListener();
     }
 
     render() {
@@ -73,7 +90,8 @@ export const withInjectedWeb3AndWeb3State = flowRight(
   withWeb3State,
 );
 
-const load = async (web3, asset, update) => {
+const load = async (web3, [asset], update) => {
+  console.log('TASK: Web3 state');
   const [network] = asset.split(':');
 
   while (true) {
@@ -89,3 +107,5 @@ const load = async (web3, asset, update) => {
     await wait(1000);
   }
 };
+
+const taskRunner = new Web3TaskRunner<IWeb3State, [string]>(load);

@@ -4,6 +4,7 @@ import flowRight from 'lodash/flowRight';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
+import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import { Omit, Diff } from '@linkexchange/types';
 import { withInjectedWeb3, withInfura } from '@linkexchange/utils/web3';
 
@@ -38,14 +39,22 @@ interface IComponentProps {
 }
 
 export default class TokenDetailsProvider extends Component<IProps, IState> {
+  removeListener: () => void;
   state: IState = {
     loaded: false,
   };
 
   componentDidMount() {
-    loadTokenDetails(this.props.web3, this.props.asset, this.props.loadBalance, (tokenDetails) => {
-      this.setState({ loaded: true, tokenDetails });
+    this.removeListener = taskRunner.run(
+      this.props.web3,
+      [this.props.asset, !!this.props.loadBalance],
+      (tokenDetails) => {
+        this.setState({ loaded: true, tokenDetails });
     });
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
   }
 
   render() {
@@ -59,15 +68,23 @@ export const TokenDetailsProviderWithInjectedWeb3 = withInjectedWeb3(TokenDetail
 export const withTokenDetails = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
   return class extends Component<Omit<T, keyof IComponentProps> & { loadBalance?: boolean; }, IState> {
     static displayName = `withTokenDetails(${Cmp.displayName || Cmp.name})`;
+    removeListener: () => void;
 
     state: IState = {
       loaded: false,
     };
 
     componentDidMount() {
-      loadTokenDetails(this.props.web3, this.props.asset, this.props.loadBalance, (tokenDetails) => {
-        this.setState({ loaded: true, tokenDetails });
+      this.removeListener = taskRunner.run(
+        this.props.web3,
+        [this.props.asset, !!this.props.loadBalance],
+        (tokenDetails) => {
+          this.setState({ loaded: true, tokenDetails });
       });
+    }
+
+    componentWillUnmount() {
+      this.removeListener();
     }
 
     render() {
@@ -79,7 +96,8 @@ export const withTokenDetails = <T extends IComponentProps>(Cmp: React.Component
 export const withInfuraAndTokenDetails = flowRight(withInfura, withTokenDetails);
 export const withInjectedWeb3AndTokenDetails = flowRight(withInjectedWeb3, withTokenDetails);
 
-const loadTokenDetails = async (web3, asset, loadBalance, update) => {
+const loadTokenDetails = async (web3, [asset, loadBalance], update) => {
+  console.log('TASK: loadTokenDetails');
   const [network, token] = asset.split(':');
   if (!token && !loadBalance) {
     return update({ decimals: '18', symbol: 'ETH', name: 'ETH' });
@@ -124,3 +142,5 @@ const loadTokenDetails = async (web3, asset, loadBalance, update) => {
     await wait(1000);
   }
 };
+
+const taskRunner = new Web3TaskRunner<ITokenDetails, [string, boolean]>(loadTokenDetails);

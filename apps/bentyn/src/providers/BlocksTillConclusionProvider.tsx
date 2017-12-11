@@ -3,6 +3,7 @@ import Web3 from 'web3';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
+import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider';
 
 interface IProps {
@@ -34,14 +35,20 @@ class BlocksTillConclusionProvider extends Component<IProps, IState> {
     HASNT_STARTED,
     IS_CLOSED,
   };
-
+  removeListener: () => void;
   state: IState = {
     loaded: false,
   };
 
   componentDidMount() {
     const { web3, asset, startBlock, endBlock } = this.props;
-    load(web3, asset, startBlock, endBlock, this._onUpdate);
+    taskRunner.run(web3, [asset, startBlock, endBlock], (blocksState) => {
+      this.setState({ loaded: true, blocksState });
+    });
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
   }
 
   render() {
@@ -56,15 +63,12 @@ class BlocksTillConclusionProvider extends Component<IProps, IState> {
 
     return this.props.render(blocksState!);
   }
-
-  _onUpdate = (blocksState) => {
-    this.setState({ loaded: true, blocksState });
-  }
 }
 
 export default withInjectedWeb3AndWeb3State(BlocksTillConclusionProvider);
 
-const load = async (web3, asset, startBlock, endBlock, update) => {
+const load = async (web3, [asset, startBlock, endBlock], update) => {
+  console.log('TASK: Blocks till consulion');
   const [network] = asset.split(':');
 
   while (!(
@@ -87,3 +91,8 @@ const load = async (web3, asset, startBlock, endBlock, update) => {
     await wait(10 * 1000);
   }
 };
+
+const taskRunner = new Web3TaskRunner<
+  { enabled: boolean; reason?: string; },
+  [string, number, number]
+>(load);
