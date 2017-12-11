@@ -97,7 +97,6 @@ export const withInfuraAndTokenDetails = flowRight(withInfura, withTokenDetails)
 export const withInjectedWeb3AndTokenDetails = flowRight(withInjectedWeb3, withTokenDetails);
 
 const loadTokenDetails = async (web3, [asset, loadBalance], update) => {
-  console.log('TASK: loadTokenDetails');
   const [network, token] = asset.split(':');
   if (!token && !loadBalance) {
     return update({ decimals: '18', symbol: 'ETH', name: 'ETH' });

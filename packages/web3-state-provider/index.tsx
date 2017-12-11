@@ -91,7 +91,6 @@ export const withInjectedWeb3AndWeb3State = flowRight(
 );
 
 const load = async (web3, [asset], update) => {
-  console.log('TASK: Web3 state');
   const [network] = asset.split(':');
 
   while (true) {

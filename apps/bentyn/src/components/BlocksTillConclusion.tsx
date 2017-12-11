@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
+import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
@@ -32,14 +33,20 @@ interface IState {
 }
 
 export default class BlocksTillConclusion extends Component<IProps, IState> {
-
+  removeListener: () => void;
   state: IState = {
     average: 12,
     loaded: false,
   };
 
   componentDidMount() {
-    this._load();
+    this.removeListener = taskRunner.run(this.props.web3, [this.props.asset], ({ blockNumber, average }) => {
+      this.setState({ loaded: true, blockNumber, average });
+    });
+  }
+
+  componentWillUnmount() {
+    this.removeListener();
   }
 
   render() {
@@ -49,8 +56,6 @@ export default class BlocksTillConclusion extends Component<IProps, IState> {
   _renderComponent = () => {
     const { startBlock, endBlock } = this.props;
     const { blockNumber } = this.state;
-    // const disabled = !web3Enabled && (reason && reason !== 'Your wallet is locked');
-    const disabled = false;
 
     let content: JSX.Element | null = null;
     if (startBlock > blockNumber!) {
@@ -84,39 +89,43 @@ export default class BlocksTillConclusion extends Component<IProps, IState> {
     }
 
     return (
-      <div className={cx(style.self, { disabled }, this.props.className)}>
+      <div className={cx(style.self, this.props.className)}>
         {content}
       </div>
     );
   }
 
-  _load = async () => {
-    const { web3, asset } = this.props;
-    const [network] = asset.split(':');
-
-    while (!(await web3.eth.net.isListening() || await core.utils.getCurrentNetworkName(web3) === network)) {
-      wait(1000);
-    }
-
-    while (true) {
-      const blockNumber = await core.utils.getBlockNumber(web3);
-      this.setState({ loaded: true, blockNumber });
-      this._getAverageBlockTime(blockNumber);
-      await wait(this.state.average * 1000);
-    }
-  }
-
   _getEstimate = (blocks) => {
     return moment.duration(blocks * this.state.average * 1000).humanize();
   }
-
-  _getAverageBlockTime = async (blockNumber) => {
-    const SPAN = 100;
-    const currentBlock = await core.utils.getBlock(this.props.web3, blockNumber);
-    const pastBlock = await core.utils.getBlock(this.props.web3, blockNumber - SPAN);
-
-    const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
-
-    this.setState({ average });
-  }
 }
+
+const load = async (web3, [asset], update) => {
+  const [network] = asset.split(':');
+
+  while (!(await web3.eth.net.isListening() || await core.utils.getCurrentNetworkName(web3) === network)) {
+    wait(1000);
+  }
+
+  while (true) {
+    const blockNumber = await core.utils.getBlockNumber(web3);
+    const average = await getAverageBlockTime(web3, blockNumber);
+    update({ blockNumber, average });
+    await wait(average * 1000);
+  }
+};
+
+const getAverageBlockTime = async (web3, blockNumber): Promise<number> => {
+  const SPAN = 100;
+  const currentBlock = await core.utils.getBlock(web3, blockNumber);
+  const pastBlock = await core.utils.getBlock(web3, blockNumber - SPAN);
+
+  const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
+
+  return average;
+};
+
+const taskRunner = new Web3TaskRunner<
+  { blockNumber: number; average: number },
+  [string]
+>(load);

@@ -68,7 +68,6 @@ class BlocksTillConclusionProvider extends Component<IProps, IState> {
 export default withInjectedWeb3AndWeb3State(BlocksTillConclusionProvider);
 
 const load = async (web3, [asset, startBlock, endBlock], update) => {
-  console.log('TASK: Blocks till consulion');
   const [network] = asset.split(':');
 
   while (!(

@@ -3,12 +3,6 @@
   font-size: 14px;
   line-height: 25px;
 
-  &.disabled {
-    background-color: rgba(137, 147, 159, 0.2);
-    color: rgba(137, 147, 159, 0.8);
-    cursor: not-allowed;
-  }
-
   .block-number {
     font-weight: bold;
   }
