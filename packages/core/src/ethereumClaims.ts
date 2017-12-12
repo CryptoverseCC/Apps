@@ -1,3 +1,5 @@
+import { toWei } from '@linkexchange/utils/balance';
+
 import { getCurrentNetworkName, getAccounts } from './utils';
 import { erc20ContractApprove, erc20ContractAllowance, erc20ContractDecimals } from './erc20';
 import {
@@ -21,10 +23,9 @@ export async function sendClaimValueTransfer(web3Instance, address, value, claim
   const [from] = await getAccounts(web3Instance);
 
   const contract = getContractValueTransfer(web3Instance, networkName);
-
   return contract.methods
     .post(address, JSON.stringify(claim))
-    .send({ from, value: web3Instance.toWei(value, 'ether') });
+    .send({ from, value: toWei(value, 18) });
 }
 
 export async function approveUserfeedsContractTokenTransfer(
@@ -65,16 +66,11 @@ export async function sendClaimTokenTransfer(
   claim,
 ) {
   const decimals = await erc20ContractDecimals(web3Instance, token);
-  const tokenWei = valueToTokenWei(web3Instance, value, decimals);
+  const tokenWei = toWei(value, decimals);
   const allowance = await allowanceUserfeedsContractTokenTransfer(web3Instance, token);
   if (tokenWei >= allowance) {
     const approveValue = unlimitedApproval ? 1e66 : tokenWei;
     await approveUserfeedsContractTokenTransfer(web3Instance, token, approveValue);
   }
   return sendClaimTokenTransferImpl(web3Instance, recipientAddress, token, tokenWei, claim);
-}
-
-function valueToTokenWei(web3Instance, value, decimals) {
-  return value * Math.pow(10, decimals); // ToDo !!!
-  // return web3Instance.toBigNumber(value).shift(decimals);
 }

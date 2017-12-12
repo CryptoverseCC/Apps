@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Web3 from 'web3';
 import { returntypeof } from 'react-redux-typescript';
 
 import { IBaseLink } from '@linkexchange/types/link';
@@ -31,6 +32,7 @@ const State2Props = returntypeof(mapsStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props & {
+  web3: Web3;
   tokenDetails: ITokenDetails;
   openWidgetDetails(): void;
 };
@@ -54,7 +56,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   };
 
   render() {
-    const { widgetSettings, tokenDetails } = this.props;
+    const { widgetSettings, tokenDetails, web3 } = this.props;
     const { step, link, linkId } = this.state;
 
     return (
@@ -73,6 +75,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
               <Switch expresion={step}>
                 <Switch.Case condition="form">
                   <AddLinkForm
+                    web3={web3}
                     tokenDetails={tokenDetails}
                     asset={widgetSettings.asset}
                     recipientAddress={widgetSettings.recipientAddress}

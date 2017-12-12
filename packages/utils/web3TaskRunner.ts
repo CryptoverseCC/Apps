@@ -1,6 +1,5 @@
 import Web3 from 'web3';
 
-// ToDo should be typed
 type TTask<T, Args> = (web3: Web3, args: Args, listener: TListener<T>) => any;
 type TListener<T> = (result: T) => void;
 

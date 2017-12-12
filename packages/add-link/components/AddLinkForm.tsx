@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import Web3 from 'web3';
 
 import core from '@userfeeds/core/src';
-import web3 from '@linkexchange/utils/web3';
 import { IBaseLink } from '@linkexchange/types/link';
 import Loader from '@linkexchange/components/src/Loader';
 import Tooltip from '@linkexchange/components/src/Tooltip';
@@ -9,8 +9,6 @@ import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
 import { R, validate } from '@linkexchange/utils/validation';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
-import TokenDetailsProvider from '@linkexchange/token-details-provider';
 import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
 
 import {
@@ -20,6 +18,7 @@ import {
 import * as style from './addLinkForm.scss';
 
 interface IAddLinkFormProps {
+  web3: Web3;
   asset: string;
   tokenDetails: any;
   recipientAddress: string;
@@ -163,7 +162,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
       return;
     }
 
-    const { recipientAddress } = this.props;
+    const { recipientAddress, web3 } = this.props;
     const { value, unlimitedApproval } = this.state;
     this.setState({ posting: true });
 
