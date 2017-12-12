@@ -61,7 +61,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
-    sum: this.props.links.reduce((acc, { score }) => acc.add(new BN('' + score)), new BN(0)),
+    sum: this.props.links.reduce((acc, { score }) => acc.add(new BN(score.toFixed(0))), new BN(0)),
     probability: '-',
   };
 
@@ -165,7 +165,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
     if (!validationError) {
       const valueInWei = toWei(value, this.props.tokenDetails.decimals);
-      const rawProbability = (new BN('' + link.score).add(new BN(valueInWei)).muln(10000))
+      const rawProbability = (new BN(link.score.toFixed(0)).add(new BN(valueInWei)).muln(10000))
         .div(sum.add(new BN(valueInWei)));
       const probability =
         `${rawProbability.divn(100).toString(10)}.${rawProbability.modn(100).toString(10).slice(0, 3)}`;
