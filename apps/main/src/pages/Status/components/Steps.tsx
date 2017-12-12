@@ -89,11 +89,7 @@ class Progress extends Component<IProgressProps, IProgressState> {
 
 interface IStepsProps {
   link?: any;
-  blockchainState: {
-    web3Available: boolean;
-    web3UnavailableReason?: string;
-    transationBlockNumber?: number;
-  };
+  transationBlockNumber: number | null;
 }
 
 export default class Steps extends Component<IStepsProps, {}> {
@@ -102,22 +98,17 @@ export default class Steps extends Component<IStepsProps, {}> {
   step2Ref: JSX.Element | undefined;
 
   render() {
-    const { link, blockchainState } = this.props;
+    const { link, transationBlockNumber } = this.props;
     let step0State;
     let step0Reason;
 
     if (link) {
       step0State = 'done';
-    } else if (blockchainState.web3Available) {
-      if (blockchainState.transationBlockNumber) {
+    } else if (transationBlockNumber !== null) {
         step0State = 'done';
-      } else {
-        step0State = 'waiting';
-        step0Reason = 'Waiting for blockchain';
-      }
     } else {
-      step0State = 'disabled';
-      step0Reason = blockchainState.web3UnavailableReason;
+      step0State = 'waiting';
+      step0Reason = 'Waiting for blockchain';
     }
 
     const step1State = step0State === 'waiting' ? 'notstarted' : link ? 'done' : 'waiting';

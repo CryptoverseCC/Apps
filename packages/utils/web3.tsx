@@ -36,8 +36,8 @@ export const getInfura = (network: TNetwork): Web3 => {
 };
 
 interface IProviderProps {
-  injectedWeb3: Web3;
-  infuraWeb3: Web3;
+  injectedWeb3?: Web3;
+  infuraWeb3?: Web3;
 }
 
 export class Web3Provider extends Component<IProviderProps, {}> {
@@ -72,6 +72,9 @@ export const withInfura = <T extends IComponentProps>(Cmp: React.ComponentType<T
     static displayName = `withInfura(${Cmp.displayName || Cmp.name})`;
 
     render() {
+      if (!this.context.infuraWeb3) {
+        throw Error(`Couldn't find infuraWeb3`);
+      }
       return <Cmp web3={this.context.infuraWeb3} {...this.props} />;
     }
   };
@@ -86,6 +89,9 @@ export const withInjectedWeb3 = <T extends IComponentProps>(Cmp: React.Component
     static displayName = `withInjectedWeb3(${Cmp.displayName || Cmp.name})`;
 
     render() {
+      if (!this.context.injectedWeb3) {
+        throw Error(`Couldn't find injectedWeb3`);
+      }
       return <Cmp web3={this.context.injectedWeb3} {...this.props} />;
     }
   };

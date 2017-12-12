@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Web3 from 'web3';
 import { returntypeof } from 'react-redux-typescript';
 
+import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
 import { IBaseLink } from '@linkexchange/types/link';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 import Link from '@linkexchange/components/src/Link';
@@ -115,4 +116,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   }
 }
 
-export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
+const connectedComponent = connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
+export default connectedComponent;
+
+export const AddLinkWithTokenDetalsAndTokenDetails = withInjectedWeb3AndTokenDetails(connectedComponent);

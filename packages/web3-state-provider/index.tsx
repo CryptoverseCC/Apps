@@ -90,16 +90,16 @@ export const withInjectedWeb3AndWeb3State = flowRight(
   withWeb3State,
 );
 
-const load = async (web3, [asset], update) => {
+const load = async (web3, [asset = ''], update) => {
   const [network] = asset.split(':');
 
   while (true) {
     if (!(web3.currentProvider !== null && await web3.eth.net.isListening())) {
       update({ enabled: false, reason: 'Web3 is unavailable' });
-    } else if (await core.utils.getCurrentNetworkName(web3) !== network) {
-      update({ enabled: false, reason: `You have to switch to ${network} network`});
     } else if ((await web3.eth.getAccounts()).length === 0) {
       update({ enabled: false, reason: 'Your wallet is locked' });
+    } else if (await core.utils.getCurrentNetworkName(web3) !== network) {
+      update({ enabled: false, reason: `You have to switch to ${network} network`});
     } else {
       update({ enabled: true });
     }

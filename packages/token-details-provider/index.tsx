@@ -39,6 +39,12 @@ interface IComponentProps {
   tokenDetails: ITokenDetails;
 }
 
+interface IAdditionalProps {
+  web3: Web3;
+  loadBalance?: boolean;
+  asset: string;
+}
+
 export default class TokenDetailsProvider extends Component<IProps, IState> {
   removeListener: () => void;
   state: IState = {
@@ -67,7 +73,7 @@ export const TokenDetailsProviderWithInfura = withInfura(TokenDetailsProvider);
 export const TokenDetailsProviderWithInjectedWeb3 = withInjectedWeb3(TokenDetailsProvider);
 
 export const withTokenDetails = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
-  return class extends Component<Omit<T, keyof IComponentProps> & { loadBalance?: boolean; }, IState> {
+  return class extends Component<Omit<T, keyof IComponentProps> & IAdditionalProps, IState> {
     static displayName = `withTokenDetails(${Cmp.displayName || Cmp.name})`;
     removeListener: () => void;
 
@@ -97,7 +103,7 @@ export const withTokenDetails = <T extends IComponentProps>(Cmp: React.Component
 export const withInfuraAndTokenDetails = flowRight(withInfura, withTokenDetails);
 export const withInjectedWeb3AndTokenDetails = flowRight(withInjectedWeb3, withTokenDetails);
 
-const loadTokenDetails = async (web3, [asset, loadBalance], update) => {
+const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
   const [network, token] = asset.split(':');
   if (!token && !loadBalance) {
     return update({ decimals: '18', symbol: 'ETH', name: 'ETH' });

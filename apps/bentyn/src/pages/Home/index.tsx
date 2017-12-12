@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
-import { withTokenDetails, withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
-import AddLinkComponent from '@linkexchange/add-link';
+import { withTokenDetails } from '@linkexchange/token-details-provider';
+import { AddLinkWithTokenDetalsAndTokenDetails } from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';
 import { IWidgetState } from '@linkexchange/ducks/widget';
@@ -20,7 +20,6 @@ import BlocksTillConclusion from '../../components/BlocksTillConclusion';
 import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
 const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
-const AddLink = withInjectedWeb3AndTokenDetails(AddLinkComponent);
 
 import { IBentynState } from '../../ducks/bentyn';
 
@@ -77,7 +76,11 @@ class Home extends Component<IProps, IState> {
         <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
           <Switch expresion={this.state.openedModal}>
             <Switch.Case condition="AddLink">
-              <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._closeModal} />
+              <AddLinkWithTokenDetalsAndTokenDetails
+                loadBalance
+                asset={widgetSettings.asset}
+                openWidgetDetails={this._closeModal}
+              />
             </Switch.Case>
             <Switch.Case condition="HowToBuy">
               <HowToBuy />

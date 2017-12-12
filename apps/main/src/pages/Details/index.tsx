@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import AddLink from '@linkexchange/add-link';
+import { AddLinkWithTokenDetalsAndTokenDetails } from '@linkexchange/add-link';
 import { Details as DetailsComponent, Header, Lists } from '@linkexchange/details';
 import { fetchLinks } from '@linkexchange/details/duck';
 import Modal from '@linkexchange/components/src/Modal';
@@ -40,7 +40,7 @@ class Details extends Component<TDetailsProps, IDetailsState> {
           <Lists />
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>
-          <AddLink openWidgetDetails={this._closeModal} />
+          <AddLinkWithTokenDetalsAndTokenDetails openWidgetDetails={this._closeModal} />
         </Modal>
       </div>
     );

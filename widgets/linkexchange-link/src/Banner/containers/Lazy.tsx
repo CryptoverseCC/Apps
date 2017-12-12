@@ -1,8 +1,6 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 
-import { withInjectedWeb3AndTokenDetails} from '@linkexchange/token-details-provider';
-
 const Loading = (props) => {
   if (props.pastDelay) {
     return <div>Loading...</div>;
@@ -29,9 +27,10 @@ export const WidgetDatails = Loadable({
   },
 });
 
-export const AddLink = withInjectedWeb3AndTokenDetails(
-  Loadable({
-    loader: () => import('@linkexchange/add-link'),
-    loading: Loading,
-  }),
-);
+export const AddLink = Loadable({
+  loader: () => import('@linkexchange/add-link'),
+  loading: Loading,
+  render: ({ AddLinkWithTokenDetalsAndTokenDetails }, props) => (
+    <AddLinkWithTokenDetalsAndTokenDetails {...props} />
+  ),
+});
