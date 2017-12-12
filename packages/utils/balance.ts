@@ -1,9 +1,9 @@
 import { BN } from 'web3-utils';
 
 export const fromWeiToString = (wei: string | number, decimals: string | number, decimalFigures: number = 3) => {
-  const counter = new BN(typeof wei === 'number' ? '' + wei : wei, 10);
+  const counter = new BN(typeof wei === 'number' ? wei.toFixed(0) : wei);
   const divider = new BN(10).pow(new BN(decimals));
-  const div = new BN(counter).div(divider).toString();
+  const div = new BN(counter).div(divider).toString(10);
   const mod = new BN(counter).mod(divider).toString(10, decimals).slice(0, decimalFigures);
 
   return `${div}.${mod}`;

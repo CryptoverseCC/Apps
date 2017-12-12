@@ -6,6 +6,7 @@ type TListener<T> = (result: T) => void;
 export default class Web3TaskRunner<T, Args> {
 
   mapping: Map<Web3, Map<string, Array<TListener<T>>>> = new Map();
+  lastResult: Map<Array<TListener<T>>, T> = new Map();
 
   constructor(private task: TTask<T, Args>) {}
 
@@ -25,6 +26,10 @@ export default class Web3TaskRunner<T, Args> {
     } else {
       listeners = this.mapping.get(web3)!.get(argsString);
       listeners.push(listener);
+
+      if (this.lastResult.has(listeners)) {
+        listener(this.lastResult.get(listeners)!);
+      }
     }
 
     return () => {
@@ -35,6 +40,7 @@ export default class Web3TaskRunner<T, Args> {
 
   _execute(web3: Web3, args: Args, listeners: Array<TListener<T>>) {
     this.task(web3, args, (result) => {
+      this.lastResult.set(listeners, result);
       listeners.forEach((l) => l(result));
     });
   }
