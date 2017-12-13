@@ -42,6 +42,15 @@ export function getTransactionReceipt(web3Instance, transactionId): Promise<stri
   return web3Instance.eth.getTransactionReceipt(transactionId);
 }
 
+// ToDo import PromiEvent<TransactionReceipt>
+export function resolveOnTransationHash(p): Promise<string> {
+  return new Promise((resolve, reject) => {
+    p
+    .on('error', reject)
+    .on('transactionHash', resolve);
+  });
+}
+
 async function throwIfNotConnected(web3Instance) {
   if (!await web3Instance.eth.net.isListening()) {
     throw Error('web3 is not connected');

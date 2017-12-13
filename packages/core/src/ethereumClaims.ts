@@ -1,6 +1,6 @@
 import { toWei } from '@linkexchange/utils/balance';
 
-import { getCurrentNetworkName, getAccounts } from './utils';
+import { getCurrentNetworkName, getAccounts, resolveOnTransationHash } from './utils';
 import { erc20ContractApprove, erc20ContractAllowance, erc20ContractDecimals } from './erc20';
 import {
   getContractWithoutValueTransfer,
@@ -15,7 +15,9 @@ export async function sendClaimWithoutValueTransfer(web3Instance, claim) {
 
   const contract = getContractWithoutValueTransfer(web3Instance, networkName);
 
-  return contract.methods.post(JSON.stringify(claim)).send({ from });
+  return resolveOnTransationHash(
+    contract.methods.post(JSON.stringify(claim)).send({ from }),
+  );
 }
 
 export async function sendClaimValueTransfer(web3Instance, address, value, claim) {
@@ -23,9 +25,11 @@ export async function sendClaimValueTransfer(web3Instance, address, value, claim
   const [from] = await getAccounts(web3Instance);
 
   const contract = getContractValueTransfer(web3Instance, networkName);
-  return contract.methods
-    .post(address, JSON.stringify(claim))
-    .send({ from, value: toWei(value, 18) });
+  return resolveOnTransationHash(
+    contract.methods
+      .post(address, JSON.stringify(claim))
+      .send({ from, value: toWei(value, 18) }),
+  );
 }
 
 export async function approveUserfeedsContractTokenTransfer(
@@ -49,12 +53,14 @@ export async function sendClaimTokenTransferImpl(web3Instance, address, token, v
   const [from] = await getAccounts(web3Instance);
   const contract = getContractTokenTransfer(web3Instance, networkName);
 
-  return contract.methods.post(
-    address,
-    token,
-    value,
-    JSON.stringify(claim),
-  ).send({ from });
+  return resolveOnTransationHash(
+    contract.methods.post(
+      address,
+      token,
+      value,
+      JSON.stringify(claim),
+    ).send({ from }),
+  );
 }
 
 export async function sendClaimTokenTransfer(

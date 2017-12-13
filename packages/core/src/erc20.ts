@@ -1,10 +1,13 @@
-import { getAccounts } from './utils';
+import { getAccounts, resolveOnTransationHash } from './utils';
 import { getErc20Contract } from './utils/contract';
 
 export async function erc20ContractApprove(web3Instance, contractAddress, spender, value) {
   const [from] = await getAccounts(web3Instance);
   const contract = getErc20Contract(web3Instance, contractAddress);
-  return contract.methods.approve(spender, value).send({ from });
+
+  return resolveOnTransationHash(
+    contract.methods.approve(spender, value).send({ from }),
+  );
 }
 
 export async function erc20ContractAllowance(web3Instance, contractAddress, spender) {
