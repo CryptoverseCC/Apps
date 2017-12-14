@@ -119,4 +119,4 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
 const connectedComponent = connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
 export default connectedComponent;
 
-export const AddLinkWithTokenDetalsAndTokenDetails = withInjectedWeb3AndTokenDetails(connectedComponent);
+export const AddLinkWithInjectedWeb3AndTokenDetails = withInjectedWeb3AndTokenDetails(connectedComponent);

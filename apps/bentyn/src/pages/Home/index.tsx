@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { withTokenDetails } from '@linkexchange/token-details-provider';
-import { AddLinkWithTokenDetalsAndTokenDetails } from '@linkexchange/add-link';
+import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';
 import { IWidgetState } from '@linkexchange/ducks/widget';
@@ -76,7 +76,7 @@ class Home extends Component<IProps, IState> {
         <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
           <Switch expresion={this.state.openedModal}>
             <Switch.Case condition="AddLink">
-              <AddLinkWithTokenDetalsAndTokenDetails
+              <AddLinkWithInjectedWeb3AndTokenDetails
                 loadBalance
                 asset={widgetSettings.asset}
                 openWidgetDetails={this._closeModal}

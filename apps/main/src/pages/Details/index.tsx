@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 
-import { AddLinkWithTokenDetalsAndTokenDetails } from '@linkexchange/add-link';
 import { Details as DetailsComponent, Header, Lists } from '@linkexchange/details';
+import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
+import widget, { IWidgetState } from '@linkexchange/ducks/widget';
 import { fetchLinks } from '@linkexchange/details/duck';
 import Modal from '@linkexchange/components/src/Modal';
 
 import * as style from './details.scss';
 
+const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({ widgetSettings: widget });
+
 const mapDispatchToProps = (dispatch) => ({
   fetchLinks: () => dispatch(fetchLinks()),
 });
 
+const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
-type TDetailsProps = typeof Dispatch2Props;
+type TDetailsProps = typeof State2Props & typeof Dispatch2Props;
 
 interface IDetailsState {
   isModalOpen: boolean;
@@ -31,6 +35,7 @@ class Details extends Component<TDetailsProps, IDetailsState> {
   }
 
   render() {
+    const { widgetSettings } = this.props;
     const { isModalOpen } = this.state;
 
     return (
@@ -40,7 +45,11 @@ class Details extends Component<TDetailsProps, IDetailsState> {
           <Lists />
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>
-          <AddLinkWithTokenDetalsAndTokenDetails openWidgetDetails={this._closeModal} />
+          <AddLinkWithInjectedWeb3AndTokenDetails
+            loadBalance
+            asset={widgetSettings.asset}
+            openWidgetDetails={this._closeModal}
+          />
         </Modal>
       </div>
     );
@@ -55,4 +64,4 @@ class Details extends Component<TDetailsProps, IDetailsState> {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Details);
+export default connect(mapStateToProps, mapDispatchToProps)(Details);
