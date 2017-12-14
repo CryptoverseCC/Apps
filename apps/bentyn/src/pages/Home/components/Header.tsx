@@ -1,7 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import Button from '@linkexchange/components/src/NewButton';
+
+import IfOwner from './IfOwner';
 
 import yt from '../../../../images/yt.png';
 import medium from '../../../../images/medium.png';
@@ -51,6 +54,11 @@ const Header = () => (
         </a>
       </div>
     </div>
+    <IfOwner>
+      <Link to="/dashboard" className={style.goToDashboard}>
+        <Button color="primary">Go to dashboard</Button>
+      </Link>
+    </IfOwner>
     <Button color="secondary" className={style.contactMe}>CONTACT ME</Button>
   </div>
 );

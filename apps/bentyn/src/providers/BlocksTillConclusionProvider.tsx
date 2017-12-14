@@ -42,7 +42,7 @@ class BlocksTillConclusionProvider extends Component<IProps, IState> {
 
   componentDidMount() {
     const { web3, asset, startBlock, endBlock } = this.props;
-    taskRunner.run(web3, [asset, startBlock, endBlock], (blocksState) => {
+    this.removeListener = taskRunner.run(web3, [asset, startBlock, endBlock], (blocksState) => {
       this.setState({ loaded: true, blocksState });
     });
   }

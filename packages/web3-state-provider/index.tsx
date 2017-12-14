@@ -9,7 +9,7 @@ import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import { Omit, Diff } from '@linkexchange/types';
 import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 
-interface IWeb3State {
+export interface IWeb3State {
   enabled: boolean;
   reason?: string;
 }
@@ -57,7 +57,7 @@ interface IComponentProps {
 }
 
 export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
-  return class extends Component<Omit<T, keyof IComponentProps>, IState> {
+  return class extends Component<Omit<T, keyof IComponentProps>& { web3: Web3 }, IState> {
     static displayName = `withWeb3State(${Cmp.displayName || Cmp.name})`;
     removeListener: () => void;
     state: IState = {

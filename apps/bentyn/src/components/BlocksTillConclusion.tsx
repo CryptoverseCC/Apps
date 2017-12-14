@@ -33,10 +33,12 @@ interface IState {
   blockNumber?: number;
 }
 
+const DEFAULT_AVERAGE_TIME = 12;
+
 export default class BlocksTillConclusion extends Component<IProps, IState> {
   removeListener: () => void;
   state: IState = {
-    average: 12,
+    average: DEFAULT_AVERAGE_TIME,
     loaded: false,
   };
 
@@ -121,8 +123,11 @@ const getAverageBlockTime = async (web3, blockNumber): Promise<number> => {
   const currentBlock = await core.utils.getBlock(web3, blockNumber);
   const pastBlock = await core.utils.getBlock(web3, blockNumber - SPAN);
 
-  const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
+  if (!currentBlock) {
+    return DEFAULT_AVERAGE_TIME;
+  }
 
+  const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
   return average;
 };
 
