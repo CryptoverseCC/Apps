@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
+import Web3 from 'web3';
 import { Location } from 'history';
 
-import web3 from '@linkexchange/utils/web3';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
-import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
-
+import wait from '@linkexchange/utils/wait';
+import { getInfura, TNetwork } from '@linkexchange/utils/web3';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import Svg from '@linkexchange/components/src/Svg';
 import Link from '@linkexchange/components/src/Link';
@@ -21,18 +20,6 @@ import * as style from './status.scss';
 
 const heartSvg = require('../../../images/heart.svg');
 
-const getTransactionReceipt = (tx: string) => {
-  return new Promise((resolve, reject) => {
-    web3.eth.getTransactionReceipt(tx, (error, result) => {
-      if (error) {
-        return reject(error);
-      }
-
-      resolve(result);
-    });
-  });
-};
-
 interface IStatusProps {
   location: Location;
 }
@@ -47,14 +34,12 @@ interface IStatusState {
   algorithm: string;
   whitelist: string;
   location: string;
-  blockchain: {
-    web3Available: boolean;
-    web3UnavailableReason?: string;
-    transationBlockNumber?: number;
-  };
+  transationBlockNumber: number | null;
 }
 
-export default class Status extends Component<IStatusProps, IStatusState> {
+class Status extends Component<IStatusProps, IStatusState> {
+  web3: Web3;
+
   constructor(props: IStatusProps) {
     super(props);
     const params = new URLSearchParams(props.location.search);
@@ -67,6 +52,9 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     const linkId = params.get('linkId') || '';
     const location = params.get('location') || '';
 
+    const [network] = asset.split(':');
+    this.web3 = getInfura(network as TNetwork);
+
     this.state = {
       mobileOrTablet: mobileOrTablet(),
       apiUrl,
@@ -76,9 +64,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       algorithm,
       whitelist,
       location,
-      blockchain: {
-        web3Available: false,
-      },
+      transationBlockNumber: null,
     };
   }
 
@@ -98,6 +84,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     };
 
     setTimeoutForFetch(0);
+    this._observeBlockchainState();
   }
 
   render() {
@@ -105,16 +92,11 @@ export default class Status extends Component<IStatusProps, IStatusState> {
       return null;
     }
 
-    const { mobileOrTablet, linkId, asset, recipientAddress, link, blockchain, location } = this.state;
-    const [disaredNetwork] = asset.split(':');
+    const { mobileOrTablet, linkId, asset, recipientAddress, link, location, transationBlockNumber } = this.state;
 
     return (
       <div className={style.self}>
         <Intercom settings={{ app_id: 'xdam3he4' }} />
-        <Web3StateProvider
-          disaredNetwork={disaredNetwork}
-          render={this._onWeb3State}
-        />
         <div>
           <p className={style.previewTitle}>Link preview:</p>
           <Paper className={style.preview}>
@@ -138,7 +120,7 @@ export default class Status extends Component<IStatusProps, IStatusState> {
               <A href={location}>{location}</A>
             </div>
           </div>
-          <Steps link={link} blockchainState={blockchain} />
+          <Steps link={link} transationBlockNumber={transationBlockNumber} />
         </Paper>
       </div>
     );
@@ -170,26 +152,15 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     }
   }
 
-  _onWeb3State = (state) => {
-    this._observeBlockchainState(state);
-    return null;
-  }
-
-  _observeBlockchainState = async ({ enabled, reason }) => {
-    const disabled = !enabled && (reason && reason !== 'Your wallet is locked');
-
-    if (disabled) {
-      return this.setState({ blockchain: { web3Available: false, web3UnavailableReason: reason } });
-    }
-    const [, tx] = this.state.linkId.split(':');
-
-    const receipt = await getTransactionReceipt(tx);
-    this.setState({
-      blockchain: {
-        web3Available: true,
+  _observeBlockchainState = async () => {
+    do {
+      const [, tx] = this.state.linkId.split(':');
+      const receipt = await this.web3.eth.getTransactionReceipt(tx);
+      this.setState({
         transationBlockNumber: receipt.status === '0x1' ? receipt.blockNumber : null,
-      },
-    });
+      });
+      await wait(1000);
+    } while (this.state.transationBlockNumber == null);
   }
 
   _findLinkById = (linkId) => (links) => {
@@ -199,3 +170,5 @@ export default class Status extends Component<IStatusProps, IStatusState> {
     return link;
   }
 }
+
+export default Status;

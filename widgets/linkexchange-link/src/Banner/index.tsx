@@ -87,7 +87,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
           </Switch>
         </div>
         <RandomLinkProvider
-          ref={(ref) => (this.linkProvider = ref)}
+          ref={(ref: RandomLinkProvider) => (this.linkProvider = ref)}
           links={links}
           timeslot={widgetSettings.timeslot}
           onLink={this._onLink}
@@ -105,6 +105,8 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
               </Switch.Case>
               <Switch.Case condition="addLink">
                 <AddLink
+                  loadBalance
+                  asset={widgetSettings.asset}
                   openWidgetDetails={this._openModal('details')}
                 />
               </Switch.Case>

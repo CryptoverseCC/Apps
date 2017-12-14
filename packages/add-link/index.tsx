@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Web3 from 'web3';
 import { returntypeof } from 'react-redux-typescript';
 
+import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
 import { IBaseLink } from '@linkexchange/types/link';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openToast, TToastType } from '@linkexchange/toast/duck';
+import { ITokenDetails } from '@linkexchange/token-details-provider';
 
 import Steps from './components/Steps';
 import BackButton from './components/BackButton';
@@ -30,6 +33,8 @@ const State2Props = returntypeof(mapsStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props & {
+  web3: Web3;
+  tokenDetails: ITokenDetails;
   openWidgetDetails(): void;
 };
 
@@ -52,7 +57,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   };
 
   render() {
-    const { widgetSettings } = this.props;
+    const { widgetSettings, tokenDetails, web3 } = this.props;
     const { step, link, linkId } = this.state;
 
     return (
@@ -71,6 +76,8 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
               <Switch expresion={step}>
                 <Switch.Case condition="form">
                   <AddLinkForm
+                    web3={web3}
+                    tokenDetails={tokenDetails}
                     asset={widgetSettings.asset}
                     recipientAddress={widgetSettings.recipientAddress}
                     onChange={this._onFormEdit}
@@ -109,4 +116,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   }
 }
 
-export default connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
+const connectedComponent = connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
+export default connectedComponent;
+
+export const AddLinkWithTokenDetalsAndTokenDetails = withInjectedWeb3AndTokenDetails(connectedComponent);

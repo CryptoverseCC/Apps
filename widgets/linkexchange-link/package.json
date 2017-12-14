@@ -10,7 +10,7 @@
   "author": "Userfeeds",
   "license": "ISC",
   "dependencies": {
-    "@linkechange/token-details-provider": "^0.0.2",
+    "@linkexchange/token-details-provider": "^0.0.2",
     "@linkexchange/add-link": "^0.0.2",
     "@linkexchange/components": "^0.0.24",
     "@linkexchange/details": "^0.0.3",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/jest": "^20.0.4",
-    "@types/react": "^16.0.25",
+    "@types/react": "^16.0.28",
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.13",
     "@webcomponents/custom-elements": "^1.0.0",

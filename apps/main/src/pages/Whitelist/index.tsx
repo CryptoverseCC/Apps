@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import debounce from 'lodash.debounce';
 import qs from 'qs';
+import Web3 from 'web3';
 import { History, Location } from 'history';
 
 import core from '@userfeeds/core/src';
-import web3 from '@linkexchange/utils/web3';
+import web3, { getInfura } from '@linkexchange/utils/web3';
 import wait from '@linkexchange/utils/wait';
 import Link from '@linkexchange/components/src/Link';
 import Icon from '@linkexchange/components/src/Icon';
@@ -43,7 +44,6 @@ interface IState {
   };
   assetFromParams: boolean;
   algorithm: string;
-  decimals?: string;
 }
 
 type TProps = IUpdateQueryParamProp & {
@@ -52,6 +52,8 @@ type TProps = IUpdateQueryParamProp & {
 };
 
 class Whitelist extends Component<TProps, IState> {
+  web3: Web3;
+
   constructor(props: TProps) {
     super(props);
 
@@ -67,6 +69,9 @@ class Whitelist extends Component<TProps, IState> {
         network: WIDGET_NETWORKS[0].value,
       };
     }
+
+    this.web3 = getInfura(asset.network);
+
     this.state = {
       links: [],
       fetching: false,
@@ -78,7 +83,6 @@ class Whitelist extends Component<TProps, IState> {
       recipientAddressFromParams: !!params.recipientAddress,
       whitelistFromParams: !!params.whitelist,
       assetFromParams: !!params.asset,
-      decimals: (params.tokenDetails && params.tokenDetails.decimals) || undefined,
     };
   }
 
@@ -89,6 +93,7 @@ class Whitelist extends Component<TProps, IState> {
   }
 
   render() {
+    const { asset } = this.state;
     return (
       <div className={style.self}>
         <Intercom settings={{ app_id: 'xdam3he4' }} />
@@ -146,7 +151,11 @@ class Whitelist extends Component<TProps, IState> {
                 }}
               />
             ) : this._linksWaitingForApproval().length > 0 ? (
-              <LinksList links={this._linksWaitingForApproval()} />
+              <LinksList
+                web3={this.web3}
+                asset={`${asset.network}:${asset.token}`}
+                links={this._linksWaitingForApproval()}
+              />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
@@ -172,7 +181,7 @@ class Whitelist extends Component<TProps, IState> {
                 }}
               />
             ) : this._linksApproved().length > 0 ? (
-              <LinksList links={this._linksApproved()} />
+              <LinksList web3={this.web3} asset={`${asset.network}:${asset.token}`} links={this._linksApproved()} />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
@@ -188,12 +197,12 @@ class Whitelist extends Component<TProps, IState> {
   _linksWaitingForApproval = () => this.state.links.filter((link) => !link.whitelisted);
   _linksApproved = () => this.state.links.filter((link) => link.whitelisted);
 
-  _setAddressFromMM = (key) => () => {
-    web3.eth.getAccounts((_, accounts = ['']) => {
-      this.setState({ [key]: accounts[0] });
-      this.props.updateQueryParam(key, accounts[0]);
-      this._fetchLinks();
-    });
+  _setAddressFromMM = (key) => async () => {
+    const [account = ''] = await web3.eth.getAccounts();
+
+    this.setState({ [key]: account });
+    this.props.updateQueryParam(key, account);
+    this._fetchLinks();
   }
 
   _onChange = (key) => (e) => {
@@ -205,6 +214,7 @@ class Whitelist extends Component<TProps, IState> {
   }
 
   _onAssetChange = (value) => {
+    this.web3 = getInfura(value.network);
     this.setState({ asset: value }, () => {
       this._fetchLinks();
     });
@@ -226,7 +236,7 @@ class Whitelist extends Component<TProps, IState> {
           title: link.title,
           summary: link.summary,
           target: link.target,
-          total: this._totalSpentFromTokensWei(link.total, this.state.decimals),
+          total: link.total,
         };
         return parsedLink;
       });
@@ -259,13 +269,6 @@ class Whitelist extends Component<TProps, IState> {
     return fetch(
       `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/${whitelistParam}`,
     ).then<{ items: IRemoteLink[] }>((res) => res.json());
-  }
-
-  _totalSpentFromTokensWei = (tokenWei: number, decimals: string = '18') => {
-    return web3
-      .toBigNumber(tokenWei)
-      .shift(-web3.toBigNumber(decimals))
-      .toString();
   }
 
   _debouncedFetchLinks = debounce(this._fetchLinks, 500);

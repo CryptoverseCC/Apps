@@ -13,6 +13,6 @@
     "@linkexchange/utils": "0.0.9",
     "@linkexchange/types": "0.0.3",
     "@linkexchange/components": "0.0.24",
-    "@linkechange/token-details-provider": "0.0.2"
+    "@linkexchange/token-details-provider": "0.0.2"
   }
 }

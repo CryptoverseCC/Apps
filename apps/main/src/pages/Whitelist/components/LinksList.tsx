@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
 
-import BoldText from '@linkexchange/components/src/BoldText';
+import { fromWeiToString } from '@linkexchange/utils/balance';
+import { ITokenDetails, withTokenDetails } from '@linkexchange/token-details-provider';
+
 import A from '@linkexchange/components/src/A';
-import Button from '@linkexchange/components/src/NewButton';
 import Icon from '@linkexchange/components/src/Icon';
-import MetaFox from '../../../../images/metafox.png';
+import Button from '@linkexchange/components/src/NewButton';
+import BoldText from '@linkexchange/components/src/BoldText';
 
 import TransactionProvider from './TransactionProvider';
+
+import MetaFox from '../../../../images/metafox.png';
 
 import { TWhitelistableClickableLink } from '../';
 
 import * as style from './linksList.scss';
 
 interface ILinksListProps {
+  tokenDetails: ITokenDetails;
   links: TWhitelistableClickableLink[];
 }
 
@@ -38,7 +43,7 @@ const LinksList = (props: ILinksListProps) => {
               <A href={link.target}>{link.target}</A>
             </td>
             <td style={{ width: '140px' }}>
-              <b>{link.total}</b>
+              <b>{fromWeiToString(link.total, props.tokenDetails.decimals)}</b>
             </td>
             {!link.whitelisted && (
               <td style={{ width: '200px', textAlign: 'right' }}>
@@ -52,7 +57,7 @@ const LinksList = (props: ILinksListProps) => {
                   renderPending={() => <Button color="pending">Pending</Button>}
                   renderMetaPending={() => (
                     <Button color="metaPending">
-                      <img src={MetaFox} displayName="Icon" style={{ height: '2em' }} /> Metamask...
+                      <img src={MetaFox} {...{displayName: 'Icon'}} style={{ height: '2em' }} /> Metamask...
                     </Button>
                   )}
                   renderError={() => <Button color="error">Failed :(</Button>}
@@ -67,4 +72,4 @@ const LinksList = (props: ILinksListProps) => {
   );
 };
 
-export default LinksList;
+export default withTokenDetails(LinksList);

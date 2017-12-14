@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Web3 from 'web3';
+import { BN } from 'web3-utils';
 
 import core from '@userfeeds/core/src';
 import Input from '@linkexchange/components/src/Input';
@@ -11,13 +13,16 @@ import { R, validate } from '@linkexchange/utils/validation';
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
-import TokenDetailsProvider from '@linkechange/token-details-provider';
+import { ITokenDetails } from '@linkexchange/token-details-provider';
+import { toWei } from '@linkexchange/utils/balance';
 
 import If from '@linkexchange/components/src/utils/If';
 
 import * as style from './boostLink.scss';
 
 interface IBidLinkProps {
+  web3: Web3;
+  tokenDetails: ITokenDetails;
   disabled?: boolean;
   disabledReason?: string;
   link: IRemoteLink;
@@ -30,7 +35,7 @@ interface IBidLinkProps {
 
 interface IBidLinkState {
   visible: boolean;
-  sum: number;
+  sum: BN;
   value?: string;
   validationError?: string;
   probability: string;
@@ -56,12 +61,12 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
-    sum: this.props.links.reduce((acc, { score }) => acc + score, 0),
+    sum: this.props.links.reduce((acc, { score }) => acc.add(new BN(score.toFixed(0))), new BN(0)),
     probability: '-',
   };
 
   render() {
-    const { link, asset, disabled, disabledReason } = this.props;
+    const { link, asset, disabled, disabledReason, tokenDetails } = this.props;
     const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
     const [desiredNetwork] = asset.split(':');
 
@@ -89,15 +94,9 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               <p className={style.equalSign}>=</p>
               <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
             </div>
-            {this._getTokenAddress() && (
-              <TokenDetailsProvider
-                render={(tokenDetails) => (
-                  <p>
-                    Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-                  </p>
-                )}
-              />
-            )}
+            <p>
+              Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+            </p>
             <NewButton
               disabled={!!validationError || !value}
               style={{ marginLeft: 'auto' }}
@@ -165,10 +164,11 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const validationError = validate(valueValidationRules, value);
 
     if (!validationError) {
-      const valueInEth = parseFloat(value);
-      const valueInWei = parseFloat(web3.toWei(valueInEth, 'ether'));
-      const rawProbability = (link.score + valueInWei) / (sum + valueInWei);
-      const probability = (100 * rawProbability).toFixed(2);
+      const valueInWei = toWei(value, this.props.tokenDetails.decimals);
+      const rawProbability = (new BN(link.score.toFixed(0)).add(new BN(valueInWei)).muln(10000))
+        .div(sum.add(new BN(valueInWei)));
+      const probability =
+        `${rawProbability.divn(100).toString(10)}.${rawProbability.modn(100).toString(10).slice(0, 3)}`;
       this.setState({ probability, validationError });
     } else {
       this.setState({ probability: '-', validationError });
@@ -191,7 +191,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       ],
     };
 
-    const token = this._getTokenAddress();
+    const [_, token] = this.props.asset.split(':');
     let sendClaimPromise;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
@@ -219,9 +219,5 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       .then(() => {
         this.setState({ visible: false });
       });
-  }
-
-  _getTokenAddress() {
-    return this.props.asset.split(':')[1];
   }
 }

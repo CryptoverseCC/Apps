@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import moment from 'moment';
+import Web3 from 'web3';
 
 import core from '@userfeeds/core/src';
-import web3 from '@linkexchange/utils/web3';
+import wait from '@linkexchange/utils/wait';
+import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-import { IWeb3State } from '@linkexchange/web3-state-provider/duck';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
 
@@ -20,67 +21,62 @@ const cx = classnames.bind(style);
 
 interface IProps {
   asset: string;
+  web3: Web3;
   className?: string;
-  blockNumber: number;
   startBlock: number;
   endBlock: number;
 }
 
 interface IState {
   average: number;
+  loaded: boolean;
+  blockNumber?: number;
 }
 
-class BlocksTillConclusion extends Component<IProps, IState> {
-
-  state = {
+export default class BlocksTillConclusion extends Component<IProps, IState> {
+  removeListener: () => void;
+  state: IState = {
     average: 12,
+    loaded: false,
   };
 
-  render() {
-    const { asset } = this.props;
-    const [desiredNetwork] = asset.split(':');
-
-    return (
-      <Web3StateProvider
-        desiredNetwork={desiredNetwork}
-        render={this._renderComponent}
-      />
-    );
+  componentDidMount() {
+    this.removeListener = taskRunner.run(this.props.web3, [this.props.asset], ({ blockNumber, average }) => {
+      this.setState({ loaded: true, blockNumber, average });
+    });
   }
 
-  _renderComponent = ({ enabled: web3Enabled, reason }: { enabled: boolean, reason?: string }) => {
-    // ToDo it's not the best place for this.
-    if (web3Enabled) {
-      this._getAverageBlockTime();
-    }
-    const { blockNumber, startBlock, endBlock } = this.props;
-    const disabled = !web3Enabled && (reason && reason !== 'Your wallet is locked');
+  componentWillUnmount() {
+    this.removeListener();
+  }
 
-    let content = null;
-    if (disabled) {
-      content = (
-        <Tooltip text={reason}>
-          <p>Block till start/conclusion</p>
-        </Tooltip>
-      );
-    } else if (startBlock > blockNumber) {
+  render() {
+    return this.state.loaded ? this._renderComponent() : null;
+  }
+
+  _renderComponent = () => {
+    const { startBlock, endBlock } = this.props;
+    const { blockNumber } = this.state;
+
+    let content: JSX.Element | null = null;
+    if (startBlock > blockNumber!) {
       content = (
         <>
           <p>Auction will begin at block </p>
           <p>
             <span className={style.blockNumber}>{startBlock} </span>
-            (est. {this._getEstimate(startBlock - blockNumber)})
+            (est. {this._getEstimate(startBlock - blockNumber!)})
           </p>
         </>
       );
-    } else if (endBlock > blockNumber) {
-      const progress = ((blockNumber - startBlock) / (endBlock - startBlock) * 100).toFixed(2);
+    } else if (endBlock > blockNumber!) {
+      const progress = ((blockNumber! - startBlock) / (endBlock - startBlock) * 100).toFixed(2);
       content = (
         <>
           <p>Blocks till conclusion</p>
           <p>
-            <span className={style.blockNumber}>{endBlock - blockNumber} </span>
-            (est. {this._getEstimate(endBlock - blockNumber)})
+            <span className={style.blockNumber}>{endBlock - blockNumber!} </span>
+            (est. {this._getEstimate(endBlock - blockNumber!)})
           </p>
           <Tooltip text={`${progress}%`}>
             <ProgressBar progress={progress} className={style.progressBar} />
@@ -94,7 +90,7 @@ class BlocksTillConclusion extends Component<IProps, IState> {
     }
 
     return (
-      <div className={cx(style.self, { disabled }, this.props.className)}>
+      <div className={cx(style.self, this.props.className)}>
         {content}
       </div>
     );
@@ -103,22 +99,34 @@ class BlocksTillConclusion extends Component<IProps, IState> {
   _getEstimate = (blocks) => {
     return moment.duration(blocks * this.state.average * 1000).humanize();
   }
-
-  _getAverageBlockTime = async () => {
-    const SPAN = 100;
-    const currentBlock = await core.utils.getBlock(web3, this.props.blockNumber);
-    const pastBlock = await core.utils.getBlock(web3, this.props.blockNumber - SPAN);
-
-    const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
-
-    this.setState({ average });
-  }
 }
 
-const mapStateToProps = ({ web3, bentyn }: { web3: IWeb3State, bentyn: IBentynState }) => ({
-  blockNumber: web3.blockNumber,
-  startBlock: bentyn.startBlock,
-  endBlock: bentyn.endBlock,
-});
+const load = async (web3, [asset], update) => {
+  const [network] = asset.split(':');
 
-export default connect(mapStateToProps)(BlocksTillConclusion);
+  while (!(await web3.eth.net.isListening() || await core.utils.getCurrentNetworkName(web3) === network)) {
+    wait(1000);
+  }
+
+  while (true) {
+    const blockNumber = await core.utils.getBlockNumber(web3);
+    const average = await getAverageBlockTime(web3, blockNumber);
+    update({ blockNumber, average });
+    await wait(average * 1000);
+  }
+};
+
+const getAverageBlockTime = async (web3, blockNumber): Promise<number> => {
+  const SPAN = 100;
+  const currentBlock = await core.utils.getBlock(web3, blockNumber);
+  const pastBlock = await core.utils.getBlock(web3, blockNumber - SPAN);
+
+  const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
+
+  return average;
+};
+
+const taskRunner = new Web3TaskRunner<
+  { blockNumber: number; average: number },
+  [string]
+>(load);

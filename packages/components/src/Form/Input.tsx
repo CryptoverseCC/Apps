@@ -14,7 +14,7 @@ export default class Input extends PureComponent<TInputProps> {
   static defaultProps = { displayName: 'Input' };
   ref?: HTMLElement;
 
-  setFocus() {
+  focus() {
     if (this.ref) {
       this.ref.focus();
     }

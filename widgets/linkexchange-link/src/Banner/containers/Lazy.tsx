@@ -30,4 +30,7 @@ export const WidgetDatails = Loadable({
 export const AddLink = Loadable({
   loader: () => import('@linkexchange/add-link'),
   loading: Loading,
+  render: ({ AddLinkWithTokenDetalsAndTokenDetails }, props) => (
+    <AddLinkWithTokenDetalsAndTokenDetails {...props} />
+  ),
 });

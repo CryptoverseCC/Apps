@@ -4,9 +4,11 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Button from '@linkexchange/components/src/Button';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
-import BoostLinkComponent from '@linkexchange/boost-link';
-import web3 from '@linkexchange/utils/web3';
+import BoostLinkComponentComponent from '@linkexchange/boost-link';
+import web3, { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
+import { withTokenDetails, TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
+import { fromWeiToString } from '@linkexchange/utils/balance';
 
 import * as style from './linksList.scss';
 
@@ -19,14 +21,17 @@ export interface IDefaultBoostLinkWrapperProps {
   links: ILink[] | IRemoteLink[];
 }
 
-const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
-  const [desiredNetwork] = props.asset.split(':');
+const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
+const BoostLinkComponent = withInjectedWeb3(withTokenDetails(BoostLinkComponentComponent));
 
+const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
   return (
-    <Web3StateProvider
-      desiredNetwork={desiredNetwork}
+    <InjectedWeb3StateProvider
+      asset={props.asset}
       render={({ enabled, reason }) => (
         <BoostLinkComponent
+          loadBalance
+          asset={props.asset}
           {...props}
           disabled={!enabled}
           disabledReason={reason}
@@ -42,8 +47,8 @@ interface ILinksListProps {
   asset: string;
   boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
   recipientAddress: string;
-  onBoostSuccess?: (transationId: string) => void;
-  onBoostError?: (error: any) => void;
+  onBoostSuccess: (transationId: string) => void;
+  onBoostError: (error: any) => void;
   showProbability?: boolean;
 }
 
@@ -68,7 +73,12 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     },
     {
       name: 'Current Score',
-      prop: (link: ILink) => web3.fromWei(link.score, 'ether').substr(0, 5),
+      prop: (link: ILink) => (
+        <TokenDetailsProviderWithInfura
+          asset={this.props.asset}
+          render={({ decimals }) => fromWeiToString(link.score, decimals)}
+        />
+      ),
     },
     {
       name: 'Bids',

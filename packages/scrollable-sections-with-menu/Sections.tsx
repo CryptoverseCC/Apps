@@ -30,7 +30,7 @@ export default class Sections extends Component<ISectionsProps, {}> {
     displayName: 'Sections',
   };
 
-  sections = [];
+  sections: HTMLElement[] = [];
 
   scrollTo(to: number) {
     findDOMNode(this.sections[to]).scrollIntoView(true);
@@ -86,7 +86,7 @@ export default class Sections extends Component<ISectionsProps, {}> {
 
           return Math.abs(viewport.top - top0) - Math.abs(viewport.top - top1);
         });
-      this.props.onScrolledTo(
+      this.props.onScrolledTo!(
         this.sections.indexOf(visibleSections[0]),
       );
     },

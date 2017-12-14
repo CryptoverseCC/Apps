@@ -13,4 +13,5 @@ interface IItercom {
   c(args: any): void;
 }
 
+declare module '*.jpg';
 declare module '*.png';

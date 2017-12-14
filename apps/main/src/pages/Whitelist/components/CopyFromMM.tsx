@@ -5,7 +5,7 @@ import {returntypeof } from 'react-redux-typescript';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
+import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider';
 
 import MetaFox from '../../../../images/metafox.png';
 
@@ -13,24 +13,28 @@ import * as style from './copyFromMM.scss';
 
 interface IProps {
   onClick(): void;
+  web3State: {
+    enabled: boolean;
+    reason?: string;
+  };
 }
 
-const CopyFromMM = ({ onClick }: IProps) => (
-  <Web3StateProvider
-    render={({ enabled, reason }) => (
-      <Tooltip text={reason}>
-        <Button
-          disabled={!enabled}
-          className={style.button}
-          size="small"
-          color="metaPending"
-          onClick={onClick}
-        >
-          <img className={style.metamask} src={MetaFox} />
-        </Button>
-      </Tooltip>
-    )}
-  />
-);
+const CopyFromMM = ({ onClick, web3State }: IProps) => {
+  const enabled = web3State.enabled || web3State.reason && web3State.reason.startsWith('You have to switch to');
+  const reason = !enabled ? web3State.reason : '';
+  return (
+    <Tooltip text={reason}>
+      <Button
+        disabled={!enabled}
+        className={style.button}
+        size="small"
+        color="metaPending"
+        onClick={onClick}
+      >
+        <img className={style.metamask} src={MetaFox} />
+      </Button>
+    </Tooltip>
+  );
+};
 
-export default CopyFromMM;
+export default withInjectedWeb3AndWeb3State(CopyFromMM);

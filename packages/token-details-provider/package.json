@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@linkechange/token-details-provider",
+  "name": "@linkexchange/token-details-provider",
   "version": "0.0.2",
   "description": "",
   "main": "index.tsx",

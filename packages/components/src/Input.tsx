@@ -12,9 +12,7 @@ type TInputProps = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElem
 
 export default class Input extends Component<TInputProps, {}> {
 
-  input: {
-    focus(): void;
-  } | undefined;
+  input: HTMLInputElement;
 
   render() {
     const { className, placeholder, errorMessage, value, multiline, disabled = false, ...restProps } = this.props;

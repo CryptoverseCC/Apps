@@ -10,7 +10,6 @@ import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 import Intercom from '@linkexchange/components/src/Intercom';
 
 import { IWidgetState } from '@linkexchange/ducks/widget';
-import { loadTokenDetails } from '@linkechange/token-details-provider/duck';
 
 import Header from './containers/Header';
 import DetailsLists from './containers/DetailsLists';
@@ -24,7 +23,6 @@ const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  loadTokenDetails,
   fetchLinks,
 }, dispatch);
 
@@ -53,7 +51,6 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
 
   componentDidMount() {
     this.props.fetchLinks();
-    this.props.loadTokenDetails();
   }
 
   render() {

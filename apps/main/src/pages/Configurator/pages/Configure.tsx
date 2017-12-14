@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import qs from 'qs';
+import Web3 from 'web3';
+import flowRight from 'lodash/flowRight';
+import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
+import core from '@userfeeds/core/src';
+import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { openToast } from '@linkexchange/toast/duck';
 import Input from '@linkexchange/components/src/Form/Input';
 import Radio from '@linkexchange/components/src/Form/Radio';
@@ -71,13 +76,13 @@ const initialState = {
 const MIN_DATE = moment().add(1, 'day');
 
 const rules = {
-  recipientAddress: [R.required, R.value((v) => web3.isAddress(v), 'Has to be valid eth address')],
+  recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
   title: [R.required],
   description: [R.required],
   contactMethod: [R.required],
   tillDate: [R.required],
   asset: [
-    R.value(({ network, token, isCustom }) => !isCustom || web3.isAddress(token), 'Has to be valid eth address'),
+    R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address'),
   ],
 };
 
@@ -85,6 +90,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TProps = typeof Dispatch2Props & IUpdateQueryParamProp & {
+  web3: Web3;
   location: Location;
   history: History;
 };
@@ -92,16 +98,11 @@ type TProps = typeof Dispatch2Props & IUpdateQueryParamProp & {
 class Configure extends Component<TProps, IState> {
 
   inputsRefs: {
-    [key: string]: {
-      setFocus(): void;
-    };
+    [key: string]: Input;
   } = {};
 
   constructor(props: TProps) {
     super(props);
-
-    const injectedWeb3 = window.web3;
-    const recipientAddress = injectedWeb3 && injectedWeb3.eth.accounts.length > 0 ? injectedWeb3.eth.accounts[0] : '';
 
     // ToDo do something with this
     let fromParams: Partial<IState & { asset: string | any }> = {};
@@ -117,14 +118,10 @@ class Configure extends Component<TProps, IState> {
       }
     }
 
-    if (recipientAddress) {
-      props.updateQueryParam({ recipientAddress, whitelist: recipientAddress });
-    }
-
     this.state = {
       ...initialState,
-      recipientAddress,
-      whitelist: recipientAddress,
+      recipientAddress: '',
+      whitelist: '',
       ...fromParams,
     };
   }
@@ -175,7 +172,7 @@ class Configure extends Component<TProps, IState> {
   focusOnFirstError = (errors) => {
     const firstError = ['recipientAddress', 'whitelist', 'title', 'description', 'contactMethod', 'tillDate']
       .find((field) => !!errors[field]);
-    this.inputsRefs[firstError!].setFocus();
+    this.inputsRefs[firstError!].focus();
   }
 
   validate = (name: string, value: any) => {
@@ -357,4 +354,8 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default connect(null, mapDispatchToProps)(updateQueryParam(Configure));
+export default flowRight(
+  withInjectedWeb3,
+  updateQueryParam,
+  connect(null, mapDispatchToProps),
+)(Configure);
