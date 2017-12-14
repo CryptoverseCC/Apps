@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import moment from 'moment';
+import Web3 from 'web3';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
@@ -20,7 +21,7 @@ const cx = classnames.bind(style);
 
 interface IProps {
   asset: string;
-  web3: any;
+  web3: Web3;
   className?: string;
   startBlock: number;
   endBlock: number;
