@@ -156,9 +156,11 @@ class Status extends Component<IStatusProps, IStatusState> {
     do {
       const [, tx] = this.state.linkId.split(':');
       const receipt = await this.web3.eth.getTransactionReceipt(tx);
-      this.setState({
-        transationBlockNumber: receipt.status === '0x1' ? receipt.blockNumber : null,
-      });
+      if (receipt) {
+        this.setState({
+          transationBlockNumber: receipt.status === '0x1' ? receipt.blockNumber : null,
+        });
+      }
       await wait(1000);
     } while (this.state.transationBlockNumber == null);
   }
