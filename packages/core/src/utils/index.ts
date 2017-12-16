@@ -5,6 +5,25 @@ const networkMapping = {
   42: 'kovan',
 };
 
+export function signTypedData(web3Instance, messageParams, from): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const jsonRPCRequest = {
+      method: 'eth_signTypedData',
+      params: [messageParams, from],
+      jsonrpc: '2.0',
+      id: new Date().getTime(),
+    };
+
+    web3Instance.currentProvider.send(jsonRPCRequest, (error, result) => {
+      if (error || result.error) {
+        return reject(error || result.error);
+      }
+
+      return resolve(result.result);
+    });
+  });
+}
+
 export async function getBalance(web3Instance): Promise<string> {
   throwIfNotConnected(web3Instance);
   const [account] = await web3Instance.eth.getAccounts();
