@@ -7,10 +7,16 @@ import sigUtil from 'eth-sig-util';
 
 import core from '@userfeeds/core/src';
 import { IWidgetState } from '@linkexchange/ducks/widget';
+import Loader from '@linkexchange/components/src/Loader';
+import Button from '@linkexchange/components/src/NewButton';
+import Switch from '@linkexchange/components/src/utils/Switch';
+import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 import {
   withInjectedWeb3AndWeb3State,
   IWeb3State,
 } from '@linkexchange/web3-state-provider';
+
+import * as style from './dashboard.scss';
 
 const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
   asset: widget.asset,
@@ -25,14 +31,12 @@ type TProps = typeof State2Props & {
 };
 
 interface IState {
-  loggedIn: boolean;
-  tried: boolean;
+  stage: 'notstarted' | 'inprogress' | 'success' | 'failure';
 }
 
 class Dashboard extends Component<TProps, IState> {
-  state = {
-    loggedIn: false,
-    tried: false,
+  state: IState = {
+    stage: 'notstarted',
   };
 
   componentDidMount() {
@@ -42,21 +46,46 @@ class Dashboard extends Component<TProps, IState> {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.web3State.enabled && !this.state.tried) {
+    if (newProps.web3State.enabled && this.state.stage === 'notstarted') {
       this._login();
     }
   }
 
   render() {
-    if (!this.state.loggedIn) {
-      return null;
-    }
+    const { stage } = this.state;
 
-    return <h4>Dashboard</h4>;
+    return (
+      <div className={style.self}>
+        <Switch expresion={stage}>
+          <Switch.Case condition="notstarted">
+            <p>Waiting for web3</p>
+          </Switch.Case>
+          <Switch.Case condition="inprogress">
+            <Loader />
+          </Switch.Case>
+          <Switch.Case condition="failure">
+            <h4>You shouldn't be here</h4>
+          </Switch.Case>
+          <Switch.Case condition="success">
+            <Button color="primary" onClick={this._goToWhitelist}>Go to whitelist</Button>
+
+            <Button color="primary" onClick={this._goToObsUrl}>Go to obs link</Button>
+          </Switch.Case>
+        </Switch>
+      </div>
+    );
+  }
+
+  _goToWhitelist = () => {
+    openLinkexchangeUrl('apps/#/whitelist', this.props.widgetSettings);
+  }
+
+  _goToObsUrl = () => {
+    openLinkexchangeUrl('obs-widget', this.props.widgetSettings);
   }
 
   _login = async () => {
-    this.setState({ tried: true });
+    this.setState({ stage: 'inprogress' });
     const typedData = [
       {
         type: 'string',
@@ -70,11 +99,15 @@ class Dashboard extends Component<TProps, IState> {
       },
     ];
 
-    const [address] = await this.props.web3.eth.getAccounts();
-    const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
-    const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
-    if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
-      this.setState({ loggedIn: true });
+    try {
+      const [address] = await this.props.web3.eth.getAccounts();
+      const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
+      const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
+      if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
+        this.setState({ stage: 'success' });
+      }
+    } catch (e) {
+      this.setState({ stage: 'failure' });
     }
   }
 }

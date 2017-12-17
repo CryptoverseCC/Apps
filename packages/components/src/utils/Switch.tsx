@@ -17,7 +17,7 @@ export default class Switch extends Component<ISwitchProps, {}> {
     if (children && Children.count(children) === 1) {
       return Children.only(children);
     }
-    return <div>{children}</div>;
+    return <>{children}</>;
   }
 
   render() {
