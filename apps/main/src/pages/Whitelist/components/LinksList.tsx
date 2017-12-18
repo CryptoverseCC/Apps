@@ -12,7 +12,6 @@ import BoldText from '@linkexchange/components/src/BoldText';
 import core from '@userfeeds/core/src';
 import web3 from '@linkexchange/utils/web3';
 
-
 import MetaFox from '../../../../images/metafox.png';
 
 import { TWhitelistableClickableLink } from '../';

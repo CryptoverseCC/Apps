@@ -1,13 +1,17 @@
 import React, { Component, ReactElement } from 'react';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
+import Button from '@linkexchange/components/src/NewButton';
+
+import MetaFox from './metafox.png';
+
 interface IProps {
-  startTransation(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
+  startTransation(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> | undefined;
   renderReady(): ReactElement<any>;
-  renderPending(): ReactElement<any>;
-  renderMetaPending(): ReactElement<any>;
-  renderError(): ReactElement<any>;
-  renderSuccess(): ReactElement<any>;
+  renderPending?: () => ReactElement<any>;
+  renderMetaPending?: () => ReactElement<any>;
+  renderError?: () => ReactElement<any>;
+  renderSuccess?: () => ReactElement<any>;
 }
 
 interface IState {
@@ -16,13 +20,29 @@ interface IState {
 
 export default class TransactionProvider extends Component<IProps, IState> {
 
+  static defaultProps = {
+    renderPending: () => <Button color="pending">Pending</Button>,
+    renderMetaPending: () => (
+      <Button color="metaPending">
+        <img src={MetaFox} {...{displayName: 'Icon'}} style={{ height: '2em' }} /> Metamask...
+      </Button>
+    ),
+    renderError: () => <Button color="error">Failed :(</Button>,
+    renderSuccess: () => <Button color="success">Success</Button>,
+  };
+
   state: IState = {
     status: 'ready',
   };
 
   private beginTransaction = () => {
+    const startedTransaction = this.props.startTransation();
+    if (!startedTransaction) {
+      return;
+    }
+
     this.setState({ status: 'metaPending' });
-    this.props.startTransation()
+    startedTransaction
       .then(({ promiEvent }) => {
         promiEvent
           .on('error', () => {
@@ -45,16 +65,16 @@ export default class TransactionProvider extends Component<IProps, IState> {
         );
       }
       case 'metaPending': {
-        return this.props.renderMetaPending();
+        return this.props.renderMetaPending ? this.props.renderMetaPending() : null;
       }
       case 'pending': {
-        return this.props.renderPending();
+        return this.props.renderPending ? this.props.renderPending() : null;
       }
       case 'error': {
-        return this.props.renderError();
+        return this.props.renderError ? this.props.renderError() : null;
       }
       case 'success': {
-        return this.props.renderSuccess();
+        return this.props.renderSuccess ? this.props.renderSuccess() : null;
       }
     }
   }

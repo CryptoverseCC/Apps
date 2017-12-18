@@ -6,6 +6,9 @@
   "main": "index.tsx",
   "scripts": {
   },
+  "dependencies": {
+    "@linkexchange/components": "^0.0.25"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"

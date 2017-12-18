@@ -22,16 +22,18 @@ export async function sendClaimWithoutValueTransfer(web3Instance, claim):
   };
 }
 
-export async function sendClaimValueTransfer(web3Instance, address, value, claim) {
+export async function sendClaimValueTransfer(web3Instance, address, value, claim):
+  Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> {
   const networkName = await getCurrentNetworkName(web3Instance);
   const [from] = await getAccounts(web3Instance);
 
   const contract = getContractValueTransfer(web3Instance, networkName);
-  return resolveOnTransationHash(
-    contract.methods
+
+  return {
+    promiEvent: contract.methods
       .post(address, JSON.stringify(claim))
       .send({ from, value: toWei(value, 18) }),
-  );
+  };
 }
 
 export async function approveUserfeedsContractTokenTransfer(
@@ -50,19 +52,20 @@ export async function allowanceUserfeedsContractTokenTransfer(web3Instance, toke
   return erc20ContractAllowance(web3Instance, tokenContractAddress, spenderContractAddress);
 }
 
-export async function sendClaimTokenTransferImpl(web3Instance, address, token, value, claim) {
+export async function sendClaimTokenTransferImpl(web3Instance, address, token, value, claim):
+  Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> {
   const networkName = await getCurrentNetworkName(web3Instance);
   const [from] = await getAccounts(web3Instance);
   const contract = getContractTokenTransfer(web3Instance, networkName);
 
-  return resolveOnTransationHash(
-    contract.methods.post(
+  return {
+    promiEvent: contract.methods.post(
       address,
       token,
       value,
       JSON.stringify(claim),
     ).send({ from }),
-  );
+  };
 }
 
 export async function sendClaimTokenTransfer(
