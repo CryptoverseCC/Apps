@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@linkechange/transaction-provider",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

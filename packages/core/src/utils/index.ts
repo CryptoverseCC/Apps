@@ -1,3 +1,5 @@
+import { PromiEvent, TransactionReceipt } from 'web3/types.d';
+
 const networkMapping = {
   1: 'ethereum',
   3: 'ropsten',
@@ -61,8 +63,7 @@ export function getTransactionReceipt(web3Instance, transactionId): Promise<stri
   return web3Instance.eth.getTransactionReceipt(transactionId);
 }
 
-// ToDo import PromiEvent<TransactionReceipt>
-export function resolveOnTransationHash(p): Promise<string> {
+export function resolveOnTransationHash(p: PromiEvent<TransactionReceipt>): Promise<string> {
   return new Promise((resolve, reject) => {
     p
     .on('error', reject)

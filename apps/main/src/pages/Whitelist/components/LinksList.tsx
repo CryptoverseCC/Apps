@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { fromWeiToString } from '@linkexchange/utils/balance';
+import TransactionProvider from '@linkechange/transaction-provider';
 import { ITokenDetails, withTokenDetails } from '@linkexchange/token-details-provider';
 
 import A from '@linkexchange/components/src/A';
@@ -8,7 +9,9 @@ import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
 import BoldText from '@linkexchange/components/src/BoldText';
 
-import TransactionProvider from './TransactionProvider';
+import core from '@userfeeds/core/src';
+import web3 from '@linkexchange/utils/web3';
+
 
 import MetaFox from '../../../../images/metafox.png';
 
@@ -20,6 +23,14 @@ interface ILinksListProps {
   tokenDetails: ITokenDetails;
   links: TWhitelistableClickableLink[];
 }
+
+const whitelistLink = (linkId: string) => {
+  const claim = {
+    claim: { target: linkId },
+  };
+
+  return core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
+};
 
 const LinksList = (props: ILinksListProps) => {
   return (
@@ -48,9 +59,9 @@ const LinksList = (props: ILinksListProps) => {
             {!link.whitelisted && (
               <td style={{ width: '200px', textAlign: 'right' }}>
                 <TransactionProvider
-                  id={link.id}
-                  renderReady={(onClick) => (
-                    <Button color="ready" onClick={onClick}>
+                  startTransation={() => whitelistLink(link.id)}
+                  renderReady={() => (
+                    <Button color="ready">
                       <Icon name="check" /> Accept
                     </Button>
                   )}

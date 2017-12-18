@@ -27,7 +27,7 @@ export default class TransactionProvider extends Component<IProps, IState> {
         promiEvent
           .on('error', () => {
             this.setState({ status: 'error' });
-            setTimeout(() => this.setState({ status: 'ready' }), 5000);
+            setTimeout(() => this.setState({ status: 'ready' }), 3000);
           })
           .on('transactionHash', () => this.setState({ status: 'pending' }))
           .on('receipt', ({ status }) => {

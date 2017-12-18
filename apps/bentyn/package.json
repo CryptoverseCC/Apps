@@ -21,7 +21,6 @@
     "@linkexchange/token-details-provider": "^0.0.3",
     "@linkexchange/utils": "^0.0.10",
     "@linkexchange/web3-state-provider": "^0.0.3",
-    "@linkexchange/widgets": "^0.0.132",
     "@userfeeds/core": "^0.0.38",
     "classnames": "^2.2.5",
     "eth-sig-util": "1.4.0",
