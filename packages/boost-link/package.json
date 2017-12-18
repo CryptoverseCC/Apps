@@ -1,18 +1,17 @@
 {
   "name": "@linkexchange/boost-link",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/core": "0.0.37",
-    "@linkexchange/utils": "0.0.9",
-    "@linkexchange/types": "0.0.3",
-    "@linkexchange/components": "0.0.24",
-    "@linkexchange/token-details-provider": "0.0.2"
+    "@linkexchange/components": "^0.0.25",
+    "@linkexchange/token-details-provider": "^0.0.3",
+    "@linkexchange/types": "^0.0.4",
+    "@linkexchange/utils": "^0.0.10",
+    "@userfeeds/core": "^0.0.38"
   }
 }
