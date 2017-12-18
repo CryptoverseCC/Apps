@@ -44,7 +44,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
         <Paper>
           <Accordion
             className={style.accordion}
-            title={<p className={style.accordionHeader}>Whitelist <Pill>{whitelistedLinksCount}</Pill></p>}
+            title={<p className={style.accordionHeader}>Approved <Pill>{whitelistedLinksCount}</Pill></p>}
           >
             <SimpleLinksList asset={widgetSettings.asset} links={whitelistedLinks} />
           </Accordion>

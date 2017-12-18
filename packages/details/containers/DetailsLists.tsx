@@ -42,7 +42,7 @@ const DetailsLists = ({
       <MenuItem>
         {hasWhitelist ? (
           <>
-            <span>Whitelist</span>
+            <span>Approved</span>
             <Pill style={{ marginLeft: '10px' }}>
               {whitelistedLinksCount}
             </Pill>
@@ -76,7 +76,7 @@ const DetailsLists = ({
       <Section>
         {hasWhitelist ? (
           <LinksList
-            label="Whitelist"
+            label="Approved"
             showProbability={false}
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
