@@ -6,7 +6,7 @@ import Button from '@linkexchange/components/src/NewButton';
 import MetaFox from './metafox.png';
 
 interface IProps {
-  startTransation(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> | undefined;
+  startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> | undefined;
   renderReady(): ReactElement<any>;
   renderPending?: () => ReactElement<any>;
   renderMetaPending?: () => ReactElement<any>;
@@ -36,7 +36,7 @@ export default class TransactionProvider extends Component<IProps, IState> {
   };
 
   private beginTransaction = () => {
-    const startedTransaction = this.props.startTransation();
+    const startedTransaction = this.props.startTransaction();
     if (!startedTransaction) {
       return;
     }

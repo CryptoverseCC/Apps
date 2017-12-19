@@ -99,7 +99,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
             </p>
             <TransactionProvider
-              startTransation={this._onSendClick}
+              startTransaction={this._onSendClick}
               renderReady={() => (
                 <NewButton
                   disabled={!!validationError || !value}

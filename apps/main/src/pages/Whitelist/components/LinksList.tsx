@@ -56,7 +56,7 @@ const LinksList = (props: ILinksListProps) => {
             {!link.whitelisted && (
               <td style={{ width: '200px', textAlign: 'right' }}>
                 <TransactionProvider
-                  startTransation={() => whitelistLink(link.id)}
+                  startTransaction={() => whitelistLink(link.id)}
                   renderReady={() => (
                     <Button color="ready">
                       <Icon name="check" /> Accept

@@ -115,7 +115,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
           />
         </Field>
         <TransactionProvider
-          startTransation={this._onSubmit}
+          startTransaction={this._onSubmit}
           renderReady={() => (
             <Button style={{ width: '100%' }} color="primary">
               Create
