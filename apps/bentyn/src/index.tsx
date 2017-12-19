@@ -13,8 +13,8 @@ import '../styles/all.scss';
 
 const BENTYN_WIDGET_CONFIG: IWidgetState = {
   apiUrl: 'https://api.userfeeds.io',
-  recipientAddress: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
-  whitelist: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
+  recipientAddress: '0x50F484dfd8B75307B7A083a02Dc15004b985704b',
+  whitelist: '0x50F484dfd8B75307B7A083a02Dc15004b985704b',
   asset: 'ropsten:0x44da4e9196be4fe6d06b942ac4f980390f015f82',
   algorithm: 'links',
   size: 'leaderboard' as EWidgetSize,
