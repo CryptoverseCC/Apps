@@ -41,7 +41,6 @@ interface IAddLinkFormState {
     target?: string;
     value?: string;
   };
-  posting?: boolean;
 }
 
 const httpRegExp = /^https?:\/\//;
@@ -81,7 +80,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
 
   render() {
     const { asset, tokenDetails } = this.props;
-    const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
+    const { title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
       <div className={style.self}>
@@ -165,7 +164,6 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
 
     const { recipientAddress, web3 } = this.props;
     const { value, unlimitedApproval } = this.state;
-    this.setState({ posting: true });
 
     const claim = this._createClaim();
     const token = this._getTokenAddress();
