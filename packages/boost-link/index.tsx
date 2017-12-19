@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import { BN } from 'web3-utils';
+import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import core from '@userfeeds/core/src';
 import Input from '@linkexchange/components/src/Input';
@@ -8,7 +9,7 @@ import Button from '@linkexchange/components/src/Button';
 import NewButton from '@linkexchange/components/src/NewButton';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import { IRemoteLink } from '@linkexchange/types/link';
-import web3 from '@linkexchange/utils/web3';
+import TransactionProvider from '@linkechange/transaction-provider';
 import { R, validate } from '@linkexchange/utils/validation';
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
@@ -97,14 +98,19 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             <p>
               Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
             </p>
-            <NewButton
-              disabled={!!validationError || !value}
-              style={{ marginLeft: 'auto' }}
-              onClick={this._onSendClick}
-              color="primary"
-            >
-              Send
-            </NewButton>
+            <TransactionProvider
+              startTransaction={this._onSendClick}
+              renderReady={() => (
+                <NewButton
+                  disabled={!!validationError || !value}
+                  style={{ marginLeft: 'auto' }}
+                  onClick={this._onSendClick}
+                  color="primary"
+                >
+                  Send
+                </NewButton>
+              )}
+            />
           </div>
         </If>
       </div>
@@ -176,7 +182,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   }
 
   _onSendClick = () => {
-    const { asset, recipientAddress } = this.props;
+    const { asset, recipientAddress, web3 } = this.props;
     const { id } = this.props.link;
     const { value } = this.state;
     const location = locationWithoutQueryParamsIfLinkExchangeApp();
@@ -192,7 +198,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     };
 
     const [_, token] = this.props.asset.split(':');
-    let sendClaimPromise;
+    let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
         web3,
@@ -205,19 +211,20 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     } else {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }
-    sendClaimPromise
-      .then((transactionId: string) => {
-        if (this.props.onSuccess) {
-          this.props.onSuccess(transactionId);
-        }
-      })
-      .catch((e) => {
-        if (this.props.onError) {
-          this.props.onError(e);
-        }
-      })
-      .then(() => {
-        this.setState({ visible: false });
-      });
+    sendClaimPromise.then(({ promiEvent }) => {
+      promiEvent
+        .on('transactionHash', (transactionId: string) => {
+          if (this.props.onSuccess) {
+            this.props.onSuccess(transactionId);
+          }
+        })
+        .on('error', (e) => {
+          if (this.props.onError) {
+            this.props.onError(e);
+          }
+        });
+    });
+
+    return sendClaimPromise;
   }
 }

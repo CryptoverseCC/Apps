@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { fromWeiToString } from '@linkexchange/utils/balance';
+import TransactionProvider from '@linkechange/transaction-provider';
 import { ITokenDetails, withTokenDetails } from '@linkexchange/token-details-provider';
 
 import A from '@linkexchange/components/src/A';
@@ -8,9 +9,8 @@ import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
 import BoldText from '@linkexchange/components/src/BoldText';
 
-import TransactionProvider from './TransactionProvider';
-
-import MetaFox from '../../../../images/metafox.png';
+import core from '@userfeeds/core/src';
+import web3 from '@linkexchange/utils/web3';
 
 import { TWhitelistableClickableLink } from '../';
 
@@ -20,6 +20,14 @@ interface ILinksListProps {
   tokenDetails: ITokenDetails;
   links: TWhitelistableClickableLink[];
 }
+
+const whitelistLink = (linkId: string) => {
+  const claim = {
+    claim: { target: linkId },
+  };
+
+  return core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
+};
 
 const LinksList = (props: ILinksListProps) => {
   return (
@@ -48,20 +56,12 @@ const LinksList = (props: ILinksListProps) => {
             {!link.whitelisted && (
               <td style={{ width: '200px', textAlign: 'right' }}>
                 <TransactionProvider
-                  id={link.id}
-                  renderReady={(onClick) => (
-                    <Button color="ready" onClick={onClick}>
+                  startTransaction={() => whitelistLink(link.id)}
+                  renderReady={() => (
+                    <Button color="ready">
                       <Icon name="check" /> Accept
                     </Button>
                   )}
-                  renderPending={() => <Button color="pending">Pending</Button>}
-                  renderMetaPending={() => (
-                    <Button color="metaPending">
-                      <img src={MetaFox} {...{displayName: 'Icon'}} style={{ height: '2em' }} /> Metamask...
-                    </Button>
-                  )}
-                  renderError={() => <Button color="error">Failed :(</Button>}
-                  renderSuccess={() => <Button color="success">Success</Button>}
                 />
               </td>
             )}

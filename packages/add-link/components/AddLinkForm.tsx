@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import { TransactionReceipt, PromiEvent } from 'web3/types';
 
 import core from '@userfeeds/core/src';
 import { IBaseLink } from '@linkexchange/types/link';
@@ -9,6 +10,7 @@ import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
 import { R, validate } from '@linkexchange/utils/validation';
+import TransactionProvider from '@linkechange/transaction-provider';
 import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
 
 import {
@@ -39,7 +41,6 @@ interface IAddLinkFormState {
     target?: string;
     value?: string;
   };
-  posting?: boolean;
 }
 
 const httpRegExp = /^https?:\/\//;
@@ -79,7 +80,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
 
   render() {
     const { asset, tokenDetails } = this.props;
-    const { posting, title, summary, target, value, unlimitedApproval, errors } = this.state;
+    const { title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
       <div className={style.self}>
@@ -113,15 +114,14 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
             onChange={this._onUnlimitedApprovalChange}
           />
         </Field>
-        {posting ? (
-          <div style={{ margin: '0 auto' }}>
-            <Loader />
-          </div>
-        ) : (
-          <Button style={{ width: '100%' }} color="primary" onClick={this._onSubmit}>
-            Create
-          </Button>
-        )}
+        <TransactionProvider
+          startTransaction={this._onSubmit}
+          renderReady={() => (
+            <Button style={{ width: '100%' }} color="primary">
+              Create
+            </Button>
+          )}
+        />
       </div>
     );
   }
@@ -164,11 +164,10 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
 
     const { recipientAddress, web3 } = this.props;
     const { value, unlimitedApproval } = this.state;
-    this.setState({ posting: true });
 
     const claim = this._createClaim();
     const token = this._getTokenAddress();
-    let sendClaimPromise;
+    let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
         web3,
@@ -182,13 +181,16 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }
     sendClaimPromise
-      .then((linkId) => {
-        this.props.onSuccess(linkId);
-      })
-      .catch((e: Error) => {
-        this.props.onError(e.message);
-      })
-      .then(() => this.setState({ posting: false }));
+      .then(({ promiEvent }) => {
+        promiEvent
+          .on('transactionHash', (linkId) => {
+            this.props.onSuccess(linkId);
+          })
+          .on('error', (e) => {
+            this.props.onError(e.message);
+          });
+      });
+    return sendClaimPromise;
   }
 
   _createClaim() {
