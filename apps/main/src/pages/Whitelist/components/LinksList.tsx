@@ -12,8 +12,6 @@ import BoldText from '@linkexchange/components/src/BoldText';
 import core from '@userfeeds/core/src';
 import web3 from '@linkexchange/utils/web3';
 
-import MetaFox from '../../../../images/metafox.png';
-
 import { TWhitelistableClickableLink } from '../';
 
 import * as style from './linksList.scss';
@@ -64,14 +62,6 @@ const LinksList = (props: ILinksListProps) => {
                       <Icon name="check" /> Accept
                     </Button>
                   )}
-                  renderPending={() => <Button color="pending">Pending</Button>}
-                  renderMetaPending={() => (
-                    <Button color="metaPending">
-                      <img src={MetaFox} {...{displayName: 'Icon'}} style={{ height: '2em' }} /> Metamask...
-                    </Button>
-                  )}
-                  renderError={() => <Button color="error">Failed :(</Button>}
-                  renderSuccess={() => <Button color="success">Success</Button>}
                 />
               </td>
             )}
