@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import Web3 from 'web3';
 import { BN } from 'web3-utils';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import core from '@userfeeds/core/src';
+import Icon from '@linkexchange/components/src/Icon';
 import Input from '@linkexchange/components/src/Input';
 import Button from '@linkexchange/components/src/Button';
 import NewButton from '@linkexchange/components/src/NewButton';
@@ -15,9 +17,11 @@ import {
   locationWithoutQueryParamsIfLinkExchangeApp,
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
-import { toWei } from '@linkexchange/utils/balance';
+import { fromWeiToString } from '@linkexchange/utils/balance';
 
 import If from '@linkexchange/components/src/utils/If';
+
+import Slider from './components/Slider';
 
 import * as style from './boostLink.scss';
 
@@ -37,38 +41,25 @@ interface IBidLinkProps {
 interface IBidLinkState {
   visible: boolean;
   sum: BN;
-  value?: string;
-  validationError?: string;
+  toPay: string;
   probability: string;
   formTop?: number;
   formLeft?: number;
   formOpacity?: number;
 }
 
-const valueValidationRules = [
-  R.required,
-  R.number,
-  R.value((v: number) => v > 0, 'Have to be positive value'),
-  R.value((v: string) => {
-    const dotIndex = v.indexOf('.');
-    if (dotIndex !== -1) {
-      return v.length - 1 - dotIndex <= 18;
-    }
-    return true;
-  }, 'Invalid value'),
-];
-
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
+    toPay: '0',
     sum: this.props.links.reduce((acc, { score }) => acc.add(new BN(score.toFixed(0))), new BN(0)),
     probability: '-',
   };
 
   render() {
     const { link, asset, disabled, disabledReason, tokenDetails } = this.props;
-    const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
+    const { visible, toPay, probability, formLeft, formTop, formOpacity } = this.state;
     const [desiredNetwork] = asset.split(':');
 
     return (
@@ -85,37 +76,46 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             className={style.form}
             style={{ top: formTop, left: formLeft, opacity: formOpacity }}
           >
-            <div className={style.inputRow}>
-              <Input
-                placeholder="Value"
-                value={value}
-                onChange={this._onValueChange}
-                errorMessage={validationError}
-              />
-              <p className={style.equalSign}>=</p>
-              <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
-            </div>
-            <p>
-              Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
+            <p className={style.balance}>
+              Your balance:
+              <span className={style.amount}>{tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</span>
             </p>
-            <TransactionProvider
-              startTransaction={this._onSendClick}
-              renderReady={() => (
-                <NewButton
-                  disabled={!!validationError || !value}
-                  style={{ marginLeft: 'auto' }}
-                  onClick={this._onSendClick}
-                  color="primary"
-                >
-                  Send
-                </NewButton>
-              )}
+            <div className={style.separator} />
+            <div className={style.probabilities}>
+              <p className={classnames(style.probability, style.currentProbability)}>{`${link.probability} %`}</p>
+              <p className={style.dash}>&mdash;</p>
+              <p className={style.probability}>{`${probability} %`}</p>
+            </div>
+            <Slider
+              className={style.slider}
+              initialValue={link.probability}
+              onChange={this._onSliderChange}
             />
+            <div className={style.footer}>
+              <div className={style.toPay}>{toPay}</div>
+              <div className={style.next} onClick={this._onSendClick}>
+                <Icon name="arrow-right" className={style.icon}/>
+              </div>
+            </div>
           </div>
         </If>
       </div>
     );
   }
+
+//   <TransactionProvider
+//   startTransation={this._onSendClick}
+//   renderReady={() => (
+//     <NewButton
+//       disabled={!!validationError || !value}
+//       style={{ marginLeft: 'auto' }}
+//       onClick={this._onSendClick}
+//       color="primary"
+//     >
+//       Send
+//     </NewButton>
+//   )}
+// />
 
   _onButtonRef = (ref) => (this._buttonRef = ref);
 
@@ -160,31 +160,25 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     this.setState({ visible: false });
   }
 
-  _onValueChange = (e) => {
-    const value = e.target.value;
-    this.setState({ value });
+  _onSliderChange = (newValue) => {
+    this.setState({ probability: newValue.toFixed(1) });
 
-    const { link } = this.props;
+    const { link, tokenDetails } = this.props;
     const { sum } = this.state;
 
-    const validationError = validate(valueValidationRules, value);
+    // ToDo Remove toFixed(0)!
+    const toPayWei = new BN(100).mul(new BN(link.score.toFixed(0))).sub(new BN(newValue.toFixed(0)).mul(sum).muln(100))
+        .div(new BN(((newValue - 100) * 100).toFixed(0))).toString();
 
-    if (!validationError) {
-      const valueInWei = toWei(value, this.props.tokenDetails.decimals);
-      const rawProbability = (new BN(link.score.toFixed(0)).add(new BN(valueInWei)).muln(10000))
-        .div(sum.add(new BN(valueInWei)));
-      const probability =
-        `${rawProbability.divn(100).toString(10)}.${rawProbability.modn(100).toString(10).slice(0, 3)}`;
-      this.setState({ probability, validationError });
-    } else {
-      this.setState({ probability: '-', validationError });
-    }
+    const toPay = fromWeiToString(toPayWei, tokenDetails.decimals, parseInt(tokenDetails.decimals, 10));
+
+    this.setState({ toPay });
   }
 
   _onSendClick = () => {
     const { asset, recipientAddress, web3 } = this.props;
     const { id } = this.props.link;
-    const { value } = this.state;
+    const { toPay } = this.state;
     const location = locationWithoutQueryParamsIfLinkExchangeApp();
 
     const claim = {
@@ -204,12 +198,12 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         web3,
         recipientAddress,
         token,
-        value,
+        toPay,
         false,
         claim,
       );
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, toPay, claim);
     }
     sendClaimPromise.then(({ promiEvent }) => {
       promiEvent

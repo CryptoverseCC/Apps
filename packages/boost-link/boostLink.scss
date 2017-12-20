@@ -17,27 +17,100 @@
   }
 
   .form {
-    width: 400px;
     position: fixed;
+    overflow: hidden;
     z-index: 4;
     display: flex;
     border-radius:3px;
     flex-direction: column;
     transition: opacity 0.2s;
     box-shadow: 0px 10px 60px rgba(27,36,55,0.3);
-    padding: 20px;
     background-color: $white;
 
-    .input-row {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-  }
+    .balance {
+      padding: 20px;
+      align-self: flex-end;
+      font-size: 11px;
+      color: #A5ACB7;
 
-  .equal-sign {
-    padding-bottom: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
+      .amount {
+        padding-left: 5px;
+        color: #000000;
+      }
+    }
+
+    .separator {
+      box-sizing: border-box;
+      height: 2px;
+      width: 280px;
+      border: 1px solid #F5F7FA;
+    }
+
+    .probabilities {
+      padding: 30px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      .probability {
+        font-weight: bold;
+        font-size: 1.5em;
+      }
+
+      .current-probability, .dash {
+        color: #A5ACB7;
+      }
+    }
+
+    .slider {
+      padding: 0 30px;
+    }
+
+    .footer {
+      margin-top: 10px;
+      height: 110px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(180deg, #4156F3 0%, #263FFF 100%);
+      clip-path: polygon(0 0%, 46% 0%, 54% 10%, 100% 10%, 100% 100%, 0 100%);
+
+      .to-pay {
+        border-radius: 8px 0px 0px 8px;
+        width: 200px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #2538CF;
+        font-size: 24px;
+        color: #C5CCFF;
+      }
+
+      .next {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 8px 8px 0;
+        background-color: #09d57c;
+
+        &:not([disabled]):hover,
+        &:not([disabled]):focus {
+          cursor: pointer;
+          box-shadow: 0px 5px 15px rgba(9,213,124,0.45);
+          transform: translateY(-1px);
+        }
+
+        .icon::before{
+          font-size: 18px;
+          color: #ffffff;
+          text-shadow: 2px 4px 7px rgba(5, 115, 66, 0.7);
+        }
+      }
+    }
   }
 }
