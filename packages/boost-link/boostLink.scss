@@ -46,6 +46,16 @@
       border: 1px solid #F5F7FA;
     }
 
+    .insufficient-funds-container {
+      position: relative;
+
+      .insufficient-funds {
+        width: 100%;
+        position: absolute;
+        text-align: center;
+        color: #f58627;
+      }
+    }
     .probabilities {
       padding: 30px;
       display: flex;

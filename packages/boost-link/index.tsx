@@ -42,6 +42,7 @@ interface IBidLinkState {
   visible: boolean;
   sum: BN;
   toPay: string;
+  insufficientFunds: boolean;
   probability: string;
   formTop?: number;
   formLeft?: number;
@@ -53,13 +54,14 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   state: IBidLinkState = {
     visible: false,
     toPay: '0',
+    insufficientFunds: false,
     sum: this.props.links.reduce((acc, { score }) => acc.add(new BN(score.toFixed(0))), new BN(0)),
     probability: '-',
   };
 
   render() {
     const { link, asset, disabled, disabledReason, tokenDetails } = this.props;
-    const { visible, toPay, probability, formLeft, formTop, formOpacity } = this.state;
+    const { visible, toPay, probability, formLeft, formTop, formOpacity, insufficientFunds } = this.state;
     const [desiredNetwork] = asset.split(':');
 
     return (
@@ -81,6 +83,9 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               <span className={style.amount}>{tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</span>
             </p>
             <div className={style.separator} />
+            <div className={style.insufficientFundsContainer}>
+              {insufficientFunds && <span className={style.insufficientFunds}>Insufficient funds</span>}
+            </div>
             <div className={style.probabilities}>
               <p className={classnames(style.probability, style.currentProbability)}>{`${link.probability} %`}</p>
               <p className={style.dash}>&mdash;</p>
@@ -172,7 +177,11 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
     const toPay = fromWeiToString(toPayWei, tokenDetails.decimals, parseInt(tokenDetails.decimals, 10));
 
-    this.setState({ toPay });
+    if (new BN(this.props.tokenDetails.balance).lt(new BN(toPayWei))) {
+      this.setState({ toPay, insufficientFunds: true });
+    } else {
+      this.setState({ toPay, insufficientFunds: false });
+    }
   }
 
   _onSendClick = () => {

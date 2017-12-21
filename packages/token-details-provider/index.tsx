@@ -27,7 +27,8 @@ export interface ITokenDetails {
   decimals: string;
   symbol: string;
   name: string;
-  balanceWithDecimalPoint?: string | null;
+  balance: string | null;
+  balanceWithDecimalPoint: string | null;
 }
 
 interface IState {
@@ -121,7 +122,7 @@ const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
       const balance = await core.utils.getBalance(web3);
       const balanceWithDecimalPoint = balance !== null ? fromWeiToString(balance, 18) : balance;
 
-      update({ decimals: '18', symbol: 'ETH', name: 'ETH', balanceWithDecimalPoint });
+      update({ decimals: '18', symbol: 'ETH', name: 'ETH', balance, balanceWithDecimalPoint });
       await wait(1000);
     }
   }
@@ -142,6 +143,7 @@ const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
       decimals,
       symbol,
       name,
+      balance,
       balanceWithDecimalPoint,
     });
 
