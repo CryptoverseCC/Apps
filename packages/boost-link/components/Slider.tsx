@@ -7,6 +7,7 @@ const cx = classnames.bind(style);
 interface IProps {
   className?: string;
   initialValue: number;
+  value?: number | null;
   onChange(value: number): void;
 }
 
@@ -29,6 +30,12 @@ export default class Slider extends Component<IProps, IState> {
       mouseDown: false,
       value: initialValue,
     };
+  }
+
+  componentWillReceiveProps(newProps: IProps) {
+    if (newProps.value !== this.state.value) {
+      this.setState({ value: newProps.value! });
+    }
   }
 
   render() {
@@ -91,7 +98,7 @@ export default class Slider extends Component<IProps, IState> {
 
     e.stopPropagation();
     const rect = this.containerRef.getBoundingClientRect();
-    const value = (e.pageX - rect.x) / rect.width * 100;
+    const value = Math.round((e.pageX - rect.x) / rect.width * 1000) / 10;
 
     if (value < this.state.initialValue) {
       this.setState({ value: this.state.initialValue });
@@ -103,7 +110,8 @@ export default class Slider extends Component<IProps, IState> {
       return;
     }
 
-    this.setState({ value });
-    this.props.onChange(value);
+    this.setState({ value }, () => {
+      this.props.onChange(value);
+    });
   }
 }

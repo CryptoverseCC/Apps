@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import classnames from 'classnames';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
@@ -17,7 +17,7 @@ import {
   locationWithoutQueryParamsIfLinkExchangeApp,
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
-import { fromWeiToString } from '@linkexchange/utils/balance';
+import { fromWeiToString, toWei } from '@linkexchange/utils/balance';
 
 import If from '@linkexchange/components/src/utils/If';
 
@@ -44,7 +44,7 @@ interface IBidLinkState {
   toPay: string;
   possitionInRanking: number;
   insufficientFunds: boolean;
-  probability: string;
+  probability: number | null;
   formTop?: number;
   formLeft?: number;
   formOpacity?: number;
@@ -58,7 +58,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     possitionInRanking: this.props.links.indexOf(this.props.link),
     insufficientFunds: false,
     sum: this.props.links.reduce((acc, { score }) => acc.add(score.toFixed(0)), new BigNumber(0)),
-    probability: '-',
+    probability: null,
   };
 
   render() {
@@ -98,15 +98,21 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             <div className={style.probabilities}>
               <p className={classnames(style.probability, style.currentProbability)}>{`${link.probability} %`}</p>
               <p className={style.dash}>&mdash;</p>
-              <p className={style.probability}>{`${probability} %`}</p>
+              <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
             </div>
             <Slider
               className={style.slider}
               initialValue={link.probability}
+              value={probability}
               onChange={this._onSliderChange}
             />
             <div className={style.footer}>
-              <div className={style.toPay}>{toPay}</div>
+              <input
+                type="text"
+                className={style.toPay}
+                value={toPay}
+                onChange={this._onInputChange}
+              />
               <div className={style.next} onClick={this._onSendClick}>
                 <Icon name="arrow-right" className={style.icon}/>
               </div>
@@ -174,14 +180,14 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     this.setState({ visible: false });
   }
 
-  _onSliderChange = (newValue) => {
-    this.setState({ probability: newValue.toFixed(1) });
+  _onSliderChange = (newProbability: number) => {
+    this.setState({ probability: newProbability });
 
     const { link, links, tokenDetails } = this.props;
     const { sum } = this.state;
 
-    const toPayWei = new BigNumber(100).mul(link.score.toFixed(0)).sub(sum.mul(newValue.toFixed(1)))
-        .div((newValue - 100).toFixed(1)).truncated();
+    const toPayWei = new BigNumber(100).mul(link.score.toFixed(0)).sub(sum.mul(newProbability))
+        .div((newProbability - 100).toFixed(1)).truncated();
 
     const toPay = fromWeiToString(toPayWei.toString(), tokenDetails.decimals, parseInt(tokenDetails.decimals, 10));
 
@@ -195,6 +201,29 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       this.setState({ toPay, possitionInRanking, insufficientFunds: true });
     } else {
       this.setState({ toPay, possitionInRanking, insufficientFunds: false });
+    }
+  }
+
+  _onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { link, links, tokenDetails } = this.props;
+    const { sum } = this.state;
+
+    const toPay = e.target.value;
+    const toPayWei = new BigNumber(toWei(toPay, tokenDetails.decimals));
+    const probability = new BigNumber(toPayWei).add(link.score.toFixed(0))
+      .div(sum.add(toPayWei)).mul(1000).round().div(10).toNumber();
+
+    // Extract this!!!
+    const linkTotalScore = toPayWei.add(link.score.toFixed(0));
+    const possitionInRanking = links
+      .map((l) => l === link ? linkTotalScore : new BigNumber(l.score.toFixed(0)))
+      .sort((a, b) => b.comparedTo(a))
+      .indexOf(linkTotalScore);
+
+    if (toPayWei.gt(this.props.tokenDetails.balance)) {
+      this.setState({ toPay, probability, possitionInRanking, insufficientFunds: true });
+    } else {
+      this.setState({ toPay, probability, possitionInRanking, insufficientFunds: false });
     }
   }
 
