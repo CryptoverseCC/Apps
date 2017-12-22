@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import Web3 from 'web3';
-import { BN } from 'web3-utils';
+import BigNumber from 'bignumber.js';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import core from '@userfeeds/core/src';
@@ -40,8 +40,9 @@ interface IBidLinkProps {
 
 interface IBidLinkState {
   visible: boolean;
-  sum: BN;
+  sum: BigNumber;
   toPay: string;
+  possitionInRanking: number;
   insufficientFunds: boolean;
   probability: string;
   formTop?: number;
@@ -54,14 +55,16 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   state: IBidLinkState = {
     visible: false,
     toPay: '0',
+    possitionInRanking: this.props.links.indexOf(this.props.link),
     insufficientFunds: false,
-    sum: this.props.links.reduce((acc, { score }) => acc.add(new BN(score.toFixed(0))), new BN(0)),
+    sum: this.props.links.reduce((acc, { score }) => acc.add(score.toFixed(0)), new BigNumber(0)),
     probability: '-',
   };
 
   render() {
     const { link, asset, disabled, disabledReason, tokenDetails } = this.props;
-    const { visible, toPay, probability, formLeft, formTop, formOpacity, insufficientFunds } = this.state;
+    const { visible, toPay, probability, formLeft, formTop, formOpacity, insufficientFunds, possitionInRanking }
+      = this.state;
     const [desiredNetwork] = asset.split(':');
 
     return (
@@ -78,10 +81,16 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             className={style.form}
             style={{ top: formTop, left: formLeft, opacity: formOpacity }}
           >
-            <p className={style.balance}>
-              Your balance:
-              <span className={style.amount}>{tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</span>
-            </p>
+            <div className={style.header}>
+              <div className={style.positionContainer}>
+                <div className={style.position}>{possitionInRanking + 1}</div>
+                <span className={style.label}>In Slot</span>
+              </div>
+              <p className={style.balance}>
+                Your balance:
+                <span className={style.amount}>{tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</span>
+              </p>
+            </div>
             <div className={style.separator} />
             <div className={style.insufficientFundsContainer}>
               {insufficientFunds && <span className={style.insufficientFunds}>Insufficient funds</span>}
@@ -168,19 +177,24 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _onSliderChange = (newValue) => {
     this.setState({ probability: newValue.toFixed(1) });
 
-    const { link, tokenDetails } = this.props;
+    const { link, links, tokenDetails } = this.props;
     const { sum } = this.state;
 
-    // ToDo Remove toFixed(0)!
-    const toPayWei = new BN(100).mul(new BN(link.score.toFixed(0))).sub(new BN(newValue.toFixed(0)).mul(sum).muln(100))
-        .div(new BN(((newValue - 100) * 100).toFixed(0))).toString();
+    const toPayWei = new BigNumber(100).mul(link.score.toFixed(0)).sub(sum.mul(newValue.toFixed(1)))
+        .div((newValue - 100).toFixed(1)).truncated();
 
-    const toPay = fromWeiToString(toPayWei, tokenDetails.decimals, parseInt(tokenDetails.decimals, 10));
+    const toPay = fromWeiToString(toPayWei.toString(), tokenDetails.decimals, parseInt(tokenDetails.decimals, 10));
 
-    if (new BN(this.props.tokenDetails.balance).lt(new BN(toPayWei))) {
-      this.setState({ toPay, insufficientFunds: true });
+    const linkTotalScore = toPayWei.add(link.score.toFixed(0));
+    const possitionInRanking = links
+      .map((l) => l === link ? linkTotalScore : new BigNumber(l.score.toFixed(0)))
+      .sort((a, b) => b.comparedTo(a))
+      .indexOf(linkTotalScore);
+
+    if (toPayWei.gt(this.props.tokenDetails.balance)) {
+      this.setState({ toPay, possitionInRanking, insufficientFunds: true });
     } else {
-      this.setState({ toPay, insufficientFunds: false });
+      this.setState({ toPay, possitionInRanking, insufficientFunds: false });
     }
   }
 

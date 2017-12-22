@@ -12,6 +12,7 @@
     "@linkexchange/token-details-provider": "^0.0.3",
     "@linkexchange/types": "^0.0.4",
     "@linkexchange/utils": "^0.0.10",
-    "@userfeeds/core": "^0.0.38"
+    "@userfeeds/core": "^0.0.38",
+    "bignumber.js": "5.0.0"
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component, DragEvent } from 'react';
+import React, { Component, DragEvent, MouseEvent } from 'react';
 import classnames from 'classnames/bind';
 
 import * as style from './slider.scss';
@@ -49,10 +49,12 @@ export default class Slider extends Component<IProps, IState> {
           <div
             className={style.right}
             style={{ left: `${initialValue}%`, width: `${100 - initialValue}%` }}
+            onClick={this._onDrag}
           />
           <div
             className={style.fill}
             style={{ left: `${initialValue}%`, width: `${value - initialValue}%` }}
+            onClick={this._onDrag}
           />
           <div
             className={cx(style.toggle, { dragging: mouseDown })}
@@ -82,8 +84,8 @@ export default class Slider extends Component<IProps, IState> {
     this.setState({ mouseDown: false });
   }
 
-  _onDrag = (e: DragEvent<HTMLDivElement>) => {
-    if (!this.state.mouseDown) {
+  _onDrag = (e: DragEvent<HTMLDivElement> | MouseEvent<HTMLDivElement>) => {
+    if (e.type === 'mousemove' && !this.state.mouseDown) {
       return;
     }
 
