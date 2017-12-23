@@ -15,10 +15,10 @@ import * as style from './linksList.scss';
 export interface IDefaultBoostLinkWrapperProps {
   asset: string;
   recipientAddress: string;
+  link: ILink | IRemoteLink;
+  linksInSlots: ILink[] | IRemoteLink[];
   onSuccess(transationId: string): void;
   onError(error: any): void;
-  link: ILink | IRemoteLink;
-  links: ILink[] | IRemoteLink[];
 }
 
 const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
@@ -44,6 +44,7 @@ const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
 interface ILinksListProps {
   label: string;
   links: ILink[] | IRemoteLink[];
+  linksInSlots: ILink[];
   asset: string;
   boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
   recipientAddress: string;
@@ -94,7 +95,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
               onSuccess={this.props.onBoostSuccess}
               onError={this.props.onBoostError}
               link={link}
-              links={this.props.links}
+              linksInSlots={this.props.linksInSlots}
             />
           </div>
         );

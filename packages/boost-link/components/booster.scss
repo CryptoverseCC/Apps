@@ -86,7 +86,7 @@
 }
 
 .footer {
-  margin-top: 10px;
+  margin-top: 20px;
   height: 110px;
   display: flex;
   flex-direction: row;
@@ -96,13 +96,26 @@
   clip-path: polygon(0 0%, 46% 0%, 54% 10%, 100% 10%, 100% 100%, 0 100%);
 
   .to-pay {
-    border-radius: 8px 0px 0px 8px;
-    width: 200px;
-    height: 45px;
-    text-align: center;
-    background-color: #2538CF;
-    font-size: 24px;
-    color: #C5CCFF;
+    position: relative;
+
+    .input {
+      border-radius: 8px 0px 0px 8px;
+      width: 200px;
+      height: 45px;
+      text-align: center;
+      background-color: #2538CF;
+      font-size: 24px;
+      color: #C5CCFF;
+    }
+
+    .error {
+      position: absolute;
+      top: 45px;
+      left: 4px;
+      color: #ff0000;
+      font-size: 15px;
+      font-weight: normal;
+    }
   }
 
   .next {
@@ -114,8 +127,8 @@
     border-radius: 0 8px 8px 0;
     background-color: #09d57c;
 
-    &:not([disabled]):hover,
-    &:not([disabled]):focus {
+    &:not(.disabled):hover,
+    &:not(.disabled):focus {
       cursor: pointer;
       box-shadow: 0px 5px 15px rgba(9,213,124,0.45);
       transform: translateY(-1px);
@@ -125,6 +138,11 @@
       font-size: 18px;
       color: #ffffff;
       text-shadow: 2px 4px 7px rgba(5, 115, 66, 0.7);
+    }
+
+    &.disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
   }
 }

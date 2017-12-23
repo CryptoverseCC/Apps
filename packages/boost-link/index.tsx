@@ -22,7 +22,7 @@ interface IBidLinkProps {
   disabled?: boolean;
   disabledReason?: string;
   link: IRemoteLink;
-  links: IRemoteLink[];
+  linksInSlots: IRemoteLink[];
   asset: string;
   recipientAddress: string;
   onSuccess?(linkId: string): void;
@@ -43,7 +43,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   render() {
-    const { link, links, disabled, disabledReason, tokenDetails } = this.props;
+    const { link, linksInSlots, disabled, disabledReason, tokenDetails } = this.props;
     const { visible, formLeft, formTop, formOpacity } = this.state;
 
     return (
@@ -62,7 +62,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
           >
             <Booster
               link={link}
-              links={links}
+              linksInSlots={linksInSlots}
               tokenDetails={tokenDetails}
               onSend={this._onSendClick}
             />

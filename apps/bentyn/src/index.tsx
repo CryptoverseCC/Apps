@@ -18,7 +18,7 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
   asset: 'ropsten:0x44da4e9196be4fe6d06b942ac4f980390f015f82',
   algorithm: 'links',
   size: 'leaderboard' as EWidgetSize,
-  slots: 10,
+  slots: 2,
   timeslot: 5,
   contactMethod: 'ben@userfeeds.io',
   title: 'Widget title',

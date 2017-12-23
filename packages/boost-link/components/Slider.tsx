@@ -33,7 +33,7 @@ export default class Slider extends Component<IProps, IState> {
   }
 
   componentWillReceiveProps(newProps: IProps) {
-    if (newProps.value !== this.state.value) {
+    if (newProps.value !== this.state.value && newProps.value !== null) {
       this.setState({ value: newProps.value! });
     }
   }
