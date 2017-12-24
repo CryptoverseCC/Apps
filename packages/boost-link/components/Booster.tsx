@@ -25,7 +25,7 @@ interface IState {
   sum: BigNumber;
   toPay: string;
   inputError?: string;
-  positionInRanking: number | null;
+  positionInSlots: number | null;
   hasInsufficientFunds: boolean;
   probability: number | null;
 }
@@ -39,7 +39,7 @@ export default class Booster extends Component<IProps, IState> {
     this.state = {
       isInSlots: positionInRanking >= 0,
       toPay: '0',
-      positionInRanking: positionInRanking >= 0 ? positionInRanking : null,
+      positionInSlots: positionInRanking >= 0 ? positionInRanking : null,
       hasInsufficientFunds: false,
       sum: this.props.linksInSlots.reduce((acc, { score }) => acc.add(score.toFixed(0)), new BigNumber(0)),
       probability: null,
@@ -47,14 +47,14 @@ export default class Booster extends Component<IProps, IState> {
   }
   render() {
     const { tokenDetails, link } = this.props;
-    const { isInSlots, inputError, toPay, probability, positionInRanking, hasInsufficientFunds } = this.state;
+    const { isInSlots, inputError, toPay, probability, positionInSlots, hasInsufficientFunds } = this.state;
 
     return (
       <>
         <div className={style.header}>
           <div className={style.positionContainer}>
-            {positionInRanking !== null && <div className={style.position}>{positionInRanking + 1}</div>}
-            <span className={style.label}>{positionInRanking !== null ? 'In Slot' : 'Approved'}</span>
+            {positionInSlots !== null && <div className={style.position}>{positionInSlots + 1}</div>}
+            <span className={style.label}>{positionInSlots !== null ? 'In Slot' : 'Approved'}</span>
           </div>
           <p className={style.balance}>
             Your balance:
@@ -80,6 +80,18 @@ export default class Booster extends Component<IProps, IState> {
             />
           </>
         )}
+        {!isInSlots && positionInSlots === null && (
+          <div className={style.toAdd} onClick={this._boostToBeInSlots}>
+            <p>Add</p>
+            <h4>{this._toAddToBeInSlots()}</h4>
+            <p>to be in slots.</p>
+          </div>
+        )}
+        {!isInSlots && positionInSlots !== null && (
+          <div className={style.notInSlots}>
+            <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
+          </div>
+        )}
         <div className={style.footer}>
           <div className={style.toPay}>
             <input
@@ -101,6 +113,27 @@ export default class Booster extends Component<IProps, IState> {
     );
   }
 
+  _boostToBeInSlots = () => {
+    const toAdd = this._toAddToBeInSlots();
+    const { toPay } = this.state;
+
+    const totalToPay = new BigNumber(toPay).add(toAdd).toString();
+    this._onInputChange({ target: { value: totalToPay }}); // ToDo make it better
+  }
+
+  _toAddToBeInSlots = () => {
+    const { link, linksInSlots, tokenDetails } = this.props;
+    const { toPay } = this.state;
+    const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
+
+    const toAdd = new BigNumber(lastLinkInSlots.score.toFixed(0))
+      .minus(new BigNumber(link.score.toFixed(0)).add(toWei(toPay, tokenDetails.decimals)))
+      .add(1)
+      .toString();
+
+    return fromWeiToString(toAdd, tokenDetails.decimals, tokenDetails.decimals);
+  }
+
   _onSendClick = () => {
     const { inputError, hasInsufficientFunds } = this.state;
     if (!!inputError || hasInsufficientFunds) {
@@ -118,12 +151,12 @@ export default class Booster extends Component<IProps, IState> {
         .div((newProbability - 100).toFixed(1)).truncated();
 
     const toPay = fromWeiToString(toPayWei.toString(), tokenDetails.decimals, parseInt(tokenDetails.decimals, 10));
-    const positionInRanking = this._getLinkPosition(toPayWei, link, linksInSlots);
+    const positionInSlots = this._getLinkPosition(toPayWei, link, linksInSlots);
 
     if (toPayWei.gt(this.props.tokenDetails.balance)) {
-      this.setState({ toPay, positionInRanking, probability: newProbability, hasInsufficientFunds: true });
+      this.setState({ toPay, positionInSlots, probability: newProbability, hasInsufficientFunds: true });
     } else {
-      this.setState({ toPay, positionInRanking, probability: newProbability, hasInsufficientFunds: false });
+      this.setState({ toPay, positionInSlots, probability: newProbability, hasInsufficientFunds: false });
     }
   }
 
@@ -140,41 +173,51 @@ export default class Booster extends Component<IProps, IState> {
     const toPayWei = new BigNumber(toWei(toPay, tokenDetails.decimals));
     const linkTotalScore = toPayWei.add(link.score.toFixed(0));
 
-    let positionInRanking;
+    let positionInSlots;
     if (isInSlots) {
       const probability = linkTotalScore
         .div(sum.add(toPayWei)).mul(1000).round().div(10).toNumber();
-      positionInRanking = this._getLinkPosition(linkTotalScore, link, linksInSlots);
+      positionInSlots = this._getLinkPosition(linkTotalScore, link, linksInSlots);
 
       this.setState({ probability });
     } else {
-      const lastLinkInSlots = this.props.linksInSlots[this.props.linksInSlots.length - 1];
+      const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
       if (linkTotalScore.gt(lastLinkInSlots.score.toFixed(0))) {
-        positionInRanking = this.props.linksInSlots
+        const newLinksInSlots = linksInSlots
           .map((l) => new BigNumber(l.score.toFixed(0)))
           .concat([linkTotalScore])
           .sort((a, b) => b.comparedTo(a))
-          .indexOf(linkTotalScore);
+          .slice(0, linksInSlots.length);
 
+        positionInSlots = newLinksInSlots.indexOf(linkTotalScore);
+
+        const probability = linkTotalScore
+          .div(newLinksInSlots.reduce((acc, score) => score.add(acc), new BigNumber(0)))
+          .mul(1000)
+          .round()
+          .div(10)
+          .toNumber();
+
+        this.setState({ probability });
       } else {
-        positionInRanking = null;
+        positionInSlots = null;
       }
     }
 
     if (toPayWei.gt(this.props.tokenDetails.balance)) {
-      this.setState({ toPay, positionInRanking, hasInsufficientFunds: true, inputError: '' });
+      this.setState({ toPay, positionInSlots, hasInsufficientFunds: true, inputError: '' });
     } else {
-      this.setState({ toPay, positionInRanking, hasInsufficientFunds: false, inputError: '' });
+      this.setState({ toPay, positionInSlots, hasInsufficientFunds: false, inputError: '' });
     }
   }
 
   _getLinkPosition = (linkTotalScore: BigNumber, link: IRemoteLink, links: IRemoteLink[]) => {
-    const positionInRanking = links
+    const positionInSlots = links
       .map((l) => l === link ? linkTotalScore : new BigNumber(l.score.toFixed(0)))
       .sort((a, b) => b.comparedTo(a))
       .indexOf(linkTotalScore);
 
-    return positionInRanking >= 0 ? positionInRanking : null;
+    return positionInSlots >= 0 ? positionInSlots : null;
   }
 
   _validateInputValue = (value: string) => {
