@@ -11,8 +11,10 @@ import {
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import If from '@linkexchange/components/src/utils/If';
+import Switch from '@linkexchange/components/src/utils/Switch';
 
 import Booster from './components/Booster';
+import Confirmation from './components/Confirmation';
 
 import * as style from './boostLink.scss';
 
@@ -31,6 +33,8 @@ interface IBidLinkProps {
 
 interface IBidLinkState {
   visible: boolean;
+  stage: 'booster' | 'confirmation';
+  amount?: string;
   formTop?: number;
   formLeft?: number;
   formOpacity?: number;
@@ -40,11 +44,12 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
+    stage: 'booster',
   };
 
   render() {
     const { link, linksInSlots, disabled, disabledReason, tokenDetails } = this.props;
-    const { visible, formLeft, formTop, formOpacity } = this.state;
+    const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
 
     return (
       <div ref={this._onButtonRef} className={style.self}>
@@ -60,12 +65,23 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             className={style.form}
             style={{ top: formTop, left: formLeft, opacity: formOpacity }}
           >
-            <Booster
-              link={link}
-              linksInSlots={linksInSlots}
-              tokenDetails={tokenDetails}
-              onSend={this._onSendClick}
-            />
+            <Switch expresion={stage}>
+              <Switch.Case condition="booster">
+                <Booster
+                  link={link}
+                  linksInSlots={linksInSlots}
+                  tokenDetails={tokenDetails}
+                  onSend={this._onSendClick}
+                />
+              </Switch.Case>
+              <Switch.Case condition="confirmation">
+                <Confirmation
+                  amount={amount}
+                  tokenDetails={tokenDetails}
+                  startTransaction={this._onConfirm}
+                />
+              </Switch.Case>
+            </Switch>
           </div>
         </If>
       </div>
@@ -113,10 +129,18 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _onOverlayClick = () => {
     this.setState({ visible: false });
+    this.setState({ stage: 'booster' });
   }
 
   _onSendClick = (toPay: string) => {
+    this.setState({ stage: 'confirmation', amount: toPay });
+
+    return;
+  }
+
+  _onConfirm = () => {
     const { asset, recipientAddress, web3 } = this.props;
+    const { amount: toPay } = this.state;
     const { id } = this.props.link;
     const location = locationWithoutQueryParamsIfLinkExchangeApp();
 

@@ -19,6 +19,8 @@
   .form {
     position: fixed;
     overflow: hidden;
+    min-width: 280px;
+    min-height: 330px;
     z-index: 4;
     display: flex;
     border-radius:3px;

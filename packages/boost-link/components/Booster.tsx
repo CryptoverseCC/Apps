@@ -83,7 +83,7 @@ export default class Booster extends Component<IProps, IState> {
         {!isInSlots && positionInSlots === null && (
           <div className={style.toAdd} onClick={this._boostToBeInSlots}>
             <p>Add</p>
-            <h4>{this._toAddToBeInSlots()}</h4>
+            <p className={style.value}>{this._toAddToBeInSlots()}</p>
             <p>to be in slots.</p>
           </div>
         )}
