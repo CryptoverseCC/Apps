@@ -5,12 +5,14 @@ import { PromiEvent, TransactionReceipt } from 'web3/types';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import TranscactionProvider from '@linkechange/transaction-provider';
 
-import MetaFox from '@linkechange/transaction-provider/metafox.png';
+import Header from './Header';
+import Footom from './Footton';
 
 import * as style from './confirmation.scss';
 
 interface IProps {
   amount: string;
+  positionInSlots: number | null;
   tokenDetails: ITokenDetails;
   startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
 }
@@ -18,19 +20,21 @@ interface IProps {
 export default class Confirmation extends Component<IProps> {
 
   render() {
-    const { amount, tokenDetails, startTransaction } = this.props;
+    const { amount, positionInSlots, tokenDetails, startTransaction } = this.props;
     return (
       <>
-        <div className={style.body}/>
+        <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
+        <div className={style.body}>
+          <p className={style.value}>{amount} {tokenDetails.symbol}</p>
+          <p className={style.label}>Payment</p>
+        </div>
         <TranscactionProvider
           startTransaction={startTransaction}
           renderReady={() => (
-            <div className={classnames(style.footer, style.confirm)}>Confirm</div>
+            <Footom type="confirm" />
           )}
           renderMetaPending={() => (
-            <div className={classnames(style.footer, style.meta)}>
-              <img src={MetaFox} style={{ height: '2em' }} />
-            </div>
+            <Footom type="metamask" />
           )}
         />
       </>

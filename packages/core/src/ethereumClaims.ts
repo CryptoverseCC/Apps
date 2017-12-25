@@ -36,13 +36,11 @@ export async function sendClaimValueTransfer(web3Instance, address, value, claim
   };
 }
 
-export async function approveUserfeedsContractTokenTransfer(
-  web3Instance,
-  tokenContractAddress,
-  value,
-) {
+export async function approveUserfeedsContractTokenTransfer(web3Instance, tokenContractAddress, value):
+  Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> {
   const networkName = await getCurrentNetworkName(web3Instance);
   const spenderContractAddress = getContractTokenTransferAddress(networkName);
+
   return erc20ContractApprove(web3Instance, tokenContractAddress, spenderContractAddress, value);
 }
 
@@ -73,15 +71,10 @@ export async function sendClaimTokenTransfer(
   recipientAddress,
   token,
   value,
-  unlimitedApproval,
   claim,
 ) {
   const decimals = await erc20ContractDecimals(web3Instance, token);
   const tokenWei = toWei(value, decimals);
-  const allowance = await allowanceUserfeedsContractTokenTransfer(web3Instance, token);
-  if (tokenWei >= allowance) {
-    const approveValue = unlimitedApproval ? 1e66 : tokenWei;
-    await approveUserfeedsContractTokenTransfer(web3Instance, token, approveValue);
-  }
+
   return sendClaimTokenTransferImpl(web3Instance, recipientAddress, token, tokenWei, claim);
 }

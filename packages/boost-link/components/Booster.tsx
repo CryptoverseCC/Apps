@@ -8,6 +8,7 @@ import { R, validate } from '@linkexchange/utils/validation';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { fromWeiToString, toWei } from '@linkexchange/utils/balance';
 
+import Header from './Header';
 import Slider from './Slider';
 
 import * as style from './booster.scss';
@@ -17,7 +18,7 @@ interface IProps {
   link: IRemoteLink;
   linksInSlots: IRemoteLink[];
   tokenDetails: ITokenDetails;
-  onSend(toPay: string): void;
+  onSend(toPay: string, positionInSlots: number | null): void;
 }
 
 interface IState {
@@ -51,17 +52,7 @@ export default class Booster extends Component<IProps, IState> {
 
     return (
       <>
-        <div className={style.header}>
-          <div className={style.positionContainer}>
-            {positionInSlots !== null && <div className={style.position}>{positionInSlots + 1}</div>}
-            <span className={style.label}>{positionInSlots !== null ? 'In Slot' : 'Approved'}</span>
-          </div>
-          <p className={style.balance}>
-            Your balance:
-            <span className={style.amount}>{tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</span>
-          </p>
-        </div>
-        <div className={style.separator} />
+        <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
         <div className={style.insufficientFundsContainer}>
           {hasInsufficientFunds && <span className={style.insufficientFunds}>Insufficient funds</span>}
         </div>
@@ -140,7 +131,7 @@ export default class Booster extends Component<IProps, IState> {
       return;
     }
 
-    this.props.onSend(this.state.toPay);
+    this.props.onSend(this.state.toPay, this.state.positionInSlots);
   }
 
   _onSliderChange = (newProbability: number) => {
