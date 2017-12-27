@@ -1,13 +1,15 @@
 import { getAccounts, resolveOnTransationHash } from './utils';
 import { getErc20Contract } from './utils/contract';
+import { PromiEvent, TransactionReceipt } from 'web3/types';
 
-export async function erc20ContractApprove(web3Instance, contractAddress, spender, value) {
+export async function erc20ContractApprove(web3Instance, contractAddress, spender, value):
+  Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> {
   const [from] = await getAccounts(web3Instance);
   const contract = getErc20Contract(web3Instance, contractAddress);
 
-  return resolveOnTransationHash(
-    contract.methods.approve(spender, value).send({ from }),
-  );
+  return {
+    promiEvent: contract.methods.approve(spender, value).send({ from }),
+  };
 }
 
 export async function erc20ContractAllowance(web3Instance, contractAddress, spender) {

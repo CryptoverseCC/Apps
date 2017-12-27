@@ -2,6 +2,7 @@ import React, { Component, ReactElement } from 'react';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import Button from '@linkexchange/components/src/NewButton';
+import { makeCancelable } from '@linkexchange/utils/cancelablePromise';
 
 import MetaFox from './metafox.png';
 
@@ -35,24 +36,40 @@ export default class TransactionProvider extends Component<IProps, IState> {
     status: 'ready',
   };
 
+  transactionPromise: any; // Cancelabble Promise
+
+  // ToDo
+  componentWillUnmount() {
+    if (this.transactionPromise) {
+      if (!this.transactionPromise.isResolved()) {
+        this.transactionPromise.cancel();
+      } else {
+        this.transactionPromise.promise.then(({ promiEvent }) => {
+          promiEvent
+            .off('error', this._onError)
+            .off('transactionHash', this._onTransactionHash)
+            .off('receipt', this._onReceipt);
+        });
+      }
+    }
+  }
+
   private beginTransaction = () => {
     const startedTransaction = this.props.startTransaction();
     if (!startedTransaction) {
       return;
     }
 
+    this.transactionPromise = makeCancelable(startedTransaction);
+
     this.setState({ status: 'metaPending' });
-    startedTransaction
+    this.transactionPromise
+      .promise
       .then(({ promiEvent }) => {
         promiEvent
-          .on('error', () => {
-            this.setState({ status: 'error' });
-            setTimeout(() => this.setState({ status: 'ready' }), 3000);
-          })
-          .on('transactionHash', () => this.setState({ status: 'pending' }))
-          .on('receipt', ({ status }) => {
-              this.setState({ status: status === '0x1' ? 'success' : 'error' });
-          });
+          .on('error', this._onError)
+          .on('transactionHash', this._onTransactionHash)
+          .on('receipt', this._onReceipt);
       });
   }
 
@@ -77,5 +94,16 @@ export default class TransactionProvider extends Component<IProps, IState> {
         return this.props.renderSuccess ? this.props.renderSuccess() : null;
       }
     }
+  }
+
+  _onError = () => {
+    this.setState({ status: 'error' });
+    setTimeout(() => this.setState({ status: 'ready' }), 3000);
+  }
+
+  _onTransactionHash = () => this.setState({ status: 'pending' });
+
+  _onReceipt = ({ status }) => {
+    this.setState({ status: status === '0x1' ? 'success' : 'error' });
   }
 }

@@ -24,10 +24,11 @@ interface IProps {
 }
 
 export interface ITokenDetails {
-  decimals: string;
+  decimals: number;
   symbol: string;
   name: string;
-  balanceWithDecimalPoint?: string | null;
+  balance: string | null;
+  balanceWithDecimalPoint: string | null;
 }
 
 interface IState {
@@ -106,7 +107,7 @@ export const withInjectedWeb3AndTokenDetails = flowRight(withInjectedWeb3, withT
 const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
   const [network, token] = asset.split(':');
   if (!token && !loadBalance) {
-    return update({ decimals: '18', symbol: 'ETH', name: 'ETH' });
+    return update({ decimals: 18, symbol: 'ETH', name: 'ETH' });
   }
 
   while (!(
@@ -121,14 +122,14 @@ const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
       const balance = await core.utils.getBalance(web3);
       const balanceWithDecimalPoint = balance !== null ? fromWeiToString(balance, 18) : balance;
 
-      update({ decimals: '18', symbol: 'ETH', name: 'ETH', balanceWithDecimalPoint });
+      update({ decimals: 18, symbol: 'ETH', name: 'ETH', balance, balanceWithDecimalPoint });
       await wait(1000);
     }
   }
 
   while (true) {
     const [decimals, symbol, name, balance] = await Promise.all([
-      erc20ContractDecimals(web3, token),
+      erc20ContractDecimals(web3, token).then((d) => parseInt(d, 10)),
       erc20ContractSymbol(web3, token),
       erc20ContractName(web3, token),
       loadBalance
@@ -142,6 +143,7 @@ const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
       decimals,
       symbol,
       name,
+      balance,
       balanceWithDecimalPoint,
     });
 

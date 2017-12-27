@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import differenceBy from 'lodash/differenceBy';
 
 import { openToast } from '@linkexchange/toast/duck';
 import { IWidgetState } from '@linkexchange/ducks/widget';
@@ -15,7 +16,7 @@ import ScrollableSectionsWithMenu, {
 } from '@linkexchange/scrollable-sections-with-menu';
 
 import { ILinksState } from '../duck';
-import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../selectors/links';
+import { visibleLinks } from '../selectors/links';
 
 import LinksList from '../components/LinksList';
 import WidgetSpecification from '../components/WidgetSpecification';
@@ -68,6 +69,7 @@ const DetailsLists = ({
           asset={widgetSettings.asset}
           recipientAddress={widgetSettings.recipientAddress}
           links={links}
+          linksInSlots={links}
           boostLinkComponent={boostLinkComponent}
           onBoostSuccess={onBoostSuccess}
           onBoostError={onBoostError}
@@ -81,6 +83,7 @@ const DetailsLists = ({
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
             links={whitelistedLinks}
+            linksInSlots={links}
             boostLinkComponent={boostLinkComponent}
             onBoostSuccess={onBoostSuccess}
             onBoostError={onBoostError}
@@ -92,6 +95,7 @@ const DetailsLists = ({
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
             links={allLinks}
+            linksInSlots={links}
             boostLinkComponent={boostLinkComponent}
             onBoostSuccess={onBoostSuccess}
             onBoostError={onBoostError}
@@ -117,15 +121,18 @@ const DetailsLists = ({
 
 const mapStateToProps = (state: { links: ILinksState, widget: IWidgetState }, props) => {
   const { links, widget } = state;
+  const linksInSlots = visibleLinks(state);
+  const whitelistedLinks = differenceBy(links.links, linksInSlots, (a) => a.id);
+  const allLinks = differenceBy(links.allLinks, linksInSlots, (a) => a.id);
 
   return {
     hasWhitelist: !!widget.whitelist,
     widgetSettings: widget,
-    links: visibleLinks(state),
-    whitelistedLinks: state.links.links,
-    allLinks: links.allLinks,
-    allLinksCount: allLinksCount(state),
-    whitelistedLinksCount: whitelistedLinksCount(state),
+    links: linksInSlots,
+    whitelistedLinks,
+    allLinks,
+    allLinksCount: links.allLinks.length,
+    whitelistedLinksCount: whitelistedLinks.length,
   };
 };
 

@@ -174,7 +174,6 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         recipientAddress,
         token,
         value,
-        unlimitedApproval,
         claim,
       );
     } else {
