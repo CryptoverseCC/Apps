@@ -140,8 +140,12 @@ export default class Booster extends Component<IProps, IState> {
     const { link, linksInSlots, tokenDetails } = this.props;
     const { sum } = this.state;
 
-    const toPayWei = new BigNumber(100).mul(link.score.toFixed(0)).sub(sum.mul(newProbability))
+    let toPayWei;
+    toPayWei = new BigNumber(100).mul(link.score.toFixed(0)).sub(sum.mul(newProbability))
         .div((newProbability - 100).toFixed(1)).truncated();
+    if (toPayWei.lt(0)) {
+      toPayWei = new BigNumber(0);
+    }
 
     const toPay = fromWeiToString(toPayWei.toString(), tokenDetails.decimals, tokenDetails.decimals);
     const positionInSlots = this._getLinkPosition(toPayWei, link, linksInSlots);
