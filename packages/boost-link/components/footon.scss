@@ -1,0 +1,18 @@
+.self {
+  margin-top: auto;
+  height: 110px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 24px;
+
+  &.confirm {
+    background: linear-gradient(180deg, #4156F3 0%, #263FFF 100%);
+  }
+
+  &.metamask {
+    background-color: rgba(247, 134, 28, 0.6);
+  }
+}

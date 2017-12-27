@@ -32,13 +32,3 @@ export const visibleLinks = createSelector(
     return calculateProbabilities(allLinks.slice(0, widget.slots));
   },
 );
-
-export const whitelistedLinksCount = createSelector(
-  whitelistedLinks,
-  (links) => links.length,
-);
-
-export const allLinksCount = createSelector(
-  allLinks,
-  (links) => links.length,
-);

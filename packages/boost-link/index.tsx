@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
+import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
-import { BN } from 'web3-utils';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import core from '@userfeeds/core/src';
-import Input from '@linkexchange/components/src/Input';
 import Button from '@linkexchange/components/src/Button';
-import NewButton from '@linkexchange/components/src/NewButton';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import { IRemoteLink } from '@linkexchange/types/link';
-import TransactionProvider from '@linkechange/transaction-provider';
-import { R, validate } from '@linkexchange/utils/validation';
 import {
   locationWithoutQueryParamsIfLinkExchangeApp,
 } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
-import { toWei } from '@linkexchange/utils/balance';
-
 import If from '@linkexchange/components/src/utils/If';
+import Switch from '@linkexchange/components/src/utils/Switch';
+
+import Booster from './components/Booster';
+import Confirmation from './components/Confirmation';
+import AskForAllowance from './components/AskForAllowance';
 
 import * as style from './boostLink.scss';
+import { toWei } from '../utils/balance';
 
 interface IBidLinkProps {
   web3: Web3;
@@ -27,7 +27,7 @@ interface IBidLinkProps {
   disabled?: boolean;
   disabledReason?: string;
   link: IRemoteLink;
-  links: IRemoteLink[];
+  linksInSlots: IRemoteLink[];
   asset: string;
   recipientAddress: string;
   onSuccess?(linkId: string): void;
@@ -36,40 +36,24 @@ interface IBidLinkProps {
 
 interface IBidLinkState {
   visible: boolean;
-  sum: BN;
-  value?: string;
-  validationError?: string;
-  probability: string;
+  stage: 'booster' | 'allowance' | 'confirmation';
+  amount?: string;
+  positionInSlots?: number | null;
   formTop?: number;
   formLeft?: number;
   formOpacity?: number;
 }
 
-const valueValidationRules = [
-  R.required,
-  R.number,
-  R.value((v: number) => v > 0, 'Have to be positive value'),
-  R.value((v: string) => {
-    const dotIndex = v.indexOf('.');
-    if (dotIndex !== -1) {
-      return v.length - 1 - dotIndex <= 18;
-    }
-    return true;
-  }, 'Invalid value'),
-];
-
 export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
-    sum: this.props.links.reduce((acc, { score }) => acc.add(new BN(score.toFixed(0))), new BN(0)),
-    probability: '-',
+    stage: 'booster',
   };
 
   render() {
-    const { link, asset, disabled, disabledReason, tokenDetails } = this.props;
-    const { visible, value, validationError, probability, formLeft, formTop, formOpacity } = this.state;
-    const [desiredNetwork] = asset.split(':');
+    const { link, linksInSlots, disabled, disabledReason, tokenDetails } = this.props;
+    const { stage, amount, positionInSlots, visible, formLeft, formTop, formOpacity } = this.state;
 
     return (
       <div ref={this._onButtonRef} className={style.self}>
@@ -79,38 +63,37 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
           </Button>
         </Tooltip>
         <If condition={visible && !disabled}>
-          <div className={style.overlay} onClick={this._onOverlayClick} />
+          <div className={style.overlay} onClick={this._close} />
           <div
             ref={this._onFormRef}
             className={style.form}
             style={{ top: formTop, left: formLeft, opacity: formOpacity }}
           >
-            <div className={style.inputRow}>
-              <Input
-                placeholder="Value"
-                value={value}
-                onChange={this._onValueChange}
-                errorMessage={validationError}
-              />
-              <p className={style.equalSign}>=</p>
-              <Input placeholder="Estimated Probability" disabled value={`${probability} %`} />
-            </div>
-            <p>
-              Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-            </p>
-            <TransactionProvider
-              startTransaction={this._onSendClick}
-              renderReady={() => (
-                <NewButton
-                  disabled={!!validationError || !value}
-                  style={{ marginLeft: 'auto' }}
-                  onClick={this._onSendClick}
-                  color="primary"
-                >
-                  Send
-                </NewButton>
-              )}
-            />
+            <Switch expresion={stage}>
+              <Switch.Case condition="booster">
+                <Booster
+                  link={link}
+                  linksInSlots={linksInSlots}
+                  tokenDetails={tokenDetails}
+                  onSend={this._onSendClick}
+                />
+              </Switch.Case>
+              <Switch.Case condition="allowance">
+                <AskForAllowance
+                  positionInSlots={positionInSlots!}
+                  tokenDetails={tokenDetails}
+                  startTransaction={this._onAllowance}
+                />
+              </Switch.Case>
+              <Switch.Case condition="confirmation">
+                <Confirmation
+                  amount={amount!}
+                  positionInSlots={positionInSlots!}
+                  tokenDetails={tokenDetails}
+                  startTransaction={this._onConfirm}
+                />
+              </Switch.Case>
+            </Switch>
           </div>
         </If>
       </div>
@@ -156,35 +139,56 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     this.setState({ visible: true, formOpacity: 0 });
   }
 
-  _onOverlayClick = () => {
+  _close = () => {
     this.setState({ visible: false });
+    this.setState({ stage: 'booster' });
   }
 
-  _onValueChange = (e) => {
-    const value = e.target.value;
-    this.setState({ value });
+  _onSendClick = async (toPay: string, positionInSlots: number | null) => {
+    const { web3, asset, tokenDetails } = this.props;
+    const [_, token] = this.props.asset.split(':');
 
-    const { link } = this.props;
-    const { sum } = this.state;
-
-    const validationError = validate(valueValidationRules, value);
-
-    if (!validationError) {
-      const valueInWei = toWei(value, this.props.tokenDetails.decimals);
-      const rawProbability = (new BN(link.score.toFixed(0)).add(new BN(valueInWei)).muln(10000))
-        .div(sum.add(new BN(valueInWei)));
-      const probability =
-        `${rawProbability.divn(100).toString(10)}.${rawProbability.modn(100).toString(10).slice(0, 3)}`;
-      this.setState({ probability, validationError });
-    } else {
-      this.setState({ probability: '-', validationError });
+    let nextStage: 'confirmation' | 'allowance' = 'confirmation';
+    if (token) {
+      const tokenWei = toWei(toPay, tokenDetails.decimals);
+      const allowance = await core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token);
+      if (new BigNumber(tokenWei).gt(allowance)) {
+        nextStage = 'allowance';
+      }
     }
+
+    this.setState({ stage: nextStage, amount: toPay, positionInSlots });
   }
 
-  _onSendClick = () => {
+  _onAllowance = (unlimited: boolean) => {
+    const { asset, web3, tokenDetails } = this.props;
+    const { amount: toPay } = this.state;
+    const [, tokenAddress] = asset.split(':');
+
+    const approvePromise = core.ethereum.claims.approveUserfeedsContractTokenTransfer(
+      web3,
+      tokenAddress,
+      unlimited ? new BigNumber(2).pow(256).minus(1) : toWei(toPay!, tokenDetails.decimals),
+    );
+
+    approvePromise.then(({ promiEvent }) => {
+      promiEvent
+        .on('transactionHash', () => this.setState({ stage: 'confirmation' }))
+        .on('error', (e) => {
+          if (this.props.onError) {
+            this.props.onError(e);
+          }
+          this._close();
+        });
+    });
+
+    return approvePromise;
+  }
+
+  _onConfirm = () => {
     const { asset, recipientAddress, web3 } = this.props;
+    const { amount: toPay } = this.state;
     const { id } = this.props.link;
-    const { value } = this.state;
     const location = locationWithoutQueryParamsIfLinkExchangeApp();
 
     const claim = {
@@ -204,24 +208,26 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         web3,
         recipientAddress,
         token,
-        value,
-        false,
+        toPay,
         claim,
       );
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, toPay, claim);
     }
+
     sendClaimPromise.then(({ promiEvent }) => {
       promiEvent
         .on('transactionHash', (transactionId: string) => {
           if (this.props.onSuccess) {
             this.props.onSuccess(transactionId);
+            this._close();
           }
         })
         .on('error', (e) => {
           if (this.props.onError) {
             this.props.onError(e);
           }
+          this._close();
         });
     });
 

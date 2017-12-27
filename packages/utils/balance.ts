@@ -9,7 +9,7 @@ export const fromWeiToString = (wei: string | number, decimals: string | number,
   return `${div}.${mod}`;
 };
 
-export const toWei = (amout: string | number, decimals: string | number) => {
+export const toWei = (amout: string | number, decimals: string | number): string => {
   const parsedDecimals = typeof decimals !== 'number'
     ? parseInt(decimals, 10) // ToDo check this casting
     : decimals;

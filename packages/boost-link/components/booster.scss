@@ -1,0 +1,125 @@
+.insufficient-funds-container {
+  position: relative;
+
+  .insufficient-funds {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    color: #f58627;
+  }
+}
+
+.probabilities {
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .probability {
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+
+  .current-probability, .dash {
+    color: #A5ACB7;
+  }
+}
+
+.to-add {
+  cursor: pointer;
+  font-weight: normal;
+  margin-top: 20px;
+  width: 120px;
+  height: 120px;
+  border: 3px solid #09d57c;
+  border-radius: 60px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .value {
+    font-weight: bold;
+  }
+}
+
+.not-in-slots {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .probability {
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+  }
+}
+
+.slider {
+  padding: 0 30px;
+}
+
+.footer {
+  margin-top: auto;
+  height: 110px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #4156F3 0%, #263FFF 100%);
+  clip-path: polygon(0 0%, 46% 0%, 54% 10%, 100% 10%, 100% 100%, 0 100%);
+
+  .to-pay {
+    position: relative;
+
+    .input {
+      border-radius: 8px 0px 0px 8px;
+      width: 200px;
+      height: 45px;
+      text-align: center;
+      background-color: #2538CF;
+      font-size: 24px;
+      color: #C5CCFF;
+    }
+
+    .error {
+      position: absolute;
+      top: 45px;
+      left: 4px;
+      color: #ff0000;
+      font-size: 15px;
+      font-weight: normal;
+    }
+  }
+
+  .next {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 8px 8px 0;
+    background-color: #09d57c;
+
+    &:not(.disabled):hover,
+    &:not(.disabled):focus {
+      cursor: pointer;
+      box-shadow: 0px 5px 15px rgba(9,213,124,0.45);
+      transform: translateY(-1px);
+    }
+
+    .icon::before{
+      font-size: 18px;
+      color: #ffffff;
+      text-shadow: 2px 4px 7px rgba(5, 115, 66, 0.7);
+    }
+
+    &.disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
