@@ -98,7 +98,7 @@ export default class Slider extends Component<IProps, IState> {
 
     e.stopPropagation();
     const rect = this.containerRef.getBoundingClientRect();
-    const value = Math.round((e.pageX - rect.x) / rect.width * 1000) / 10;
+    const value = Math.round((e.pageX - rect.left) / rect.width * 1000) / 10;
 
     if (value < this.state.initialValue) {
       this.setState({ value: this.state.initialValue });

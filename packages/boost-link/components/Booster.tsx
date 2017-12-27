@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 import BigNumber from 'bignumber.js';
 
 import Icon from '@linkexchange/components/src/Icon';
-import { IRemoteLink } from '@linkexchange/types/link';
+import { IRemoteLink, ILink } from '@linkexchange/types/link';
 import { R, validate } from '@linkexchange/utils/validation';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { fromWeiToString, toWei } from '@linkexchange/utils/balance';
@@ -15,7 +15,7 @@ import * as style from './booster.scss';
 const cx = classnames.bind(style);
 
 interface IProps {
-  link: IRemoteLink;
+  link: IRemoteLink | ILink;
   linksInSlots: IRemoteLink[];
   tokenDetails: ITokenDetails;
   onSend(toPay: string, positionInSlots: number | null): void;
@@ -59,13 +59,15 @@ export default class Booster extends Component<IProps, IState> {
         {isInSlots && (
           <>
             <div className={style.probabilities}>
-              <p className={classnames(style.probability, style.currentProbability)}>{`${link.probability} %`}</p>
+              <p className={classnames(style.probability, style.currentProbability)}>
+                {`${this._getLinkProbability()} %`}
+              </p>
               <p className={style.dash}>&mdash;</p>
               <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
             </div>
             <Slider
               className={style.slider}
-              initialValue={link.probability}
+              initialValue={this._getLinkProbability()}
               value={probability}
               onChange={this._onSliderChange}
             />
@@ -109,7 +111,7 @@ export default class Booster extends Component<IProps, IState> {
     const { toPay } = this.state;
 
     const totalToPay = new BigNumber(toPay).add(toAdd).toString();
-    this._onInputChange({ target: { value: totalToPay }}); // ToDo make it better
+    this._onInputChange({ target: { value: totalToPay }} as ChangeEvent<HTMLInputElement>); // ToDo make it better
   }
 
   _toAddToBeInSlots = () => {
@@ -141,10 +143,10 @@ export default class Booster extends Component<IProps, IState> {
     const toPayWei = new BigNumber(100).mul(link.score.toFixed(0)).sub(sum.mul(newProbability))
         .div((newProbability - 100).toFixed(1)).truncated();
 
-    const toPay = fromWeiToString(toPayWei.toString(), tokenDetails.decimals, parseInt(tokenDetails.decimals, 10));
+    const toPay = fromWeiToString(toPayWei.toString(), tokenDetails.decimals, tokenDetails.decimals);
     const positionInSlots = this._getLinkPosition(toPayWei, link, linksInSlots);
 
-    if (toPayWei.gt(this.props.tokenDetails.balance)) {
+    if (toPayWei.gt(this.props.tokenDetails.balance!)) {
       this.setState({ toPay, positionInSlots, probability: newProbability, hasInsufficientFunds: true });
     } else {
       this.setState({ toPay, positionInSlots, probability: newProbability, hasInsufficientFunds: false });
@@ -195,7 +197,7 @@ export default class Booster extends Component<IProps, IState> {
       }
     }
 
-    if (toPayWei.gt(this.props.tokenDetails.balance)) {
+    if (toPayWei.gt(this.props.tokenDetails.balance!)) {
       this.setState({ toPay, positionInSlots, hasInsufficientFunds: true, inputError: '' });
     } else {
       this.setState({ toPay, positionInSlots, hasInsufficientFunds: false, inputError: '' });
@@ -218,12 +220,17 @@ export default class Booster extends Component<IProps, IState> {
       R.value((v: string) => {
         const dotIndex = v.indexOf('.');
         if (dotIndex !== -1) {
-          return v.length - 1 - dotIndex <= parseInt(this.props.tokenDetails.decimals, 10);
+          return v.length - 1 - dotIndex <= this.props.tokenDetails.decimals;
         }
         return true;
       }, 'Invalid value'),
     ];
 
     return validate(rules, value);
+  }
+
+  _getLinkProbability = (): number => {
+    const { link } = this.props;
+    return (link as ILink).probability;
   }
 }

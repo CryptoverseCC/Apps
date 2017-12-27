@@ -26,7 +26,7 @@ export default class Confirmation extends Component<IProps> {
         <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
         <div className={style.body}>
           <p className={style.value}>{amount} {tokenDetails.symbol}</p>
-          <p className={style.label}>Payment</p>
+          <p>Payment</p>
         </div>
         <TranscactionProvider
           startTransaction={startTransaction}

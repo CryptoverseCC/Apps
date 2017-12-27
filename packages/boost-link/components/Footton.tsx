@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 
 import MetaFox from '@linkechange/transaction-provider/metafox.png';
 
-import * as style './footon.scss';
+import * as style from './footon.scss';
 const cx = classnames.bind(style);
 
 interface IProps {

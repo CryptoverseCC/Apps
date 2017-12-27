@@ -16,7 +16,7 @@ import ScrollableSectionsWithMenu, {
 } from '@linkexchange/scrollable-sections-with-menu';
 
 import { ILinksState } from '../duck';
-import { visibleLinks, whitelistedLinksCount, allLinksCount } from '../selectors/links';
+import { visibleLinks } from '../selectors/links';
 
 import LinksList from '../components/LinksList';
 import WidgetSpecification from '../components/WidgetSpecification';

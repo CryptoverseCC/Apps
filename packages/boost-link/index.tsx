@@ -80,15 +80,15 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
               </Switch.Case>
               <Switch.Case condition="allowance">
                 <AskForAllowance
-                  positionInSlots={positionInSlots}
+                  positionInSlots={positionInSlots!}
                   tokenDetails={tokenDetails}
                   startTransaction={this._onAllowance}
                 />
               </Switch.Case>
               <Switch.Case condition="confirmation">
                 <Confirmation
-                  amount={amount}
-                  positionInSlots={positionInSlots}
+                  amount={amount!}
+                  positionInSlots={positionInSlots!}
                   tokenDetails={tokenDetails}
                   startTransaction={this._onConfirm}
                 />
@@ -168,7 +168,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const approvePromise = core.ethereum.claims.approveUserfeedsContractTokenTransfer(
       web3,
       tokenAddress,
-      unlimited ? new BigNumber(2).pow(256).minus(1) : toWei(toPay, tokenDetails.decimals),
+      unlimited ? new BigNumber(2).pow(256).minus(1) : toWei(toPay!, tokenDetails.decimals),
     );
 
     approvePromise.then(({ promiEvent }) => {
