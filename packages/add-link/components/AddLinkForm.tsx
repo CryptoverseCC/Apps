@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import { BN } from 'web3-utils';
 import { TransactionReceipt, PromiEvent } from 'web3/types';
 
 import core from '@userfeeds/core/src';
+import { resolveOnTransationHash } from '@userfeeds/core/src/utils/index';
+import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { IBaseLink } from '@linkexchange/types/link';
 import Loader from '@linkexchange/components/src/Loader';
 import Tooltip from '@linkexchange/components/src/Tooltip';
@@ -162,23 +165,38 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
       return;
     }
 
-    const { recipientAddress, web3 } = this.props;
+    const { recipientAddress, web3, tokenDetails } = this.props;
     const { value, unlimitedApproval } = this.state;
 
     const claim = this._createClaim();
     const token = this._getTokenAddress();
-    let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
+    const toPayWei = toWei(value!, tokenDetails.decimals);
+
+    let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
     if (token) {
-      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
-        web3,
-        recipientAddress,
-        token,
-        value,
-        claim,
-      );
+      sendClaimPromise = core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token)
+        .then((allowance) => {
+          let promise = Promise.resolve(null);
+          if (new BN(allowance).lte(new BN(toPayWei))) {
+            promise = core.ethereum.claims.approveUserfeedsContractTokenTransfer(
+              web3,
+              token,
+              unlimitedApproval ? MAX_VALUE_256 : toPayWei,
+            ).then(({ promiEvent }) => resolveOnTransationHash(promiEvent));
+          }
+
+          return promise.then(() => core.ethereum.claims.sendClaimTokenTransfer(
+            web3,
+            recipientAddress,
+            token,
+            value,
+            claim,
+          ));
+        });
     } else {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }
+
     sendClaimPromise
       .then(({ promiEvent }) => {
         promiEvent

@@ -1,5 +1,7 @@
 import { BN } from 'web3-utils';
 
+export const MAX_VALUE_256 = new BN(2).pow(new BN(256)).subn(1).toString(10);
+
 export const fromWeiToString = (wei: string | number, decimals: string | number, decimalFigures: number = 3) => {
   const counter = new BN(typeof wei === 'number' ? wei.toFixed(0) : wei);
   const divider = new BN(10).pow(new BN(decimals));
