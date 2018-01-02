@@ -1,13 +1,12 @@
 {
   "private": true,
   "name": "@linkechange/transaction-provider",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
-    "@linkexchange/components": "^0.0.25"
+    "@linkexchange/components": "^0.0.26"
   },
   "keywords": [],
   "author": "",
