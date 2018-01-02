@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/obs-widget",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/components": "^0.0.26",
+    "@linkexchange/components": "^0.0.27",
     "@linkexchange/types": "^0.0.4",
-    "@linkexchange/utils": "^0.0.11",
-    "@userfeeds/core": "^0.0.39",
+    "@linkexchange/utils": "^0.0.12",
+    "@userfeeds/core": "^0.0.40",
     "classnames": "^2.2.5",
     "qs": "^6.5.0",
     "react": "16.2.0",
