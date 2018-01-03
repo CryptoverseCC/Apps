@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
+import { TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
 import Pill from '@linkexchange/components/src/Pill';
 import Paper from '@linkexchange/components/src/Paper';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
-import TokenName from '@linkexchange/components/src/TokenName';
 import Accordion from '@linkexchange/components/src/Accordion';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
@@ -70,7 +70,10 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
               <TextWithLabel label="Type" text="Text" />
               <TextWithLabel label="Token">
                 <TokenLogo className={style.tokenLogo} asset={widgetSettings.asset} />
-                <TokenName asset={widgetSettings.asset} />
+                <TokenDetailsProviderWithInfura
+                  asset={widgetSettings.asset}
+                  render={({ name }) => name}
+                />
               </TextWithLabel>
               <TextWithLabel label="Algorithm" text="Text" />
             </div>

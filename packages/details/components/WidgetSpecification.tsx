@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 
 import A from '@linkexchange/components/src/A';
 import Paper from '@linkexchange/components/src/Paper';
-import TokenName from '@linkexchange/components/src/TokenName';
-import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
+import TokenLogo from '@linkexchange/components/src/TokenLogo';
+import { TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
 
 import { EWidgetSize } from '@linkexchange/types/widget';
 
@@ -36,7 +36,10 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
           <Paper style={{ flex: 1, marginRight: '15px' }}>
             <TextWithLabel label="Token">
               <TokenLogo className={style.tokenLogo} asset={asset} />
-              <TokenName asset={asset} />
+              <TokenDetailsProviderWithInfura
+                asset={asset}
+                render={({ name }) => name}
+              />
             </TextWithLabel>
           </Paper>
           <Paper style={{ flex: 1, marginLeft: '15px' }}>
