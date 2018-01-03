@@ -1,5 +1,6 @@
 import { render } from 'react-dom';
 import React from 'react';
+import qs from 'qs';
 import { Provider } from 'react-redux';
 
 import { IWidgetState } from '@linkexchange/ducks/widget';
@@ -11,6 +12,17 @@ import getStore from './store';
 
 import '../styles/all.scss';
 
+const [, searchParams] = document.location.href.split('?');
+const parsedParams = qs.parse(searchParams);
+
+const parsedParamsBlocks = {
+  startBlock: parsedParams.startBlock,
+  endBlock: parsedParams.endBlock,
+};
+
+delete parsedParams.startBlock;
+delete parsedParams.endBlock;
+
 const BENTYN_WIDGET_CONFIG: IWidgetState = {
   apiUrl: 'https://api.userfeeds.io',
   recipientAddress: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
@@ -21,16 +33,18 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
   slots: 2,
   timeslot: 5,
   contactMethod: 'ben@userfeeds.io',
-  title: 'Widget title',
-  description: 'I accept only links that are about science and technology. I like bicycles',
-  impression: '100 - 1.000',
-  location: 'https://linkexchange.io/apps/bentyn',
+  title: '',
+  description: '',
+  impression: '',
+  location: window.location.href,
+  ...parsedParams,
 };
 
 const startBlock = 2205093;
 const BENTYN_CONFIG = {
   startBlock,
   endBlock: startBlock + 6 * 60 * 24 * 27,
+  ...parsedParamsBlocks,
 };
 
 const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);
