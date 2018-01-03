@@ -26,9 +26,6 @@ import { R, validate, validateMultipe } from '@linkexchange/utils/validation';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 
-// import CreateWidget from '../components/CreateWidget';
-// import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
-
 import { getAverageBlockTime } from '../../../utils/ethereum';
 
 interface IState {
