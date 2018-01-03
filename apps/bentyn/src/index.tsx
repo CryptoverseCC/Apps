@@ -42,9 +42,8 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
 
 const startBlock = 2205093;
 const BENTYN_CONFIG = {
-  startBlock,
-  endBlock: startBlock + 6 * 60 * 24 * 27,
-  ...parsedParamsBlocks,
+  startBlock: parsedParamsBlocks.startBlock || startBlock,
+  endBlock: parsedParamsBlocks.endBlock || startBlock + 6 * 60 * 24 * 27,
 };
 
 const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);
