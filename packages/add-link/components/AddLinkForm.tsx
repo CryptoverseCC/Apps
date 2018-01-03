@@ -176,7 +176,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
     if (token) {
       sendClaimPromise = core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token)
         .then((allowance) => {
-          let promise = Promise.resolve(null);
+          let promise: Promise<any> = Promise.resolve(null);
           if (new BN(allowance).lte(new BN(toPayWei))) {
             promise = core.ethereum.claims.approveUserfeedsContractTokenTransfer(
               web3,
