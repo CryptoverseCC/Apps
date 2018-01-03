@@ -11,8 +11,8 @@ import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
 
+import { getAverageBlockTime } from '../utils/ethereum';
 import { IBentynState } from '../ducks/bentyn';
-
 import ProgressBar from './ProgressBar';
 
 import * as style from './blocksTillConclusion.scss';
@@ -112,23 +112,10 @@ const load = async (web3, [asset], update) => {
 
   while (true) {
     const blockNumber = await core.utils.getBlockNumber(web3);
-    const average = await getAverageBlockTime(web3, blockNumber);
+    const average = await getAverageBlockTime(web3);
     update({ blockNumber, average });
     await wait(average * 1000);
   }
-};
-
-const getAverageBlockTime = async (web3, blockNumber): Promise<number> => {
-  const SPAN = 100;
-  const currentBlock = await core.utils.getBlock(web3, blockNumber);
-  const pastBlock = await core.utils.getBlock(web3, blockNumber - SPAN);
-
-  if (!currentBlock) {
-    return DEFAULT_AVERAGE_TIME;
-  }
-
-  const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
-  return average;
 };
 
 const taskRunner = new Web3TaskRunner<
