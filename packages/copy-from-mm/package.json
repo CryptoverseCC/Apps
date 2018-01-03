@@ -1,12 +1,11 @@
 {
   "name": "@linkexchange/copy-from-mm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
-    "@linkexchange/components": "^0.0.27",
+    "@linkexchange/components": "^0.0.28",
     "@linkexchange/web3-state-provider": "^0.0.5"
   },
   "keywords": [],

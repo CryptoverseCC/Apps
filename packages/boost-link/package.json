@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/boost-link",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -8,7 +8,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/components": "^0.0.27",
+    "@linkexchange/components": "^0.0.28",
     "@linkexchange/token-details-provider": "^0.0.5",
     "@linkexchange/types": "^0.0.4",
     "@linkexchange/utils": "^0.0.12",
