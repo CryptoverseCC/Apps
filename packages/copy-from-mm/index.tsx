@@ -7,7 +7,7 @@ import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider';
 
-import MetaFox from '../../../../images/metafox.png';
+import MetaFox from './metafox.png';
 
 import * as style from './copyFromMM.scss';
 

@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkechange/transaction-provider": "^0.0.3",
+    "@linkexchange/transaction-provider": "^0.0.3",
     "@linkexchange/components": "^0.0.27",
     "@linkexchange/toast": "^0.0.5",
     "@linkexchange/token-details-provider": "^0.0.5",

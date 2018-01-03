@@ -6,6 +6,7 @@ import { History, Location } from 'history';
 
 import core from '@userfeeds/core/src';
 import web3, { getInfura } from '@linkexchange/utils/web3';
+import CopyFromMM from '@linkexchange/copy-from-mm';
 import wait from '@linkexchange/utils/wait';
 import Link from '@linkexchange/components/src/Link';
 import Icon from '@linkexchange/components/src/Icon';
@@ -21,7 +22,6 @@ import { input as fieldInput } from '@linkexchange/components/src/Form/field.scs
 import Input from '@linkexchange/components/src/Form/Input';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 
-import CopyFromMM from './components/CopyFromMM';
 import LinksList from './components/LinksList';
 
 import * as style from './whitelist.scss';

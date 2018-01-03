@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@linkechange/transaction-provider",
+  "name": "@linkexchange/transaction-provider",
   "version": "0.0.3",
   "description": "",
   "main": "index.tsx",

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@linkexchange/copy-from-mm": "^0.0.1",
     "@linkexchange/add-link": "^0.0.5",
     "@linkexchange/boost-link": "^0.0.4",
     "@linkexchange/components": "^0.0.27",

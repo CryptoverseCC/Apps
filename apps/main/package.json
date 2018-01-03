@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkechange/transaction-provider": "^0.0.3",
+    "@linkexchange/copy-from-mm": "^0.0.1",
+    "@linkexchange/transaction-provider": "^0.0.3",
     "@linkexchange/add-link": "^0.0.5",
     "@linkexchange/components": "^0.0.27",
     "@linkexchange/details": "^0.0.6",

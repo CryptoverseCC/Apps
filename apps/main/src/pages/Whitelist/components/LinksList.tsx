@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { fromWeiToString } from '@linkexchange/utils/balance';
-import TransactionProvider from '@linkechange/transaction-provider';
+import TransactionProvider from '@linkexchange/transaction-provider';
 import { ITokenDetails, withTokenDetails } from '@linkexchange/token-details-provider';
 
 import A from '@linkexchange/components/src/A';

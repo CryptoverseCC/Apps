@@ -11,6 +11,7 @@ import { History, Location } from 'history';
 import moment from 'moment';
 
 import core from '@userfeeds/core/src';
+import CopyFromMM from '@linkexchange/copy-from-mm';
 import { withInjectedWeb3, getInfura, TNetwork } from '@linkexchange/utils/web3';
 import { openToast } from '@linkexchange/toast/duck';
 import Button from '@linkexchange/components/src/NewButton';
@@ -27,6 +28,8 @@ import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset'
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 
 import { getAverageBlockTime } from '../../../utils/ethereum';
+
+import * as style from './configure.scss';
 
 interface IState {
   recipientAddress: string;
@@ -169,6 +172,13 @@ class Configure extends Component<TProps, IState> {
     this.inputsRefs[name] = ref;
   }
 
+  setAddressFromMM = (key) => async () => {
+    const [account = ''] = await web3.eth.getAccounts();
+
+    this.setState({ [key]: account });
+    this.props.updateQueryParam(key, account);
+  }
+
   getBlockNumberAndAverageTime = () => {
     core.utils.getBlockNumber(this.infura).then((blockNumber) => this.setState({ blockNumber }));
     getAverageBlockTime(this.infura).then((averageBlockTime) => this.setState({ averageBlockTime }));
@@ -211,23 +221,31 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Ethereum address you'll use to receive payments for links</Description>
-          <Input
-            type="text"
-            value={recipientAddress}
-            onChange={onChange('recipientAddress')}
-            ref={this.onRef('recipientAddress')}
-          />
+          <div className={style.fieldWithButton}>
+            <Input
+              className={style.input}
+              type="text"
+              value={recipientAddress}
+              onChange={onChange('recipientAddress')}
+              ref={this.onRef('recipientAddress')}
+            />
+            <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')}/>
+          </div>
           {errors.recipientAddress && <Error>{errors.recipientAddress}</Error>}
         </Field>
         <Field>
           <Title>Whitelist</Title>
           <Description>Address that you'll use for links approval</Description>
-          <Input
-            type="text"
-            value={whitelist}
-            onChange={onChange('whitelist')}
-            ref={this.onRef('whitelist')}
-          />
+          <div className={style.fieldWithButton}>
+            <Input
+              className={style.input}
+              type="text"
+              value={whitelist}
+              onChange={onChange('whitelist')}
+              ref={this.onRef('whitelist')}
+            />
+            <CopyFromMM onClick={this.setAddressFromMM('whitelist')}/>
+          </div>
         </Field>
         <Field>
           <Title>Choose token</Title>

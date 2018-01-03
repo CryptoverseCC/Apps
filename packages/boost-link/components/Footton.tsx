@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 
-import MetaFox from '@linkechange/transaction-provider/metafox.png';
+import MetaFox from '@linkexchange/transaction-provider/metafox.png';
 
 import * as style from './footon.scss';
 const cx = classnames.bind(style);

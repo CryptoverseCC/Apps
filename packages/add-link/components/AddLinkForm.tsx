@@ -13,7 +13,7 @@ import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
 import { R, validate } from '@linkexchange/utils/validation';
-import TransactionProvider from '@linkechange/transaction-provider';
+import TransactionProvider from '@linkexchange/transaction-provider';
 import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
 
 import {

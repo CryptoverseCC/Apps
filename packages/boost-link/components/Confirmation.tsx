@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import { ITokenDetails } from '@linkexchange/token-details-provider';
-import TranscactionProvider from '@linkechange/transaction-provider';
+import TranscactionProvider from '@linkexchange/transaction-provider';
 
 import Header from './Header';
 import Footom from './Footton';
