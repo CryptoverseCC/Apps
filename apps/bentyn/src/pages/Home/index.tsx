@@ -83,7 +83,9 @@ class Home extends Component<IProps, IState> {
               />
             </Switch.Case>
             <Switch.Case condition="HowToBuy">
-              <HowToBuy />
+              <HowToBuy
+                gotBens={this._closeModal}
+              />
             </Switch.Case>
             <Switch.Case condition="Welcome">
               <Welcome
