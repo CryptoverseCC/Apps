@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@linkexchange/copy-from-mm",
   "version": "0.0.2",
   "description": "",
