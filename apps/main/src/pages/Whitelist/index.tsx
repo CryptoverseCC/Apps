@@ -263,23 +263,24 @@ class Whitelist extends Component<TProps, IState> {
     this.setState({ fetching: false });
   }
 
-  _fetchAllLinks = async () => {
+  _fetchLinksImpl = async (whitelistFilterAlgorithm: string) => {
     const { apiUrl, recipientAddress, algorithm, asset } = this.state;
     const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
+    const context = recipientAddress.toLowerCase();
+    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${assetString};context=${context}`;
+    return fetch(`${rankingApiUrl}/${whitelistFilterAlgorithm}`)
+      .then<{ items: IRemoteLink[] }>((res) => res.json());
+  }
 
-    return fetch(`${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/`).then<{
-      items: IRemoteLink[];
-    }>((res) => res.json());
+  _fetchAllLinks = async () => {
+    const whitelistFilterAlgorithm = '';
+    return this._fetchLinksImpl(whitelistFilterAlgorithm);
   }
 
   _fetchWhitelistedLinks = async () => {
-    const { apiUrl, recipientAddress, algorithm, whitelist, asset } = this.state;
-    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
-    const whitelistParam = whitelist ? `?whitelist=${whitelist.toLowerCase()}` : '';
-
-    return fetch(
-      `${apiUrl}/ranking/${assetString}:${recipientAddress.toLowerCase()}/${algorithm}/${whitelistParam}`,
-    ).then<{ items: IRemoteLink[] }>((res) => res.json());
+    const { whitelist } = this.state;
+    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
+    return this._fetchLinksImpl(whitelistFilterAlgorithm);
   }
 
   _debouncedFetchLinks = debounce(this._fetchLinksAndShowLoader, 500);

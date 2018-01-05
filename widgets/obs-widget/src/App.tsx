@@ -60,18 +60,17 @@ export default class App extends Component<IAppProps, IAppState> {
       algorithm,
       whitelist,
     } = this.props.widgetSettings;
-    const rankingApiUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`;
-    const whitelistQueryParam = whitelist ? `?whitelist=${whitelist}` : '';
+    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${recipientAddress}/`;
+    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
     let links: IRemoteLink[] = [];
     try {
-      const { items = [] } = await fetch(`${rankingApiUrl}${whitelistQueryParam}`)
+      const { items = [] } = await fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`)
         .then(throwErrorOnNotOkResponse)
         .then<{ items: IRemoteLink[] }>((res) => res.json());
       links = items;
     } catch (e) {
       console.info('Something went wrong 😞');
     }
-
     const duration = (new Date()).getTime() - start.getTime();
     setTimeout(() => {
       this.setState({

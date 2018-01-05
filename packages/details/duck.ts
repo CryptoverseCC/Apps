@@ -29,12 +29,12 @@ export const fetchLinks = () => async (dispatch, getState: () => IState) => {
 
   dispatch(fetchLinksActions.started(undefined));
 
-  const rankingApiUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`;
-  const whitelistQueryParam = whitelist ? `?whitelist=${whitelist}` : '';
+  const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${recipientAddress}/`;
+  const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }] =
       await Promise.all([
-        fetch(`${rankingApiUrl}${whitelistQueryParam}`)
+        fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`)
           .then(throwErrorOnNotOkResponse)
           .then<{ items: IRemoteLink[]; }>((res) => res.json()),
         fetch(rankingApiUrl)
