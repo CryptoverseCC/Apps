@@ -12,14 +12,23 @@ import getStore from './store';
 
 import '../styles/all.scss';
 
-// const [, searchParams] = document.location.href.split('?');
-// const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
-// widgetSettings, { startBlock, endBlock }
+const [, searchParams] = document.location.href.split('?');
+const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
 
-const store = getStore();
+const DEFAULT_WIDGET_SETTINGS = {
+  apiUrl: 'https://api.userfeeds.io',
+  slots: 2,
+  timeslot: 5,
+  location: window.location.href,
+  algorithm: 'links',
+};
 
-// const [network] = widget.asset.split(':');
-const network = 'ropsten';
+const store = getStore(
+  { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettings },
+  { startBlock, endBlock },
+);
+
+const [network] = widgetSettings.asset && widgetSettings.asset.split(':') || ['ropsten'];
 const infuraWeb3 = getInfura(network as TNetwork);
 
 render(

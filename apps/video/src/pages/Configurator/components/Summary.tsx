@@ -8,7 +8,7 @@ const BASE_EVENT_URL = process.env.NODE_ENV === 'production'
   : window.location.origin;
 
 const Summary = (props) => {
-  const dashboardLink = `${BASE_EVENT_URL}${props.location.search}`;
+  const dashboardLink = `${BASE_EVENT_URL}/${props.location.search}`;
 
   return (
     <>

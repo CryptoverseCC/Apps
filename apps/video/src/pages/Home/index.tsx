@@ -98,8 +98,8 @@ class Home extends Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ widget, bentyn }: { widget: IWidgetState, bentyn: IBlocksState }) => ({
-  bentyn,
+const mapStateToProps = ({ widget, blocks }: { widget: IWidgetState, blocks: IBlocksState }) => ({
+  blocks,
   widgetSettings: widget,
 });
 

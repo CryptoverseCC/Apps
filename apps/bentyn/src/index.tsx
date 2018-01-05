@@ -13,15 +13,7 @@ import getStore from './store';
 import '../styles/all.scss';
 
 const [, searchParams] = document.location.href.split('?');
-const parsedParams = qs.parse(searchParams);
-
-const parsedParamsBlocks = {
-  startBlock: parsedParams.startBlock,
-  endBlock: parsedParams.endBlock,
-};
-
-delete parsedParams.startBlock;
-delete parsedParams.endBlock;
+const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
 
 const BENTYN_WIDGET_CONFIG: IWidgetState = {
   apiUrl: 'https://api.userfeeds.io',
@@ -37,13 +29,12 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
   description: '',
   impression: '',
   location: window.location.href,
-  ...parsedParams,
+  ...widgetSettings,
 };
 
-const startBlock = 2205093;
 const BENTYN_CONFIG = {
-  startBlock: parsedParamsBlocks.startBlock || startBlock,
-  endBlock: parsedParamsBlocks.endBlock || startBlock + 6 * 60 * 24 * 27,
+  startBlock: startBlock || 2215093,
+  endBlock: endBlock || 2205093 + 6 * 60 * 24 * 27,
 };
 
 const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);

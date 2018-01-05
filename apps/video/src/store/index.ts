@@ -16,8 +16,9 @@ if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger);
 }
 
-const getStore = () => createStore(
+const getStore = (widgetInitialState: IWidgetState, blocksInitialState: IBlocksState) => createStore(
   combineReducers({ blocks, links, widget, toast }),
+  { widget: widgetInitialState, blocks: blocksInitialState },
   applyMiddleware(...middlewares),
 );
 
