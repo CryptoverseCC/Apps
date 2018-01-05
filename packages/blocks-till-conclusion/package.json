@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "@linkexchange/blocks-till-conclusion",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {
+  },
+  "dependencies": {
+    "@userfeeds/core": "^0.0.40",
+    "@linkexchange/utils": "^0.0.12",
+    "@linkexchange/components": "^0.0.28",
+    "@linkexchange/web3-state-provider": "^0.0.5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

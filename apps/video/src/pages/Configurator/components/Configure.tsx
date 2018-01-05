@@ -12,6 +12,7 @@ import moment from 'moment';
 
 import core from '@userfeeds/core/src';
 import CopyFromMM from '@linkexchange/copy-from-mm';
+import { getAverageBlockTime } from '@linkexchange/utils/ethereum';
 import { withInjectedWeb3, getInfura, TNetwork } from '@linkexchange/utils/web3';
 import { openToast } from '@linkexchange/toast/duck';
 import Button from '@linkexchange/components/src/NewButton';
@@ -26,8 +27,6 @@ import web3 from '@linkexchange/utils/web3';
 import { R, validate, validateMultipe } from '@linkexchange/utils/validation';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
-
-import { getAverageBlockTime } from '../../../utils/ethereum';
 
 import * as style from './configure.scss';
 
@@ -134,13 +133,13 @@ class Configure extends Component<TProps, IState> {
       return;
     }
 
-    const { asset } = this.state;
+    const { asset, recipientAddress, whitelist, startBlock, endBlock } = this.state;
     const searchParams = qs.stringify({
-      ...this.state,
+      recipientAddress,
+      whitelist,
       asset: asset.token ? `${asset.network}:${asset.token}` : asset.network,
-      errors: null,
-      blockNumber: null,
-      averageBlockTime: null,
+      startBlock,
+      endBlock,
     }, { skipNulls: true });
 
     this.props.history.push({

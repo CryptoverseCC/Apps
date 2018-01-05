@@ -15,43 +15,41 @@ import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 
 import Header from './components/Header';
-import Welcome from './components/Welcome';
-import HowToBuy from './components/HowToBuy';
 import BoostLink from './components/BoostLink';
 
 const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
 
-import { IBentynState } from '../../ducks/bentyn';
+import { IBlocksState } from '../../ducks/blocks';
 
 import * as style from './home.scss';
 
 interface IProps {
-  bentyn: IBentynState;
+  blocks: IBlocksState;
   widgetSettings: IWidgetState;
 }
 
 interface IState {
-  openedModal: 'none' | 'Welcome' | 'HowToBuy' | 'AddLink';
+  openedModal: 'none' | 'AddLink';
 }
 
 class Home extends Component<IProps, IState> {
   state: IState = {
-    openedModal: 'Welcome',
+    openedModal: 'none',
   };
 
   render() {
-    const { widgetSettings, bentyn } = this.props;
+    const { widgetSettings, blocks } = this.props;
     const { openedModal } = this.state;
     return (
       <div className={style.self}>
         <Header
           widgetSettings={widgetSettings}
-          blocks={bentyn}
+          blocks={blocks}
         />
         <Details standaloneMode className={style.details}>
           <BlocksTillConclusionProvider
-            startBlock={bentyn.startBlock}
-            endBlock={bentyn.endBlock}
+            startBlock={blocks.startBlock}
+            endBlock={blocks.endBlock}
             asset={widgetSettings.asset}
             render={({ enabled, reason }) => (
               <div className={style.addLinkContainer}>
@@ -69,8 +67,8 @@ class Home extends Component<IProps, IState> {
             )}
           />
           <BlocksTillConclusionWithInfura
-            startBlock={bentyn.startBlock}
-            endBlock={bentyn.endBlock}
+            startBlock={blocks.startBlock}
+            endBlock={blocks.endBlock}
             asset={widgetSettings.asset}
             className={style.blocksTillConclusion}
           />
@@ -83,20 +81,6 @@ class Home extends Component<IProps, IState> {
                 loadBalance
                 asset={widgetSettings.asset}
                 openWidgetDetails={this._closeModal}
-              />
-            </Switch.Case>
-            <Switch.Case condition="HowToBuy">
-              <HowToBuy
-                gotBens={this._closeModal}
-              />
-            </Switch.Case>
-            <Switch.Case condition="Welcome">
-              <Welcome
-                startBlock={bentyn.startBlock}
-                endBlock={bentyn.endBlock}
-                asset={widgetSettings.asset}
-                purchaseBens={this._purchaseBens}
-                gotBens={this._closeModal}
               />
             </Switch.Case>
           </Switch>
@@ -112,13 +96,9 @@ class Home extends Component<IProps, IState> {
   _closeModal = () => {
     this.setState({ openedModal: 'none' });
   }
-
-  _purchaseBens = () => {
-    this.setState({ openedModal: 'HowToBuy' });
-  }
 }
 
-const mapStateToProps = ({ widget, bentyn }: { widget: IWidgetState, bentyn: IBentynState }) => ({
+const mapStateToProps = ({ widget, bentyn }: { widget: IWidgetState, bentyn: IBlocksState }) => ({
   bentyn,
   widgetSettings: widget,
 });

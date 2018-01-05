@@ -7,13 +7,10 @@ import Web3 from 'web3';
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
 import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
+import { getAverageBlockTime } from '@linkexchange/utils/ethereum';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
-
 import Tooltip from '@linkexchange/components/src/Tooltip';
-
-import { getAverageBlockTime } from '../utils/ethereum';
-import { IBentynState } from '../ducks/bentyn';
-import ProgressBar from './ProgressBar';
+import ProgressBar from '@linkexchange/components/src/ProgressBar';
 
 import * as style from './blocksTillConclusion.scss';
 

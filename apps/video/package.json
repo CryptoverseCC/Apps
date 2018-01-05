@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@linkexchange/blocks-till-conclusion": "^0.0.1",
+    "@linkexchange/blocks-till-conclusion-provider": "^0.0.1",
     "@linkexchange/add-link": "^0.0.6",
     "@linkexchange/boost-link": "^0.0.5",
     "@linkexchange/components": "^0.0.28",

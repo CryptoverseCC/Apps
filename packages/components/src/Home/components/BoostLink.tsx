@@ -8,7 +8,7 @@ import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { withTokenDetails } from '@linkexchange/token-details-provider';
 
 import { IBentynState } from '../../../ducks/bentyn';
-import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
+import BlocksTillConclusionProvider from '../../../providers/BlocksTillConclusionProvider';
 
 const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(BoostLinkComponent));
 

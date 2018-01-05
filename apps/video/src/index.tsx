@@ -12,14 +12,14 @@ import getStore from './store';
 
 import '../styles/all.scss';
 
-const [, searchParams] = document.location.href.split('?');
-const parsedParams = qs.parse(searchParams);
+// const [, searchParams] = document.location.href.split('?');
+// const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
+// widgetSettings, { startBlock, endBlock }
 
-const { blocks, widget } = parsedParams;
+const store = getStore();
 
-const store = getStore(widget, blocks);
-
-const [network] = widget.asset.split(':');
+// const [network] = widget.asset.split(':');
+const network = 'ropsten';
 const infuraWeb3 = getInfura(network as TNetwork);
 
 render(
