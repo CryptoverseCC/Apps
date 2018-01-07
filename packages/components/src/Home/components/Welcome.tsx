@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withInfura } from '@linkexchange/utils/web3';
 import Button from '@linkexchange/components/src/NewButton';
-import BlocksTillConclusionComponent from '@linkexchange/blocks-till-conclusion';
+import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
 
 import avatar from '../../../../images/szczepan.jpg';
 

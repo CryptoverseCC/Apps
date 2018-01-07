@@ -15,31 +15,20 @@ import '../styles/all.scss';
 const [, searchParams] = document.location.href.split('?');
 const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
 
-const BENTYN_WIDGET_CONFIG: IWidgetState = {
+const DEFAULT_WIDGET_SETTINGS = {
   apiUrl: 'https://api.userfeeds.io',
-  recipientAddress: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
-  whitelist: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
-  asset: 'ropsten:0x44da4e9196be4fe6d06b942ac4f980390f015f82',
-  algorithm: 'links',
-  size: 'leaderboard' as EWidgetSize,
   slots: 2,
   timeslot: 5,
-  contactMethod: 'ben@userfeeds.io',
-  title: '',
-  description: '',
-  impression: '',
   location: window.location.href,
-  ...widgetSettings,
+  algorithm: 'links',
 };
 
-const BENTYN_CONFIG = {
-  startBlock: startBlock || 2215093,
-  endBlock: endBlock || 2205093 + 6 * 60 * 24 * 27,
-};
+const store = getStore(
+  { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettings },
+  { startBlock, endBlock },
+);
 
-const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);
-
-const [network] = BENTYN_WIDGET_CONFIG.asset.split(':');
+const [network] = widgetSettings.asset && widgetSettings.asset.split(':') || ['ropsten'];
 const infuraWeb3 = getInfura(network as TNetwork);
 
 render(

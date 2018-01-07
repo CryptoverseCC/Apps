@@ -8,7 +8,7 @@ import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { withTokenDetails } from '@linkexchange/token-details-provider';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 
-import { IBentynState } from '../../../ducks/bentyn';
+import { IBlocksState } from '../../../ducks/blocks';
 
 const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(BoostLinkComponent));
 
@@ -36,9 +36,9 @@ const BoostLink = (props: IDefaultBoostLinkWrapperProps & IProps) => {
   );
 };
 
-const mapStateToProps = ({ bentyn }: { bentyn: IBentynState }) => ({
-  startBlock: bentyn.startBlock,
-  endBlock: bentyn.endBlock,
+const mapStateToProps = ({ blocks }: { blocks: IBlocksState }) => ({
+  startBlock: blocks.startBlock,
+  endBlock: blocks.endBlock,
 });
 
 export default connect(mapStateToProps)(BoostLink);

@@ -1,11 +1,14 @@
 {
   "private": true,
-  "name": "@linkexchange/copy-from-mm",
-  "version": "0.0.2",
+  "name": "@linkexchange/blocks-till-conclusion",
+  "version": "0.0.1",
   "description": "",
   "main": "index.tsx",
-  "scripts": {},
+  "scripts": {
+  },
   "dependencies": {
+    "@userfeeds/core": "^0.0.40",
+    "@linkexchange/utils": "^0.0.12",
     "@linkexchange/components": "^0.0.28",
     "@linkexchange/web3-state-provider": "^0.0.5"
   },

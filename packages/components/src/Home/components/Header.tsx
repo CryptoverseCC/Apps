@@ -1,8 +1,7 @@
 import React from 'react';
-import qs from 'qs';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
-import { IWidgetState } from '@linkexchange/ducks/widget';
 import Button from '@linkexchange/components/src/NewButton';
 
 import IfOwner from './IfOwner';
@@ -13,23 +12,7 @@ import twitter from '../../../../images/twitter.png';
 
 import * as style from './header.scss';
 
-interface IProps {
-  widgetSettings: IWidgetState;
-  blocks: {
-    startBlock: number;
-    endBlock: number;
-  };
-}
-
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'http://linkexchange.io/apps/video' : window.location.origin;
-const openDashboard = (props: IProps) => {
-  window.open(
-    `${BASE_URL}/#/dashboard?${qs.stringify({ ...props.blocks, ...props.widgetSettings })}`,
-    '_blank',
-  );
-};
-
-const Header = (props: IProps) => (
+const Header = () => (
   <div className={style.self}>
     <div className={style.about}>
       <div className={style.token}>
@@ -72,9 +55,9 @@ const Header = (props: IProps) => (
       </div>
     </div>
     <IfOwner>
-      <Button onClick={() => openDashboard(props)} color="primary" className={style.goToDashboard}>
-        Go to dashboard
-      </Button>
+      <Link to="/dashboard" className={style.goToDashboard}>
+        <Button color="primary">Go to dashboard</Button>
+      </Link>
     </IfOwner>
     <Button color="secondary" className={style.contactMe}>CONTACT ME</Button>
   </div>

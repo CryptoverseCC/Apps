@@ -1,0 +1,139 @@
+.self {
+  display: flex;
+  flex-direction: row;
+  padding: 32px 80px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #EDF1F2;
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+
+  .about {
+    display: flex;
+    flex-direction: row;
+
+    @media screen and (max-width: 800px) {
+      padding-bottom: 15px;
+    }
+  }
+
+  .bio {
+    height: 70px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .name {
+      font-size: 21px;
+      line-height: 17px;
+    }
+
+    .description {
+      color: rgb(83, 90, 105);
+    }
+  }
+
+  .token {
+    margin-right: 50px;
+    position: relative;
+    min-width: 60px;
+    max-width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    color: rgb(38, 63, 255);
+    font-size: 18px;
+    letter-spacing: 3px;
+    font-weight: bold;
+    background-color: rgba(38,63,255,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .inner {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+      bottom: -15px;
+      right: -10px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      background-color: rgb(255, 255, 255);
+      box-shadow: 0 3px 8px 0 rgba(27,36,55,0.09);
+    }
+  }
+
+  .media {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 250px;
+
+    @media screen and (max-width: 800px) {
+      width: auto;
+    }
+
+    .item {
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      .number {
+        font-size: 21px;
+        line-height: 17px;
+      }
+
+      a {
+        text-decoration: none;
+        color: rgb(83, 90, 105);
+        font-size: 14px;
+        line-height: 17px;
+      }
+
+      .logo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        img {
+          padding-right: 4px;
+          width: 16px;
+        }
+      }
+    }
+  }
+
+  .go-to-dashboard {
+    margin-left: auto;
+    align-self: center;
+    text-decoration: none;
+  }
+
+  .contact-me {
+    min-width: 130px;
+    margin-left: auto;
+    align-self: center;
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 2px;
+
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+
+    &.contact-me-mobile {
+      display: none;
+
+      @media screen and (max-width: 800px) {
+        display: block;
+      }
+    }
+  }
+}

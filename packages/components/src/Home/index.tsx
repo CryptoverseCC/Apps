@@ -12,12 +12,12 @@ import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
-import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 
 import Header from './components/Header';
 import Welcome from './components/Welcome';
 import HowToBuy from './components/HowToBuy';
 import BoostLink from './components/BoostLink';
+import BlocksTillConclusionProvider from '../../providers/BlocksTillConclusionProvider';
 
 const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
 
@@ -44,10 +44,7 @@ class Home extends Component<IProps, IState> {
     const { openedModal } = this.state;
     return (
       <div className={style.self}>
-        <Header
-          widgetSettings={widgetSettings}
-          blocks={bentyn}
-        />
+        <Header />
         <Details standaloneMode className={style.details}>
           <BlocksTillConclusionProvider
             startBlock={bentyn.startBlock}
