@@ -31,6 +31,8 @@ import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/component
 import * as style from './configure.scss';
 
 interface IState {
+  title: string;
+  description: string;
   slots: number;
   recipientAddress: string;
   whitelist: string;
@@ -42,6 +44,8 @@ interface IState {
   startBlock: string;
   endBlock: string;
   errors: {
+    title?: string;
+    description?: string;
     recipientAddress?: string;
     asset?: string;
     slots?: string;
@@ -54,6 +58,8 @@ interface IState {
 
 const initialState = {
   slots: 10,
+  title: '',
+  description: '',
   startBlock: '',
   endBlock: '',
   algorithm: 'links',
@@ -66,6 +72,8 @@ const initialState = {
 };
 
 const rules = {
+  title: [R.required],
+  description: [R.required],
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
   asset: [
     R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address'),
@@ -138,8 +146,12 @@ class Configure extends Component<TProps, IState> {
       return;
     }
 
-    const { asset, recipientAddress, whitelist, startBlock, endBlock, algorithm, slots } = this.state;
+    const { asset, recipientAddress, whitelist, startBlock, endBlock, algorithm, slots, title, description }
+      = this.state;
+
     const searchParams = qs.stringify({
+      title,
+      description,
       slots,
       algorithm,
       recipientAddress,
@@ -156,7 +168,7 @@ class Configure extends Component<TProps, IState> {
   }
 
   focusOnFirstError = (errors) => {
-    const firstError = ['recipientAddress', 'whitelist', 'slots', 'startBlock', 'endBlock']
+    const firstError = ['recipientAddress', 'whitelist', 'title', 'description', 'slots', 'startBlock', 'endBlock']
       .find((field) => !!errors[field]);
     this.inputsRefs[firstError!].focus();
   }
@@ -220,6 +232,8 @@ class Configure extends Component<TProps, IState> {
   render() {
     const { onChange } = this;
     const {
+      title,
+      description,
       slots,
       recipientAddress,
       whitelist,
@@ -263,6 +277,28 @@ class Configure extends Component<TProps, IState> {
             />
             <CopyFromMM onClick={this.setAddressFromMM('whitelist')}/>
           </div>
+        </Field>
+        <Field>
+          <Title>Title</Title>
+          <Description>Name of Your Widget</Description>
+          <Input
+            type="text"
+            value={title}
+            onChange={onChange('title')}
+            ref={this.onRef('title')}
+          />
+          {errors.title && <Error>{errors.title}</Error>}
+        </Field>
+        <Field>
+          <Title>Description</Title>
+          <Description>Short Description of Your Widget (describing links you want to receive etc)</Description>
+          <Input
+            type="text"
+            value={description}
+            onChange={onChange('description')}
+            ref={this.onRef('description')}
+          />
+          {errors.description && <Error>{errors.description}</Error>}
         </Field>
         <Field>
           <Title>Choose token</Title>

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
-import { withTokenDetails } from '@linkexchange/token-details-provider';
 import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';
@@ -43,6 +42,7 @@ class Home extends Component<IProps, IState> {
     return (
       <div className={style.self}>
         <Header
+          asset={widgetSettings.asset}
           widgetSettings={widgetSettings}
           blocks={blocks}
         />

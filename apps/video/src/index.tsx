@@ -17,6 +17,8 @@ const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
 
 const DEFAULT_WIDGET_SETTINGS = {
   apiUrl: 'https://api.userfeeds.io',
+  title: 'Title',
+  description: 'Description',
   slots: 2,
   timeslot: 5,
   location: window.location.href,
