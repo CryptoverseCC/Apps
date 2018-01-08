@@ -33,8 +33,8 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
 };
 
 const BENTYN_CONFIG = {
-  startBlock: startBlock || 2215093,
-  endBlock: endBlock || 2205093 + 6 * 60 * 24 * 27,
+  startBlock: parseInt(startBlock, 10) || 2215093,
+  endBlock: parseInt(endBlock, 10) || 2205093 + 6 * 60 * 24 * 27,
 };
 
 const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);

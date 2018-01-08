@@ -96,7 +96,7 @@ export default class Booster extends Component<IProps, IState> {
             <span className={style.error}>{inputError}</span>
           </div>
           <div
-            className={cx(style.next, { disabled: !!inputError || hasInsufficientFunds })}
+            className={cx(style.next, { disabled: !!inputError || hasInsufficientFunds || this._isZero(toPay) })}
             onClick={this._onSendClick}
           >
             <Icon name="arrow-right" className={style.icon}/>
@@ -106,11 +106,15 @@ export default class Booster extends Component<IProps, IState> {
     );
   }
 
+  _isZero = (amount) => {
+    return new BigNumber(amount).isZero();
+  }
+
   _boostToBeInSlots = () => {
     const toAdd = this._toAddToBeInSlots();
     const { toPay } = this.state;
 
-    const totalToPay = new BigNumber(toPay).add(toAdd).toString();
+    const totalToPay = new BigNumber(toPay).add(toAdd).toString(10);
     this._onInputChange({ target: { value: totalToPay }} as ChangeEvent<HTMLInputElement>); // ToDo make it better
   }
 
