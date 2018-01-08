@@ -1,19 +1,15 @@
 @import '~@linkexchange/components/styles/colors';
 
 .self {
-  position: absolute;
-  left: 0;
-  font-size: 0.8em;
+  font-size: 14px;
   cursor: pointer;
   color: $dusty-gray;
   opacity: 0.4;
-  padding: 0.5em;
-  border-style: solid;
-  border-color: $dusty-gray;
-  border-width: 1px;
+  padding: 12px 14px;
+  border: solid $dusty-gray 1px;
   border-left: none;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
 
   &:hover {
     opacity: 1;

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
+import { withInfura } from '@linkexchange/utils/web3';
 import { withTokenDetails } from '@linkexchange/token-details-provider';
 import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';

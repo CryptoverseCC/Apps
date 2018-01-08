@@ -11,6 +11,7 @@ import Paper from '@linkexchange/components/src/Paper';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openToast, TToastType } from '@linkexchange/toast/duck';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
+import LightText from '../components/src/LightText';
 
 import Steps from './components/Steps';
 import BackButton from './components/BackButton';
@@ -63,8 +64,9 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
     return (
       <div className={style.self}>
         <div className={style.header}>
-          <BackButton onClick={this.props.openWidgetDetails} />
+          <BackButton style={{marginRight: 'auto', marginLeft: '-20px'}} onClick={this.props.openWidgetDetails} />
           <h2>Create a new link</h2>
+          <div style={{marginLeft: 'auto'}}><LightText>Balance:</LightText> {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</div>
         </div>
         <div className={style.body}>
           <Steps activeStep={step} />
