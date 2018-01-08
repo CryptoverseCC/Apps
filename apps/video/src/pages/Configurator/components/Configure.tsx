@@ -178,6 +178,13 @@ class Configure extends Component<TProps, IState> {
     this.props.updateQueryParam(key, account);
   }
 
+  setBlockNumberFromMM = (key) => async () => {
+    const blockNumber = await this.infura.eth.getBlockNumber();
+
+    this.setState({ [key]: blockNumber });
+    this.props.updateQueryParam(key, blockNumber);
+  }
+
   getBlockNumberAndAverageTime = () => {
     core.utils.getBlockNumber(this.infura).then((blockNumber) => this.setState({ blockNumber }));
     getAverageBlockTime(this.infura).then((averageBlockTime) => this.setState({ averageBlockTime }));
@@ -190,14 +197,17 @@ class Configure extends Component<TProps, IState> {
 
     const blockNumber = parseInt(inputValue, 10);
     if (blockNumber < this.state.blockNumber) {
-      return null;
-    }
+      const duration = moment
+        .duration((this.state.blockNumber - blockNumber) * this.state.averageBlockTime * 1000)
+        .humanize();
 
+      return `~ ${duration} ago`;
+    }
     const duration = moment
       .duration((blockNumber - this.state.blockNumber) * this.state.averageBlockTime * 1000)
       .humanize();
 
-    return `~ ${duration}`;
+    return `~ ${duration} from now`;
   }
 
   render() {
@@ -260,24 +270,32 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Start block</Title>
           <Description>Block number after which adding and boosting links will be allowed</Description>
-          <Input
-            type="text"
-            value={startBlock}
-            onChange={onChange('startBlock')}
-            ref={this.onRef('startBlock')}
-          />
+          <div className={style.fieldWithButton}>
+            <Input
+              className={style.input}
+              type="text"
+              value={startBlock}
+              onChange={onChange('startBlock')}
+              ref={this.onRef('startBlock')}
+            />
+            <CopyFromMM onClick={this.setBlockNumberFromMM('startBlock')}/>
+          </div>
           {this.getEstimatedDate(startBlock)}
           {errors.startBlock && <Error>{errors.startBlock}</Error>}
         </Field>
         <Field>
           <Title>End block</Title>
           <Description>Block number after which adding and boosting links will be <b>not</b> allowed</Description>
-          <Input
-            type="text"
-            value={endBlock}
-            onChange={onChange('endBlock')}
-            ref={this.onRef('endBlock')}
-          />
+          <div className={style.fieldWithButton}>
+            <Input
+              className={style.input}
+              type="text"
+              value={endBlock}
+              onChange={onChange('endBlock')}
+              ref={this.onRef('endBlock')}
+            />
+            <CopyFromMM onClick={this.setBlockNumberFromMM('endBlock')}/>
+          </div>
           {this.getEstimatedDate(endBlock)}
           {errors.endBlock && <Error>{errors.endBlock}</Error>}
         </Field>
