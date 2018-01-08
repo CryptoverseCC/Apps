@@ -31,6 +31,7 @@ import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/component
 import * as style from './configure.scss';
 
 interface IState {
+  slots: number;
   recipientAddress: string;
   whitelist: string;
   asset: {
@@ -43,15 +44,16 @@ interface IState {
   errors: {
     recipientAddress?: string;
     asset?: string;
+    slots?: string;
     startBlock?: string;
     endBlock?: string;
-    tillDate?: string;
   };
   blockNumber?: number;
   averageBlockTime: number;
 }
 
 const initialState = {
+  slots: 10,
   startBlock: '',
   endBlock: '',
   algorithm: 'links',
@@ -68,6 +70,9 @@ const rules = {
   asset: [
     R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address'),
   ],
+  slots: [R.required, R.number],
+  startBlock: [R.required, R.number],
+  endBlock: [R.required, R.number],
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
@@ -133,8 +138,10 @@ class Configure extends Component<TProps, IState> {
       return;
     }
 
-    const { asset, recipientAddress, whitelist, startBlock, endBlock } = this.state;
+    const { asset, recipientAddress, whitelist, startBlock, endBlock, algorithm, slots } = this.state;
     const searchParams = qs.stringify({
+      slots,
+      algorithm,
       recipientAddress,
       whitelist,
       asset: asset.token ? `${asset.network}:${asset.token}` : asset.network,
@@ -149,7 +156,7 @@ class Configure extends Component<TProps, IState> {
   }
 
   focusOnFirstError = (errors) => {
-    const firstError = ['recipientAddress', 'whitelist']
+    const firstError = ['recipientAddress', 'whitelist', 'slots', 'startBlock', 'endBlock']
       .find((field) => !!errors[field]);
     this.inputsRefs[firstError!].focus();
   }
@@ -213,6 +220,7 @@ class Configure extends Component<TProps, IState> {
   render() {
     const { onChange } = this;
     const {
+      slots,
       recipientAddress,
       whitelist,
       asset,
@@ -266,6 +274,17 @@ class Configure extends Component<TProps, IState> {
             />
             {errors.asset && <Error>{errors.asset}</Error>}
           </div>
+        </Field>
+        <Field>
+          <Title>Slots</Title>
+          <Description>Number of links qualified to display</Description>
+          <Input
+            type="text"
+            value={slots}
+            onChange={onChange('slots')}
+            ref={this.onRef('slots')}
+          />
+          {errors.slots && <Error>{errors.slots}</Error>}
         </Field>
         <Field>
           <Title>Start block</Title>
