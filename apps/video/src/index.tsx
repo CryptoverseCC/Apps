@@ -25,7 +25,7 @@ const DEFAULT_WIDGET_SETTINGS = {
 
 const store = getStore(
   { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettings },
-  { startBlock, endBlock },
+  { startBlock: parseInt(startBlock, 10), endBlock: parseInt(endBlock, 10) },
 );
 
 const [network] = widgetSettings.asset && widgetSettings.asset.split(':') || ['ropsten'];
