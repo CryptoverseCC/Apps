@@ -53,6 +53,7 @@ type TProps = IUpdateQueryParamProp & {
 
 class Whitelist extends Component<TProps, IState> {
   web3: Web3;
+  fetchInterval: number | null = null;
 
   constructor(props: TProps) {
     super(props);
@@ -88,7 +89,7 @@ class Whitelist extends Component<TProps, IState> {
 
   componentWillMount() {
     if (this.state.recipientAddressFromParams) {
-      this._fetchLinks();
+      this._fetchLinksAndShowLoader();
     }
   }
 
@@ -202,7 +203,7 @@ class Whitelist extends Component<TProps, IState> {
 
     this.setState({ [key]: account });
     this.props.updateQueryParam(key, account);
-    this._fetchLinks();
+    this._fetchLinksAndShowLoader();
   }
 
   _onChange = (key) => (e) => {
@@ -216,14 +217,16 @@ class Whitelist extends Component<TProps, IState> {
   _onAssetChange = (value) => {
     this.web3 = getInfura(value.network);
     this.setState({ asset: value }, () => {
-      this._fetchLinks();
+      this._fetchLinksAndShowLoader();
     });
     this.props.updateQueryParam('asset', `${value.network}:${value.token}`);
   }
 
   _fetchLinks = async () => {
-    this.setState({ fetching: true, links: [] });
-    const startTime = Date.now();
+    if (this.fetchInterval !== null) {
+      window.clearInterval(this.fetchInterval);
+    }
+
     try {
       const [allLinks, whitelistedLinks] = await Promise.all([this._fetchAllLinks(), this._fetchWhitelistedLinks()]);
 
@@ -244,6 +247,16 @@ class Whitelist extends Component<TProps, IState> {
     } catch (_) {
       // ToDo Show error toast?
     }
+
+    this.fetchInterval = window.setInterval(this._fetchLinks, 2000);
+  }
+
+  _fetchLinksAndShowLoader = async () => {
+    this.setState({ fetching: true, links: [] });
+
+    const startTime = Date.now();
+    this._fetchLinks();
+
     const totalTime = Date.now() - startTime;
     if (totalTime < 1000) {
       await wait(1000 - totalTime);
@@ -271,7 +284,7 @@ class Whitelist extends Component<TProps, IState> {
     ).then<{ items: IRemoteLink[] }>((res) => res.json());
   }
 
-  _debouncedFetchLinks = debounce(this._fetchLinks, 500);
+  _debouncedFetchLinks = debounce(this._fetchLinksAndShowLoader, 500);
 }
 
 export default updateQueryParam(Whitelist);

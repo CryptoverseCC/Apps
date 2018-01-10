@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { fromWeiToString } from '@linkexchange/utils/balance';
-import TransactionProvider from '@linkexchange/transaction-provider';
+import TransactionProvider, { TStatus } from '@linkexchange/transaction-provider';
 import { ITokenDetails, withTokenDetails } from '@linkexchange/token-details-provider';
 
 import A from '@linkexchange/components/src/A';
@@ -21,55 +21,82 @@ interface ILinksListProps {
   links: TWhitelistableClickableLink[];
 }
 
-const whitelistLink = (linkId: string) => {
-  const claim = {
-    claim: { target: linkId },
-  };
+class LinksList extends Component<ILinksListProps> {
 
-  return core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
-};
+  render() {
+    const props = this.props;
 
-const LinksList = (props: ILinksListProps) => {
-  return (
-    <table className={style.Table}>
-      <thead>
-        <tr>
-          <th>
-            <BoldText>Content</BoldText>
-          </th>
-          <th>
-            <BoldText>Total spent</BoldText>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.links.map((link) => (
-          <tr key={link.id}>
-            <td>
-              <b>{link.title}</b>
-              <p style={{ color: '#89939F', margin: 0 }}>{link.summary}</p>
-              <A href={link.target}>{link.target}</A>
-            </td>
-            <td style={{ width: '140px' }}>
-              <b>{fromWeiToString(link.total, props.tokenDetails.decimals)}</b>
-            </td>
-            {!link.whitelisted && (
-              <td style={{ width: '200px', textAlign: 'right' }}>
-                <TransactionProvider
-                  startTransaction={() => whitelistLink(link.id)}
-                  renderReady={() => (
-                    <Button color="ready">
-                      <Icon name="check" /> Accept
-                    </Button>
-                  )}
-                />
-              </td>
-            )}
+    return (
+      <table className={style.Table}>
+        <thead>
+          <tr>
+            <th>
+              <BoldText>Content</BoldText>
+            </th>
+            <th>
+              <BoldText>Total spent</BoldText>
+            </th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
+        </thead>
+        <tbody>
+          {props.links.map((link) => (
+            <tr key={link.id}>
+              <td>
+                <b>{link.title}</b>
+                <p style={{ color: '#89939F', margin: 0 }}>{link.summary}</p>
+                <A href={link.target}>{link.target}</A>
+              </td>
+              <td style={{ width: '140px' }}>
+                <b>{fromWeiToString(link.total, props.tokenDetails.decimals)}</b>
+              </td>
+              {!link.whitelisted && (
+                <td style={{ width: '200px', textAlign: 'right' }}>
+                  <TransactionProvider
+                    initialStatus={this._getInitialStatus(link.id)}
+                    startTransaction={() => this._whitelistLink(link.id)}
+                    renderReady={() => (
+                      <Button color="ready">
+                        <Icon name="check" /> Accept
+                      </Button>
+                    )}
+                  />
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
+  _whitelistLink = (linkId: string) => {
+    const claim = {
+      claim: { target: linkId },
+    };
+
+    const promiEvent = core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
+
+    promiEvent.then(({ promiEvent }) => {
+      promiEvent.on('transactionHash', (transactionHash) => {
+        sessionStorage.setItem(linkId, `${transactionHash}:pending`);
+      });
+      promiEvent.on('receipt', (receipt) => {
+        sessionStorage.setItem(linkId, `${receipt.transactionHash}:success`);
+      });
+    });
+
+    return promiEvent;
+  }
+
+  _getInitialStatus = (linkId: string): TStatus => {
+    const transaction = sessionStorage.getItem(linkId);
+    if (!transaction) {
+      return 'ready';
+    }
+    const [transactionId, status] = transaction.split(':');
+
+    return status as TStatus;
+  }
+}
 
 export default withTokenDetails(LinksList);

@@ -6,7 +6,10 @@ import { makeCancelable } from '@linkexchange/utils/cancelablePromise';
 
 import MetaFox from './metafox.png';
 
+export type TStatus = 'ready' | 'metaPending' | 'pending' | 'error' | 'success';
+
 interface IProps {
+  initialStatus?: TStatus;
   startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> | undefined;
   renderReady(): ReactElement<any>;
   renderPending?: () => ReactElement<any>;
@@ -16,7 +19,7 @@ interface IProps {
 }
 
 interface IState {
-  status: 'ready' | 'metaPending' | 'pending' | 'error' | 'success';
+  status: TStatus;
 }
 
 export default class TransactionProvider extends Component<IProps, IState> {
@@ -32,9 +35,13 @@ export default class TransactionProvider extends Component<IProps, IState> {
     renderSuccess: () => <Button color="success">Success</Button>,
   };
 
-  state: IState = {
-    status: 'ready',
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      status: props.initialStatus || 'ready',
+    };
+  }
 
   transactionPromise: any; // Cancelabble Promise
 
