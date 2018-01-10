@@ -16,13 +16,13 @@ const [, searchParams] = document.location.href.split('?');
 const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
 
 const BENTYN_WIDGET_CONFIG: IWidgetState = {
-  apiUrl: 'https://api.userfeeds.io',
+  apiUrl: 'https://api-staging.userfeeds.io',
   recipientAddress: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
   whitelist: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
-  asset: 'ropsten:0x44da4e9196be4fe6d06b942ac4f980390f015f82',
+  asset: 'ethereum:0x108c05cac356d93b351375434101cfd3e14f7e44',
   algorithm: 'links',
   size: 'leaderboard' as EWidgetSize,
-  slots: 2,
+  slots: 5,
   timeslot: 5,
   contactMethod: 'ben@userfeeds.io',
   title: '',
