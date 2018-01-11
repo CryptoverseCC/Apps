@@ -15,12 +15,17 @@ import '../styles/all.scss';
 const [, searchParams] = document.location.href.split('?');
 const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
 
+const BENTYN_CONFIG = {
+  startBlock: parseInt(startBlock, 10) || 4884495,
+  endBlock: parseInt(endBlock, 10) || 5172495,
+};
+
 const BENTYN_WIDGET_CONFIG: IWidgetState = {
   apiUrl: 'https://api-staging.userfeeds.io',
   recipientAddress: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
   whitelist: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
   asset: 'ethereum:0x108c05cac356d93b351375434101cfd3e14f7e44',
-  algorithm: 'links',
+  algorithm: `betweenblocks;minBlockNumber=${BENTYN_CONFIG.startBlock};maxBlockNumber=${BENTYN_CONFIG.endBlock}`,
   size: 'leaderboard' as EWidgetSize,
   slots: 5,
   timeslot: 5,
@@ -30,11 +35,6 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
   impression: '',
   location: window.location.href,
   ...widgetSettings,
-};
-
-const BENTYN_CONFIG = {
-  startBlock: parseInt(startBlock, 10) || 4884495,
-  endBlock: parseInt(endBlock, 10) || 5172495,
 };
 
 const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);
