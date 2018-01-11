@@ -59,18 +59,6 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     return (
       <div className={cx(['self', widgetSettings.size])} onMouseLeave={this._onInfoLeave}>
         <div className={cx('options', { open: optionsOpen })}>
-          <div className={style.probabilityContainer}>
-            <span className={style.probabilityLabel}>Probability: </span>
-            <div className={style.probability}>{currentLink && `${currentLink.probability}%`}</div>
-          </div>
-          <div className={style.arrows}>
-            <div className={cx('arrow', 'left')} onClick={this._onPrevClick}>
-              <Icon name="arrow-left" />
-            </div>
-            <div className={cx('arrow', 'right')} onClick={this._onNextClick}>
-              <Icon name="arrow-right" />
-            </div>
-          </div>
           <Menu onClick={this._openModal('details')} />
         </div>
         <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>

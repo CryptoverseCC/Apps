@@ -5,7 +5,7 @@ import * as style from './menu.scss';
 
 const Menu = ({ onClick }) => (
   <div className={style.self} onClick={onClick}>
-    See more <Icon className={style.icon} name="external-link" />
+    Buy a Link <Icon className={style.icon} name="external-link" />
   </div>
 );
 

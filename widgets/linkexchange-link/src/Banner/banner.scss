@@ -79,54 +79,10 @@
     top: 0;
     width: calc(100% - 2 * 10px);
     padding: 0 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     background-color: $alto;
     box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
-  }
-
-  .probability-label {
-    color: $dusty-gray;
-    font-size: 0.8em;
-  }
-
-  .probability-container {
-    flex-basis: calc(100%/3);
-  }
-
-  .probability {
-    min-width: 3em;
-    display: inline-block;
-    text-align: left;
-  }
-
-  .arrows {
-    flex-basis: calc(100%/3);
     display: flex;
-    justify-content: center;
-    color: $tuna;
-
-    .arrow {
-      padding: 0;
-      cursor: pointer;
-
-      &.left {
-        padding-right: 0.5em;
-
-        &:hover {
-          transform:translateX(-2px);
-        }
-      }
-
-      &.right {
-        padding-left: 0.5em;
-
-        &:hover {
-          transform:translateX(2px);
-        }
-      }
-    }
+    justify-content: flex-end;
+    align-items: center;
   }
 }
