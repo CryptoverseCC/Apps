@@ -4,26 +4,20 @@ import Web3 from 'web3';
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
 import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
-import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider';
+import {IWeb3State, withInjectedWeb3AndWeb3State} from '@linkexchange/web3-state-provider';
 
 interface IProps {
   web3: Web3;
-  web3State: {
-    enabled: boolean;
-    reason?: string;
-  };
+  web3State: IWeb3State;
   asset: string;
   startBlock: number;
   endBlock: number;
-  render(state: { enabled: boolean; reason?: string; }): JSX.Element;
+  render(state: IWeb3State): JSX.Element;
 }
 
 interface IState {
   loaded: boolean;
-  blocksState?: {
-    enabled: boolean;
-    reason?: string;
-  };
+  blocksState?: IWeb3State;
 }
 
 const HASNT_STARTED = `The auction hasn't begun yet`;

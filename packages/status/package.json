@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "@linkexchange/status",
+  "version": "0.0.6",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "@linkexchange/transaction-provider": "^0.0.5",
+    "@linkexchange/web3-state-provider": "^0.0.5"
+  }
+}

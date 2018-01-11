@@ -12,6 +12,7 @@ import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 export interface IWeb3State {
   enabled: boolean;
   reason?: string;
+  currentBlockNumber?: number;
 }
 
 interface IProps {
@@ -95,13 +96,13 @@ const load = async (web3, [asset = ''], update) => {
 
   while (true) {
     if (!(web3.currentProvider !== null && await web3.eth.net.isListening())) {
-      update({ enabled: false, reason: 'Web3 is unavailable' });
+      update({ enabled: false, reason: 'Enable Metamask to unlock all the features' });
     } else if ((await web3.eth.getAccounts()).length === 0) {
-      update({ enabled: false, reason: 'Your wallet is locked' });
+      update({ enabled: false, reason: 'Unlock your wallet to unlock all the features' });
     } else if (await core.utils.getCurrentNetworkName(web3) !== network) {
-      update({ enabled: false, reason: `You have to switch to ${network} network`});
+      update({ enabled: false, reason: `Switch to ${network} network to unlock all the features`});
     } else {
-      update({ enabled: true });
+      update({ enabled: true, currentBlockNumber: await core.utils.getBlockNumber(web3) });
     }
     await wait(1000);
   }
