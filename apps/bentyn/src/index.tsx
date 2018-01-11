@@ -17,8 +17,8 @@ const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
 
 const BENTYN_WIDGET_CONFIG: IWidgetState = {
   apiUrl: 'https://api-staging.userfeeds.io',
-  recipientAddress: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
-  whitelist: '0xC3D5a8A7ef7C1720F24C0A7874A96Cc7419D85F6',
+  recipientAddress: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
+  whitelist: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
   asset: 'ethereum:0x108c05cac356d93b351375434101cfd3e14f7e44',
   algorithm: 'links',
   size: 'leaderboard' as EWidgetSize,
