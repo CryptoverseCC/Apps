@@ -34,6 +34,7 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
   description: '',
   impression: '',
   location: window.location.href,
+  minimalLinkFee: '1',
   ...widgetSettings,
 };
 

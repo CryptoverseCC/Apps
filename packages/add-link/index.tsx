@@ -87,6 +87,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
                     onChange={this._onFormEdit}
                     onSuccess={this._onSuccess}
                     onError={this._onError}
+                    minimalValue={widgetSettings.minimalLinkFee}
                   />
                 </Switch.Case>
                 <Switch.Case condition="congratulations">

@@ -7,8 +7,6 @@ import core from '@userfeeds/core/src';
 import { resolveOnTransationHash } from '@userfeeds/core/src/utils/index';
 import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { IBaseLink } from '@linkexchange/types/link';
-import Loader from '@linkexchange/components/src/Loader';
-import Tooltip from '@linkexchange/components/src/Tooltip';
 import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
@@ -27,6 +25,7 @@ interface IAddLinkFormProps {
   asset: string;
   tokenDetails: any;
   recipientAddress: string;
+  minimalValue?: string;
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: IBaseLink) => void;
@@ -49,40 +48,18 @@ interface IAddLinkFormState {
 const httpRegExp = /^https?:\/\//;
 const urlRegExp = /^https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
-const rules = {
-  title: [R.required, R.maxLength(35)],
-  summary: [R.required, R.maxLength(70)],
-  target: [
-    R.required,
-    R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://'),
-    R.value((v: string) => urlRegExp.test(v), 'Has to be valid url'),
-  ],
-  value: [
-    R.required,
-    R.number,
-    R.value((v: number) => v >= 0, 'Cannot be negative'),
-    R.value((v: string) => {
-      const dotIndex = v.indexOf('.');
-      if (dotIndex !== -1) {
-        return v.length - 1 - dotIndex <= 18;
-      }
-      return true;
-    }, 'Invalid value'),
-  ],
-};
-
 export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFormState> {
   state: IAddLinkFormState = {
     title: '',
     summary: '',
     target: 'http://',
-    value: '',
+    value: this.props.minimalValue || '',
     unlimitedApproval: false,
     errors: {},
   };
 
   render() {
-    const { asset, tokenDetails } = this.props;
+    const { tokenDetails } = this.props;
     const { title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
@@ -129,6 +106,29 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
     );
   }
 
+  _rules = () => ({
+    title: [R.required, R.maxLength(35)],
+    summary: [R.required, R.maxLength(70)],
+    target: [
+      R.required,
+      R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://'),
+      R.value((v: string) => urlRegExp.test(v), 'Has to be valid url'),
+    ],
+    value: [
+      R.required,
+      R.number,
+      R.value((v: number) => v >= 0, 'Cannot be negative'),
+      this._minimalValueRule(),
+      R.value((v: string) => {
+        const dotIndex = v.indexOf('.');
+        if (dotIndex !== -1) {
+          return v.length - 1 - dotIndex <= 18;
+        }
+        return true;
+      }, 'Invalid value'),
+    ],
+  })
+
   _onInput = (e) => {
     const { value, name } = e.target;
     this.setState(
@@ -136,7 +136,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         [name]: value,
         errors: {
           ...this.state.errors,
-          [name]: validate(rules[name], value),
+          [name]: validate(this._rules()[name], value),
         },
       },
       () => {
@@ -151,9 +151,15 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
     this.setState({ unlimitedApproval: e.target.checked });
   }
 
+  _minimalValueRule = () =>
+    R.value(
+      (v: string) => parseInt(v) >= (this.props.minimalValue || 0),
+      `Has to be greater than minimal value.`,
+    );
+
   _validateAll = () => {
     const errors = ['title', 'summary', 'target', 'value'].reduce((acc, name) => {
-      const validations = validate(rules[name], this.state[name]);
+      const validations = validate(this._rules()[name], this.state[name]);
       return !validations ? acc : { ...acc, [name]: validations };
     }, {});
     this.setState({ errors });

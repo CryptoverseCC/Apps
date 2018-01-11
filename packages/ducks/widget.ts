@@ -32,6 +32,7 @@ export interface IWidgetState {
   whitelist?: string;
   slots: number;
   timeslot: number;
+  minimalLinkFee?: string;
   contactMethod?: string;
   title?: string;
   description?: string;
