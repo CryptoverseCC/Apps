@@ -40,7 +40,7 @@ export default class LinkProvider extends PureComponent<ILinkProviderProps> {
     this.props.onLink(links[index]);
 
     this._timeout = window.setTimeout(() => {
-      const nextIndex = index + 1 > this._timeouts.length ? 0 : index + 1;
+      const nextIndex = index + 1 >= this._timeouts.length ? 0 : index + 1;
       this._run(nextIndex, links);
     }, this._timeouts[index]);
   }

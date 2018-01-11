@@ -18,7 +18,11 @@ interface IAppState {
   currentLink?: ILink;
 }
 
+const timeslot = 20 * 1000;
+
 export default class App extends Component<IAppProps, IAppState> {
+
+  lastFetchTime: number = 0;
   state: IAppState = {
     fetched: false,
     links: [],
@@ -41,15 +45,16 @@ export default class App extends Component<IAppProps, IAppState> {
         <LinkProvider
           links={links}
           onLink={this._onLink}
-          timeslot={20 * 1000}
+          timeslot={timeslot}
         />
       </div>
     );
   }
 
   _fetchLinks = async () => {
+    const start = new Date();
     const {
-      apiUrl = 'https://api.userfeeds.io',
+      apiUrl = 'https://api-staging.userfeeds.io',
       recipientAddress,
       asset,
       algorithm,
@@ -57,17 +62,25 @@ export default class App extends Component<IAppProps, IAppState> {
     } = this.props.widgetSettings;
     const rankingApiUrl = `${apiUrl}/ranking/${asset}:${recipientAddress}/${algorithm}/`;
     const whitelistQueryParam = whitelist ? `?whitelist=${whitelist}` : '';
+    let links: IRemoteLink[] = [];
     try {
-      const { items: links = [] } = await fetch(`${rankingApiUrl}${whitelistQueryParam}`)
+      const { items = [] } = await fetch(`${rankingApiUrl}${whitelistQueryParam}`)
         .then(throwErrorOnNotOkResponse)
         .then<{ items: IRemoteLink[] }>((res) => res.json());
+      links = items;
+    } catch (e) {
+      console.info('Something went wrong 😞');
+    }
+
+    const duration = (new Date()).getTime() - start.getTime();
+    setTimeout(() => {
       this.setState({
         fetched: true,
         links: calculateProbabilities(links),
       });
-    } catch (e) {
-      console.info('Something went wrong 😞');
-    }
+    }, 2 * this.lastFetchTime - duration);
+    setTimeout(this._fetchLinks, timeslot - 2 * duration);
+    this.lastFetchTime = duration;
   }
 
   _onLink = (currentLink: ILink) => {

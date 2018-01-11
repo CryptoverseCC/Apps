@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 
 import RootToast from '@linkexchange/toast/RootToast';
+import Intercom from '@linkexchange/components/src/Intercom';
 
 import Home from './pages/Home';
 import Details from './pages/Details';
@@ -21,6 +22,7 @@ const App = () => (
       <Route path="/status" component={Status} />
       <Route path="/whitelist" component={Whitelist} />
       <RootToast />
+      <Intercom settings={{ app_id: 'xdam3he4' }} />
     </div>
   </Router>
 );

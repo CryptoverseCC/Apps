@@ -7,8 +7,6 @@ import classnames from 'classnames';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
-import Intercom from '@linkexchange/components/src/Intercom';
-
 import { IWidgetState } from '@linkexchange/ducks/widget';
 
 import Header from './containers/Header';
@@ -83,9 +81,6 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
       <div className={classnames(style.self, className)}>
         {header}
         <div className={style.details}>{lists}</div>
-        <Intercom
-          settings={{ app_id: 'xdam3he4', ...this.props.widgetSettings }}
-        />
         {restChildren}
       </div>
     );

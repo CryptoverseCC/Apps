@@ -14,7 +14,6 @@ import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
 import { IRemoteLink } from '@linkexchange/types/link';
 import Pill from '@linkexchange/components/src/Pill';
-import Intercom from '@linkexchange/components/src/Intercom';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 
 import { Field, Title, Description, RadioGroup } from '@linkexchange/components/src/Form/Field';
@@ -97,7 +96,6 @@ class Whitelist extends Component<TProps, IState> {
     const { asset } = this.state;
     return (
       <div className={style.self}>
-        <Intercom settings={{ app_id: 'xdam3he4' }} />
         <Paper className={style.container}>
           <div className={style.head}>
             <h2 className={style.header}>Input the data for your whitelist</h2>

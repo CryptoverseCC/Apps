@@ -17,7 +17,7 @@ import calculateProbabilities from '@linkexchange/utils/links';
 
 import Menu from './components/Menu';
 import RandomLinkProvider from './containers/RandomLinkProvider';
-import { Provider, WidgetDatails, AddLink } from './containers/Lazy';
+import { Provider, WidgetDatails, AddLink, Intercom } from './containers/Lazy';
 
 import * as style from './banner.scss';
 
@@ -111,6 +111,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
                 />
               </Switch.Case>
             </Switch>
+            <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
           </Provider>
         </Modal>
       </div>

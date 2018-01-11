@@ -13,6 +13,11 @@ export const Provider = Loadable({
   loading: Loading,
 });
 
+export const Intercom = Loadable({
+  loader: () => import('@linkexchange/components/src/Intercom'),
+  loading: Loading,
+});
+
 export const WidgetDatails = Loadable({
   loader: () => import('@linkexchange/details'),
   loading: Loading,
