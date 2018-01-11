@@ -51,8 +51,7 @@ describe('links actions', () => {
     const whitelist = 'my-whitelist';
 
     nock('https://api.userfeeds.io')
-      .get(/ranking.*/)
-      .query({ whitelist })
+      .get(/ranking.*whitelist/)
       .reply(200, { items: []})
       .get(/ranking.*/)
       .reply(200, mockedData);
