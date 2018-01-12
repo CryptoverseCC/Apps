@@ -153,9 +153,9 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
 
   _minimalValueRule = () =>
     R.value(
-      (v: string) => parseInt(v) >= (this.props.minimalValue || 0),
+      (v: string) => parseInt(v, 10) >= (this.props.minimalValue || 0),
       `Has to be greater than minimal value.`,
-    );
+  )
 
   _validateAll = () => {
     const errors = ['title', 'summary', 'target', 'value'].reduce((acc, name) => {
