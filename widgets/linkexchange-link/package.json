@@ -5,7 +5,8 @@
   "main": "build/bundle.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js"
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
+    "prepublishOnly": "npm run build"
   },
   "author": "Userfeeds",
   "license": "ISC",
