@@ -5,12 +5,9 @@ import { Location } from 'history';
 import wait from '@linkexchange/utils/wait';
 import { getInfura, TNetwork } from '@linkexchange/utils/web3';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
-import Svg from '@linkexchange/components/src/Svg';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
-import Button from '@linkexchange/components/src/Button';
-import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 import A from '@linkexchange/components/src/A';
 
 import Steps from './components/Steps';
@@ -91,7 +88,7 @@ class Status extends Component<IStatusProps, IStatusState> {
       return null;
     }
 
-    const { mobileOrTablet, linkId, asset, recipientAddress, link, location, transationBlockNumber } = this.state;
+    const { link, location, transationBlockNumber } = this.state;
 
     return (
       <div className={style.self}>
@@ -127,10 +124,10 @@ class Status extends Component<IStatusProps, IStatusState> {
   // ToDo fix - when network is unavailable
   _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
     try {
-      const context = recipientAddress.toLowerCase();
-      const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${context}/`;
+      const rankingApiUrl =
+        `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
       const allLinksRequest = fetch(rankingApiUrl, { cache: 'no-store' }).then((res) => res.json());
-      const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
+      const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
       const whitelistedLinksRequest = fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`, { cache: 'no-store' })
         .then((res) => res.json());
 

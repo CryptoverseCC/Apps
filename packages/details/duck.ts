@@ -28,9 +28,9 @@ export const fetchLinks = () => async (dispatch, getState: () => IState) => {
   } = getState();
 
   dispatch(fetchLinksActions.started(undefined));
-  const context = recipientAddress.toLowerCase();
-  const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${context}/`;
-  const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
+  const rankingApiUrl =
+    `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
+  const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }] =
       await Promise.all([

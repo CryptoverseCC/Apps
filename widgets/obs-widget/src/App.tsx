@@ -60,9 +60,9 @@ export default class App extends Component<IAppProps, IAppState> {
       algorithm,
       whitelist,
     } = this.props.widgetSettings;
-    const context = recipientAddress.toLowerCase();
-    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${context}/`;
-    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
+    const rankingApiUrl =
+      `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
+    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
     let links: IRemoteLink[] = [];
     try {
       const { items = [] } = await fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`)

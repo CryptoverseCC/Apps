@@ -3,12 +3,9 @@ import classnames from 'classnames/bind';
 
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 
-import Icon from '@linkexchange/components/src/Icon';
 import Link from '@linkexchange/components/src/Link';
 import Label from '@linkexchange/components/src/Label';
 import Modal from '@linkexchange/components/src/Modal';
-import { fetchLinks } from '@linkexchange/details/duck';
-import Tooltip from '@linkexchange/components/src/Tooltip';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import Switch from '@linkexchange/components/src/utils/Switch';
@@ -109,9 +106,9 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   _fetchLinks = async () => {
     const { apiUrl = 'https://api.userfeeds.io', recipientAddress, asset, algorithm, whitelist }
       = this.props.widgetSettings;
-    const context = recipientAddress.toLowerCase();
-    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${context}/`;
-    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
+    const rankingApiUrl =
+      `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
+    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
     try {
       const { items: links = [] } = await fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`)
           .then(throwErrorOnNotOkResponse)
