@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Icon from '@linkexchange/components/src/Icon';
 
 import * as style from './menu.scss';
