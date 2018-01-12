@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "@linkexchange/utils",
-  "version": "0.0.137",
+  "version": "0.0.138",
   "description": "",
   "main": "index.ts",
   "scripts": {},
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/types": "^0.0.137",
+    "@linkexchange/types": "^0.0.138",
     "prop-types": "15.6.0",
     "qs": "^6.5.0",
     "web3": "1.0.0-beta.26"
