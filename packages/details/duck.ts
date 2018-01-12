@@ -28,8 +28,8 @@ export const fetchLinks = () => async (dispatch, getState: () => IState) => {
   } = getState();
 
   dispatch(fetchLinksActions.started(undefined));
-
-  const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${recipientAddress}/`;
+  const context = recipientAddress.toLowerCase();
+  const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${context}/`;
   const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }] =

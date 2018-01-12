@@ -109,7 +109,8 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   _fetchLinks = async () => {
     const { apiUrl = 'https://api.userfeeds.io', recipientAddress, asset, algorithm, whitelist }
       = this.props.widgetSettings;
-    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${recipientAddress}/`;
+    const context = recipientAddress.toLowerCase();
+    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${context}/`;
     const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
     try {
       const { items: links = [] } = await fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`)

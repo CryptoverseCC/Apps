@@ -127,7 +127,8 @@ class Status extends Component<IStatusProps, IStatusState> {
   // ToDo fix - when network is unavailable
   _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
     try {
-      const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${recipientAddress}/`;
+      const context = recipientAddress.toLowerCase();
+      const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset};context=${context}/`;
       const allLinksRequest = fetch(rankingApiUrl, { cache: 'no-store' }).then((res) => res.json());
       const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist}/` : '';
       const whitelistedLinksRequest = fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`, { cache: 'no-store' })
