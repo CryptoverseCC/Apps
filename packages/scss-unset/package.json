@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@linkexchange/scss-unset",
   "version": "0.0.137",
   "description": "",

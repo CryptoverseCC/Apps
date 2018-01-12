@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@linkexchange/scrollable-sections-with-menu",
   "version": "0.0.137",
   "description": "",
