@@ -28,6 +28,7 @@ const Link = ({ className, link, lines = 2, style: externalStyle }: ILinkProps) 
       <a
         className={style.link}
         target="_blank"
+        rel="nofollow"
         href={link.target}
         onClick={stopPropagation}
       >
