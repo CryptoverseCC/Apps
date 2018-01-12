@@ -1,16 +1,15 @@
 {
   "private": true,
   "name": "@linkexchange/blocks-till-conclusion",
-  "version": "0.0.1",
+  "version": "0.0.137",
   "description": "",
   "main": "index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
-    "@userfeeds/core": "^0.0.40",
-    "@linkexchange/utils": "^0.0.12",
-    "@linkexchange/components": "^0.0.28",
-    "@linkexchange/web3-state-provider": "^0.0.5"
+    "@linkexchange/components": "^0.0.137",
+    "@linkexchange/utils": "^0.0.137",
+    "@linkexchange/web3-state-provider": "^0.0.137",
+    "@userfeeds/core": "^0.0.137"
   },
   "keywords": [],
   "author": "",

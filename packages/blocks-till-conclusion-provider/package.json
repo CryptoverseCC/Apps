@@ -1,17 +1,16 @@
 {
   "private": true,
   "name": "@linkexchange/blocks-till-conclusion-provider",
-  "version": "0.0.1",
+  "version": "0.0.137",
   "description": "",
   "main": "index.tsx",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@userfeeds/core": "^0.0.40",
-    "@linkexchange/utils": "^0.0.12",
-    "@linkexchange/web3-state-provider": "^0.0.5"
+    "@linkexchange/utils": "^0.0.137",
+    "@linkexchange/web3-state-provider": "^0.0.137",
+    "@userfeeds/core": "^0.0.137"
   }
 }
