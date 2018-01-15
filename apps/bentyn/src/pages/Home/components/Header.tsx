@@ -23,10 +23,7 @@ interface IProps {
 
 const BASE_URL = process.env.NODE_ENV === 'production' ? 'http://linkexchange.io/apps/video' : window.location.origin;
 const openDashboard = (props: IProps) => {
-  window.open(
-    `${BASE_URL}/#/dashboard?${qs.stringify({ ...props.blocks, ...props.widgetSettings })}`,
-    '_blank',
-  );
+  window.open(`${BASE_URL}/#/dashboard?${qs.stringify({ ...props.blocks, ...props.widgetSettings })}`, '_blank');
 };
 
 const Header = (props: IProps) => (
@@ -40,14 +37,23 @@ const Header = (props: IProps) => (
         <p className={style.name}>Szczepan Bentyn</p>
         <p className={style.description}>Talking mostly about cryptocurrencies.</p>
       </div>
-      <Button color="secondary" className={classnames(style.contactMe, style.contactMeMobile)}>CONTACT ME</Button>
+      <a
+        href="https://web.telegram.org/#/im?p=g176260758"
+        target="_blank"
+        rel="nofollow"
+        className={style.contactMeLink}
+      >
+        <Button color="secondary" className={classnames(style.contactMe, style.contactMeMobile)}>
+          CONTACT ME
+        </Button>
+      </a>
     </div>
     <div className={style.media}>
       <div className={style.item}>
         <p className={style.number}>8.7k</p>
         <a href="https://www.youtube.com/user/szanow">
           <div className={style.logo}>
-            <img src={yt}/>
+            <img src={yt} />
             Youtube
           </div>
         </a>
@@ -56,7 +62,7 @@ const Header = (props: IProps) => (
         <p className={style.number}>1.8k</p>
         <a href="https://twitter.com/Bentyn">
           <div className={style.logo}>
-            <img src={twitter}/>
+            <img src={twitter} />
             Twitter
           </div>
         </a>
@@ -76,7 +82,11 @@ const Header = (props: IProps) => (
         Go to dashboard
       </Button>
     </IfOwner>
-    <Button color="secondary" className={style.contactMe}>CONTACT ME</Button>
+    <a href="https://web.telegram.org/#/im?p=g176260758" target="_blank" rel="nofollow" className={style.contactMeLink}>
+      <Button color="secondary" className={style.contactMe}>
+        CONTACT ME
+      </Button>
+    </a>
   </div>
 );
 
