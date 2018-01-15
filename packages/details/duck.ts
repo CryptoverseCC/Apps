@@ -28,8 +28,8 @@ export const fetchLinks = () => async (dispatch, getState: () => IState) => {
   } = getState();
 
   dispatch(fetchLinksActions.started(undefined));
-  const rankingApiUrl =
-    `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
+  // tslint:disable-next-line max-line-length
+  const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/filter_group/`;
   const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }] =
