@@ -62,10 +62,13 @@ export default class App extends Component<IAppProps, IAppState> {
     } = this.props.widgetSettings;
     const rankingApiUrl =
       `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
+    const timedecayFilterAlgorithm = (algorithm === 'links') ? 'filter_timedecay/' : '';
     const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
+    const groupFilterAlgorithm = 'filter_group/';
     let links: IRemoteLink[] = [];
     try {
-      const { items = [] } = await fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`)
+      // tslint:disable-next-line max-line-length
+      const { items = [] } = await fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`)
         .then(throwErrorOnNotOkResponse)
         .then<{ items: IRemoteLink[] }>((res) => res.json());
       links = items;

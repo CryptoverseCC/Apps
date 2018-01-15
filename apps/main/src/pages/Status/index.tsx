@@ -127,8 +127,11 @@ class Status extends Component<IStatusProps, IStatusState> {
       const rankingApiUrl =
         `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
       const allLinksRequest = fetch(rankingApiUrl, { cache: 'no-store' }).then((res) => res.json());
+      const timedecayFilterAlgorithm = (algorithm === 'links') ? 'filter_timedecay/' : '';
       const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
-      const whitelistedLinksRequest = fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`, { cache: 'no-store' })
+      const groupFilterAlgorithm = 'filter_group/';
+      // tslint:disable-next-line max-line-length
+      const whitelistedLinksRequest = fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`, { cache: 'no-store' })
         .then((res) => res.json());
 
       const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest, whitelistedLinksRequest]);
