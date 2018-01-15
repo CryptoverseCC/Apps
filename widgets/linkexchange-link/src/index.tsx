@@ -38,7 +38,7 @@ class LinkexchangeLink extends HTMLElement {
   }
 
   _argsToState() {
-    const apiUrl = this.getAttribute('api-url') || 'https://api.userfeeds.io';
+    const apiUrl = this.getAttribute('api-url') || 'https://api-staging.userfeeds.io';
     const size = this.getAttribute('size') === 'rectangle'
       ? EWidgetSize.rectangle
       : EWidgetSize.leaderboard;
