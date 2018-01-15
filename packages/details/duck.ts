@@ -29,15 +29,17 @@ export const fetchLinks = () => async (dispatch, getState: () => IState) => {
 
   dispatch(fetchLinksActions.started(undefined));
   // tslint:disable-next-line max-line-length
-  const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/filter_group/`;
+  const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
+  const timedecayFilterAlgorithm = (algorithm === 'links') ? 'filter_timedecay/' : '';
   const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
+  const groupFilterAlgorithm = 'filter_group/';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }] =
       await Promise.all([
-        fetch(`${rankingApiUrl}${whitelistFilterAlgorithm}`)
+        fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`)
           .then(throwErrorOnNotOkResponse)
           .then<{ items: IRemoteLink[]; }>((res) => res.json()),
-        fetch(rankingApiUrl)
+        fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${groupFilterAlgorithm}`)
           .then(throwErrorOnNotOkResponse)
           .then<{ items: IRemoteLink[]; }>((res) => res.json()),
       ]);
