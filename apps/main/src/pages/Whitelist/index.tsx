@@ -269,7 +269,7 @@ class Whitelist extends Component<TProps, IState> {
     const context = recipientAddress.toLowerCase();
     const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${assetString};context=${context}/`;
     const timedecayFilterAlgorithm = (algorithm === 'links') ? 'filter_timedecay/' : '';
-    const groupFilterAlgorithm = 'filter_group/';
+    const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';
     return fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`)
       .then<{ items: IRemoteLink[] }>((res) => res.json());
   }

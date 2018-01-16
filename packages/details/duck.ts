@@ -32,7 +32,7 @@ export const fetchLinks = () => async (dispatch, getState: () => IState) => {
   const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
   const timedecayFilterAlgorithm = (algorithm === 'links') ? 'filter_timedecay/' : '';
   const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
-  const groupFilterAlgorithm = 'filter_group/';
+  const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';
   try {
     const [{ items: whitelistedLinks = [] }, { items: allLinks = [] }] =
       await Promise.all([
