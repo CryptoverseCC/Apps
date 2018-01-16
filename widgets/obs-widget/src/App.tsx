@@ -18,8 +18,6 @@ interface IAppState {
   currentLink?: ILink;
 }
 
-const timeslot = 20 * 1000;
-
 export default class App extends Component<IAppProps, IAppState> {
 
   lastFetchTime: number = 0;
@@ -30,6 +28,11 @@ export default class App extends Component<IAppProps, IAppState> {
 
   componentDidMount() {
     this._fetchLinks();
+  }
+
+  timeslot = () => {
+    const { timeslot = 20 } = this.props.widgetSettings;
+    return timeslot * 1000;
   }
 
   render() {
@@ -45,7 +48,7 @@ export default class App extends Component<IAppProps, IAppState> {
         <LinkProvider
           links={links}
           onLink={this._onLink}
-          timeslot={timeslot}
+          timeslot={this.timeslot()}
         />
       </div>
     );
@@ -82,7 +85,7 @@ export default class App extends Component<IAppProps, IAppState> {
         links: calculateProbabilities(links),
       });
     }, 2 * this.lastFetchTime - duration);
-    setTimeout(this._fetchLinks, timeslot - 2 * duration);
+    setTimeout(this._fetchLinks, (this.timeslot() * 1000) - 2 * duration);
     this.lastFetchTime = duration;
   }
 
