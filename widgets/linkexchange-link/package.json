@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.142",
+  "version": "0.0.143",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "dependencies": {
     "@linkexchange/add-link": "^0.0.138",
     "@linkexchange/components": "^0.0.138",
-    "@linkexchange/details": "^0.0.138",
+    "@linkexchange/details": "^0.0.139",
     "@linkexchange/ducks": "^0.0.138",
     "@linkexchange/modal": "^0.0.138",
     "@linkexchange/scss-unset": "^0.0.138",

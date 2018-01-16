@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/video",
-  "version": "0.0.138",
+  "version": "0.0.139",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "@linkexchange/boost-link": "^0.0.138",
     "@linkexchange/components": "^0.0.138",
     "@linkexchange/copy-from-mm": "^0.0.138",
-    "@linkexchange/details": "^0.0.138",
+    "@linkexchange/details": "^0.0.139",
     "@linkexchange/ducks": "^0.0.138",
     "@linkexchange/scss-unset": "^0.0.138",
     "@linkexchange/toast": "^0.0.138",
