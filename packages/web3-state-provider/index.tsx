@@ -99,7 +99,7 @@ const load = async (web3, [asset = ''], update) => {
       update({ enabled: false, reason: 'Enable Metamask to unlock all the features' });
     } else if ((await web3.eth.getAccounts()).length === 0) {
       update({ enabled: false, reason: 'Unlock your wallet to unlock all the features' });
-    } else if (await core.utils.getCurrentNetworkName(web3) !== network) {
+    } else if (!!network && await core.utils.getCurrentNetworkName(web3) !== network) {
       update({ enabled: false, reason: `Switch to ${network} network to unlock all the features`});
     } else {
       update({ enabled: true, currentBlockNumber: await core.utils.getBlockNumber(web3) });
