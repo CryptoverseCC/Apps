@@ -17,7 +17,7 @@ export interface IWeb3State {
 
 interface IProps {
   web3: Web3;
-  asset: string;
+  asset?: string;
   render(web3State: IWeb3State): any;
 }
 
@@ -34,11 +34,8 @@ export default class Web3StateProvider extends Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.removeListener = taskRunner.run(
-      this.props.web3,
-      [this.props.asset],
-      (web3State) => {
-        this.setState({ web3State });
+    this.removeListener = taskRunner.run(this.props.web3, [this.props.asset], (web3State) => {
+      this.setState({ web3State });
     });
   }
 
@@ -58,7 +55,7 @@ interface IComponentProps {
 }
 
 export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
-  return class extends Component<Omit<T, keyof IComponentProps>& { web3: Web3 }, IState> {
+  return class extends Component<Omit<T, keyof IComponentProps> & { web3: Web3 }, IState> {
     static displayName = `withWeb3State(${Cmp.displayName || Cmp.name})`;
     removeListener: () => void;
     state: IState = {
@@ -68,11 +65,8 @@ export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentTyp
     };
 
     componentDidMount() {
-      this.removeListener = taskRunner.run(
-        this.props.web3,
-        [this.props.asset],
-        (web3State) => {
-          this.setState({ web3State });
+      this.removeListener = taskRunner.run(this.props.web3, [this.props.asset], (web3State) => {
+        this.setState({ web3State });
       });
     }
 
@@ -86,21 +80,18 @@ export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentTyp
   };
 };
 
-export const withInjectedWeb3AndWeb3State = flowRight(
-  withInjectedWeb3,
-  withWeb3State,
-);
+export const withInjectedWeb3AndWeb3State = flowRight(withInjectedWeb3, withWeb3State);
 
 const load = async (web3, [asset = ''], update) => {
   const [network] = asset.split(':');
 
   while (true) {
-    if (!(web3.currentProvider !== null && await web3.eth.net.isListening())) {
+    if (!(web3.currentProvider !== null && (await web3.eth.net.isListening()))) {
       update({ enabled: false, reason: 'Enable Metamask to unlock all the features' });
     } else if ((await web3.eth.getAccounts()).length === 0) {
       update({ enabled: false, reason: 'Unlock your wallet to unlock all the features' });
-    } else if (await core.utils.getCurrentNetworkName(web3) !== network) {
-      update({ enabled: false, reason: `Switch to ${network} network to unlock all the features`});
+    } else if (!!network && (await core.utils.getCurrentNetworkName(web3)) !== network) {
+      update({ enabled: false, reason: `Switch to ${network} network to unlock all the features` });
     } else {
       update({ enabled: true, currentBlockNumber: await core.utils.getBlockNumber(web3) });
     }
