@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "linkexchangebentyn-test",
+    "prod": "linkexchangebentyn-prod"
+  }
+}

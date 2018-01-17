@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "linkexchangeobs-test",
+    "prod": "linkexchangeobs-prod"
+  }
+}

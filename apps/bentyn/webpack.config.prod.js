@@ -5,6 +5,6 @@ const baseProdConfig = require('../../config/webpack.base.prod');
 
 module.exports = merge(devConfig, baseProdConfig, {
   output: {
-    publicPath: '/apps/bentyn',
+    // publicPath: '/apps/bentyn',
   },
 });
