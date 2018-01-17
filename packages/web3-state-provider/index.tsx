@@ -17,7 +17,7 @@ export interface IWeb3State {
 
 interface IProps {
   web3: Web3;
-  asset: string;
+  asset?: string;
   render(web3State: IWeb3State): any;
 }
 
