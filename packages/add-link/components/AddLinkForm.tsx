@@ -55,7 +55,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
   };
 
   render() {
-    const { tokenDetails } = this.props;
+    const { tokenDetails, minimalValue } = this.props;
     const { title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
@@ -84,18 +84,8 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
                 validate={validateField([
                   R.required,
                   R.number,
-                  R.value((v: number) => v >= 0, 'Cannot be negative'),
-                  R.value(
-                    (v: string) => parseInt(v, 10) >= (this.props.minimalValue || 0),
-                    `Has to be greater than minimal value.`,
-                  ),
-                  R.value((v: string) => {
-                    const dotIndex = v.indexOf('.');
-                    if (dotIndex !== -1) {
-                      return v.length - 1 - dotIndex <= 18;
-                    }
-                    return true;
-                  }, 'Invalid value'),
+                  R.currencyDecimals(4),
+                  R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
                 ])}
               />
               <TransactionProvider

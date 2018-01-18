@@ -8,6 +8,16 @@ export const R = {
   link: (name, value) =>
     R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://')(name, value) ||
     R.value((v: string) => urlRegExp.test(v), 'Has to be valid url')(name, value),
+  greaterThan: (minValue: number) =>
+    R.value((v: string) => parseInt(v, 10) >= minValue, `Has to be greater than minimal value: ${minValue}`),
+  currencyDecimals: (decimals: number) =>
+    R.value((v: string) => {
+      const dotIndex = v.indexOf('.');
+      if (dotIndex !== -1) {
+        return v.length - 1 - dotIndex <= decimals;
+      }
+      return true;
+    }, `The currency decimals are incorrect, should be at most ${decimals}`),
 };
 
 type TValidationFunc = (name: string, value: any) => string | undefined;
