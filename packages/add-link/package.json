@@ -17,7 +17,9 @@
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.144",
     "@linkexchange/web3-state-provider": "^0.0.147",
-    "@userfeeds/core": "^0.0.147"
+    "@userfeeds/core": "^0.0.147",
+    "final-form": "^4.0.0",
+    "react-final-form": "^3.0.2"
   },
   "peerDependencies": {
     "@linkexchange/ducks": "^0.0.143"

@@ -10,9 +10,10 @@ import { IBaseLink } from '@linkexchange/types/link';
 import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
-import { R, validate } from '@linkexchange/utils/validation';
+import { R } from '@linkexchange/utils/validation';
 import TransactionProvider from '@linkexchange/transaction-provider';
-import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
+import { Title, Error, TextField, validateField } from '@linkexchange/components/src/Form/Field';
+import { Form, Field } from 'react-final-form';
 
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
@@ -43,9 +44,6 @@ interface IAddLinkFormState {
   };
 }
 
-const httpRegExp = /^https?:\/\//;
-const urlRegExp = /^https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-
 export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFormState> {
   state: IAddLinkFormState = {
     title: '',
@@ -62,110 +60,60 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
 
     return (
       <div className={style.self}>
-        <Field>
-          <Title>Headline</Title>
-          <Input name="title" type="text" value={title} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.title}</Error>
-        </Field>
-        <Field>
-          <Title>Description</Title>
-          <Input name="summary" type="text" value={summary} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.summary}</Error>
-        </Field>
-        <Field>
-          <Title>Link</Title>
-          <Input name="target" type="text" value={target} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.target}</Error>
-        </Field>
-        <Field>
-          <Title>Initial Fee</Title>
-          <Input name="value" type="text" value={value} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.value}</Error>
-        </Field>
-        <Field>
-          <p>
-            Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-          </p>
-          <Checkbox
-            label="Don't ask me again for this token on any website or wherever"
-            checked={unlimitedApproval}
-            onChange={this._onUnlimitedApprovalChange}
-          />
-        </Field>
-        <TransactionProvider
-          startTransaction={this._onSubmit}
-          renderReady={() => (
-            <Button style={{ width: '100%' }} color="primary">
-              Create
-            </Button>
+        <Form
+          onSubmit={this._onSubmit}
+          render={(fieldProps) => (
+            <>
+              <Field
+                title="Headline"
+                component={TextField}
+                name="title"
+                validate={validateField([R.required, R.maxLength(35)])}
+              />
+              <Field
+                title="Description"
+                component={TextField}
+                name="summary"
+                validate={validateField([R.required, R.maxLength(70)])}
+              />
+              <Field title="Link" component={TextField} name="target" validate={validateField([R.required, R.link])} />
+              <Field
+                title="Initial Fee"
+                component={TextField}
+                name="value"
+                validate={validateField([
+                  R.required,
+                  R.number,
+                  R.value((v: number) => v >= 0, 'Cannot be negative'),
+                  R.value(
+                    (v: string) => parseInt(v, 10) >= (this.props.minimalValue || 0),
+                    `Has to be greater than minimal value.`,
+                  ),
+                  R.value((v: string) => {
+                    const dotIndex = v.indexOf('.');
+                    if (dotIndex !== -1) {
+                      return v.length - 1 - dotIndex <= 18;
+                    }
+                    return true;
+                  }, 'Invalid value'),
+                ])}
+              />
+              <TransactionProvider
+                startTransaction={this._onSubmit}
+                renderReady={() => (
+                  <Button disabled={!fieldProps.valid} style={{ width: '100%' }} color="primary">
+                    Create
+                  </Button>
+                )}
+              />
+            </>
           )}
         />
       </div>
     );
   }
 
-  _rules = () => ({
-    title: [R.required, R.maxLength(35)],
-    summary: [R.required, R.maxLength(70)],
-    target: [
-      R.required,
-      R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://'),
-      R.value((v: string) => urlRegExp.test(v), 'Has to be valid url'),
-    ],
-    value: [
-      R.required,
-      R.number,
-      R.value((v: number) => v >= 0, 'Cannot be negative'),
-      this._minimalValueRule(),
-      R.value((v: string) => {
-        const dotIndex = v.indexOf('.');
-        if (dotIndex !== -1) {
-          return v.length - 1 - dotIndex <= 18;
-        }
-        return true;
-      }, 'Invalid value'),
-    ],
-  });
-
-  _onInput = (e) => {
-    const { value, name } = e.target;
-    this.setState(
-      {
-        [name]: value,
-        errors: {
-          ...this.state.errors,
-          [name]: validate(this._rules()[name], value),
-        },
-      },
-      () => {
-        if (this.props.onChange) {
-          this.props.onChange(this.state);
-        }
-      },
-    );
-  };
-
-  _onUnlimitedApprovalChange = (e) => {
-    this.setState({ unlimitedApproval: e.target.checked });
-  };
-
-  _minimalValueRule = () =>
-    R.value((v: string) => parseInt(v, 10) >= (this.props.minimalValue || 0), `Has to be greater than minimal value.`);
-
-  _validateAll = () => {
-    const errors = ['title', 'summary', 'target', 'value'].reduce((acc, name) => {
-      const validations = validate(this._rules()[name], this.state[name]);
-      return !validations ? acc : { ...acc, [name]: validations };
-    }, {});
-    this.setState({ errors });
-    return Object.keys(errors).length === 0;
-  };
-
   _onSubmit = () => {
-    if (!this._validateAll()) {
-      return;
-    }
-
     const { recipientAddress, web3, tokenDetails } = this.props;
     const { value, unlimitedApproval } = this.state;
 
