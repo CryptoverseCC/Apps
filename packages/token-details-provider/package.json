@@ -14,6 +14,6 @@
   },
   "peerDependencies": {
     "@linkexchange/ducks": "^0.0.143",
-    "@linkexchange/web3-state-provider": "^0.0.143"
+    "@linkexchange/web3-state-provider": "^0.0.147"
   }
 }
