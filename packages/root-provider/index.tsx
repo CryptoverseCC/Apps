@@ -5,7 +5,7 @@ import { TValidationFunc } from '@linkexchange/utils/validation';
 const FormValidationsProvider: StatelessComponent<{
   formName: string;
   render: (getFormValidations: () => { [key: string]: TValidationFunc[] }) => any;
-}> = ({ formName, render }, { root }) => {
+}> = ({ formName, render }, { root = { validations: {} } }) => {
   return render(() => root.validations[formName] || {});
 };
 
