@@ -28,7 +28,7 @@ export const Field = ({ children, ...props }) => (
   <div {...props} className={styles.Field}>
     {React.Children.map(
       children,
-      (child) => (isType(child, 'Input') ? React.cloneElement(child, { className: styles.Input }) : child)
+      (child) => (isType(child, 'Input') ? React.cloneElement(child, { className: styles.Input }) : child),
     )}
   </div>
 );
@@ -47,7 +47,7 @@ export const RadioGroup = ({ children, radioWidth, onChange, value, name }) => (
         style: { width: radioWidth },
         onChange,
         checked: value === radio.props.value,
-      })
+      }),
     )}
   </div>
 );

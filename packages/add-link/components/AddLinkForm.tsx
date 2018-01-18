@@ -134,7 +134,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps> {
         });
     });
     return sendClaimPromise;
-  };
+  }
 
   _createClaim({ target, title, summary }) {
     const location = urlWithoutQueryIfLinkExchangeApp();
