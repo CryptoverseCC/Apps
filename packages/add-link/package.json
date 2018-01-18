@@ -18,6 +18,7 @@
     "@linkexchange/utils": "^0.0.144",
     "@linkexchange/web3-state-provider": "^0.0.147",
     "@userfeeds/core": "^0.0.147",
+    "@linkexchange/root-provider": "^0.0.138",
     "final-form": "^4.0.0",
     "react-final-form": "^3.0.2"
   },

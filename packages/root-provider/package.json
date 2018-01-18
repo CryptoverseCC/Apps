@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@linkexchange/root-provider",
+  "version": "0.0.138",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}

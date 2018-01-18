@@ -10,9 +10,10 @@ import { IBaseLink } from '@linkexchange/types/link';
 import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
-import { R } from '@linkexchange/utils/validation';
+import { R, TValidationFunc } from '@linkexchange/utils/validation';
 import TransactionProvider from '@linkexchange/transaction-provider';
 import { Title, Error, TextField, validateField } from '@linkexchange/components/src/Form/Field';
+import { FormValidationsProvider } from '@linkexchange/root-provider';
 import { Form, Field } from 'react-final-form';
 
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
@@ -30,86 +31,80 @@ interface IAddLinkFormProps {
   onChange?: (link: IBaseLink) => void;
 }
 
-interface IAddLinkFormState {
-  title: string;
-  summary: string;
-  target: string;
-  value: string;
-  unlimitedApproval: boolean;
-  errors: {
-    title?: string;
-    summary?: string;
-    target?: string;
-    value?: string;
-  };
-}
-
-export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFormState> {
-  state: IAddLinkFormState = {
-    title: '',
-    summary: '',
-    target: 'http://',
-    value: this.props.minimalValue || '',
-    unlimitedApproval: false,
-    errors: {},
-  };
-
+export default class AddLinkForm extends Component<IAddLinkFormProps> {
   render() {
     const { tokenDetails, minimalValue } = this.props;
-    const { title, summary, target, value, unlimitedApproval, errors } = this.state;
 
     return (
       <div className={style.self}>
-        <Form
-          onSubmit={this._onSubmit}
-          render={(fieldProps) => (
-            <>
-              <Field
-                title="Headline"
-                component={TextField}
-                name="title"
-                validate={validateField([R.required, R.maxLength(35)])}
-              />
-              <Field
-                title="Description"
-                component={TextField}
-                name="summary"
-                validate={validateField([R.required, R.maxLength(70)])}
-              />
-              <Field title="Link" component={TextField} name="target" validate={validateField([R.required, R.link])} />
-              <Field
-                title="Initial Fee"
-                component={TextField}
-                name="value"
-                validate={validateField([
-                  R.required,
-                  R.number,
-                  R.currencyDecimals(4),
-                  R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
-                ])}
-              />
-              <TransactionProvider
-                startTransaction={this._onSubmit}
-                renderReady={() => (
-                  <Button disabled={!fieldProps.valid} style={{ width: '100%' }} color="primary">
-                    Create
-                  </Button>
+        <FormValidationsProvider
+          formName="add-link"
+          render={(getFormValidations) => {
+            const formValidations = getFormValidations();
+            return (
+              <Form
+                initialValues={{
+                  target: 'http://',
+                  value: minimalValue || '',
+                  unlimitedApproval: false,
+                }}
+                onSubmit={() => undefined}
+                render={(formProps) => (
+                  <>
+                    <Field
+                      title="Headline"
+                      component={TextField}
+                      name="title"
+                      validate={validateField([R.required, R.maxLength(35), ...(formValidations.title || [])])}
+                    />
+                    <Field
+                      title="Description"
+                      component={TextField}
+                      name="summary"
+                      validate={validateField([R.required, R.maxLength(70), ...(formValidations.summary || [])])}
+                    />
+                    <Field
+                      title="Link"
+                      component={TextField}
+                      name="target"
+                      validate={validateField([R.required, R.link, ...(formValidations.target || [])])}
+                    />
+                    <Field
+                      title="Initial Fee"
+                      component={TextField}
+                      name="value"
+                      validate={validateField([
+                        R.required,
+                        R.number,
+                        R.currencyDecimals(4),
+                        R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
+                        ...(formValidations.value || []),
+                      ])}
+                    />
+                    <TransactionProvider
+                      startTransaction={() => this._onSubmit(formProps.values, formValidations.form || [])}
+                      renderReady={() => (
+                        <Button disabled={!formProps.valid} style={{ width: '100%' }} color="primary">
+                          Create
+                        </Button>
+                      )}
+                    />
+                  </>
                 )}
               />
-            </>
-          )}
+            );
+          }}
         />
       </div>
     );
   }
 
-  _onSubmit = () => {
+  _onSubmit = (values, formValidations) => {
     const { recipientAddress, web3, tokenDetails } = this.props;
-    const { value, unlimitedApproval } = this.state;
 
-    const claim = this._createClaim();
+    const claim = this._createClaim(values);
     const token = this._getTokenAddress();
-    const toPayWei = toWei(value!, tokenDetails.decimals);
+    const toPayWei = toWei(values.value, tokenDetails.decimals);
 
     let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
     if (token) {
@@ -117,16 +112,16 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         let promise: Promise<any> = Promise.resolve(null);
         if (new BN(allowance).lte(new BN(toPayWei))) {
           promise = core.ethereum.claims
-            .approveUserfeedsContractTokenTransfer(web3, token, unlimitedApproval ? MAX_VALUE_256 : toPayWei)
+            .approveUserfeedsContractTokenTransfer(web3, token, values.unlimitedApproval ? MAX_VALUE_256 : toPayWei)
             .then(({ promiEvent }) => resolveOnTransationHash(promiEvent));
         }
 
         return promise.then(() =>
-          core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, claim),
+          core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, values.value, claim),
         );
       });
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, values.value, claim);
     }
 
     sendClaimPromise.then(({ promiEvent }) => {
@@ -141,8 +136,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
     return sendClaimPromise;
   };
 
-  _createClaim() {
-    const { target, title, summary } = this.state;
+  _createClaim({ target, title, summary }) {
     const location = urlWithoutQueryIfLinkExchangeApp();
 
     return {

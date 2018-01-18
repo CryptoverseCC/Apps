@@ -12,6 +12,7 @@ import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
 import calculateProbabilities from '@linkexchange/utils/links';
+import RootProvider from '@linkexchange/root-provider';
 
 import Menu from './components/Menu';
 import RandomLinkProvider from './containers/RandomLinkProvider';
@@ -23,6 +24,7 @@ const cx = classnames.bind(style);
 
 interface IBannerProps {
   widgetSettings: IWidgetSettings;
+  root: HTMLElement;
 }
 
 interface IBannerState {
@@ -55,46 +57,45 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     }
 
     return (
-      <div className={cx(['self', widgetSettings.size])} onMouseLeave={this._onInfoLeave}>
-        <div className={cx('options', { open: optionsOpen })}>
-          <Menu onClick={this._openModal('details')} />
-        </div>
-        <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
-          <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
-            <FormattedMessage id="banner.sponsoredWith" defaultMessage="Sponsored With" />
-            <TokenLogo className={style.icon} asset={widgetSettings.asset} />
+      <RootProvider root={this.props.root}>
+        <div className={cx(['self', widgetSettings.size])} onMouseLeave={this._onInfoLeave}>
+          <div className={cx('options', { open: optionsOpen })}>
+            <Menu onClick={this._openModal('details')} />
           </div>
-          <Switch expresion={fetched && !!currentLink}>
-            <Switch.Case condition>
-              {currentLink && <Link link={currentLink} lines={widgetSettings.size === 'rectangle' ? 8 : 2} />}
-            </Switch.Case>
-            <Switch.Case condition={false}>
-              <Label>
-                <FormattedMessage id="banner.noLinks" defaultMessage="No links available" />
-              </Label>
-            </Switch.Case>
-          </Switch>
-        </div>
-        <RandomLinkProvider
-          ref={(ref: RandomLinkProvider) => (this.linkProvider = ref)}
-          links={links}
-          timeslot={widgetSettings.timeslot}
-          onLink={this._onLink}
-        />
-        <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
-          <Provider widgetSettings={widgetSettings}>
-            <Switch expresion={openedModal}>
-              <Switch.Case condition="details">
-                <WidgetDatails onAddLink={this._openModal('addLink')} />
+          <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
+            <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
+              Sponsored with <TokenLogo className={style.icon} asset={widgetSettings.asset} />
+            </div>
+            <Switch expresion={fetched && !!currentLink}>
+              <Switch.Case condition>
+                {currentLink && <Link link={currentLink} lines={widgetSettings.size === 'rectangle' ? 8 : 2} />}
               </Switch.Case>
-              <Switch.Case condition="addLink">
-                <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._openModal('details')} />
+              <Switch.Case condition={false}>
+                <Label>No ads available</Label>
               </Switch.Case>
             </Switch>
-            <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
-          </Provider>
-        </Modal>
-      </div>
+          </div>
+          <RandomLinkProvider
+            ref={(ref: RandomLinkProvider) => (this.linkProvider = ref)}
+            links={links}
+            timeslot={widgetSettings.timeslot}
+            onLink={this._onLink}
+          />
+          <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
+            <Provider widgetSettings={widgetSettings}>
+              <Switch expresion={openedModal}>
+                <Switch.Case condition="details">
+                  <WidgetDatails onAddLink={this._openModal('addLink')} />
+                </Switch.Case>
+                <Switch.Case condition="addLink">
+                  <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._openModal('details')} />
+                </Switch.Case>
+              </Switch>
+              <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
+            </Provider>
+          </Modal>
+        </div>
+      </RootProvider>
     );
   }
 

@@ -19,16 +19,46 @@ class LinkexchangeLink extends HTMLElement {
   static get observedAttributes() {
     return [
       'api-url',
-      'recipient-address',
-      'asset',
-      'algorithm',
       'size',
+      'timeslot',
+      'recipient-address',
       'whitelist',
-      'contact-method',
+      'asset',
       'slots',
+      'algorithm',
+      'contact-method',
+      'title',
+      'description',
+      'impression',
+      'till-date',
       'translations',
       'translations-url',
     ];
+  }
+
+  validations = {};
+
+  addValidation(
+    formName: string,
+    inputName: string = 'form',
+    callback: (fieldName: string, value: any) => Promise<string | null> | string | null,
+  ) {
+    if (!this.validations[formName]) {
+      this.validations[formName] = {};
+    }
+    if (!this.validations[formName][inputName]) {
+      this.validations[formName][inputName] = [];
+    }
+    this.validations[formName][inputName].push(callback);
+  }
+
+  removeValidation(
+    formName: string,
+    inputName: string = 'form',
+    callback: (fieldName: string, value: any) => Promise<string | null> | string | null,
+  ) {
+    const validationIndex = this.validations[formName][inputName].indexOf(callback);
+    this.validations[formName][inputName].splice(validationIndex, 1);
   }
 
   translationsFeatchingState: 'none' | 'started' | 'fetched' = 'none';
@@ -65,7 +95,7 @@ class LinkexchangeLink extends HTMLElement {
 
     render(
       <IntlProvider locale="en" messages={{ ...this.customMessages }}>
-        <Banner widgetSettings={this._argsToState()} />
+        <Banner widgetSettings={this._argsToState()} root={this} />
       </IntlProvider>,
       this.querySelector(`.${style.root}`),
     );

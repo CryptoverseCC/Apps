@@ -20,7 +20,7 @@ export const R = {
     }, `The currency decimals are incorrect, should be at most ${decimals}`),
 };
 
-type TValidationFunc = (name: string, value: any) => string | undefined;
+export type TValidationFunc = (name: string, value: any) => string | undefined;
 
 export const validate = (rules: TValidationFunc[] | undefined, value: any): string | undefined => {
   if (!rules) {
