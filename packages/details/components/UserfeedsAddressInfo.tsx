@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
 import QRious from 'qrious';
 
 import Icon from '@linkexchange/components/src/Icon';
@@ -28,10 +29,12 @@ export default class UserfeedsAddressInfo extends PureComponent<IUserfeedsAddres
 
     return (
       <div className={style.self}>
-        <h2>Userfeed Address</h2>
+        <h2>
+          <FormattedMessage id="userfeedsAddressInfo.title" />
+        </h2>
         <div className={style.row}>
           <Paper style={{ flex: 1, marginRight: '15px' }}>
-            <TextWithLabel label="Total number of links" text={linksNumber} />
+            <TextWithLabel label="Total number of links" text={linksNumber || '0'} />
           </Paper>
           <Paper style={{ flex: 1, marginLeft: '15px' }}>
             <TextWithLabel label="Etherscan">

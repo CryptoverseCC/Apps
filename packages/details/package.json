@@ -19,7 +19,8 @@
   },
   "peerDependencies": {
     "@linkexchange/ducks": "0.0.137",
-    "lodash": "~4.17.4"
+    "lodash": "~4.17.4",
+    "react-intl": "^2.4.0"
   },
   "license": "ISC"
 }

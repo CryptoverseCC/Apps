@@ -15,7 +15,10 @@
   margin-bottom: 3px;
 
   .icon {
+    margin-left: 2px;
     display: inline-block;
+    width: 11px;
+    fill: $dodger-blue;
   }
 
   &:hover .icon {

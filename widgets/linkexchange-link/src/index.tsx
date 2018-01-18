@@ -2,20 +2,25 @@ import '@webcomponents/custom-elements';
 
 import { render } from 'react-dom';
 import React from 'react';
+import { IntlProvider } from 'react-intl';
 import { EWidgetSize } from '@linkexchange/types/widget';
 
 import { IRootState } from './ducks';
 
 import Banner from './Banner';
 
+import bannerMessages from './Banner/defaultMessages';
+import detailsMessages from '@linkexchange/details/defaultMessages';
+
 import * as style from './styles/all.scss';
+
+const messages = { ...bannerMessages, ...detailsMessages };
 
 if (process.env.NODE_ENV !== 'development') {
   console.info(`Loaded @linkexchange/widgets@${VERSION}`);
 }
 
 class LinkexchangeLink extends HTMLElement {
-
   static get observedAttributes() {
     return ['api-url', 'recipient-address', 'asset', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
   }
@@ -32,16 +37,16 @@ class LinkexchangeLink extends HTMLElement {
     this.innerHTML = `<div class="${style.root}"></div>`;
 
     render(
-      <Banner widgetSettings={this._argsToState()} />,
+      <IntlProvider locale="en" messages={messages}>
+        <Banner widgetSettings={this._argsToState()} />
+      </IntlProvider>,
       this.querySelector(`.${style.root}`),
     );
   }
 
   _argsToState() {
     const apiUrl = this.getAttribute('api-url') || 'https://api.userfeeds.io';
-    const size = this.getAttribute('size') === 'rectangle'
-      ? EWidgetSize.rectangle
-      : EWidgetSize.leaderboard;
+    const size = this.getAttribute('size') === 'rectangle' ? EWidgetSize.rectangle : EWidgetSize.leaderboard;
     const timeslot = parseInt(this.getAttribute('timeslot') || '5', 10);
     const recipientAddress = this.getAttribute('recipient-address') || this._throwErrorRecipientAddressNotDefined();
     const whitelist = this.getAttribute('whitelist') || undefined;

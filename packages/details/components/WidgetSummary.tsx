@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import A from '@linkexchange/components/src/A';
 import Icon from '@linkexchange/components/src/Icon';
@@ -35,7 +36,8 @@ const WidgetSummary = ({
             <h1 className={style.Header}>{widgetSettings.title}</h1>
             {!openInNewWindowHidden && (
               <Button outline size="small" className={style.NewWindowButton} onClick={onOpenInSeparateWindow}>
-                <Icon name="external-link" />New Window
+                <Icon name="external-link" />
+                <FormattedMessage id="widgetSummary.openInNewWindow" />
               </Button>
             )}
           </div>
@@ -47,7 +49,7 @@ const WidgetSummary = ({
           render={({ enabled, reason }) => (
             <Tooltip className={style.NewButtonContainer} text={reason}>
               <Button onClick={onAddClick} disabled={!enabled} color="primary">
-                <Icon name="plus" /> Create new link
+                <Icon name="plus" /> <FormattedMessage id="widgetSummary.addLink" />
               </Button>
             </Tooltip>
           )}
@@ -56,7 +58,7 @@ const WidgetSummary = ({
       <div className={style.LowerHead}>
         <div className={style.SummaryField}>
           <div className={style.InnerSummaryField}>
-            <Icon name="eye" /> Declared impressions:
+            <Icon name="eye" /> <FormattedMessage id="widgetSummary.declaredImpression" />:
             <p>
               <span className={style.RegularText}>{widgetSettings.impression}</span>
             </p>
@@ -64,7 +66,7 @@ const WidgetSummary = ({
         </div>
         <div className={style.SummaryField}>
           <div className={style.InnerSummaryField}>
-            <Icon name="link-intact" /> Source Domain:
+            <Icon name="link-intact" /> <FormattedMessage id="widgetSummary.sourceDomain" />:
             <p>
               <A href={widgetSettings.location}>{widgetSettings.location}</A>
             </p>
@@ -72,7 +74,7 @@ const WidgetSummary = ({
         </div>
         <div className={style.SummaryField}>
           <div className={style.InnerSummaryField}>
-            <Icon name="envelope-open" /> Contact:
+            <Icon name="envelope-open" /> <FormattedMessage id="widgetSummary.contact" />:
             <p>
               <span className={style.RegularText}>{widgetSettings.contactMethod || '-'}</span>
             </p>
@@ -80,7 +82,7 @@ const WidgetSummary = ({
         </div>
         <div className={style.SummaryField}>
           <div className={style.InnerSummaryField}>
-            <Icon name="calendar" /> Valid till:
+            <Icon name="calendar" /> <FormattedMessage id="widgetSummary.validTill" />:
             <p>
               <span className={style.RegularText}>{widgetSettings.tillDate || '-'}</span>
             </p>

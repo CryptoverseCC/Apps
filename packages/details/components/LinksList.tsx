@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
@@ -29,20 +30,14 @@ const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
     <InjectedWeb3StateProvider
       asset={props.asset}
       render={({ enabled, reason }) => (
-        <BoostLinkComponent
-          loadBalance
-          asset={props.asset}
-          {...props}
-          disabled={!enabled}
-          disabledReason={reason}
-        />
+        <BoostLinkComponent loadBalance asset={props.asset} {...props} disabled={!enabled} disabledReason={reason} />
       )}
     />
   );
 };
 
 interface ILinksListProps {
-  label: string;
+  label: string | JSX.Element;
   links: ILink[] | IRemoteLink[];
   linksInSlots: ILink[];
   asset: string;
@@ -61,19 +56,19 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   // ToDo make it better
   columns = [
     {
-      name: 'NO',
+      name: <FormattedMessage id="list.header.no" />,
       prop: (_, index) => index + 1,
     },
     {
-      name: 'Probability',
+      name: <FormattedMessage id="list.header.probability" />,
       prop: (link: ILink) => (typeof link.probability === 'number' ? `${link.probability}%` : '-'),
     },
     {
-      name: 'Content',
+      name: <FormattedMessage id="list.header.content" />,
       prop: (link: ILink) => <Link style={{ maxWidth: '200px' }} link={link} />,
     },
     {
-      name: 'Current Score',
+      name: <FormattedMessage id="list.header.score" />,
       prop: (link: ILink) => (
         <TokenDetailsProviderWithInfura
           asset={this.props.asset}
@@ -82,9 +77,9 @@ export default class LinksList extends Component<ILinksListProps, {}> {
       ),
     },
     {
-      name: 'Bids',
+      name: <FormattedMessage id="list.header.bids" />,
       prop: (link: ILink) => {
-        const { boostLinkComponent: BoostLink = DefaultBoostLink} = this.props;
+        const { boostLinkComponent: BoostLink = DefaultBoostLink } = this.props;
 
         return (
           <div className={style.boostCell}>
@@ -138,20 +133,18 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   _renderHeader = () => {
     return (
       <thead className={style.tableHeader}>
-        <tr>{this.columns.map(({ name }) => <th key={name}>{name}</th>)}</tr>
+        <tr>{this.columns.map(({ name }, index) => <th key={index}>{name}</th>)}</tr>
       </thead>
     );
-  }
+  };
 
   _renderRow = (link: ILink, index: number) => {
     return (
       <tr key={link.id}>
-        {this.columns.map(({ prop, name }) => (
-          <td key={`${name}_${link.id}`}>{prop(link, index)}</td>
-        ))}
+        {this.columns.map(({ prop }, columnIndex) => <td key={`${columnIndex}_${link.id}`}>{prop(link, index)}</td>)}
       </tr>
     );
-  }
+  };
 
   _renderLoadMore = () => {
     if (this.state.maxRows < this.props.links.length) {
@@ -163,9 +156,9 @@ export default class LinksList extends Component<ILinksListProps, {}> {
     }
 
     return null;
-  }
+  };
 
   _onLoadMore = () => {
     this.setState({ maxRows: this.state.maxRows * 2 });
-  }
+  };
 }

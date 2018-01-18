@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import A from '@linkexchange/components/src/A';
 import Paper from '@linkexchange/components/src/Paper';
@@ -23,7 +24,9 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
 
     return (
       <div className={style.self}>
-        <h2>Widget Specification</h2>
+        <h2>
+          <FormattedMessage id="widgetSpecification.title" />
+        </h2>
         <div className={style.row}>
           <Paper style={{ flex: 1, marginRight: '15px' }}>
             <TextWithLabel label="Size" text={size} />
@@ -36,10 +39,7 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
           <Paper style={{ flex: 1, marginRight: '15px' }}>
             <TextWithLabel label="Token">
               <TokenLogo className={style.tokenLogo} asset={asset} />
-              <TokenDetailsProviderWithInfura
-                asset={asset}
-                render={({ name }) => name}
-              />
+              <TokenDetailsProviderWithInfura asset={asset} render={({ name }) => name} />
             </TextWithLabel>
           </Paper>
           <Paper style={{ flex: 1, marginLeft: '15px' }}>
