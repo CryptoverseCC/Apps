@@ -12,12 +12,14 @@
     "jsx-wrap-multiline": [false],
     "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"],
     "jsx-no-multiline-js": [false],
+    "jsx-curly-spacing": [2, { "when": "never", "allowMultiline": false }],
     "object-literal-sort-keys": [false],
     "no-var-requires": false,
     "no-shadowed-variable": false,
     "member-ordering": [false],
     "no-console": [true, "log", "error"],
-    "max-classes-per-file": [true, 4]
+    "max-classes-per-file": [true, 4],
+    "semicolon": false
   },
   "rulesDirectory": []
 }

@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js || exit 0"
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js || exit 0",
+    "deploy-test": "firebase deploy --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
+    "deploy-prod": "firebase deploy -P prod --token $FIREBASE_TOKEN "
   },
   "author": "",
   "license": "ISC",
@@ -47,6 +49,7 @@
     "awesome-typescript-loader": "^3.3.0",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
+    "firebase-tools": "^3.16.0",
     "html-webpack-plugin": "^2.29.0",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",

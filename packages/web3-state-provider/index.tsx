@@ -34,7 +34,7 @@ export default class Web3StateProvider extends Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.removeListener = taskRunner.run(this.props.web3, [this.props.asset], (web3State) => {
+    this.removeListener = taskRunner.run(this.props.web3, [this.props.asset || ''], (web3State) => {
       this.setState({ web3State });
     });
   }

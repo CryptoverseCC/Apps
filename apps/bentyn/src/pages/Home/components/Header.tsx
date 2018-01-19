@@ -21,9 +21,9 @@ interface IProps {
   };
 }
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'http://linkexchange.io/apps/video' : window.location.origin;
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'http://app.linkexchange.io' : window.location.origin;
 const openDashboard = (props: IProps) => {
-  window.open(`${BASE_URL}/#/dashboard?${qs.stringify({ ...props.blocks, ...props.widgetSettings })}`, '_blank');
+  window.open(`${BASE_URL}/video/dashboard?${qs.stringify({ ...props.blocks, ...props.widgetSettings })}`, '_blank');
 };
 
 const Header = (props: IProps) => (

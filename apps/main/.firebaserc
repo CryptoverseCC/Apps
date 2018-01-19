@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "linkexchangeapp-test",
+    "prod": "linkexchangeapp-prod"
+  }
+}
