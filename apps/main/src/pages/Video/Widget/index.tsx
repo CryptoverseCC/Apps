@@ -20,7 +20,7 @@ interface IState {
   currentLink?: ILink;
 }
 
-export default class Obs extends Component<IProps, IState> {
+export default class Widget extends Component<IProps, IState> {
   lastFetchTime: number = 0;
 
   constructor(props: IProps) {

@@ -82,7 +82,7 @@ class Dashboard extends Component<TProps, IState> {
   };
 
   _goToObsUrl = () => {
-    openLinkexchangeUrl('#/video/obs-widget', this.props.widgetSettings);
+    openLinkexchangeUrl('#/video/widget', this.props.widgetSettings);
   };
 
   _login = async () => {
