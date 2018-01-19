@@ -20,7 +20,7 @@ export const Description = ({ children }) => <p className={styles.Description}>{
 export const Error = ({ children }) => (children ? <p className={styles.Error}>{children}</p> : null);
 
 export const RadioGroup = ({ children, radioWidth, onChange, value, name }) => (
-  <div className={styles.inputGroup}>
+  <div className={styles.InputGroup}>
     {React.Children.map(children, (radio: React.ReactElement<any>) =>
       React.cloneElement(radio, {
         className: styles.Input,

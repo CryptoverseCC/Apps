@@ -17,7 +17,7 @@ import Pill from '@linkexchange/components/src/Pill';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 
 import { Field, Title, Description, RadioGroup } from '@linkexchange/components/src/Form/Field';
-import { input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
+import { Input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
 import Input from '@linkexchange/components/src/Form/Input';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 
@@ -202,7 +202,7 @@ class Whitelist extends Component<TProps, IState> {
     this.setState({ [key]: account });
     this.props.updateQueryParam(key, account);
     this._fetchLinksAndShowLoader();
-  }
+  };
 
   _onChange = (key) => (e) => {
     const { value } = e.target;
@@ -210,7 +210,7 @@ class Whitelist extends Component<TProps, IState> {
       this._debouncedFetchLinks();
     });
     this.props.updateQueryParam(key, value);
-  }
+  };
 
   _onAssetChange = (value) => {
     this.web3 = getInfura(value.network);
@@ -218,7 +218,7 @@ class Whitelist extends Component<TProps, IState> {
       this._fetchLinksAndShowLoader();
     });
     this.props.updateQueryParam('asset', `${value.network}:${value.token}`);
-  }
+  };
 
   _fetchLinks = async () => {
     if (this.fetchInterval !== null) {
@@ -247,7 +247,7 @@ class Whitelist extends Component<TProps, IState> {
     }
 
     this.fetchInterval = window.setInterval(this._fetchLinks, 2000);
-  }
+  };
 
   _fetchLinksAndShowLoader = async () => {
     this.setState({ fetching: true, links: [] });
@@ -261,29 +261,30 @@ class Whitelist extends Component<TProps, IState> {
     }
 
     this.setState({ fetching: false });
-  }
+  };
 
   _fetchLinksImpl = async (whitelistFilterAlgorithm: string) => {
     const { apiUrl, recipientAddress, algorithm, asset } = this.state;
     const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
     const context = recipientAddress.toLowerCase();
     const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${assetString};context=${context}/`;
-    const timedecayFilterAlgorithm = (algorithm === 'links') ? 'filter_timedecay/' : '';
+    const timedecayFilterAlgorithm = algorithm === 'links' ? 'filter_timedecay/' : '';
     const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';
-    return fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`)
-      .then<{ items: IRemoteLink[] }>((res) => res.json());
-  }
+    return fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`).then<{
+      items: IRemoteLink[];
+    }>((res) => res.json());
+  };
 
   _fetchAllLinks = async () => {
     const whitelistFilterAlgorithm = '';
     return this._fetchLinksImpl(whitelistFilterAlgorithm);
-  }
+  };
 
   _fetchWhitelistedLinks = async () => {
     const { whitelist } = this.state;
     const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
     return this._fetchLinksImpl(whitelistFilterAlgorithm);
-  }
+  };
 
   _debouncedFetchLinks = debounce(this._fetchLinksAndShowLoader, 500);
 }

@@ -2,7 +2,6 @@ FROM node
 
 WORKDIR /
 
-RUN npm install yarn
 COPY . /apps
 
 WORKDIR /apps

@@ -7,7 +7,7 @@ const DtsCreator = require('typed-css-modules');
 console.log('Generating typings for styles');
 
 const creator = new DtsCreator({
-  camelCase: true,
+  camelCase: 'dashes',
 });
 
 glob('{,!(node_modules)/**/}*.scss', (e, matches) => {

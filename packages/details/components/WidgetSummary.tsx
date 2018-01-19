@@ -26,7 +26,6 @@ const WidgetSummary = ({
   onOpenInSeparateWindow,
   openInNewWindowHidden,
 }: IWidgetSummaryProps) => {
-
   return (
     <div className={style.Head}>
       <div className={style.UpperHead}>
@@ -54,7 +53,7 @@ const WidgetSummary = ({
           )}
         />
       </div>
-      <div className={style.lowerHead}>
+      <div className={style.LowerHead}>
         <div className={style.SummaryField}>
           <div className={style.InnerSummaryField}>
             <Icon name="eye" /> Declared impressions:
