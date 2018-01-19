@@ -1,12 +1,7 @@
-// import { IWidgetState } from '../ducks/widget';
 import * as qs from 'qs';
 
-// type TExtendedWidgetState = IWidgetState & {
-  // linkId?: string;
-// };
-
 export const openLinkexchangeUrl = (path: string, widgetSettings) => {
-  const baseUrl = 'https://linkexchange.io/';
+  const baseUrl = 'https://app.linkexchange.io/';
 
   const queryString = qs.stringify({
     ...widgetSettings,

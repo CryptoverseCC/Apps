@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "default": "linkexchangevideo-test",
-    "prod": "linkexchangevideo-prod"
-  }
-}

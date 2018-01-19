@@ -20,9 +20,13 @@ const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
   widgetSettings: widget,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchLinks,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchLinks,
+    },
+    dispatch,
+  );
 
 const State2Props = returntypeof(mapStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
@@ -57,9 +61,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
 
     const childrenArray = Children.toArray(children);
 
-    const headerElement = childrenArray.find(
-      (c: ReactElement<any>) => c.type === Header,
-    );
+    const headerElement = childrenArray.find((c: ReactElement<any>) => c.type === Header);
     const header = headerElement
       ? React.cloneElement(headerElement as ReactElement<any>, {
           openInNewWindowHidden: standaloneMode,
@@ -67,9 +69,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
         })
       : null;
 
-    const listsElement = childrenArray.find(
-      (c: ReactElement<any>) => c.type === Lists,
-    );
+    const listsElement = childrenArray.find((c: ReactElement<any>) => c.type === Lists);
     const lists = listsElement
       ? React.cloneElement(listsElement as ReactElement<any>, {
           mobileOrTablet,
@@ -87,8 +87,8 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
   }
 
   _onOpenInSeparateWindowClick = () => {
-    openLinkexchangeUrl('apps/#/details/', this.props.widgetSettings);
-  }
+    openLinkexchangeUrl('#/direct/details/', this.props.widgetSettings);
+  };
 }
 
 const ConnectedDetails = connect(mapStateToProps, mapDispatchToProps)(Details);

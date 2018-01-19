@@ -11,20 +11,34 @@ import App from './App';
 import '../styles/all.scss';
 
 const [, searchParams] = document.location.href.split('?');
-const parsedParams = qs.parse(searchParams);
-const store = getStore(parsedParams);
+const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
+
+const DEFAULT_WIDGET_SETTINGS = {
+  apiUrl: 'https://api-staging.userfeeds.io',
+  title: 'Title',
+  description: 'Description',
+  slots: 5,
+  timeslot: 20,
+  location: window.location.href,
+  algorithm: 'links',
+};
+
+const store = getStore(
+  { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettings },
+  { startBlock: parseInt(startBlock, 10), endBlock: parseInt(endBlock, 10) },
+);
 
 let infuraWeb3;
-if (parsedParams.asset) {
-  const [network] = parsedParams.asset.split(':');
+if (widgetSettings.asset) {
+  const [network] = widgetSettings.asset.split(':');
   infuraWeb3 = getInfura(network);
 }
 
-render((
+render(
   <Provider store={store}>
     <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
       <App />
     </Web3Provider>
-  </Provider>),
+  </Provider>,
   document.querySelector('.root'),
 );
