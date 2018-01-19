@@ -10,7 +10,7 @@ import * as style from './congratulations.scss';
 const heartSvg = require('../images/heart.svg');
 
 const Congratulations = ({ linkId, widgetSettings }) => {
-  const goToLinkStatus = () => openLinkexchangeUrl('#/direct/status/', { linkId, ...widgetSettings });
+  const goToLinkStatus = () => openLinkexchangeUrl('/direct/status', { linkId, ...widgetSettings });
 
   return (
     <div className={style.self}>

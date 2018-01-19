@@ -78,11 +78,11 @@ class Dashboard extends Component<TProps, IState> {
   }
 
   _goToWhitelist = () => {
-    openLinkexchangeUrl('#/direct/whitelist', this.props.widgetSettings);
+    openLinkexchangeUrl('/direct/whitelist', this.props.widgetSettings);
   };
 
   _goToObsUrl = () => {
-    openLinkexchangeUrl('#/video/widget', this.props.widgetSettings);
+    openLinkexchangeUrl('/video/widget', this.props.widgetSettings);
   };
 
   _login = async () => {

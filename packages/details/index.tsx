@@ -87,7 +87,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
   }
 
   _onOpenInSeparateWindowClick = () => {
-    openLinkexchangeUrl('#/direct/details/', this.props.widgetSettings);
+    openLinkexchangeUrl('/direct/details/', this.props.widgetSettings);
   };
 }
 
