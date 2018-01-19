@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@linkechange/app",
+  "name": "@linkexchange/app",
   "version": "0.0.139",
   "description": "",
   "main": "index.js",
