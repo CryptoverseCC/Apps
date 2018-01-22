@@ -14,7 +14,7 @@ import detailsMessages from '@linkexchange/details/defaultMessages';
 
 import * as style from './styles/all.scss';
 
-const messages = { ...bannerMessages, ...detailsMessages };
+const defaultMessages = { ...bannerMessages, ...detailsMessages };
 
 if (process.env.NODE_ENV !== 'development') {
   console.info(`Loaded @linkexchange/widgets@${VERSION}`);
@@ -22,22 +22,51 @@ if (process.env.NODE_ENV !== 'development') {
 
 class LinkexchangeLink extends HTMLElement {
   static get observedAttributes() {
-    return ['api-url', 'recipient-address', 'asset', 'algorithm', 'size', 'whitelist', 'contact-method', 'slots'];
+    return [
+      'api-url',
+      'recipient-address',
+      'asset',
+      'algorithm',
+      'size',
+      'whitelist',
+      'contact-method',
+      'slots',
+      'translations',
+      'translations-url',
+    ];
   }
+
+  connected = false;
+  customMessages = {};
 
   connectedCallback() {
-    this._renderComponent();
-  }
-
-  attributeChangedCallback(_attr, _oldValue, _newValue) {
-    // ToDo rethink if we need react on attributes changes
-  }
-
-  _renderComponent() {
+    this.connected = true;
     this.innerHTML = `<div class="${style.root}"></div>`;
 
+    this._render();
+  }
+
+  disconnectedCallback() {
+    this.connected = false;
+  }
+
+  attributeChangedCallback(attr, _oldValue, newValue) {
+    if (attr === 'translations-url') {
+      this._fetchTranslationsFile(newValue);
+    } else if (attr === 'translations') {
+      this._setTranslationsFromWindow(newValue);
+    }
+
+    this._render();
+  }
+
+  _render() {
+    if (!this.connected) {
+      return;
+    }
+
     render(
-      <IntlProvider locale="en" messages={messages}>
+      <IntlProvider locale="en" messages={{ ...defaultMessages, ...this.customMessages }}>
         <Banner widgetSettings={this._argsToState()} />
       </IntlProvider>,
       this.querySelector(`.${style.root}`),
@@ -74,6 +103,22 @@ class LinkexchangeLink extends HTMLElement {
       impression,
       tillDate,
     };
+  }
+
+  async _fetchTranslationsFile(url: string) {
+    try {
+      this.customMessages = await fetch(url).then((res) => res.json());
+    } catch (e) {
+      console.info('Something went wrong when fetching translations file');
+    }
+
+    this._render();
+  }
+
+  _setTranslationsFromWindow(key: string) {
+    if (typeof window[key] === 'object') {
+      this.customMessages = window[key];
+    }
   }
 
   _throwErrorRecipientAddressNotDefined(): never {
