@@ -12,7 +12,7 @@ import Banner from './Banner';
 import * as style from './styles/all.scss';
 
 if (process.env.NODE_ENV !== 'development') {
-  console.info(`Loaded @linkexchange/widgets@${VERSION}`);
+  console.info(`Loaded @linkexchange/widgets@${VERSION}-${process.env.NODE_ENV}`);
 }
 
 class LinkexchangeLink extends HTMLElement {
@@ -31,6 +31,7 @@ class LinkexchangeLink extends HTMLElement {
     ];
   }
 
+  translationsFeatchingState: 'none' | 'started' | 'fetched' = 'none';
   connected = false;
   customMessages = {};
 
@@ -38,7 +39,9 @@ class LinkexchangeLink extends HTMLElement {
     this.connected = true;
     this.innerHTML = `<div class="${style.root}"></div>`;
 
-    this._render();
+    if (this.translationsFeatchingState === 'none' || this.translationsFeatchingState === 'fetched') {
+      this._render();
+    }
   }
 
   disconnectedCallback() {
@@ -47,7 +50,7 @@ class LinkexchangeLink extends HTMLElement {
 
   attributeChangedCallback(attr, _oldValue, newValue) {
     if (attr === 'translations-url') {
-      this._fetchTranslationsFile(newValue);
+      this._fetchTranslations(newValue);
     } else if (attr === 'translations') {
       this._setTranslationsFromWindow(newValue);
     }
@@ -100,12 +103,14 @@ class LinkexchangeLink extends HTMLElement {
     };
   }
 
-  async _fetchTranslationsFile(url: string) {
+  async _fetchTranslations(url: string) {
+    this.translationsFeatchingState = 'started';
     try {
       this.customMessages = await fetch(url).then((res) => res.json());
     } catch (e) {
       console.info('Something went wrong when fetching translations file');
     }
+    this.translationsFeatchingState = 'fetched';
 
     this._render();
   }
