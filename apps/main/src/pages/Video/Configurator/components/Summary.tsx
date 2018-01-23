@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import qs from 'qs';
 
-const BASE_EVENT_URL =
-  process.env.NODE_ENV === 'production' ? 'https://apps.linkexchange.io/video' : `${window.location.origin}/video`;
+import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 const Summary = (props) => {
-  const eventLink = `${BASE_EVENT_URL}${props.location.search}`;
+  const params = qs.parse(props.location.search.replace('?', ''));
 
   return (
     <>
       <h2>Summary</h2>
-      <a href={eventLink} target="_blank">
+      <a onClick={() => openLinkexchangeUrl('/video', params)}>
         <p>Event link</p>
       </a>
     </>

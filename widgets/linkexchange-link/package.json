@@ -6,6 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js || exit 0",
+    "build-stagging": "cross-env NODE_ENV=stagging webpack --config webpack.config.prod.js || exit 0",
     "prepublishOnly": "npm run build",
     "postpublish": "./purgeCDNCach.sh"
   },

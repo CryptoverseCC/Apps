@@ -2,6 +2,7 @@ import React from 'react';
 import qs from 'qs';
 import classnames from 'classnames';
 
+import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 import { IWidgetState } from '@linkexchange/ducks/widget';
 import Button from '@linkexchange/components/src/NewButton';
 
@@ -21,9 +22,8 @@ interface IProps {
   };
 }
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'http://app.linkexchange.io' : window.location.origin;
 const openDashboard = (props: IProps) => {
-  window.open(`${BASE_URL}/video/dashboard?${qs.stringify({ ...props.blocks, ...props.widgetSettings })}`, '_blank');
+  openLinkexchangeUrl('/video/dashboard', { ...props.blocks, ...props.widgetSettings });
 };
 
 const Header = (props: IProps) => (
