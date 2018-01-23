@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/status",
-  "version": "0.0.143",
+  "version": "0.0.144",
   "description": "",
   "main": "index.tsx",
   "scripts": {},

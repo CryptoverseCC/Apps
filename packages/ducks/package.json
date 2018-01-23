@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/ducks",
-  "version": "0.0.143",
+  "version": "0.0.144",
   "description": "",
   "main": "index.ts",
   "scripts": {},
@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/types": "^0.0.143"
+    "@linkexchange/types": "^0.0.144"
   }
 }

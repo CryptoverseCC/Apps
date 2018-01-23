@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/scss-unset",
-  "version": "0.0.143",
+  "version": "0.0.144",
   "description": "",
   "main": "unset.scss",
   "scripts": {},
