@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "@linkexchange/types",
-  "version": "0.0.138",
+  "version": "0.0.143",
   "description": "",
   "main": "index.ts",
   "scripts": {},
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "tslint": "^5.6.0",
-    "tslint-react": "^3.2.0"
+    "tslint": "^5.9.1",
+    "tslint-react": "^3.4.0"
   }
 }

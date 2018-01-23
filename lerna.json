@@ -1,10 +1,10 @@
 {
-  "lerna": "2.5.1",
+  "lerna": "2.8.0",
   "npmClient": "yarn",
   "packages": [
     "packages/*",
     "apps/*",
     "widgets/*"
   ],
-  "version": "independent"
+  "version": "0.0.143"
 }

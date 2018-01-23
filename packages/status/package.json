@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/status",
-  "version": "0.0.138",
+  "version": "0.0.143",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@linkexchange/transaction-provider": "^0.0.137",
-    "@linkexchange/web3-state-provider": "^0.0.137"
+    "@linkexchange/transaction-provider": "^0.0.143",
+    "@linkexchange/web3-state-provider": "^0.0.143"
   }
 }

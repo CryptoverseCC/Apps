@@ -1,24 +1,24 @@
 {
   "private": true,
   "name": "@linkexchange/details",
-  "version": "0.0.139",
+  "version": "0.0.143",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
   "author": "",
   "dependencies": {
-    "@linkexchange/boost-link": "^0.0.138",
-    "@linkexchange/components": "^0.0.138",
-    "@linkexchange/scrollable-sections-with-menu": "^0.0.138",
-    "@linkexchange/toast": "^0.0.138",
-    "@linkexchange/token-details-provider": "^0.0.138",
-    "@linkexchange/types": "^0.0.138",
-    "@linkexchange/utils": "^0.0.138",
-    "@linkexchange/web3-state-provider": "^0.0.138",
-    "@userfeeds/core": "^0.0.138"
+    "@linkexchange/boost-link": "^0.0.143",
+    "@linkexchange/components": "^0.0.143",
+    "@linkexchange/scrollable-sections-with-menu": "^0.0.143",
+    "@linkexchange/toast": "^0.0.143",
+    "@linkexchange/token-details-provider": "^0.0.143",
+    "@linkexchange/types": "^0.0.143",
+    "@linkexchange/utils": "^0.0.143",
+    "@linkexchange/web3-state-provider": "^0.0.143",
+    "@userfeeds/core": "^0.0.143"
   },
   "peerDependencies": {
-    "@linkexchange/ducks": "0.0.137",
+    "@linkexchange/ducks": "^0.0.143",
     "lodash": "~4.17.4",
     "react-intl": "^2.4.0"
   },
