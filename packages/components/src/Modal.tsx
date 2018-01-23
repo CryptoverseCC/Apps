@@ -8,21 +8,29 @@ interface IModalProps {
 }
 
 export default class Modal extends Component<IModalProps, {}> {
-
-  componentDidMount() {
-    document.addEventListener('wheel', this._consumeEvent);
-    document.addEventListener('mousewheel', this._consumeEvent);
-    document.addEventListener('keydown', this._closeOnEsc);
-    window.addEventListener('popstate', this._onOverlayClick);
-
-    history.pushState(null, '', document.URL);
-  }
+  pushedState: boolean = false;
+  poppedState: boolean = false;
 
   componentWillUnmount() {
-    document.removeEventListener('wheel', this._consumeEvent);
-    document.removeEventListener('mousewheel', this._consumeEvent);
-    document.removeEventListener('keydown', this._closeOnEsc);
-    window.removeEventListener('popstate', this._onOverlayClick);
+    if (this.pushedState && !this.poppedState) {
+      history.back();
+    }
+    this._removeEventListeners();
+  }
+
+  componentWillReceiveProps(newProps: IModalProps) {
+    if (newProps.isOpen && this.props.isOpen !== newProps.isOpen) {
+      this._registerEventListeners();
+      history.pushState(null, '', document.URL);
+      this.pushedState = true;
+      this.poppedState = false;
+    } else if (!newProps.isOpen && this.props.isOpen !== newProps.isOpen) {
+      if (this.pushedState && !this.poppedState) {
+        history.back();
+        this.poppedState = true;
+      }
+      this._removeEventListeners();
+    }
   }
 
   render() {
@@ -40,20 +48,38 @@ export default class Modal extends Component<IModalProps, {}> {
     );
   }
 
+  _onPopState = () => {
+    this.poppedState = true;
+    this._onOverlayClick();
+  };
+
   _onOverlayClick = () => {
     if (this.props.onCloseRequest) {
       this.props.onCloseRequest();
     }
-  }
+  };
 
   _consumeEvent = (event) => {
     event.stopPropagation();
-  }
+  };
 
   _closeOnEsc = (event: KeyboardEvent) => {
     if (event.keyCode === 27 && this.props.onCloseRequest) {
       this.props.onCloseRequest();
     }
-  }
+  };
 
+  _registerEventListeners = () => {
+    document.addEventListener('wheel', this._consumeEvent);
+    document.addEventListener('mousewheel', this._consumeEvent);
+    document.addEventListener('keydown', this._closeOnEsc);
+    window.addEventListener('popstate', this._onPopState);
+  };
+
+  _removeEventListeners = () => {
+    document.removeEventListener('wheel', this._consumeEvent);
+    document.removeEventListener('mousewheel', this._consumeEvent);
+    document.removeEventListener('keydown', this._closeOnEsc);
+    window.removeEventListener('popstate', this._onPopState);
+  };
 }
