@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@linkexchange/boost-link",
   "version": "0.0.144",
   "description": "",
