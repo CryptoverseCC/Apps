@@ -38,6 +38,7 @@
     "react-copy-to-clipboard": "5.0.1",
     "react-datepicker": "0.57.0",
     "react-dom": "16.2.0",
+    "react-intl": "^2.4.0",
     "react-redux": "5.0.6",
     "react-redux-typescript": "^2.3.0",
     "react-router-dom": "^4.1.2",

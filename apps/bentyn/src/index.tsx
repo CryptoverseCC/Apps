@@ -2,6 +2,7 @@ import { render } from 'react-dom';
 import React from 'react';
 import qs from 'qs';
 import { Provider } from 'react-redux';
+import { IntlProvider } from 'react-intl';
 
 import { IWidgetState } from '@linkexchange/ducks/widget';
 import { EWidgetSize } from '@linkexchange/types/widget';
@@ -45,9 +46,11 @@ const infuraWeb3 = getInfura(network as TNetwork);
 
 render(
   <Provider store={store}>
-    <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-      <App />
-    </Web3Provider>
+    <IntlProvider locale="en">
+      <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
+        <App />
+      </Web3Provider>
+    </IntlProvider>
   </Provider>,
   document.querySelector('.root'),
 );
