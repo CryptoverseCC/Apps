@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/components",
-  "version": "0.0.144",
+  "version": "0.0.145",
   "description": "",
   "main": "index.js",
   "scripts": {},
