@@ -9,12 +9,7 @@ import { IRootState } from './ducks';
 
 import Banner from './Banner';
 
-import bannerMessages from './Banner/defaultMessages';
-import detailsMessages from '@linkexchange/details/defaultMessages';
-
 import * as style from './styles/all.scss';
-
-const defaultMessages = { ...bannerMessages, ...detailsMessages };
 
 if (process.env.NODE_ENV !== 'development') {
   console.info(`Loaded @linkexchange/widgets@${VERSION}`);
@@ -66,7 +61,7 @@ class LinkexchangeLink extends HTMLElement {
     }
 
     render(
-      <IntlProvider locale="en" messages={{ ...defaultMessages, ...this.customMessages }}>
+      <IntlProvider locale="en" messages={{ ...this.customMessages }}>
         <Banner widgetSettings={this._argsToState()} />
       </IntlProvider>,
       this.querySelector(`.${style.root}`),

@@ -30,7 +30,7 @@ export default class UserfeedsAddressInfo extends PureComponent<IUserfeedsAddres
     return (
       <div className={style.self}>
         <h2>
-          <FormattedMessage id="userfeedsAddressInfo.title" />
+          <FormattedMessage id="userfeedsAddressInfo.title" defaultMessage="Userfeed Address" />
         </h2>
         <div className={style.row}>
           <Paper style={{ flex: 1, marginRight: '15px' }}>

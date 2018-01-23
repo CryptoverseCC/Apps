@@ -45,7 +45,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             className={style.accordion}
             title={
               <p className={style.accordionHeader}>
-                <FormattedMessage id="list.slots.title" /> <Pill>{widgetSettings.slots}</Pill>
+                <FormattedMessage id="list.slots.title" defaultMessage="Slots" /> <Pill>{widgetSettings.slots}</Pill>
               </p>
             }
           >
@@ -57,7 +57,8 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             className={style.accordion}
             title={
               <p className={style.accordionHeader}>
-                <FormattedMessage id="list.approved.title" /> <Pill>{whitelistedLinksCount}</Pill>
+                <FormattedMessage id="list.approved.title" defaultMessage="Approved" />{' '}
+                <Pill>{whitelistedLinksCount}</Pill>
               </p>
             }
           >
@@ -70,7 +71,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
               className={style.accordion}
               title={
                 <p className={style.accordionHeader}>
-                  <FormattedMessage id="list.algorithm.title" /> <Pill>{allLinksCount}</Pill>
+                  <FormattedMessage id="list.algorithm.title" defaultMessage="Algorithm" /> <Pill>{allLinksCount}</Pill>
                 </p>
               }
             >
@@ -84,7 +85,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             className={style.accordion}
             title={
               <p className={style.accordionHeader}>
-                <FormattedMessage id="widgetSpecification.title" />
+                <FormattedMessage id="widgetSpecification.title" defaultMessage="Widget Specification" />
               </p>
             }
           >
@@ -105,7 +106,7 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
             className={style.accordion}
             title={
               <p className={style.accordionHeader}>
-                <FormattedMessage id="userfeedsAddressInfo.title" />
+                <FormattedMessage id="userfeedsAddressInfo.title" defaultMessage="Userfeed Address" />
               </p>
             }
           >

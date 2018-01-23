@@ -56,19 +56,19 @@ export default class LinksList extends Component<ILinksListProps, {}> {
   // ToDo make it better
   columns = [
     {
-      name: <FormattedMessage id="list.header.no" />,
+      name: <FormattedMessage id="list.header.no" defaultMessage="NO" />,
       prop: (_, index) => index + 1,
     },
     {
-      name: <FormattedMessage id="list.header.probability" />,
+      name: <FormattedMessage id="list.header.probability" defaultMessage="Probability" />,
       prop: (link: ILink) => (typeof link.probability === 'number' ? `${link.probability}%` : '-'),
     },
     {
-      name: <FormattedMessage id="list.header.content" />,
+      name: <FormattedMessage id="list.header.content" defaultMessage="Content" />,
       prop: (link: ILink) => <Link style={{ maxWidth: '200px' }} link={link} />,
     },
     {
-      name: <FormattedMessage id="list.header.score" />,
+      name: <FormattedMessage id="list.header.score" defaultMessage="Current score" />,
       prop: (link: ILink) => (
         <TokenDetailsProviderWithInfura
           asset={this.props.asset}
@@ -77,7 +77,7 @@ export default class LinksList extends Component<ILinksListProps, {}> {
       ),
     },
     {
-      name: <FormattedMessage id="list.header.bids" />,
+      name: <FormattedMessage id="list.header.bids" defaultMessage="Bids" />,
       prop: (link: ILink) => {
         const { boostLinkComponent: BoostLink = DefaultBoostLink } = this.props;
 

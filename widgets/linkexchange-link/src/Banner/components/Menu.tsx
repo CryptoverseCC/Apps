@@ -5,7 +5,7 @@ import * as style from './menu.scss';
 
 const Menu = ({ onClick }) => (
   <div className={style.self} onClick={onClick}>
-    <FormattedMessage id="menu.buyLink" />
+    <FormattedMessage id="menu.buyLink" defaultMessage="Buy a Link" />
     <svg viewBox="0 0 8 8" className={style.icon}>
       <path d="M0 0v8h8v-2h-1v1h-6v-6h1v-1h-2zm4 0l1.5 1.5-2.5 2.5 1 1 2.5-2.5 1.5 1.5v-4h-4z" id="external-link" />
     </svg>

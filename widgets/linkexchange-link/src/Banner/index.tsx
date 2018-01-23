@@ -61,7 +61,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         </div>
         <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
           <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
-            <FormattedMessage id="banner.sponsoredWith" />
+            <FormattedMessage id="banner.sponsoredWith" defaultMessage="Sponsored With" />
             <TokenLogo className={style.icon} asset={widgetSettings.asset} />
           </div>
           <Switch expresion={fetched && !!currentLink}>
@@ -70,7 +70,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
             </Switch.Case>
             <Switch.Case condition={false}>
               <Label>
-                <FormattedMessage id="banner.noLinks" />
+                <FormattedMessage id="banner.noLinks" defaultMessage="No links available" />
               </Label>
             </Switch.Case>
           </Switch>

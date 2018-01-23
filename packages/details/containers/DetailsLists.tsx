@@ -38,33 +38,33 @@ const DetailsLists = ({
   <ScrollableSectionsWithMenu>
     <Menu style={{ flexBasis: '200px', minWidth: '200px' }}>
       <MenuItem>
-        <FormattedMessage id="sideMenu.slots" />
+        <FormattedMessage id="sideMenu.slots" defaultMessage="Slots" />
         <Pill style={{ marginLeft: '10px' }}>{widgetSettings.slots}</Pill>
       </MenuItem>
       <MenuItem>
         {hasWhitelist ? (
           <>
-            <FormattedMessage id="sideMenu.approved" />
+            <FormattedMessage id="sideMenu.approved" defaultMessage="Approved" />
             <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
           </>
         ) : (
           <>
-            <FormattedMessage id="sideMenu.algorithm" />
+            <FormattedMessage id="sideMenu.algorithm" defaultMessage="Algorithm" />
             <Pill style={{ marginLeft: '10px' }}>{allLinksCount}</Pill>
           </>
         )}
       </MenuItem>
       <MenuItem>
-        <FormattedMessage id="sideMenu.specification" />
+        <FormattedMessage id="sideMenu.specification" defaultMessage="Specification" />
       </MenuItem>
       <MenuItem>
-        <FormattedMessage id="sideMenu.userfeed" />
+        <FormattedMessage id="sideMenu.userfeed" defaultMessage="Userfeed" />
       </MenuItem>
     </Menu>
     <Sections>
       <Section>
         <LinksList
-          label={<FormattedMessage id="list.slots.title" />}
+          label={<FormattedMessage id="list.slots.title" defaultMessage="Slots" />}
           asset={widgetSettings.asset}
           recipientAddress={widgetSettings.recipientAddress}
           links={links}
@@ -77,7 +77,7 @@ const DetailsLists = ({
       <Section>
         {hasWhitelist ? (
           <LinksList
-            label={<FormattedMessage id="list.approved.title" />}
+            label={<FormattedMessage id="list.approved.title" defaultMessage="Approved" />}
             showProbability={false}
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
@@ -89,7 +89,7 @@ const DetailsLists = ({
           />
         ) : (
           <LinksList
-            label={<FormattedMessage id="list.algorithm.title" />}
+            label={<FormattedMessage id="list.algorithm.title" defaultMessage="Algorithm" />}
             showProbability={false}
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}

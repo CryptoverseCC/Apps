@@ -25,7 +25,7 @@ export default class WidgetSpecification extends PureComponent<IWidgetSpecificat
     return (
       <div className={style.self}>
         <h2>
-          <FormattedMessage id="widgetSpecification.title" />
+          <FormattedMessage id="widgetSpecification.title" defaultMessage="Widget Specification" />
         </h2>
         <div className={style.row}>
           <Paper style={{ flex: 1, marginRight: '15px' }}>
