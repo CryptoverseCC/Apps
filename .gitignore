@@ -1,6 +1,6 @@
 .idea/
 build/
-
+defaultMessages.json
 .DS_Store
 
 # Logs

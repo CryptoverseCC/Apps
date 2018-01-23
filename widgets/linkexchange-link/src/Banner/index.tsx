@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import classnames from 'classnames/bind';
 
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
@@ -60,14 +61,17 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         </div>
         <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
           <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
-            Sponsored with <TokenLogo className={style.icon} asset={widgetSettings.asset} />
+            <FormattedMessage id="banner.sponsoredWith" defaultMessage="Sponsored With" />
+            <TokenLogo className={style.icon} asset={widgetSettings.asset} />
           </div>
           <Switch expresion={fetched && !!currentLink}>
             <Switch.Case condition>
               {currentLink && <Link link={currentLink} lines={widgetSettings.size === 'rectangle' ? 8 : 2} />}
             </Switch.Case>
             <Switch.Case condition={false}>
-              <Label>No ads available</Label>
+              <Label>
+                <FormattedMessage id="banner.noLinks" defaultMessage="No links available" />
+              </Label>
             </Switch.Case>
           </Switch>
         </div>
@@ -77,23 +81,14 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
           timeslot={widgetSettings.timeslot}
           onLink={this._onLink}
         />
-        <Modal
-          isOpen={openedModal !== 'none'}
-          onCloseRequest={this._closeModal}
-        >
+        <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
           <Provider widgetSettings={widgetSettings}>
             <Switch expresion={openedModal}>
               <Switch.Case condition="details">
-                <WidgetDatails
-                  onAddLink={this._openModal('addLink')}
-                />
+                <WidgetDatails onAddLink={this._openModal('addLink')} />
               </Switch.Case>
               <Switch.Case condition="addLink">
-                <AddLink
-                  loadBalance
-                  asset={widgetSettings.asset}
-                  openWidgetDetails={this._openModal('details')}
-                />
+                <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._openModal('details')} />
               </Switch.Case>
             </Switch>
             <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
@@ -104,18 +99,26 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   }
 
   _fetchLinks = async () => {
-    const { apiUrl = 'https://api.userfeeds.io', recipientAddress, asset, algorithm, whitelist }
-      = this.props.widgetSettings;
-    const rankingApiUrl =
-      `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
-    const timedecayFilterAlgorithm = (algorithm === 'links') ? 'filter_timedecay/' : '';
+    const {
+      apiUrl = 'https://api.userfeeds.io',
+      recipientAddress,
+      asset,
+      algorithm,
+      whitelist,
+    } = this.props.widgetSettings;
+    const recipientAddressLower = recipientAddress.toLowerCase();
+    const assetLower = asset.toLowerCase();
+    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${assetLower};context=${recipientAddressLower}/`;
+    const timedecayFilterAlgorithm = algorithm === 'links' ? 'filter_timedecay/' : '';
     const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
     const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';
     try {
       // tslint:disable-next-line max-line-length
-      const { items: links = [] } = await fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`)
-          .then(throwErrorOnNotOkResponse)
-          .then<{ items: IRemoteLink[]; }>((res) => res.json());
+      const { items: links = [] } = await fetch(
+        `${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`,
+      )
+        .then(throwErrorOnNotOkResponse)
+        .then<{ items: IRemoteLink[] }>((res) => res.json());
       this.setState({
         fetched: true,
         links: calculateProbabilities(links),
@@ -123,40 +126,40 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     } catch (e) {
       console.info('Something went wrong 😞');
     }
-  }
+  };
 
   _openModal = (modalName: 'none' | 'details' | 'addLink') => () => this.setState({ openedModal: modalName });
 
   _closeModal = () => {
     this._openModal('none')();
     this.setState({ optionsOpen: false });
-  }
+  };
 
   _onInfoEnter = (e) => {
     this.setState({ optionsOpen: true });
     e.stopPropagation();
-  }
+  };
 
   _onInfoLeave = () => {
     setTimeout(() => this.setState({ optionsOpen: false }), 200);
-  }
+  };
 
   _openTargetUrl = () => {
     if (this.state.currentLink) {
       const linkWindow = window.open(this.state.currentLink.target, '_blank');
       linkWindow!.opener = null;
     }
-  }
+  };
 
   _onPrevClick = () => {
     this.linkProvider.prev();
-  }
+  };
 
   _onNextClick = () => {
     this.linkProvider.next();
-  }
+  };
 
   _onLink = (currentLink: ILink) => {
     this.setState({ currentLink });
-  }
+  };
 }

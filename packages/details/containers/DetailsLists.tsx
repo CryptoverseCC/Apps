@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { FormattedMessage } from 'react-intl';
 import differenceBy from 'lodash/differenceBy';
 
 import { openToast } from '@linkexchange/toast/duck';
@@ -37,35 +38,33 @@ const DetailsLists = ({
   <ScrollableSectionsWithMenu>
     <Menu style={{ flexBasis: '200px', minWidth: '200px' }}>
       <MenuItem>
-        <span>Slots</span>
+        <FormattedMessage id="sideMenu.slots" defaultMessage="Slots" />
         <Pill style={{ marginLeft: '10px' }}>{widgetSettings.slots}</Pill>
       </MenuItem>
       <MenuItem>
         {hasWhitelist ? (
           <>
-            <span>Approved</span>
-            <Pill style={{ marginLeft: '10px' }}>
-              {whitelistedLinksCount}
-            </Pill>
+            <FormattedMessage id="sideMenu.approved" defaultMessage="Approved" />
+            <Pill style={{ marginLeft: '10px' }}>{whitelistedLinksCount}</Pill>
           </>
         ) : (
           <>
-            <span>Algorithm</span>
+            <FormattedMessage id="sideMenu.algorithm" defaultMessage="Algorithm" />
             <Pill style={{ marginLeft: '10px' }}>{allLinksCount}</Pill>
           </>
         )}
       </MenuItem>
       <MenuItem>
-        <span>Specification</span>
+        <FormattedMessage id="sideMenu.specification" defaultMessage="Specification" />
       </MenuItem>
       <MenuItem>
-        <span>Userfeed</span>
+        <FormattedMessage id="sideMenu.userfeed" defaultMessage="Userfeed" />
       </MenuItem>
     </Menu>
     <Sections>
       <Section>
         <LinksList
-          label="Slots"
+          label={<FormattedMessage id="list.slots.title" defaultMessage="Slots" />}
           asset={widgetSettings.asset}
           recipientAddress={widgetSettings.recipientAddress}
           links={links}
@@ -78,7 +77,7 @@ const DetailsLists = ({
       <Section>
         {hasWhitelist ? (
           <LinksList
-            label="Approved"
+            label={<FormattedMessage id="list.approved.title" defaultMessage="Approved" />}
             showProbability={false}
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
@@ -90,7 +89,7 @@ const DetailsLists = ({
           />
         ) : (
           <LinksList
-            label="Algorithm"
+            label={<FormattedMessage id="list.algorithm.title" defaultMessage="Algorithm" />}
             showProbability={false}
             asset={widgetSettings.asset}
             recipientAddress={widgetSettings.recipientAddress}
@@ -110,16 +109,13 @@ const DetailsLists = ({
         />
       </Section>
       <Section>
-        <UserfeedAddressInfo
-          recipientAddress={widgetSettings.recipientAddress}
-          linksNumber={allLinksCount}
-        />
+        <UserfeedAddressInfo recipientAddress={widgetSettings.recipientAddress} linksNumber={allLinksCount} />
       </Section>
     </Sections>
   </ScrollableSectionsWithMenu>
 );
 
-const mapStateToProps = (state: { links: ILinksState, widget: IWidgetState }, props) => {
+const mapStateToProps = (state: { links: ILinksState; widget: IWidgetState }, props) => {
   const { links, widget } = state;
   const linksInSlots = visibleLinks(state);
   const whitelistedLinks = differenceBy(links.links, linksInSlots, (a) => a.id);

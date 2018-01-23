@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
 import { TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
@@ -26,54 +27,74 @@ interface IDetailsAccordinProps {
 }
 
 export default class DetailsAccordion extends Component<IDetailsAccordinProps, {}> {
-
   render() {
-    const { widgetSettings, whitelistedLinksCount, allLinksCount, hasWhitelist,
-      links, whitelistedLinks, allLinks } = this.props;
+    const {
+      widgetSettings,
+      whitelistedLinksCount,
+      allLinksCount,
+      hasWhitelist,
+      links,
+      whitelistedLinks,
+      allLinks,
+    } = this.props;
 
     return (
       <div className={style.self}>
         <Paper>
           <Accordion
             className={style.accordion}
-            title={<p className={style.accordionHeader}>Slots <Pill>{widgetSettings.slots}</Pill></p>}
+            title={
+              <p className={style.accordionHeader}>
+                <FormattedMessage id="list.slots.title" defaultMessage="Slots" /> <Pill>{widgetSettings.slots}</Pill>
+              </p>
+            }
           >
-            <SimpleLinksList asset={widgetSettings.asset} links={links}/>
+            <SimpleLinksList asset={widgetSettings.asset} links={links} />
           </Accordion>
         </Paper>
         <Paper>
           <Accordion
             className={style.accordion}
-            title={<p className={style.accordionHeader}>Approved <Pill>{whitelistedLinksCount}</Pill></p>}
+            title={
+              <p className={style.accordionHeader}>
+                <FormattedMessage id="list.approved.title" defaultMessage="Approved" />{' '}
+                <Pill>{whitelistedLinksCount}</Pill>
+              </p>
+            }
           >
             <SimpleLinksList asset={widgetSettings.asset} links={whitelistedLinks} />
           </Accordion>
         </Paper>
-        { !hasWhitelist &&
+        {!hasWhitelist && (
           <Paper>
             <Accordion
               className={style.accordion}
-              title={<p className={style.accordionHeader}>Algorithm <Pill>{allLinksCount}</Pill></p>}
+              title={
+                <p className={style.accordionHeader}>
+                  <FormattedMessage id="list.algorithm.title" defaultMessage="Algorithm" /> <Pill>{allLinksCount}</Pill>
+                </p>
+              }
             >
               <SimpleLinksList asset={widgetSettings.asset} links={allLinks} />
             </Accordion>
           </Paper>
-        }
+        )}
         <Paper>
           <Accordion
             open
             className={style.accordion}
-            title={<p className={style.accordionHeader}>Widget Specification</p>}
+            title={
+              <p className={style.accordionHeader}>
+                <FormattedMessage id="widgetSpecification.title" defaultMessage="Widget Specification" />
+              </p>
+            }
           >
             <div className={style.widgetSpecification}>
               <TextWithLabel label="Size" text={widgetSettings.size} />
               <TextWithLabel label="Type" text="Text" />
               <TextWithLabel label="Token">
                 <TokenLogo className={style.tokenLogo} asset={widgetSettings.asset} />
-                <TokenDetailsProviderWithInfura
-                  asset={widgetSettings.asset}
-                  render={({ name }) => name}
-                />
+                <TokenDetailsProviderWithInfura asset={widgetSettings.asset} render={({ name }) => name} />
               </TextWithLabel>
               <TextWithLabel label="Algorithm" text="Text" />
             </div>
@@ -83,12 +104,15 @@ export default class DetailsAccordion extends Component<IDetailsAccordinProps, {
           <Accordion
             open
             className={style.accordion}
-            title={<p className={style.accordionHeader}>Userfeed</p>}
+            title={
+              <p className={style.accordionHeader}>
+                <FormattedMessage id="userfeedsAddressInfo.title" defaultMessage="Userfeed Address" />
+              </p>
+            }
           >
             <TextWithLabel label="Userfeed address" text={widgetSettings.recipientAddress} />
           </Accordion>
         </Paper>
-
       </div>
     );
   }

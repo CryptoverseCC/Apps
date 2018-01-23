@@ -38,6 +38,7 @@
     "react-copy-to-clipboard": "5.0.1",
     "react-datepicker": "0.57.0",
     "react-dom": "16.2.0",
+    "react-intl": "^2.4.0",
     "react-redux": "5.0.6",
     "react-redux-typescript": "^2.3.0",
     "react-router-dom": "^4.1.2",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@types/react": "^16.0.28",
     "@types/react-dom": "^16.0.3",
+    "@types/react-intl": "^2.3.3",
     "@types/react-redux": "^5.0.13",
     "@types/react-router-dom": "4.2.3",
     "autoprefixer": "^7.1.2",

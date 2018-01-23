@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import web3 from '@linkexchange/utils/web3';
 import { fromWeiToString } from '@linkexchange/utils/balance';
@@ -20,26 +21,30 @@ interface ISimpleLinksListState {
 }
 
 export default class SimpleLinksList extends Component<ISimpleLinksListProps, ISimpleLinksListState> {
-
-    // ToDo make it better
-    columns = [{
-      name: 'NO',
+  // ToDo make it better
+  columns = [
+    {
+      name: <FormattedMessage id="list.header.no" defaultMessage="NO" />,
       prop: (_, index) => index + 1,
-    }, {
-      name: 'Probability',
-      prop: (link: ILink) => typeof link.probability === 'number' ? `${link.probability}%` : '-',
-    }, {
-      name: 'Bids',
+    },
+    {
+      name: <FormattedMessage id="list.header.probability" defaultMessage="Probability" />,
+      prop: (link: ILink) => (typeof link.probability === 'number' ? `${link.probability}%` : '-'),
+    },
+    {
+      name: <FormattedMessage id="list.header.bids" defaultMessage="Bids" />,
       prop: (link: ILink) => link.group_count,
-    }, {
-      name: 'Current Score',
+    },
+    {
+      name: <FormattedMessage id="list.header.score" defaultMessage="Current score" />,
       prop: (link: ILink) => (
         <TokenDetailsProviderWithInfura
           asset={this.props.asset}
           render={({ decimals }) => fromWeiToString(link.score, decimals)}
         />
       ),
-    }];
+    },
+  ];
 
   state = {
     maxRows: 5,
@@ -62,12 +67,12 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
       <div className={style.linkRow}>
         <Link link={link} />
         <div className={style.linkProperties}>
-          {this.columns.map(({ name, prop }) => (<TextWithLabel label={name} text={prop(link, index)} />))}
+          {this.columns.map(({ name, prop }) => <TextWithLabel label={name} text={prop(link, index)} />)}
         </div>
         <hr />
       </div>
     );
-  }
+  };
 
   _renderLoadMore = () => {
     if (this.state.maxRows < this.props.links.length) {
@@ -79,9 +84,9 @@ export default class SimpleLinksList extends Component<ISimpleLinksListProps, IS
     }
 
     return null;
-  }
+  };
 
   _onLoadMore = () => {
     this.setState({ maxRows: this.state.maxRows * 2 });
-  }
+  };
 }
