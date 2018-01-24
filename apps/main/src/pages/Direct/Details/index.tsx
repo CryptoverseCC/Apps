@@ -7,6 +7,7 @@ import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import widget, { IWidgetState } from '@linkexchange/ducks/widget';
 import { fetchLinks } from '@linkexchange/details/duck';
 import Modal from '@linkexchange/components/src/Modal';
+import Status from '@linkexchange/status';
 
 import * as style from './details.scss';
 
@@ -25,7 +26,6 @@ interface IDetailsState {
 }
 
 class Details extends Component<TDetailsProps, IDetailsState> {
-
   state = {
     isModalOpen: false,
   };
@@ -41,7 +41,7 @@ class Details extends Component<TDetailsProps, IDetailsState> {
     return (
       <div className={style.self}>
         <DetailsComponent standaloneMode className={style.details}>
-          <Header onAddClick={this._onAddLink}/>
+          <Header onAddClick={this._onAddLink} />
           <Lists />
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>
@@ -51,17 +51,18 @@ class Details extends Component<TDetailsProps, IDetailsState> {
             openWidgetDetails={this._closeModal}
           />
         </Modal>
+        <Status asset={widgetSettings.asset} />
       </div>
     );
   }
 
   _onAddLink = () => {
     this.setState({ isModalOpen: true });
-  }
+  };
 
   _closeModal = () => {
     this.setState({ isModalOpen: false });
-  }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);
