@@ -24,7 +24,7 @@
     "@linkexchange/details": "^0.0.145",
     "@linkexchange/ducks": "^0.0.144",
     "@linkexchange/scss-unset": "^0.0.144",
-    "@linkexchange/status": "^0.0.114",
+    "@linkexchange/status": "^0.0.144",
     "@linkexchange/toast": "^0.0.145",
     "@linkexchange/token-details-provider": "^0.0.144",
     "@linkexchange/transaction-provider": "^0.0.145",
