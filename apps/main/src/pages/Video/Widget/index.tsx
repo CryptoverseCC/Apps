@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import qs from 'qs';
+import Web3 from 'web3';
 
+import { getInfura } from '@linkexchange/utils/web3';
+import TokenDetailsProvider from '@linkexchange/token-details-provider';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import { IRemoteLink, ILink } from '@linkexchange/types/link';
 import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
@@ -24,10 +27,13 @@ interface IState {
 
 export default class Widget extends Component<IProps, IState> {
   lastFetchTime: number = 0;
+  infura: Web3;
 
   constructor(props: IProps) {
     super(props);
     const { position, ...widgetSettings } = qs.parse(props.location.search.replace('?', ''));
+    const [network] = widgetSettings.asset.split(':');
+    this.infura = getInfura(network);
 
     this.state = {
       widgetSettings,
@@ -47,7 +53,7 @@ export default class Widget extends Component<IProps, IState> {
   };
 
   render() {
-    const { currentLink, linkDuration, links, position, fetched } = this.state;
+    const { currentLink, linkDuration, links, position, fetched, widgetSettings } = this.state;
 
     if (!fetched) {
       return null;
@@ -55,7 +61,20 @@ export default class Widget extends Component<IProps, IState> {
 
     return (
       <div>
-        {currentLink && <Link link={currentLink} linkDuration={linkDuration!} tokenSymbol="BEN" position={position} />}
+        <TokenDetailsProvider
+          web3={this.infura}
+          asset={widgetSettings.asset}
+          render={(tokenDetails) =>
+            currentLink && (
+              <Link
+                link={currentLink}
+                linkDuration={linkDuration!}
+                tokenSymbol={tokenDetails.symbol}
+                position={position}
+              />
+            )
+          }
+        />
         <LinkProvider links={links} onLink={this._onLink} timeslot={this.timeslot()} />
       </div>
     );

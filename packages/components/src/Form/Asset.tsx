@@ -55,6 +55,7 @@ export const WIDGET_NETWORKS = [
     label: 'Rinkeby',
     tokens: [
       { value: ETHER, label: 'ETH (rinkeby)' },
+      { value: '0xd5cfec7b4443f7fe68f5f6fa4eec72aced241e5e', label: 'JST' },
       { value: '0x5301f5b1af6f00a61e3a78a9609d1d143b22bb8d', label: 'MG6T' },
       { value: '0x52e89f277d1624db80d8c56dd7780e99fa4d5ef6', label: 'WLS' },
       OTHER_ERC20_TOKEN,
@@ -69,7 +70,7 @@ interface IAsset {
 
 interface IAssetProps {
   asset: IAsset;
-  onChange(asset: IAsset & { isCustom?: boolean; });
+  onChange(asset: IAsset & { isCustom?: boolean });
 }
 
 interface IAssetState {
@@ -77,7 +78,6 @@ interface IAssetState {
 }
 
 export default class Asset extends Component<IAssetProps, IAssetState> {
-
   input: Input;
 
   constructor(props) {
@@ -131,7 +131,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     const dropdownTokenSelection = this._getTokensOptions(value)[0].value;
     this.setState({ dropdownTokenSelection });
     this.props.onChange({ network: value, token: '' });
-  }
+  };
 
   _onTokenChange = ({ value }) => {
     this.setState({ dropdownTokenSelection: value });
@@ -142,21 +142,21 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     if (isCustom) {
       setTimeout(() => this.input.input.focus());
     }
-  }
+  };
 
   _onAddressChange = (e: React.FormEvent<any>) => {
     const { value } = e.currentTarget;
     this.props.onChange({ network: this.props.asset.network, token: value, isCustom: true });
-  }
+  };
 
   _isCustomToken = (network, token) => {
     const tokensOptions = this._getTokensOptions(network);
     return tokensOptions.findIndex(({ value }) => value === token) === -1;
-  }
+  };
 
   _getTokensOptions = (network) => {
     return WIDGET_NETWORKS[WIDGET_NETWORKS.findIndex((e) => e.value === network)].tokens;
-  }
+  };
 
-  _onInputRef = (ref: Input) => this.input = ref;
+  _onInputRef = (ref: Input) => (this.input = ref);
 }
