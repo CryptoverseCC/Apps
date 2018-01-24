@@ -15,8 +15,10 @@ interface IProps {
 
 interface IState {
   widgetSettings: IWidgetSettings;
+  position?: 'bottom' | 'top';
   fetched: boolean;
   links: ILink[];
+  linkDuration?: number;
   currentLink?: ILink;
 }
 
@@ -25,9 +27,11 @@ export default class Widget extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+    const { position, ...widgetSettings } = qs.parse(props.location.search.replace('?', ''));
 
     this.state = {
-      widgetSettings: qs.parse(props.location.search.replace('?', '')),
+      widgetSettings,
+      position: position || 'bottom',
       fetched: false,
       links: [],
     };
@@ -43,7 +47,7 @@ export default class Widget extends Component<IProps, IState> {
   };
 
   render() {
-    const { currentLink, links, fetched } = this.state;
+    const { currentLink, linkDuration, links, position, fetched } = this.state;
 
     if (!fetched) {
       return null;
@@ -51,7 +55,7 @@ export default class Widget extends Component<IProps, IState> {
 
     return (
       <div>
-        {currentLink && <Link link={currentLink} tokenSymbol="BEN" />}
+        {currentLink && <Link link={currentLink} linkDuration={linkDuration!} tokenSymbol="BEN" position={position} />}
         <LinkProvider links={links} onLink={this._onLink} timeslot={this.timeslot()} />
       </div>
     );
@@ -96,7 +100,7 @@ export default class Widget extends Component<IProps, IState> {
     this.lastFetchTime = duration;
   };
 
-  _onLink = (currentLink: ILink) => {
-    this.setState({ currentLink });
+  _onLink = (currentLink: ILink, duration: number) => {
+    this.setState({ currentLink, linkDuration: duration });
   };
 }

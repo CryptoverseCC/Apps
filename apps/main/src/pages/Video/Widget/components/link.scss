@@ -1,12 +1,35 @@
 .self {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  background: linear-gradient(transparent, #2d2d2d, black);
   color: white;
   font-weight: bold;
   padding: 0.5em;
   min-height: 5.4em;
+  background: linear-gradient(transparent, #2d2d2d, black);
+  &.top {
+    background: linear-gradient(black, #2d2d2d, transparent);
+  }
+
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background-color:  black;
+
+    .fill {
+      background-color: white;
+    }
+  }
+
+  &.top {
+    .progress {
+      top: 0;
+    }
+  }
 
   .title {
     font-size: 1.4em;

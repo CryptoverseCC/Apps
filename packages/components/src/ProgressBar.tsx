@@ -4,14 +4,15 @@ import classnames from 'classnames';
 import * as style from './progressBar.scss';
 
 interface IProps {
-  progress: number|string;
+  progress: number | string;
   className?: string;
+  fillClassName?: string;
 }
 
-const ProgressBar = ({ progress, className }: IProps) => {
+const ProgressBar = ({ progress, className, fillClassName }: IProps) => {
   return (
     <div className={classnames(style.self, className)}>
-      <div className={style.fill} style={{ width: `${progress}px` }}/>
+      <div className={classnames(style.fill, fillClassName)} style={{ width: `${progress}%` }} />
     </div>
   );
 };
