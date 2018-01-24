@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import {withInfura} from '@linkexchange/utils/web3';
-import {AddLinkWithInjectedWeb3AndTokenDetails} from '@linkexchange/add-link';
+import { withInfura } from '@linkexchange/utils/web3';
+import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
-import {Details, Lists} from '@linkexchange/details';
-import {IWidgetState} from '@linkexchange/ducks/widget';
+import { Details, Lists } from '@linkexchange/details';
+import { IWidgetState } from '@linkexchange/ducks/widget';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
@@ -20,7 +20,7 @@ import BoostLink from './components/BoostLink';
 
 const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
 
-import {IBentynState} from '../../ducks/bentyn';
+import { IBentynState } from '../../ducks/bentyn';
 
 import * as style from './home.scss';
 
@@ -39,28 +39,20 @@ class Home extends Component<IProps, IState> {
   };
 
   render() {
-    const {widgetSettings, bentyn} = this.props;
-    const {openedModal} = this.state;
+    const { widgetSettings, bentyn } = this.props;
+    const { openedModal } = this.state;
     return (
       <div className={style.self}>
-        <Header
-          widgetSettings={widgetSettings}
-          blocks={bentyn}
-        />
+        <Header widgetSettings={widgetSettings} blocks={bentyn} />
         <Details standaloneMode className={style.details}>
           <BlocksTillConclusionProvider
             startBlock={bentyn.startBlock}
             endBlock={bentyn.endBlock}
             asset={widgetSettings.asset}
-            render={({enabled, reason}) => (
+            render={({ enabled, reason }) => (
               <div className={style.addLinkContainer}>
                 <Tooltip text={reason}>
-                  <Button
-                    disabled={!enabled}
-                    color="empty"
-                    className={style.addLink}
-                    onClick={this._addLink}
-                  >
+                  <Button disabled={!enabled} color="empty" className={style.addLink} onClick={this._addLink}>
                     Add link
                   </Button>
                 </Tooltip>
@@ -73,7 +65,7 @@ class Home extends Component<IProps, IState> {
             asset={widgetSettings.asset}
             className={style.blocksTillConclusion}
           />
-          <Lists boostLinkComponent={BoostLink}/>
+          <Lists boostLinkComponent={BoostLink} />
         </Details>
         <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
           <Switch expresion={this.state.openedModal}>
@@ -85,9 +77,7 @@ class Home extends Component<IProps, IState> {
               />
             </Switch.Case>
             <Switch.Case condition="HowToBuy">
-              <HowToBuy
-                gotBens={this._closeModal}
-              />
+              <HowToBuy gotBens={this._closeModal} />
             </Switch.Case>
             <Switch.Case condition="Welcome">
               <Welcome
@@ -106,19 +96,19 @@ class Home extends Component<IProps, IState> {
   }
 
   _addLink = () => {
-    this.setState({openedModal: 'AddLink'});
-  }
+    this.setState({ openedModal: 'AddLink' });
+  };
 
   _closeModal = () => {
-    this.setState({openedModal: 'none'});
-  }
+    this.setState({ openedModal: 'none' });
+  };
 
   _purchaseBens = () => {
-    this.setState({openedModal: 'HowToBuy'});
-  }
+    this.setState({ openedModal: 'HowToBuy' });
+  };
 }
 
-const mapStateToProps = ({widget, bentyn}: { widget: IWidgetState, bentyn: IBentynState }) => ({
+const mapStateToProps = ({ widget, bentyn }: { widget: IWidgetState; bentyn: IBentynState }) => ({
   bentyn,
   widgetSettings: widget,
 });

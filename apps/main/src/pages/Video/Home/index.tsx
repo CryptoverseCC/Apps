@@ -12,6 +12,7 @@ import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
+import Status from '@linkexchange/status';
 
 import Header from './components/Header';
 import BoostLink from './components/BoostLink';
@@ -76,6 +77,7 @@ class Home extends Component<IProps, IState> {
             </Switch.Case>
           </Switch>
         </Modal>
+        <Status asset={widgetSettings.asset} />
       </div>
     );
   }
