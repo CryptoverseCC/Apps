@@ -66,9 +66,9 @@ export default class Link extends Component<IProps, IState> {
 
   _runProgress = () => {
     this.timeout = window.setTimeout(() => {
-      const linkProgress = (Date.now() - this.startTime) / (this.props.linkDuration - 100) * 100;
+      const linkProgress = Math.round((Date.now() - this.startTime) / (this.props.linkDuration - 100) * 100);
       this.setState({ linkProgress });
       this._runProgress();
-    }, 100);
+    }, 1000 / 60);
   };
 }
