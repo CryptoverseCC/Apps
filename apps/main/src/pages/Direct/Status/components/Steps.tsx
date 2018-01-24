@@ -65,11 +65,11 @@ class Progress extends Component<IProgressProps, IProgressState> {
       const rowDirection = step0DOMNode.offsetTop === step1DOMNode.offsetTop;
 
       fillStyle.width = fillStyle.maxWidth = rowDirection
-        ? `${lastDoneDOMNode.offsetLeft + lastDoneDOMNode.offsetWidth / 2}px`
+        ? lastDoneElement === step2Ref ? '100%' : `${lastDoneDOMNode.offsetLeft + lastDoneDOMNode.offsetWidth / 2}px`
         : '100%';
 
       fillStyle.height = fillStyle.maxHeight = !rowDirection
-        ? `${lastDoneDOMNode.offsetTop + lastDoneDOMNode.offsetHeight / 2}px`
+        ? lastDoneElement === step2Ref ? '100%' : `${lastDoneDOMNode.offsetTop + lastDoneDOMNode.offsetHeight / 2}px`
         : '100%';
     }
 

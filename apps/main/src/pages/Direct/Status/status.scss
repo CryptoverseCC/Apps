@@ -83,6 +83,7 @@
     padding-top: 30px;
     text-align: left;
     font-size: 15px;
+    overflow: hidden;
   }
 
   .label {
@@ -92,7 +93,6 @@
   .text {
     display: flex;
     flex-direction: row;
-    white-space: nowrap;
   }
 
   .link {
