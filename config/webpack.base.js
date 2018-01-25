@@ -13,61 +13,69 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   module: {
-    loaders: [{
-      test: /\.tsx?$/,
-      exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,
-      loader: 'awesome-typescript-loader',
-      options: {
+    loaders: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,
+        loader: 'awesome-typescript-loader',
+        options: {},
       },
-    }, {
-      test: /\.scss$/,
-      exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,
-      use: [{
-        loader: 'style-loader',
-      }, {
-        loader: 'typings-for-css-modules-loader',
-        options: {
-          namedExport: true,
-          modules: true,
-          importLoaders: 1,
-          sourceMap: true,
-          camelCase: true,
-          localIdentName: '[name]__[local]--[hash:base64:5]',
-        },
-      }, {
-        loader: 'postcss-loader',
-        options: {
-          sourceMap: true,
-          config: {
-            path: path.join(process.cwd(), 'postcss.config.js'),
-          }
-        },
-      }, {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true,
-          outputStyle: 'expanded',
-        },
-      }],
-    }, {
-      test: /\.(css|scss)$/,
-      include: /node_modules\/(?!@userfeeds|@linkexchange)/,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
-    }, {
-      test: /\.(png|jpg|gif)$/,
-      loader: 'url-loader',
-    }, {
-      test: /\.(woff|ttf|eot|svg|otf)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
-      loader: 'url-loader?limit=100000',
-    }],
+      {
+        test: /\.scss$/,
+        exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'typings-for-css-modules-loader',
+            options: {
+              namedExport: true,
+              modules: true,
+              importLoaders: 1,
+              sourceMap: true,
+              camelCase: true,
+              localIdentName: '[name]__[local]--[hash:base64:5]',
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              config: {
+                path: path.join(process.cwd(), 'postcss.config.js'),
+              },
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              outputStyle: 'expanded',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(css|scss)$/,
+        include: /node_modules\/(?!@userfeeds|@linkexchange)/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'url-loader',
+      },
+      {
+        test: /\.(woff|ttf|eot|svg|otf)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
+        loader: 'url-loader?limit=100000',
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(process.cwd(), 'index.html'),
     }),
-    new webpack.WatchIgnorePlugin([
-      /scss\.d\.ts$/
-    ]),
+    new webpack.WatchIgnorePlugin([/scss\.d\.ts$/]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || 'development',
     }),
@@ -75,7 +83,7 @@ module.exports = {
     // new webpack.optimize.ModuleConcatenationPlugin(), // ToDo read about this.
   ],
   devServer: {
-    compress: true,    
+    compress: true,
     historyApiFallback: true,
     disableHostCheck: true,
   },
