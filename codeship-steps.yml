@@ -11,13 +11,13 @@
       command: /apps/releaseProd.sh
 
 - type: serial
-  tag: (v\d+\.\d+\.\d+)
+  tag: ^v\d+\.\d+\.\d+
   steps:
     - service: apps
       command: /apps/releaseWidget.sh
 
 - type: serial
-  exclude: (master|\d+\.\d+\.\d+)
+  exclude: ^(master|\d+\.\d+\.\d+)
   steps:
     - service: apps
       command: echo 'dumb script'
