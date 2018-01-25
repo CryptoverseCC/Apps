@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.145",
+  "version": "0.0.146",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "@linkexchange/details": "^0.0.145",
     "@linkexchange/ducks": "^0.0.144",
     "@linkexchange/modal": "^0.0.145",
-    "@linkexchange/scss-unset": "^0.0.144",
+    "@linkexchange/scss-unset": "^0.0.146",
     "@linkexchange/toast": "^0.0.145",
     "@linkexchange/token-details-provider": "^0.0.144",
     "@linkexchange/types": "^0.0.144",
