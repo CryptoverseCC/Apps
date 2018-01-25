@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/add-link",
-  "version": "0.0.145",
+  "version": "0.0.147",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -11,12 +11,12 @@
   "dependencies": {
     "@linkexchange/components": "^0.0.145",
     "@linkexchange/toast": "^0.0.145",
-    "@linkexchange/token-details-provider": "^0.0.144",
+    "@linkexchange/token-details-provider": "^0.0.147",
     "@linkexchange/transaction-provider": "^0.0.145",
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.144",
-    "@linkexchange/web3-state-provider": "^0.0.144",
-    "@userfeeds/core": "^0.0.144"
+    "@linkexchange/web3-state-provider": "^0.0.147",
+    "@userfeeds/core": "^0.0.147"
   },
   "peerDependencies": {
     "@linkexchange/ducks": "^0.0.143"
