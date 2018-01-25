@@ -6,6 +6,8 @@ COPY . /apps
 
 WORKDIR /apps
 
+RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" ~/.npmrc
+
 RUN yarn
 
 RUN yarn test
