@@ -1,16 +1,16 @@
 {
   "private": true,
-  "name": "@linkexchange/app-bentyn",
+  "name": "@linkexchange/bentyn",
   "version": "0.0.145",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js || exit 0",
-    "build-stagging": "cross-env NODE_ENV=stagging webpack --config webpack.config.prod.js || exit 0",
+    "build-test": "cross-env NODE_ENV=stagging webpack --config webpack.config.prod.js",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "deploy-test":
       "firebase deploy -P default --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
-    "deploy-prod": "firebase deploy -P prod --token $FIREBASE_TOKEN "
+    "deploy": "firebase deploy -P prod --token $FIREBASE_TOKEN "
   },
   "author": "",
   "license": "ISC",

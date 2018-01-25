@@ -10,6 +10,6 @@ RUN yarn
 
 RUN yarn test
 
-RUN yarn lerna run build-stagging
+RUN yarn lerna run build-test
 
 WORKDIR /

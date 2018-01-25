@@ -5,6 +5,12 @@
       command: /apps/release.sh
 
 - type: serial
+  tag: prod-release
+  steps:
+    - service: apps
+      command: /apps/releaseProd.sh
+
+- type: serial
   exclude: (master|\d+\.\d+\.\d+)
   steps:
     - service: apps

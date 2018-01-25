@@ -1,13 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "lint": "tslint -c tslint.json `find . -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\" | grep -v \"node_modules\"`",
+    "lint":
+      "tslint -c tslint.json `find . -type f -name \"*.ts\" -and -not -name \"*.scss.d.ts\" -or -name \"*.tsx\" | grep -v \"node_modules\"`",
     "pretest": "yarn run lint",
     "test": "jest",
     "lerna": "lerna",
     "lerna-clean": "lerna clean --yes",
-    "lerna-publish": "lerna publish",
-    "lerna-bootstrap": "lerna bootstrap --hoist",
+    "lerna-publish": "lerna publish --skip-npm",
     "generate-typings": "node ./generateTypingsForScss.js",
     "prepare": "yarn generate-typings"
   },
@@ -27,24 +27,14 @@
     "typed-css-modules": "^0.3.1",
     "typescript-react-intl": "^0.2.1"
   },
-  "workspaces": [
-    "packages/*",
-    "apps/*",
-    "widgets/*"
-  ],
+  "workspaces": ["packages/*", "apps/*", "widgets/*"],
   "jest": {
     "transform": {
       ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(.*\\.(test|spec))\\.(ts|tsx)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/(?!@userfeeds|@linkexchange).*"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "transformIgnorePatterns": ["/node_modules/(?!@userfeeds|@linkexchange).*"],
     "globals": {
       "ts-jest": {
         "tsConfigFile": "./tsconfig.json"

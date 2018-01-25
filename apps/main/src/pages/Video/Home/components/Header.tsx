@@ -47,4 +47,6 @@ const Header = (props: IProps) => (
   </div>
 );
 
-export default withRouter(withInfuraAndTokenDetails(Header));
+// ToDo fix when withRouter will be have valid signature
+const wrappedHeader: React.ComponentClass<any> = withRouter(withInfuraAndTokenDetails(Header));
+export default wrappedHeader;
