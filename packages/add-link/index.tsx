@@ -33,11 +33,12 @@ const mapDispatchToProps = (dispatch) => ({
 const State2Props = returntypeof(mapsStateToProps);
 const Dispatch2Props = returntypeof(mapDispatchToProps);
 
-type TAddLinkModalProps = typeof State2Props & typeof Dispatch2Props & {
-  web3: Web3;
-  tokenDetails: ITokenDetails;
-  openWidgetDetails(): void;
-};
+type TAddLinkModalProps = typeof State2Props &
+  typeof Dispatch2Props & {
+    web3: Web3;
+    tokenDetails: ITokenDetails;
+    openWidgetDetails(): void;
+  };
 
 interface IAddLinkModalState {
   step: 'form' | 'congratulations';
@@ -64,9 +65,9 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
     return (
       <div className={style.self}>
         <div className={style.header}>
-          <BackButton style={{marginRight: 'auto', marginLeft: '-20px'}} onClick={this.props.openWidgetDetails} />
+          <BackButton style={{ marginRight: 'auto', marginLeft: '-20px' }} onClick={this.props.openWidgetDetails} />
           <h2>Create a new link</h2>
-          <div style={{marginLeft: 'auto'}}>
+          <div style={{ marginLeft: 'auto' }}>
             <LightText>Balance:</LightText> {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}
           </div>
         </div>
@@ -107,18 +108,18 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
       .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
 
     this.setState({ link: { ...DEFAULT_LINK, ...notEmptyProperties } });
-  }
+  };
 
   _onSuccess = (linkId) => {
     this.setState({
       linkId,
       step: 'congratulations',
     });
-  }
+  };
 
   _onError = (e) => {
     this.props.openToast('Transation rejected ' + e);
-  }
+  };
 }
 
 const connectedComponent = connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
