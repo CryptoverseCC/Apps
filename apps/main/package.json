@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/app",
-  "version": "0.0.147",
+  "version": "0.0.148",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/add-link": "^0.0.147",
+    "@linkexchange/add-link": "^0.0.148",
     "@linkexchange/blocks-till-conclusion": "^0.0.147",
     "@linkexchange/blocks-till-conclusion-provider": "^0.0.147",
     "@linkexchange/boost-link": "^0.0.147",
