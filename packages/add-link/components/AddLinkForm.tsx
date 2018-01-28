@@ -14,9 +14,7 @@ import { R, validate } from '@linkexchange/utils/validation';
 import TransactionProvider from '@linkexchange/transaction-provider';
 import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
 
-import {
-  locationWithoutQueryParamsIfLinkExchangeApp,
-} from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
+import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import * as style from './addLinkForm.scss';
 
@@ -127,7 +125,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         return true;
       }, 'Invalid value'),
     ],
-  })
+  });
 
   _onInput = (e) => {
     const { value, name } = e.target;
@@ -145,17 +143,14 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         }
       },
     );
-  }
+  };
 
   _onUnlimitedApprovalChange = (e) => {
     this.setState({ unlimitedApproval: e.target.checked });
-  }
+  };
 
   _minimalValueRule = () =>
-    R.value(
-      (v: string) => parseInt(v, 10) >= (this.props.minimalValue || 0),
-      `Has to be greater than minimal value.`,
-  )
+    R.value((v: string) => parseInt(v, 10) >= (this.props.minimalValue || 0), `Has to be greater than minimal value.`);
 
   _validateAll = () => {
     const errors = ['title', 'summary', 'target', 'value'].reduce((acc, name) => {
@@ -164,7 +159,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
     }, {});
     this.setState({ errors });
     return Object.keys(errors).length === 0;
-  }
+  };
 
   _onSubmit = () => {
     if (!this._validateAll()) {
@@ -180,45 +175,37 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
 
     let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
     if (token) {
-      sendClaimPromise = core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token)
-        .then((allowance) => {
-          let promise: Promise<any> = Promise.resolve(null);
-          if (new BN(allowance).lte(new BN(toPayWei))) {
-            promise = core.ethereum.claims.approveUserfeedsContractTokenTransfer(
-              web3,
-              token,
-              unlimitedApproval ? MAX_VALUE_256 : toPayWei,
-            ).then(({ promiEvent }) => resolveOnTransationHash(promiEvent));
-          }
+      sendClaimPromise = core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token).then((allowance) => {
+        let promise: Promise<any> = Promise.resolve(null);
+        if (new BN(allowance).lte(new BN(toPayWei))) {
+          promise = core.ethereum.claims
+            .approveUserfeedsContractTokenTransfer(web3, token, unlimitedApproval ? MAX_VALUE_256 : toPayWei)
+            .then(({ promiEvent }) => resolveOnTransationHash(promiEvent));
+        }
 
-          return promise.then(() => core.ethereum.claims.sendClaimTokenTransfer(
-            web3,
-            recipientAddress,
-            token,
-            value,
-            claim,
-          ));
-        });
+        return promise.then(() =>
+          core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, claim),
+        );
+      });
     } else {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
     }
 
-    sendClaimPromise
-      .then(({ promiEvent }) => {
-        promiEvent
-          .on('transactionHash', (linkId) => {
-            this.props.onSuccess(linkId);
-          })
-          .on('error', (e) => {
-            this.props.onError(e.message);
-          });
-      });
+    sendClaimPromise.then(({ promiEvent }) => {
+      promiEvent
+        .on('transactionHash', (linkId) => {
+          this.props.onSuccess(linkId);
+        })
+        .on('error', (e) => {
+          this.props.onError(e.message);
+        });
+    });
     return sendClaimPromise;
-  }
+  };
 
   _createClaim() {
     const { target, title, summary } = this.state;
-    const location = locationWithoutQueryParamsIfLinkExchangeApp();
+    const location = urlWithoutQueryIfLinkExchangeApp();
 
     return {
       type: ['link'],

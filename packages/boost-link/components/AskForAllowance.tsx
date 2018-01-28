@@ -13,7 +13,7 @@ import * as style from './askForAllowanca.scss';
 interface IProps {
   positionInSlots: number | null;
   tokenDetails: ITokenDetails;
-  startTransaction(unlimitedApproval: boolean): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
+  startTransaction(unlimitedApproval: boolean): Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
 }
 
 interface IState {
@@ -21,7 +21,6 @@ interface IState {
 }
 
 export default class AskForAllowance extends Component<IProps> {
-
   state = {
     unlimited: false,
   };
@@ -46,12 +45,8 @@ export default class AskForAllowance extends Component<IProps> {
         </div>
         <TranscactionProvider
           startTransaction={this._startTransaction}
-          renderReady={() => (
-            <Footom type="confirm" />
-          )}
-          renderMetaPending={() => (
-            <Footom type="metamask" />
-          )}
+          renderReady={() => <Footom type="confirm" />}
+          renderMetaPending={() => <Footom type="metamask" />}
         />
       </>
     );
@@ -59,5 +54,5 @@ export default class AskForAllowance extends Component<IProps> {
 
   _startTransaction = () => {
     return this.props.startTransaction(this.state.unlimited);
-  }
+  };
 }

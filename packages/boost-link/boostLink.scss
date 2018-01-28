@@ -22,11 +22,14 @@
     min-width: 280px;
     min-height: 330px;
     z-index: 4;
-    display: flex;
-    border-radius:3px;
-    flex-direction: column;
+    border-radius: 3px;
     transition: opacity 0.2s;
     box-shadow: 0px 10px 60px rgba(27,36,55,0.3);
     background-color: $white;
+  }
+
+  .slide-container {
+    display: flex;
+    flex-direction: column;
   }
 }

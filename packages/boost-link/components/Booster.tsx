@@ -32,7 +32,6 @@ interface IState {
 }
 
 export default class Booster extends Component<IProps, IState> {
-
   constructor(props: IProps) {
     super(props);
 
@@ -46,6 +45,7 @@ export default class Booster extends Component<IProps, IState> {
       probability: null,
     };
   }
+
   render() {
     const { tokenDetails, link } = this.props;
     const { isInSlots, inputError, toPay, probability, positionInSlots, hasInsufficientFunds } = this.state;
@@ -73,33 +73,30 @@ export default class Booster extends Component<IProps, IState> {
             />
           </>
         )}
-        {!isInSlots && positionInSlots === null && (
-          <div className={style.toAdd} onClick={this._boostToBeInSlots}>
-            <p>Add</p>
-            <p className={style.value}>{this._toAddToBeInSlots()}</p>
-            <p>to be in slots.</p>
-          </div>
-        )}
-        {!isInSlots && positionInSlots !== null && (
-          <div className={style.notInSlots}>
-            <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
-          </div>
-        )}
+        {!isInSlots &&
+          positionInSlots === null && (
+            <div className={style.toAdd} onClick={this._boostToBeInSlots}>
+              <p>Add</p>
+              <p className={style.value}>{this._toAddToBeInSlots()}</p>
+              <p>to be in slots.</p>
+            </div>
+          )}
+        {!isInSlots &&
+          positionInSlots !== null && (
+            <div className={style.notInSlots}>
+              <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
+            </div>
+          )}
         <div className={style.footer}>
           <div className={style.toPay}>
-            <input
-              type="text"
-              className={style.input}
-              value={toPay}
-              onChange={this._onInputChange}
-            />
+            <input type="text" className={style.input} value={toPay} onChange={this._onInputChange} />
             <span className={style.error}>{inputError}</span>
           </div>
           <div
             className={cx(style.next, { disabled: !!inputError || hasInsufficientFunds || this._isZero(toPay) })}
             onClick={this._onSendClick}
           >
-            <Icon name="arrow-right" className={style.icon}/>
+            <Icon name="arrow-right" className={style.icon} />
           </div>
         </div>
       </>
@@ -108,15 +105,15 @@ export default class Booster extends Component<IProps, IState> {
 
   _isZero = (amount) => {
     return new BigNumber(amount).isZero();
-  }
+  };
 
   _boostToBeInSlots = () => {
     const toAdd = this._toAddToBeInSlots();
     const { toPay } = this.state;
 
     const totalToPay = new BigNumber(toPay).add(toAdd).toString(10);
-    this._onInputChange({ target: { value: totalToPay }} as ChangeEvent<HTMLInputElement>); // ToDo make it better
-  }
+    this._onInputChange({ target: { value: totalToPay } } as ChangeEvent<HTMLInputElement>); // ToDo make it better
+  };
 
   _toAddToBeInSlots = () => {
     const { link, linksInSlots, tokenDetails } = this.props;
@@ -129,7 +126,7 @@ export default class Booster extends Component<IProps, IState> {
       .toString();
 
     return fromWeiToString(toAdd, tokenDetails.decimals, tokenDetails.decimals);
-  }
+  };
 
   _onSendClick = () => {
     const { inputError, hasInsufficientFunds } = this.state;
@@ -138,15 +135,18 @@ export default class Booster extends Component<IProps, IState> {
     }
 
     this.props.onSend(this.state.toPay, this.state.positionInSlots);
-  }
+  };
 
   _onSliderChange = (newProbability: number) => {
     const { link, linksInSlots, tokenDetails } = this.props;
     const { sum } = this.state;
 
     let toPayWei;
-    toPayWei = new BigNumber(100).mul(link.score.toFixed(0)).sub(sum.mul(newProbability))
-        .div((newProbability - 100).toFixed(1)).truncated();
+    toPayWei = new BigNumber(100)
+      .mul(link.score.toFixed(0))
+      .sub(sum.mul(newProbability))
+      .div((newProbability - 100).toFixed(1))
+      .truncated();
     if (toPayWei.lt(0)) {
       toPayWei = new BigNumber(0);
     }
@@ -159,7 +159,7 @@ export default class Booster extends Component<IProps, IState> {
     } else {
       this.setState({ toPay, positionInSlots, probability: newProbability, hasInsufficientFunds: false });
     }
-  }
+  };
 
   _onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputError = this._validateInputValue(e.target.value);
@@ -177,7 +177,11 @@ export default class Booster extends Component<IProps, IState> {
     let positionInSlots;
     if (isInSlots) {
       const probability = linkTotalScore
-        .div(sum.add(toPayWei)).mul(1000).round().div(10).toNumber();
+        .div(sum.add(toPayWei))
+        .mul(1000)
+        .round()
+        .div(10)
+        .toNumber();
       positionInSlots = this._getLinkPosition(linkTotalScore, link, linksInSlots);
 
       this.setState({ probability });
@@ -210,16 +214,16 @@ export default class Booster extends Component<IProps, IState> {
     } else {
       this.setState({ toPay, positionInSlots, hasInsufficientFunds: false, inputError: '' });
     }
-  }
+  };
 
   _getLinkPosition = (linkTotalScore: BigNumber, link: IRemoteLink, links: IRemoteLink[]) => {
     const positionInSlots = links
-      .map((l) => l === link ? linkTotalScore : new BigNumber(l.score.toFixed(0)))
+      .map((l) => (l === link ? linkTotalScore : new BigNumber(l.score.toFixed(0))))
       .sort((a, b) => b.comparedTo(a))
       .indexOf(linkTotalScore);
 
     return positionInSlots >= 0 ? positionInSlots : null;
-  }
+  };
 
   _validateInputValue = (value: string) => {
     const rules = [
@@ -235,10 +239,10 @@ export default class Booster extends Component<IProps, IState> {
     ];
 
     return validate(rules, value);
-  }
+  };
 
   _getLinkProbability = (): number => {
     const { link } = this.props;
     return (link as ILink).probability;
-  }
+  };
 }

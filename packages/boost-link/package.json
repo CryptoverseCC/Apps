@@ -14,6 +14,10 @@
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.144",
     "@userfeeds/core": "^0.0.147",
-    "bignumber.js": "5.0.0"
+    "bignumber.js": "5.0.0",
+    "react-transition-group": "^2.2.1"
+  },
+  "devDependencies": {
+    "@types/react-transition-group": "^2.0.6"
   }
 }

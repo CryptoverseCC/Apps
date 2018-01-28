@@ -14,28 +14,25 @@ interface IProps {
   amount: string;
   positionInSlots: number | null;
   tokenDetails: ITokenDetails;
-  startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
+  startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
 }
 
 export default class Confirmation extends Component<IProps> {
-
   render() {
     const { amount, positionInSlots, tokenDetails, startTransaction } = this.props;
     return (
       <>
         <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
         <div className={style.body}>
-          <p className={style.value}>{amount} {tokenDetails.symbol}</p>
+          <p className={style.value}>
+            {amount} {tokenDetails.symbol}
+          </p>
           <p>Payment</p>
         </div>
         <TranscactionProvider
           startTransaction={startTransaction}
-          renderReady={() => (
-            <Footom type="confirm" />
-          )}
-          renderMetaPending={() => (
-            <Footom type="metamask" />
-          )}
+          renderReady={() => <Footom type="confirm" />}
+          renderMetaPending={() => <Footom type="metamask" />}
         />
       </>
     );

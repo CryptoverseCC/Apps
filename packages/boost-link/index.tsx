@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
+import { TransitionGroup } from 'react-transition-group';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import core from '@userfeeds/core/src';
 import Button from '@linkexchange/components/src/Button';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import { IRemoteLink } from '@linkexchange/types/link';
-import {
-  locationWithoutQueryParamsIfLinkExchangeApp,
-} from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
+import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import If from '@linkexchange/components/src/utils/If';
-import Switch from '@linkexchange/components/src/utils/Switch';
+import { toWei } from '@linkexchange/utils/balance';
 
+import Slide from './components/Slide';
 import Booster from './components/Booster';
 import Confirmation from './components/Confirmation';
 import AskForAllowance from './components/AskForAllowance';
 
 import * as style from './boostLink.scss';
-import { toWei } from '../utils/balance';
 
 interface IBidLinkProps {
   web3: Web3;
@@ -64,37 +64,41 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         </Tooltip>
         <If condition={visible && !disabled}>
           <div className={style.overlay} onClick={this._close} />
-          <div
+          <TransitionGroup
             ref={this._onFormRef}
             className={style.form}
             style={{ top: formTop, left: formLeft, opacity: formOpacity }}
           >
-            <Switch expresion={stage}>
-              <Switch.Case condition="booster">
+            {stage === 'booster' && (
+              <Slide key="booster" className={style.slideContainer}>
                 <Booster
                   link={link}
                   linksInSlots={linksInSlots}
                   tokenDetails={tokenDetails}
                   onSend={this._onSendClick}
                 />
-              </Switch.Case>
-              <Switch.Case condition="allowance">
+              </Slide>
+            )}
+            {stage === 'allowance' && (
+              <Slide key="allowance" className={style.slideContainer}>
                 <AskForAllowance
                   positionInSlots={positionInSlots!}
                   tokenDetails={tokenDetails}
                   startTransaction={this._onAllowance}
                 />
-              </Switch.Case>
-              <Switch.Case condition="confirmation">
+              </Slide>
+            )}
+            {stage === 'confirmation' && (
+              <Slide key="confirmation" className={style.slideContainer}>
                 <Confirmation
                   amount={amount!}
                   positionInSlots={positionInSlots!}
                   tokenDetails={tokenDetails}
                   startTransaction={this._onConfirm}
                 />
-              </Switch.Case>
-            </Switch>
-          </div>
+              </Slide>
+            )}
+          </TransitionGroup>
         </If>
       </div>
     );
@@ -102,10 +106,11 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   _onButtonRef = (ref) => (this._buttonRef = ref);
 
-  _onFormRef = (ref: HTMLDivElement) => {
-    if (!ref) {
+  _onFormRef = (elmRef) => {
+    if (!elmRef) {
       return;
     }
+    const ref = findDOMNode(elmRef);
 
     setTimeout(() => {
       const buttonRect = this._buttonRef.getBoundingClientRect();
@@ -133,16 +138,16 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
       this.setState({ formTop, formLeft, formOpacity: 1 });
     });
-  }
+  };
 
   _onBoostClick = () => {
     this.setState({ visible: true, formOpacity: 0 });
-  }
+  };
 
   _close = () => {
     this.setState({ visible: false });
     this.setState({ stage: 'booster' });
-  }
+  };
 
   _onSendClick = async (toPay: string, positionInSlots: number | null) => {
     const { web3, asset, tokenDetails } = this.props;
@@ -158,7 +163,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     }
 
     this.setState({ stage: nextStage, amount: toPay, positionInSlots });
-  }
+  };
 
   _onAllowance = (unlimited: boolean) => {
     const { asset, web3, tokenDetails } = this.props;
@@ -172,24 +177,22 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     );
 
     approvePromise.then(({ promiEvent }) => {
-      promiEvent
-        .on('transactionHash', () => this.setState({ stage: 'confirmation' }))
-        .on('error', (e) => {
-          if (this.props.onError) {
-            this.props.onError(e);
-          }
-          this._close();
-        });
+      promiEvent.on('transactionHash', () => this.setState({ stage: 'confirmation' })).on('error', (e) => {
+        if (this.props.onError) {
+          this.props.onError(e);
+        }
+        this._close();
+      });
     });
 
     return approvePromise;
-  }
+  };
 
   _onConfirm = () => {
     const { asset, recipientAddress, web3 } = this.props;
     const { amount: toPay } = this.state;
     const { id } = this.props.link;
-    const location = locationWithoutQueryParamsIfLinkExchangeApp();
+    const location = urlWithoutQueryIfLinkExchangeApp();
 
     const claim = {
       claim: { target: id },
@@ -202,15 +205,9 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     };
 
     const [_, token] = this.props.asset.split(':');
-    let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt>}>;
+    let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
     if (token) {
-      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(
-        web3,
-        recipientAddress,
-        token,
-        toPay,
-        claim,
-      );
+      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, toPay, claim);
     } else {
       sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, toPay, claim);
     }
@@ -232,5 +229,5 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     });
 
     return sendClaimPromise;
-  }
+  };
 }
