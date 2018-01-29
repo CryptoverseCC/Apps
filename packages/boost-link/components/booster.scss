@@ -27,21 +27,19 @@
 }
 
 .to-add {
-  cursor: pointer;
   font-weight: normal;
-  margin-top: 20px;
-  width: 120px;
-  height: 120px;
-  border: 3px solid #09d57c;
-  border-radius: 60px;
-  align-self: center;
+  width: 200px;
+  flex-grow: 1;
   display: flex;
+  align-self: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   .value {
+    cursor: pointer;
     font-weight: bold;
+    border-bottom: 1px dashed #263FFF;
   }
 }
 

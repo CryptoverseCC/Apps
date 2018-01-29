@@ -8,7 +8,7 @@ import TranscactionProvider from '@linkexchange/transaction-provider';
 import Header from './Header';
 import Footom from './Footton';
 
-import * as style from './askForAllowanca.scss';
+import * as style from './askForAllowance.scss';
 
 interface IProps {
   positionInSlots: number | null;

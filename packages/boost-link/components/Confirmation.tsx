@@ -19,16 +19,11 @@ interface IProps {
 
 export default class Confirmation extends Component<IProps> {
   render() {
-    const { amount, positionInSlots, tokenDetails, startTransaction } = this.props;
+    const { amount, positionInSlots, tokenDetails, startTransaction, children } = this.props;
     return (
       <>
         <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
-        <div className={style.body}>
-          <p className={style.value}>
-            {amount} {tokenDetails.symbol}
-          </p>
-          <p>Payment</p>
-        </div>
+        <div className={style.body}>{children}</div>
         <TranscactionProvider
           startTransaction={startTransaction}
           renderReady={() => <Footom type="confirm" />}
