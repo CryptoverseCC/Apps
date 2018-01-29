@@ -8,7 +8,7 @@ import TranscactionProvider from '@linkexchange/transaction-provider';
 import Header from './Header';
 import Footom from './Footton';
 
-import * as style from './askForAllowanca.scss';
+import * as style from './askForAllowance.scss';
 
 interface IProps {
   positionInSlots: number | null;
@@ -43,16 +43,12 @@ export default class AskForAllowance extends Component<IProps> {
             Don’t ask me again
           </label>
         </div>
-        <TranscactionProvider
-          startTransaction={this._startTransaction}
-          renderReady={() => <Footom type="confirm" />}
-          renderMetaPending={() => <Footom type="metamask" />}
-        />
+        <Footom onClick={this._startTransaction}>Confirm</Footom>
       </>
     );
   }
 
   _startTransaction = () => {
-    return this.props.startTransaction(this.state.unlimited);
+    this.props.startTransaction(this.state.unlimited);
   };
 }

@@ -4,13 +4,13 @@ import { PromiEvent, TransactionReceipt } from 'web3/types';
 import Button from '@linkexchange/components/src/NewButton';
 import { makeCancelable } from '@linkexchange/utils/cancelablePromise';
 
-import MetaFox from './metafox.png';
+import MetaFox from '@linkexchange/images/metafox.png';
 
 export type TStatus = 'ready' | 'metaPending' | 'pending' | 'error' | 'success';
 
 interface IProps {
   initialStatus?: TStatus;
-  startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt>}> | undefined;
+  startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt> }> | undefined;
   renderReady(): ReactElement<any>;
   renderPending?: () => ReactElement<any>;
   renderMetaPending?: () => ReactElement<any>;
@@ -23,12 +23,11 @@ interface IState {
 }
 
 export default class TransactionProvider extends Component<IProps, IState> {
-
   static defaultProps = {
     renderPending: () => <Button color="pending">Pending</Button>,
     renderMetaPending: () => (
       <Button color="metaPending">
-        <img src={MetaFox} {...{displayName: 'Icon'}} style={{ height: '2em' }} /> Metamask...
+        <img src={MetaFox} {...{ displayName: 'Icon' }} style={{ height: '2em' }} /> Metamask...
       </Button>
     ),
     renderError: () => <Button color="error">Failed :(</Button>,
@@ -70,23 +69,18 @@ export default class TransactionProvider extends Component<IProps, IState> {
     this.transactionPromise = makeCancelable(startedTransaction);
 
     this.setState({ status: 'metaPending' });
-    this.transactionPromise
-      .promise
-      .then(({ promiEvent }) => {
-        promiEvent
-          .on('error', this._onError)
-          .on('transactionHash', this._onTransactionHash)
-          .on('receipt', this._onReceipt);
-      });
-  }
+    this.transactionPromise.promise.then(({ promiEvent }) => {
+      promiEvent
+        .on('error', this._onError)
+        .on('transactionHash', this._onTransactionHash)
+        .on('receipt', this._onReceipt);
+    });
+  };
 
   render() {
     switch (this.state.status) {
       case 'ready': {
-        return React.cloneElement(
-          this.props.renderReady(),
-          { onClick: this.beginTransaction },
-        );
+        return React.cloneElement(this.props.renderReady(), { onClick: this.beginTransaction });
       }
       case 'metaPending': {
         return this.props.renderMetaPending ? this.props.renderMetaPending() : null;
@@ -106,11 +100,11 @@ export default class TransactionProvider extends Component<IProps, IState> {
   _onError = () => {
     this.setState({ status: 'error' });
     setTimeout(() => this.setState({ status: 'ready' }), 3000);
-  }
+  };
 
   _onTransactionHash = () => this.setState({ status: 'pending' });
 
   _onReceipt = ({ status }) => {
     this.setState({ status: status === '0x1' ? 'success' : 'error' });
-  }
+  };
 }

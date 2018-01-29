@@ -9,12 +9,11 @@ import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
 import A from '@linkexchange/components/src/A';
+import heartSvg from '@linkexchange/images/heart.svg';
 
 import Steps from './components/Steps';
 
 import * as style from './status.scss';
-
-const heartSvg = require('../../../../images/heart.svg');
 
 interface IStatusProps {
   location: Location;

@@ -12,10 +12,9 @@ import Icon from '@linkexchange/components/src/Icon';
 import Snippet from '@linkexchange/components/src/Snippet';
 import AndroidSnippet from '@linkexchange/components/src/AndroidSnippet';
 import { openToast } from '@linkexchange/toast/duck';
+import heartSvg from '@linkexchange/images/heart.svg';
 
 import * as style from './summary.scss';
-
-const heartSvg = require('../../../../../images/heart.svg');
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
 const Dispatch2Props = returntypeof(mapDispatchToProps);

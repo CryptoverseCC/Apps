@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@linkexchange/components": "^0.0.145",
+    "@linkexchange/images": "^0.0.147",
     "@linkexchange/toast": "^0.0.145",
     "@linkexchange/token-details-provider": "^0.0.147",
     "@linkexchange/transaction-provider": "^0.0.145",

@@ -7,6 +7,7 @@ import { IRemoteLink, ILink } from '@linkexchange/types/link';
 import { R, validate } from '@linkexchange/utils/validation';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { fromWeiToString, toWei } from '@linkexchange/utils/balance';
+import MetaFox from '@linkexchange/images/metafox_straight.png';
 
 import Header from './Header';
 import Slider from './Slider';
@@ -46,6 +47,12 @@ export default class Booster extends Component<IProps, IState> {
     };
   }
 
+  componentWillMount() {
+    if (this._isILink(this.props.link) && this.props.link.probability + 1 <= 100) {
+      this._onSliderChange(this.props.link.probability + 1);
+    }
+  }
+
   render() {
     const { tokenDetails, link } = this.props;
     const { isInSlots, inputError, toPay, probability, positionInSlots, hasInsufficientFunds } = this.state;
@@ -76,8 +83,12 @@ export default class Booster extends Component<IProps, IState> {
         {!isInSlots &&
           positionInSlots === null && (
             <div className={style.toAdd} onClick={this._boostToBeInSlots}>
-              <p>Add</p>
-              <p className={style.value}>{this._toAddToBeInSlots()}</p>
+              <p>
+                This link needs{' '}
+                <span className={style.value}>
+                  {this._toAddToBeInSlots(3)} {tokenDetails.symbol}
+                </span>{' '}
+              </p>
               <p>to be in slots.</p>
             </div>
           )}
@@ -96,6 +107,7 @@ export default class Booster extends Component<IProps, IState> {
             className={cx(style.next, { disabled: !!inputError || hasInsufficientFunds || this._isZero(toPay) })}
             onClick={this._onSendClick}
           >
+            <img src={MetaFox} className={style.fox} />
             <Icon name="arrow-right" className={style.icon} />
           </div>
         </div>
@@ -115,7 +127,7 @@ export default class Booster extends Component<IProps, IState> {
     this._onInputChange({ target: { value: totalToPay } } as ChangeEvent<HTMLInputElement>); // ToDo make it better
   };
 
-  _toAddToBeInSlots = () => {
+  _toAddToBeInSlots = (decimals?: number) => {
     const { link, linksInSlots, tokenDetails } = this.props;
     const { toPay } = this.state;
     const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
@@ -125,7 +137,7 @@ export default class Booster extends Component<IProps, IState> {
       .add(1)
       .toString();
 
-    return fromWeiToString(toAdd, tokenDetails.decimals, tokenDetails.decimals);
+    return fromWeiToString(toAdd, tokenDetails.decimals, decimals || tokenDetails.decimals);
   };
 
   _onSendClick = () => {
@@ -244,5 +256,9 @@ export default class Booster extends Component<IProps, IState> {
   _getLinkProbability = (): number => {
     const { link } = this.props;
     return (link as ILink).probability;
+  };
+
+  _isILink = (link: ILink | IRemoteLink): link is ILink => {
+    return (link as ILink).probability !== undefined;
   };
 }
