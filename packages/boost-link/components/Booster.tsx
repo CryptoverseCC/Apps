@@ -7,6 +7,7 @@ import { IRemoteLink, ILink } from '@linkexchange/types/link';
 import { R, validate } from '@linkexchange/utils/validation';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { fromWeiToString, toWei } from '@linkexchange/utils/balance';
+import MetaFox from '@linkexchange/images/metafox_straight.png';
 
 import Header from './Header';
 import Slider from './Slider';
@@ -106,6 +107,7 @@ export default class Booster extends Component<IProps, IState> {
             className={cx(style.next, { disabled: !!inputError || hasInsufficientFunds || this._isZero(toPay) })}
             onClick={this._onSendClick}
           >
+            <img src={MetaFox} className={style.fox} />
             <Icon name="arrow-right" className={style.icon} />
           </div>
         </div>

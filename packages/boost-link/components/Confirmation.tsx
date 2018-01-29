@@ -4,6 +4,7 @@ import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import TranscactionProvider from '@linkexchange/transaction-provider';
+import MetaFox from '@linkexchange/images/metafox_straight.png';
 
 import Header from './Header';
 import Footom from './Footton';
@@ -24,11 +25,10 @@ export default class Confirmation extends Component<IProps> {
       <>
         <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
         <div className={style.body}>{children}</div>
-        <TranscactionProvider
-          startTransaction={startTransaction}
-          renderReady={() => <Footom type="confirm" />}
-          renderMetaPending={() => <Footom type="metamask" />}
-        />
+        <div className={style.footer}>
+          <img src={MetaFox} className={style.fox} />
+          <div className={style.loader} />
+        </div>
       </>
     );
   }

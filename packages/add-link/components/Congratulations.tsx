@@ -4,10 +4,9 @@ import Button from '@linkexchange/components/src/NewButton';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
+import heartSvg from '@linkexchange/images/heart.svg';
 
 import * as style from './congratulations.scss';
-
-const heartSvg = require('../images/heart.svg');
 
 const Congratulations = ({ linkId, widgetSettings }) => {
   const goToLinkStatus = () => openLinkexchangeUrl('/direct/status', { linkId, ...widgetSettings });

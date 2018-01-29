@@ -7,13 +7,6 @@
   align-items: center;
   color: #FFFFFF;
   font-size: 24px;
-
-  &.confirm {
-    cursor: pointer;
-    background: linear-gradient(180deg, #4156F3 0%, #263FFF 100%);
-  }
-
-  &.metamask {
-    background-color: rgba(247, 134, 28, 0.6);
-  }
+  cursor: pointer;
+  background: linear-gradient(180deg, #4156F3 0%, #263FFF 100%);
 }
