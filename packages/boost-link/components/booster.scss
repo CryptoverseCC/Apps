@@ -72,9 +72,11 @@
 
   .to-pay {
     position: relative;
+    overflow: hidden;
 
     .input {
       width: 100%;
+      padding-left: 5px;
       border-radius: 8px 0px 0px 8px;
       height: 45px;
       text-align: center;
@@ -115,7 +117,7 @@
 
     .icon::before {
       font-size: 18px;
-      color: rgb(129,71,24);
+      color: #814718;
     }
 
     .fox {

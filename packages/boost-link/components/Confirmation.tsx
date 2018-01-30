@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import { ITokenDetails } from '@linkexchange/token-details-provider';
-import TranscactionProvider from '@linkexchange/transaction-provider';
 import MetaFox from '@linkexchange/images/metafox_straight.png';
 
 import Header from './Header';
@@ -15,12 +13,11 @@ interface IProps {
   amount: string;
   positionInSlots: number | null;
   tokenDetails: ITokenDetails;
-  startTransaction(): Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
 }
 
 export default class Confirmation extends Component<IProps> {
   render() {
-    const { amount, positionInSlots, tokenDetails, startTransaction, children } = this.props;
+    const { amount, positionInSlots, tokenDetails, children } = this.props;
     return (
       <>
         <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />

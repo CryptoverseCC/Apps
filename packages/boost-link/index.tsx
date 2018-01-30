@@ -91,24 +91,14 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             )}
             {stage === 'allowanceConfirmation' && (
               <Slide key="allowanceConfirmation" className={style.slideContainer}>
-                <Confirmation
-                  amount={amount!}
-                  positionInSlots={positionInSlots!}
-                  tokenDetails={tokenDetails}
-                  startTransaction={this._sendClaim}
-                >
+                <Confirmation amount={amount!} positionInSlots={positionInSlots!} tokenDetails={tokenDetails}>
                   <p>Receiving confirmation to use your tokens by our contract.</p>
                 </Confirmation>
               </Slide>
             )}
             {stage === 'boostConfirmation' && (
               <Slide key="boostConfirmation" className={style.slideContainer}>
-                <Confirmation
-                  amount={amount!}
-                  positionInSlots={positionInSlots!}
-                  tokenDetails={tokenDetails}
-                  startTransaction={this._sendClaim}
-                >
+                <Confirmation amount={amount!} positionInSlots={positionInSlots!} tokenDetails={tokenDetails}>
                   <p>Payment in progress.</p>
                 </Confirmation>
               </Slide>
@@ -246,10 +236,6 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       promiEvent
         .on('transactionHash', (transactionId: string) => {
           this.setState({ stage: 'success' });
-          // if (this.props.onSuccess) {
-          // this.props.onSuccess(transactionId);
-          // this._close();
-          // }
         })
         .on('error', (e) => {
           if (this.props.onError) {
