@@ -1,5 +1,5 @@
 import { findDOMNode } from 'react-dom';
-import React, { Component, PureComponent } from 'react';
+import React, { Component, PureComponent, Children } from 'react';
 import classnames from 'classnames/bind';
 
 import Svg from '@linkexchange/components/src/Svg';
@@ -13,15 +13,16 @@ const cubeSvg = require('!!svg-inline-loader?removeTags=true&removeSVGTagAttrs=t
 
 interface IStepProps {
   icon: JSX.Element;
-  state: 'disabled' | 'notstarted' | 'waiting' | 'done';
+  state?: string; // 'disabled' | 'notstarted' | 'waiting' | 'done' | 'failed';
+  reason?: string;
 }
 
-class Step extends PureComponent<IStepProps> {
+export class Step extends PureComponent<IStepProps> {
   render() {
     const { icon, state, children } = this.props;
 
     return (
-      <div className={cx(style.step, { [state]: true })}>
+      <div className={cx(style.step, { [state!]: true })}>
         <div className={style.iconContainer}>{icon}</div>
         <div className={style.content}>{children}</div>
       </div>
@@ -30,12 +31,8 @@ class Step extends PureComponent<IStepProps> {
 }
 
 interface IProgressProps {
-  step0State: string;
-  step1State: string;
-  step2State: string;
-  step0Ref: any;
-  step1Ref: any;
-  step2Ref: any;
+  stepsStates: Array<{ state: string; reason?: string }>;
+  stepsRefs: JSX.Element[];
 }
 
 interface IProgressState {
@@ -46,10 +43,10 @@ class Progress extends Component<IProgressProps, IProgressState> {
   state: IProgressState = {};
 
   componentWillReceiveProps(newProps) {
-    const { step0State, step1State, step2State, step0Ref, step1Ref, step2Ref } = newProps;
+    const { stepsStates, stepsRefs } = newProps;
 
-    const lastDoneStep = [step2State, step1State, step0State].indexOf('done');
-    const lastDoneElement = [step2Ref, step1Ref, step0Ref][lastDoneStep];
+    const lastDoneStep = [...stepsStates].reverse().findIndex(({ state }) => state === 'done');
+    const lastDoneElement = [...stepsRefs].reverse()[lastDoneStep];
 
     const fillStyle = {
       width: '0',
@@ -59,17 +56,18 @@ class Progress extends Component<IProgressProps, IProgressState> {
     };
 
     if (lastDoneElement) {
-      const step0DOMNode = findDOMNode(step0Ref) as HTMLElement;
-      const step1DOMNode = findDOMNode(step1Ref) as HTMLElement;
+      const lastRef = stepsRefs[stepsRefs.length - 1];
+      const step0DOMNode = findDOMNode(stepsRefs[0]) as HTMLElement;
+      const step1DOMNode = findDOMNode(stepsRefs[1]) as HTMLElement;
       const lastDoneDOMNode = findDOMNode(lastDoneElement) as HTMLElement;
       const rowDirection = step0DOMNode.offsetTop === step1DOMNode.offsetTop;
 
       fillStyle.width = fillStyle.maxWidth = rowDirection
-        ? lastDoneElement === step2Ref ? '100%' : `${lastDoneDOMNode.offsetLeft + lastDoneDOMNode.offsetWidth / 2}px`
+        ? lastDoneElement === lastRef ? '100%' : `${lastDoneDOMNode.offsetLeft + lastDoneDOMNode.offsetWidth / 2}px`
         : '100%';
 
       fillStyle.height = fillStyle.maxHeight = !rowDirection
-        ? lastDoneElement === step2Ref ? '100%' : `${lastDoneDOMNode.offsetTop + lastDoneDOMNode.offsetHeight / 2}px`
+        ? lastDoneElement === lastRef ? '100%' : `${lastDoneDOMNode.offsetTop + lastDoneDOMNode.offsetHeight / 2}px`
         : '100%';
     }
 
@@ -88,78 +86,32 @@ class Progress extends Component<IProgressProps, IProgressState> {
 }
 
 interface IStepsProps {
-  link?: any;
-  transationBlockNumber: number | null;
+  stepsStates: Array<{ state: string; reason?: string }>;
 }
 
 export default class Steps extends Component<IStepsProps, {}> {
-  step0Ref: JSX.Element | undefined;
-  step1Ref: JSX.Element | undefined;
-  step2Ref: JSX.Element | undefined;
+  stepsRefs: JSX.Element[] = [];
 
   render() {
-    const { link, transationBlockNumber } = this.props;
-    let step0State;
-    let step0Reason;
+    const { stepsStates, children } = this.props;
 
-    if (link) {
-      step0State = 'done';
-    } else if (transationBlockNumber !== null) {
-      step0State = 'done';
-    } else {
-      step0State = 'waiting';
-      step0Reason = 'Waiting for blockchain';
-    }
+    const decoratedChildren = Children.map(children, (child, index) => {
+      if (typeof child === 'string' || typeof child === 'number') {
+        return child;
+      }
 
-    const step1State = step0State === 'waiting' ? 'notstarted' : link ? 'done' : 'waiting';
-
-    const step2State =
-      step1State === 'waiting' || step1State === 'notstarted'
-        ? 'notstarted'
-        : link && link.whitelisted ? 'done' : 'waiting';
-
+      return React.cloneElement(child, {
+        ...stepsStates[index],
+        ref: this._onRef(index),
+      });
+    });
     return (
       <div className={style.self}>
-        <Progress
-          step0State={step0State}
-          step1State={step1State}
-          step2State={step2State}
-          step0Ref={this.step0Ref}
-          step1Ref={this.step1Ref}
-          step2Ref={this.step2Ref}
-        />
-        <div className={style.stepsContainer}>
-          <Step
-            ref={this._onRef('step0Ref')}
-            state={step0State}
-            icon={
-              <Tooltip text={step0Reason}>
-                <Icon className={style.icon} name="eye" />
-              </Tooltip>
-            }
-          >
-            <p>Visible on blockchain</p>
-          </Step>
-          <Step
-            ref={this._onRef('step1Ref')}
-            state={step1State}
-            icon={
-              <div className={style.icon}>
-                <Svg svg={cubeSvg} size="1.2em" viewBox="0 0 23 27" />
-              </div>
-            }
-          >
-            <p>Userfeeds Address</p>
-            <span>Visible to publisher</span>
-          </Step>
-          <Step ref={this._onRef('step2Ref')} state={step2State} icon={<Icon className={style.icon} name="check" />}>
-            <p>Put on whitelist</p>
-            <span>All set!</span>
-          </Step>
-        </div>
+        <Progress stepsStates={stepsStates} stepsRefs={this.stepsRefs} />
+        <div className={style.stepsContainer}>{decoratedChildren}</div>
       </div>
     );
   }
 
-  _onRef = (name) => (ref) => (this[name] = ref);
+  _onRef = (index) => (ref) => (this.stepsRefs[index] = ref);
 }

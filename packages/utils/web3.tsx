@@ -29,7 +29,8 @@ export const getInfura = (network: TNetwork): Web3 => {
     return infuraNetworkMapping.get(network)!;
   }
   const networkName = network === 'ethereum' ? 'mainnet' : network;
-  const web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
+  const web3 = new Web3(new Web3.providers.WebsocketProvider(`wss://${networkName}.infura.io/ws`));
+  // const web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
   infuraNetworkMapping.set(network, web3);
 
   return web3;
@@ -41,7 +42,6 @@ interface IProviderProps {
 }
 
 export class Web3Provider extends Component<IProviderProps, {}> {
-
   static childContextTypes = {
     injectedWeb3: PropTypes.object,
     infuraWeb3: PropTypes.object,
