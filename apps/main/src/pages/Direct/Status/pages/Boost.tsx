@@ -55,6 +55,9 @@ export default class Boost extends Component<IProps, IState> {
 
   componentDidMount() {
     this._checkReceipt();
+    this.web3.eth.getBlockNumber().then((currentBlockNumber) => {
+      this.setState({ currentBlockNumber });
+    });
     this._observeBlockchainState();
   }
 
