@@ -60,17 +60,14 @@ export default class Booster extends Component<IProps, IState> {
     return (
       <>
         <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
-        <div className={style.insufficientFundsContainer}>
-          {hasInsufficientFunds && <span className={style.insufficientFunds}>Insufficient funds</span>}
-        </div>
         {isInSlots && (
           <>
-            <div className={style.probabilities}>
-              <p className={classnames(style.probability, style.currentProbability)}>
-                {`${this._getLinkProbability()} %`}
-              </p>
-              <p className={style.dash}>&mdash;</p>
-              <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
+            <div className={style.probability}>
+              Probability:
+              <span className={cx(style.value, { disabled: this._isDisabled() })}>
+                {probability === null ? '-' : probability.toFixed(1)}
+                <span className={style.percent}>%</span>
+              </span>
             </div>
             <Slider
               className={style.slider}
@@ -98,17 +95,13 @@ export default class Booster extends Component<IProps, IState> {
               <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
             </div>
           )}
-        <div className={style.footer}>
+        <div className={cx(style.footer, { hasInsufficientFunds })}>
           <div className={style.toPay}>
             <input type="text" className={style.input} value={toPay} onChange={this._onInputChange} />
             <span className={style.error}>{inputError}</span>
           </div>
-          <div
-            className={cx(style.next, { disabled: !!inputError || hasInsufficientFunds || this._isZero(toPay) })}
-            onClick={this._onSendClick}
-          >
+          <div className={cx(style.next, { disabled: this._isDisabled() })} onClick={this._onSendClick}>
             <img src={MetaFox} className={style.fox} />
-            <Icon name="arrow-right" className={style.icon} />
           </div>
         </div>
       </>
@@ -152,6 +145,11 @@ export default class Booster extends Component<IProps, IState> {
   _onSliderChange = (newProbability: number) => {
     const { link, linksInSlots, tokenDetails } = this.props;
     const { sum } = this.state;
+
+    if (this._isILink(link) && newProbability === link.probability) {
+      this.setState({ probability: newProbability, toPay: '0' });
+      return;
+    }
 
     let toPayWei;
     toPayWei = new BigNumber(100)
@@ -251,6 +249,11 @@ export default class Booster extends Component<IProps, IState> {
     ];
 
     return validate(rules, value);
+  };
+
+  _isDisabled = () => {
+    const { inputError, hasInsufficientFunds, toPay } = this.state;
+    return !!inputError || hasInsufficientFunds || this._isZero(toPay);
   };
 
   _getLinkProbability = (): number => {

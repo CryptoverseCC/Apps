@@ -9,20 +9,23 @@
   }
 }
 
-.probabilities {
-  padding: 30px;
+.probability {
+  padding-top: 18px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  font-size: 18px;
 
-  .probability {
-    font-weight: bold;
-    font-size: 1.5em;
+  .value {
+    font-size: 32px;
+    &.disabled {
+      color: #a6aeb8;
+    }
   }
 
-  .current-probability, .dash {
-    color: #A5ACB7;
+  .percent {
+    color: #a6aeb8;
+    font-size: 16px;
   }
 }
 
@@ -38,7 +41,7 @@
   .value {
     cursor: pointer;
     font-weight: bold;
-    border-bottom: 1px dashed #263FFF;
+    border-bottom: 1px dashed #263fff;
   }
 }
 
@@ -67,8 +70,18 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, #4156F3 0%, #263FFF 100%);
+  background: linear-gradient(180deg, #4156f3 0%, #263fff 100%);
   clip-path: polygon(0 0%, 46% 0%, 54% 10%, 100% 10%, 100% 100%, 0 100%);
+
+  &.has-insufficient-funds {
+    background: #fdba4f;
+
+    .to-pay {
+      .input {
+        background-color: #edad48;
+      }
+    }
+  }
 
   .to-pay {
     position: relative;
@@ -80,9 +93,9 @@
       border-radius: 8px 0px 0px 8px;
       height: 45px;
       text-align: center;
-      background-color: #2538CF;
+      background-color: #2538cf;
       font-size: 24px;
-      color: #C5CCFF;
+      color: #ffffff;
     }
 
     .error {
@@ -95,29 +108,25 @@
   }
 
   .next {
-    min-width: 80px;
-    height: 45px;
+    min-width: 50px;
+    max-width: 50px;
+    height: 50px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     border-radius: 0 8px 8px 0;
-    background-color: #FFE7CD;
+    background-color: #ffe7cd;
 
     &:not(.disabled):hover,
     &:not(.disabled):focus {
       cursor: pointer;
-      box-shadow: 0 4px 8px 0 rgba(129,71,24,0.45);
+      box-shadow: 0 4px 8px 0 rgba(129, 71, 24, 0.45);
       transform: translateY(-1px);
     }
 
     &.disabled {
       opacity: 0.7;
       cursor: not-allowed;
-    }
-
-    .icon::before {
-      font-size: 18px;
-      color: #814718;
     }
 
     .fox {
