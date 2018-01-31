@@ -56,6 +56,7 @@ export default class Booster extends Component<IProps, IState> {
   render() {
     const { tokenDetails, link } = this.props;
     const { isInSlots, inputError, toPay, probability, positionInSlots, hasInsufficientFunds } = this.state;
+    const disabled = this._isDisabled();
 
     return (
       <>
@@ -64,9 +65,8 @@ export default class Booster extends Component<IProps, IState> {
           <>
             <div className={style.probability}>
               Probability:
-              <span className={cx(style.value, { disabled: this._isDisabled() })}>
+              <span className={cx(style.value, { disabled })}>
                 {probability === null ? '-' : probability.toFixed(1)}
-                <span className={style.percent}>%</span>
               </span>
             </div>
             <Slider
@@ -91,18 +91,21 @@ export default class Booster extends Component<IProps, IState> {
           )}
         {!isInSlots &&
           positionInSlots !== null && (
-            <div className={style.notInSlots}>
-              <p className={style.probability}>{`${probability === null ? '-' : probability.toFixed(1)} %`}</p>
+            <div className={style.probability}>
+              Probability:
+              <span className={cx(style.value, { disabled })}>
+                {probability === null ? '-' : probability.toFixed(1)}
+              </span>
             </div>
           )}
-        <div className={cx(style.footer, { hasInsufficientFunds })}>
-          <div className={style.toPay}>
-            <input type="text" className={style.input} value={toPay} onChange={this._onInputChange} />
-            <span className={style.error}>{inputError}</span>
+        <div className={cx(style.footer, { hasInsufficientFunds, error: !!inputError })}>
+          <div className={style.inputButtonContainer}>
+            <input type="text" className={style.toPay} value={toPay} onChange={this._onInputChange} />
+            <div className={cx(style.next, { disabled })} onClick={this._onSendClick}>
+              {!disabled ? <img src={MetaFox} className={style.fox} /> : <Icon name="x" className={style.icon} />}
+            </div>
           </div>
-          <div className={cx(style.next, { disabled: this._isDisabled() })} onClick={this._onSendClick}>
-            <img src={MetaFox} className={style.fox} />
-          </div>
+          <span className={style.error}>{hasInsufficientFunds ? 'Insufficient Funds' : inputError}</span>
         </div>
       </>
     );
