@@ -1,0 +1,29 @@
+@import '~@linkexchange/components/styles/colors';
+
+.self {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: $aqua-haze;
+
+  .paper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 34vw;
+    padding: 30px;
+
+    p {
+      text-align: center;
+      font-size: 15px;
+      color: $dusty-gray;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+
+  .icon {
+    font-size: 1em;
+  }
+}
