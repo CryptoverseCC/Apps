@@ -24,7 +24,7 @@ export type TToastState = IToast[];
 
 const initialState: TToastState = [];
 
-export default function web3Reducer(state: TToastState = initialState, action: Action) {
+export default function toastReducer(state: TToastState = initialState, action: Action) {
   if (isType(action, toastActions.open)) {
     return [...state, action.payload];
   } else if (isType(action, toastActions.close)) {

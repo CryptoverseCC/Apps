@@ -41,7 +41,7 @@ export default class Boost extends Component<IProps, IState> {
     const txHash = params.get('txHash') || '';
 
     const [network] = asset.split(':');
-    this.web3 = getInfura(network as TNetwork);
+    this.web3 = getInfura(network as TNetwork, true);
 
     this.state = {
       apiUrl,

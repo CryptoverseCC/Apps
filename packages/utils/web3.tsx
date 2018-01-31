@@ -24,13 +24,17 @@ export type TNetwork = 'ropsten' | 'rinkeby' | 'kovan' | 'ethereum';
 
 const infuraNetworkMapping = new Map<TNetwork, Web3>();
 
-export const getInfura = (network: TNetwork): Web3 => {
+export const getInfura = (network: TNetwork, ws?: boolean): Web3 => {
   if (infuraNetworkMapping.has(network)) {
     return infuraNetworkMapping.get(network)!;
   }
   const networkName = network === 'ethereum' ? 'mainnet' : network;
-  const web3 = new Web3(new Web3.providers.WebsocketProvider(`wss://${networkName}.infura.io/ws`));
-  // const web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
+  let web3: Web3;
+  if (ws) {
+    web3 = new Web3(new Web3.providers.WebsocketProvider(`wss://${networkName}.infura.io/ws`));
+  } else {
+    web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
+  }
   infuraNetworkMapping.set(network, web3);
 
   return web3;
