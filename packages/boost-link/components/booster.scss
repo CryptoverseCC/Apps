@@ -51,6 +51,7 @@
   align-items: center;
   background: linear-gradient(180deg, #4156f3 0%, #263fff 100%);
   clip-path: polygon(0 0%, 46% 0%, 54% 10%, 100% 10%, 100% 100%, 0 100%);
+  transition: background-color ease-in 0.2s;
 
   &.has-insufficient-funds {
     background: #fdba4f;
