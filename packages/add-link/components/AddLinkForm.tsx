@@ -10,9 +10,11 @@ import { IBaseLink } from '@linkexchange/types/link';
 import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
-import { R, validate } from '@linkexchange/utils/validation';
+import { R, TValidationFunc } from '@linkexchange/utils/validation';
 import TransactionProvider from '@linkexchange/transaction-provider';
-import Field, { Title, Error } from '@linkexchange/components/src/Form/Field';
+import { Title, Error, TextField, validateField } from '@linkexchange/components/src/Form/Field';
+import { FormValidationsProvider } from '@linkexchange/root-provider';
+import { Form, Field } from 'react-final-form';
 
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
@@ -29,149 +31,80 @@ interface IAddLinkFormProps {
   onChange?: (link: IBaseLink) => void;
 }
 
-interface IAddLinkFormState {
-  title: string;
-  summary: string;
-  target: string;
-  value: string;
-  unlimitedApproval: boolean;
-  errors: {
-    title?: string;
-    summary?: string;
-    target?: string;
-    value?: string;
-  };
-}
-
-const httpRegExp = /^https?:\/\//;
-const urlRegExp = /^https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-
-export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFormState> {
-  state: IAddLinkFormState = {
-    title: '',
-    summary: '',
-    target: 'http://',
-    value: this.props.minimalValue || '',
-    unlimitedApproval: false,
-    errors: {},
-  };
-
+export default class AddLinkForm extends Component<IAddLinkFormProps> {
   render() {
-    const { tokenDetails } = this.props;
-    const { title, summary, target, value, unlimitedApproval, errors } = this.state;
+    const { tokenDetails, minimalValue } = this.props;
 
     return (
       <div className={style.self}>
-        <Field>
-          <Title>Headline</Title>
-          <Input name="title" type="text" value={title} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.title}</Error>
-        </Field>
-        <Field>
-          <Title>Description</Title>
-          <Input name="summary" type="text" value={summary} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.summary}</Error>
-        </Field>
-        <Field>
-          <Title>Link</Title>
-          <Input name="target" type="text" value={target} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.target}</Error>
-        </Field>
-        <Field>
-          <Title>Initial Fee</Title>
-          <Input name="value" type="text" value={value} onChange={this._onInput} onBlur={this._onInput} />
-          <Error>{errors.value}</Error>
-        </Field>
-        <Field>
-          <p>
-            Your balance: {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}.
-          </p>
-          <Checkbox
-            label="Don't ask me again for this token on any website or wherever"
-            checked={unlimitedApproval}
-            onChange={this._onUnlimitedApprovalChange}
-          />
-        </Field>
-        <TransactionProvider
-          startTransaction={this._onSubmit}
-          renderReady={() => (
-            <Button style={{ width: '100%' }} color="primary">
-              Create
-            </Button>
-          )}
+        <FormValidationsProvider
+          formName="add-link"
+          render={(getFormValidations) => {
+            const formValidations = getFormValidations();
+            return (
+              <Form
+                initialValues={{
+                  target: 'http://',
+                  value: minimalValue || '',
+                  unlimitedApproval: false,
+                }}
+                onSubmit={() => undefined}
+                render={(formProps) => (
+                  <>
+                    <Field
+                      title="Headline"
+                      component={TextField}
+                      name="title"
+                      validate={validateField([R.required, R.maxLength(35), ...(formValidations.title || [])])}
+                    />
+                    <Field
+                      title="Description"
+                      component={TextField}
+                      name="summary"
+                      validate={validateField([R.required, R.maxLength(70), ...(formValidations.summary || [])])}
+                    />
+                    <Field
+                      title="Link"
+                      component={TextField}
+                      name="target"
+                      validate={validateField([R.required, R.link, ...(formValidations.target || [])])}
+                    />
+                    <Field
+                      title="Initial Fee"
+                      component={TextField}
+                      name="value"
+                      validate={validateField([
+                        R.required,
+                        R.number,
+                        R.currencyDecimals(4),
+                        R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
+                        ...(formValidations.value || []),
+                      ])}
+                    />
+                    <TransactionProvider
+                      startTransaction={() => this._onSubmit(formProps.values, formValidations.form || [])}
+                      renderReady={() => (
+                        <Button disabled={!formProps.valid} style={{ width: '100%' }} color="primary">
+                          Create
+                        </Button>
+                      )}
+                    />
+                  </>
+                )}
+              />
+            );
+          }}
         />
       </div>
     );
   }
 
-  _rules = () => ({
-    title: [R.required, R.maxLength(35)],
-    summary: [R.required, R.maxLength(70)],
-    target: [
-      R.required,
-      R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://'),
-      R.value((v: string) => urlRegExp.test(v), 'Has to be valid url'),
-    ],
-    value: [
-      R.required,
-      R.number,
-      R.value((v: number) => v >= 0, 'Cannot be negative'),
-      this._minimalValueRule(),
-      R.value((v: string) => {
-        const dotIndex = v.indexOf('.');
-        if (dotIndex !== -1) {
-          return v.length - 1 - dotIndex <= 18;
-        }
-        return true;
-      }, 'Invalid value'),
-    ],
-  });
-
-  _onInput = (e) => {
-    const { value, name } = e.target;
-    this.setState(
-      {
-        [name]: value,
-        errors: {
-          ...this.state.errors,
-          [name]: validate(this._rules()[name], value),
-        },
-      },
-      () => {
-        if (this.props.onChange) {
-          this.props.onChange(this.state);
-        }
-      },
-    );
-  };
-
-  _onUnlimitedApprovalChange = (e) => {
-    this.setState({ unlimitedApproval: e.target.checked });
-  };
-
-  _minimalValueRule = () =>
-    R.value((v: string) => parseInt(v, 10) >= (this.props.minimalValue || 0), `Has to be greater than minimal value.`);
-
-  _validateAll = () => {
-    const errors = ['title', 'summary', 'target', 'value'].reduce((acc, name) => {
-      const validations = validate(this._rules()[name], this.state[name]);
-      return !validations ? acc : { ...acc, [name]: validations };
-    }, {});
-    this.setState({ errors });
-    return Object.keys(errors).length === 0;
-  };
-
-  _onSubmit = () => {
-    if (!this._validateAll()) {
-      return;
-    }
-
+  _onSubmit = (values, formValidations) => {
     const { recipientAddress, web3, tokenDetails } = this.props;
-    const { value, unlimitedApproval } = this.state;
 
-    const claim = this._createClaim();
+    const claim = this._createClaim(values);
     const token = this._getTokenAddress();
-    const toPayWei = toWei(value!, tokenDetails.decimals);
+    const toPayWei = toWei(values.value, tokenDetails.decimals);
 
     let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
     if (token) {
@@ -179,16 +112,16 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         let promise: Promise<any> = Promise.resolve(null);
         if (new BN(allowance).lte(new BN(toPayWei))) {
           promise = core.ethereum.claims
-            .approveUserfeedsContractTokenTransfer(web3, token, unlimitedApproval ? MAX_VALUE_256 : toPayWei)
+            .approveUserfeedsContractTokenTransfer(web3, token, values.unlimitedApproval ? MAX_VALUE_256 : toPayWei)
             .then(({ promiEvent }) => resolveOnTransationHash(promiEvent));
         }
 
         return promise.then(() =>
-          core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, value, claim),
+          core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, values.value, claim),
         );
       });
     } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, value, claim);
+      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, values.value, claim);
     }
 
     sendClaimPromise.then(({ promiEvent }) => {
@@ -201,10 +134,9 @@ export default class AddLinkForm extends Component<IAddLinkFormProps, IAddLinkFo
         });
     });
     return sendClaimPromise;
-  };
+  }
 
-  _createClaim() {
-    const { target, title, summary } = this.state;
+  _createClaim({ target, title, summary }) {
     const location = urlWithoutQueryIfLinkExchangeApp();
 
     return {
