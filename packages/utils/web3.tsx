@@ -25,8 +25,10 @@ export type TNetwork = 'ropsten' | 'rinkeby' | 'kovan' | 'ethereum';
 const infuraNetworkMapping = new Map<TNetwork, Web3>();
 
 export const getInfura = (network: TNetwork, ws?: boolean): Web3 => {
-  if (infuraNetworkMapping.has(network)) {
-    return infuraNetworkMapping.get(network)!;
+  // ToDo fix type
+  const key = `${network}${Boolean(ws)}` as TNetwork;
+  if (infuraNetworkMapping.has(key)) {
+    return infuraNetworkMapping.get(key)!;
   }
   const networkName = network === 'ethereum' ? 'mainnet' : network;
   let web3: Web3;
@@ -35,7 +37,7 @@ export const getInfura = (network: TNetwork, ws?: boolean): Web3 => {
   } else {
     web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
   }
-  infuraNetworkMapping.set(network, web3);
+  infuraNetworkMapping.set(key, web3);
 
   return web3;
 };

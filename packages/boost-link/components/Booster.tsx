@@ -19,7 +19,7 @@ interface IProps {
   link: IRemoteLink | ILink;
   linksInSlots: IRemoteLink[];
   tokenDetails: ITokenDetails;
-  onSend(toPay: string, positionInSlots: number | null): void;
+  onSend(toPay: string): void;
 }
 
 interface IState {
@@ -142,7 +142,7 @@ export default class Booster extends Component<IProps, IState> {
       return;
     }
 
-    this.props.onSend(this.state.toPay, this.state.positionInSlots);
+    this.props.onSend(this.state.toPay);
   };
 
   _onSliderChange = (newProbability: number) => {
@@ -168,9 +168,21 @@ export default class Booster extends Component<IProps, IState> {
     const positionInSlots = this._getLinkPosition(toPayWei, link, linksInSlots);
 
     if (toPayWei.gt(this.props.tokenDetails.balance!)) {
-      this.setState({ toPay, positionInSlots, probability: newProbability, hasInsufficientFunds: true });
+      this.setState({
+        toPay,
+        positionInSlots,
+        probability: newProbability,
+        hasInsufficientFunds: true,
+        inputError: undefined,
+      });
     } else {
-      this.setState({ toPay, positionInSlots, probability: newProbability, hasInsufficientFunds: false });
+      this.setState({
+        toPay,
+        positionInSlots,
+        probability: newProbability,
+        hasInsufficientFunds: false,
+        inputError: undefined,
+      });
     }
   };
 

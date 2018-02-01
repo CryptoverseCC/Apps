@@ -72,3 +72,34 @@
     }
   }
 }
+
+.footer {
+  margin-top: auto;
+  height: 110px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(180deg, #4156f3 0%, #263fff 100%);
+
+  .next {
+    margin-left: 10px;
+    background-color: #2538cf;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    .icon {
+      font-weight: bold;
+      transform: rotate(90deg);
+      font-size: 18px;
+    }
+  }
+}
