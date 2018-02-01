@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "@linkexchange/copy-from-mm",
-  "version": "0.0.149",
+  "version": "0.0.150",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
   "dependencies": {
     "@linkexchange/components": "^0.0.149",
     "@linkexchange/images": "^0.0.149",
-    "@linkexchange/web3-state-provider": "^0.0.149"
+    "@linkexchange/web3-state-provider": "^0.0.150"
   },
   "keywords": [],
   "author": "",

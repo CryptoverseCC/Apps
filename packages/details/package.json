@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/details",
-  "version": "0.0.149",
+  "version": "0.0.150",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -14,7 +14,7 @@
     "@linkexchange/token-details-provider": "^0.0.149",
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.149",
-    "@linkexchange/web3-state-provider": "^0.0.149",
+    "@linkexchange/web3-state-provider": "^0.0.150",
     "@userfeeds/core": "^0.0.149"
   },
   "peerDependencies": {

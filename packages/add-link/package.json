@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/add-link",
-  "version": "0.0.149",
+  "version": "0.0.150",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -17,7 +17,7 @@
     "@linkexchange/transaction-provider": "^0.0.149",
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.149",
-    "@linkexchange/web3-state-provider": "^0.0.149",
+    "@linkexchange/web3-state-provider": "^0.0.150",
     "@userfeeds/core": "^0.0.149",
     "final-form": "^4.0.3",
     "react-final-form": "^3.0.4"

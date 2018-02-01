@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/blocks-till-conclusion-provider",
-  "version": "0.0.149",
+  "version": "0.0.150",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@linkexchange/utils": "^0.0.149",
-    "@linkexchange/web3-state-provider": "^0.0.149",
+    "@linkexchange/web3-state-provider": "^0.0.150",
     "@userfeeds/core": "^0.0.149"
   }
 }
