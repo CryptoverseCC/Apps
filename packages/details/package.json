@@ -1,21 +1,21 @@
 {
   "private": true,
   "name": "@linkexchange/details",
-  "version": "0.0.147",
+  "version": "0.0.149",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
   "author": "",
   "dependencies": {
-    "@linkexchange/boost-link": "^0.0.147",
-    "@linkexchange/components": "^0.0.145",
-    "@linkexchange/scrollable-sections-with-menu": "^0.0.145",
-    "@linkexchange/toast": "^0.0.145",
-    "@linkexchange/token-details-provider": "^0.0.147",
+    "@linkexchange/boost-link": "^0.0.149",
+    "@linkexchange/components": "^0.0.149",
+    "@linkexchange/scrollable-sections-with-menu": "^0.0.149",
+    "@linkexchange/toast": "^0.0.149",
+    "@linkexchange/token-details-provider": "^0.0.149",
     "@linkexchange/types": "^0.0.144",
-    "@linkexchange/utils": "^0.0.144",
-    "@linkexchange/web3-state-provider": "^0.0.147",
-    "@userfeeds/core": "^0.0.147"
+    "@linkexchange/utils": "^0.0.149",
+    "@linkexchange/web3-state-provider": "^0.0.149",
+    "@userfeeds/core": "^0.0.149"
   },
   "peerDependencies": {
     "@linkexchange/ducks": "^0.0.143",

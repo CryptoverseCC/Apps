@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/boost-link",
-  "version": "0.0.147",
+  "version": "0.0.149",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,12 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/components": "^0.0.145",
-    "@linkexchange/images": "^0.0.147",
-    "@linkexchange/token-details-provider": "^0.0.147",
+    "@linkexchange/components": "^0.0.149",
+    "@linkexchange/images": "^0.0.149",
+    "@linkexchange/token-details-provider": "^0.0.149",
     "@linkexchange/types": "^0.0.144",
-    "@linkexchange/utils": "^0.0.144",
-    "@userfeeds/core": "^0.0.147",
+    "@linkexchange/utils": "^0.0.149",
+    "@userfeeds/core": "^0.0.149",
     "bignumber.js": "5.0.0",
     "react-transition-group": "^2.2.1"
   },
