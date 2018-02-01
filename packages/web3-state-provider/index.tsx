@@ -55,7 +55,13 @@ interface IComponentProps {
 }
 
 export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
-  return class extends Component<Omit<T, keyof IComponentProps> & { web3: Web3 }, IState> {
+  return class extends Component<
+    Omit<T, keyof IComponentProps> & {
+      web3: Web3;
+      asset?: string;
+    },
+    IState
+  > {
     static displayName = `withWeb3State(${Cmp.displayName || Cmp.name})`;
     removeListener: () => void;
     state: IState = {
@@ -65,9 +71,13 @@ export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentTyp
     };
 
     componentDidMount() {
-      this.removeListener = taskRunner.run(this.props.web3, [this.props.asset], (web3State) => {
-        this.setState({ web3State });
-      });
+      this.removeListener = taskRunner.run(
+        this.props.web3,
+        [typeof this.props.asset === 'string' ? this.props.asset : ''],
+        (web3State) => {
+          this.setState({ web3State });
+        },
+      );
     }
 
     componentWillUnmount() {
