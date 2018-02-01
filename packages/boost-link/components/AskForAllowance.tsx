@@ -46,6 +46,7 @@ export default class AskForAllowance extends Component<IProps> {
               checked={unlimited}
               onChange={(e) => this.setState({ unlimited: e.target.checked })}
             />
+            <div className={style.checkmark} />
             Don’t ask me again
           </label>
         </div>
