@@ -13,12 +13,13 @@ import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWi
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import If from '@linkexchange/components/src/utils/If';
 import { toWei } from '@linkexchange/utils/balance';
+import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 import Slide from './components/Slide';
+import Result from './components/Result';
 import Booster from './components/Booster';
-import Success from './components/Success';
-import Confirmation from './components/Confirmation';
 import AskForAllowance from './components/AskForAllowance';
+import TransactionInProgress from './components/TransactionInProgress';
 
 import * as style from './boostLink.scss';
 
@@ -37,9 +38,9 @@ interface IBidLinkProps {
 
 interface IBidLinkState {
   visible: boolean;
-  stage: 'booster' | 'allowance' | 'allowanceConfirmation' | 'boostConfirmation' | 'success';
+  stage: 'booster' | 'allowance' | 'allowanceInProgress' | 'boostInProgress' | 'success' | 'error';
   amount?: string;
-  positionInSlots?: number | null;
+  txHash?: string;
   formTop?: number;
   formLeft?: number;
   formOpacity?: number;
@@ -54,7 +55,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
   render() {
     const { link, linksInSlots, disabled, disabledReason, tokenDetails } = this.props;
-    const { stage, amount, positionInSlots, visible, formLeft, formTop, formOpacity } = this.state;
+    const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
 
     return (
       <div ref={this._onButtonRef} className={style.self}>
@@ -83,29 +84,36 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
             {stage === 'allowance' && (
               <Slide key="allowance" className={style.slideContainer}>
                 <AskForAllowance
-                  positionInSlots={positionInSlots!}
-                  tokenDetails={tokenDetails}
                   startTransaction={this._onAllowance}
+                  goBack={() => this.setState({ stage: 'booster' })}
                 />
               </Slide>
             )}
-            {stage === 'allowanceConfirmation' && (
-              <Slide key="allowanceConfirmation" className={style.slideContainer}>
-                <Confirmation amount={amount!} positionInSlots={positionInSlots!} tokenDetails={tokenDetails}>
-                  <p>Receiving confirmation to use your tokens by our contract.</p>
-                </Confirmation>
+            {stage === 'allowanceInProgress' && (
+              <Slide key="allowanceInProgress" className={style.slideContainer}>
+                <TransactionInProgress>
+                  Receiving confirmation to use your tokens by our contract.
+                </TransactionInProgress>
               </Slide>
             )}
-            {stage === 'boostConfirmation' && (
-              <Slide key="boostConfirmation" className={style.slideContainer}>
-                <Confirmation amount={amount!} positionInSlots={positionInSlots!} tokenDetails={tokenDetails}>
-                  <p>Payment in progress.</p>
-                </Confirmation>
+            {stage === 'boostInProgress' && (
+              <Slide key="boostInProgress" className={style.slideContainer}>
+                <TransactionInProgress>Payment in progress</TransactionInProgress>
               </Slide>
             )}
             {stage === 'success' && (
               <Slide key="success" className={style.slideContainer}>
-                <Success />
+                <Result onClick={this._openBoostStatus} type="success">
+                  <h2>Congratulations!</h2>
+                  Your transaction has been sent.
+                </Result>
+              </Slide>
+            )}
+            {stage === 'error' && (
+              <Slide key="error" className={style.slideContainer}>
+                <Result onClick={() => this.setState({ stage: 'booster' })} type="failure">
+                  Your transaction has been rejected.
+                </Result>
               </Slide>
             )}
           </TransitionGroup>
@@ -159,11 +167,11 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     this.setState({ stage: 'booster' });
   };
 
-  _onSendClick = async (toPay: string, positionInSlots: number | null) => {
+  _onSendClick = async (toPay: string) => {
     const { web3, asset, tokenDetails } = this.props;
     const [_, token] = this.props.asset.split(':');
 
-    let nextStage: 'boostConfirmation' | 'allowance' = 'boostConfirmation';
+    let nextStage: 'boostInProgress' | 'allowance' = 'boostInProgress';
     if (token) {
       const tokenWei = toWei(toPay, tokenDetails.decimals);
       const allowance = await core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token);
@@ -171,8 +179,8 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
         nextStage = 'allowance';
       }
     }
-    this.setState({ stage: nextStage, amount: toPay, positionInSlots }, () => {
-      if (nextStage === 'boostConfirmation') {
+    this.setState({ stage: nextStage, amount: toPay }, () => {
+      if (nextStage === 'boostInProgress') {
         this._sendClaim();
       }
     });
@@ -183,7 +191,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
     const { amount: toPay } = this.state;
     const [, tokenAddress] = asset.split(':');
 
-    this.setState({ stage: 'allowanceConfirmation' });
+    this.setState({ stage: 'allowanceInProgress' });
 
     const approvePromise = core.ethereum.claims.approveUserfeedsContractTokenTransfer(
       web3,
@@ -195,13 +203,10 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       promiEvent
         .on('transactionHash', () => {
           this._sendClaim();
-          this.setState({ stage: 'boostConfirmation' });
+          this.setState({ stage: 'boostInProgress' });
         })
         .on('error', (e) => {
-          if (this.props.onError) {
-            this.props.onError(e);
-          }
-          this._close();
+          this.setState({ stage: 'error' });
         });
     });
 
@@ -234,17 +239,21 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
 
     sendClaimPromise.then(({ promiEvent }) => {
       promiEvent
-        .on('transactionHash', (transactionId: string) => {
-          this.setState({ stage: 'success' });
+        .on('transactionHash', (txHash: string) => {
+          this.setState({ stage: 'success', txHash });
         })
         .on('error', (e) => {
-          if (this.props.onError) {
-            this.props.onError(e);
-          }
-          this._close();
+          this.setState({ stage: 'error' });
         });
     });
 
     return sendClaimPromise;
+  };
+
+  _openBoostStatus = () => {
+    const { asset } = this.props;
+    const { txHash } = this.state;
+
+    openLinkexchangeUrl('/direct/status/boost', { txHash, asset });
   };
 }
