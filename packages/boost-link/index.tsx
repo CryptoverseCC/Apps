@@ -49,7 +49,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   _buttonRef: Element;
   state: IBidLinkState = {
     visible: false,
-    stage: 'booster',
+    stage: 'allowance',
   };
 
   render() {

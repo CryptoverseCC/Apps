@@ -1,3 +1,14 @@
+.header {
+  margin: 20px;
+  margin-bottom: 0px;
+
+  .back {
+    font-size: 14px;
+    color: #a7aeb7;
+    cursor: pointer;
+  }
+}
+
 .body {
   flex: 1;
   width: 200px;
@@ -5,8 +16,18 @@
   margin-right: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  color: #a6aeb8;
+  text-align: center;
+
+  .label {
+    font-size: 18px;
+
+    &.checked {
+      color: #263fff;
+    }
+  }
 
   .checkbox {
     margin-right: 5px;

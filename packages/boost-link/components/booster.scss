@@ -63,11 +63,15 @@
   }
 
   &.error {
-    background: #fd4f4f;
+    background: #f93b63;
 
     .input-button-container {
       .to-pay {
-        background-color: #ed5b48;
+        background-color: #e90535;
+      }
+
+      .next {
+        background-color: #fe6888;
       }
     }
   }
