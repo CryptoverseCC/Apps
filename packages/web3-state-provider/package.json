@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/web3-state-provider",
-  "version": "0.0.150",
+  "version": "0.0.151",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/utils": "^0.0.149",
-    "@userfeeds/core": "^0.0.149"
+    "@linkexchange/utils": "^0.0.151",
+    "@userfeeds/core": "^0.0.151"
   }
 }
