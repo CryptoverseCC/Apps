@@ -164,7 +164,11 @@ export default class Booster extends Component<IProps, IState> {
       toPayWei = new BigNumber(0);
     }
 
-    const toPay = fromWeiToString(toPayWei.toString(), tokenDetails.decimals, tokenDetails.decimals);
+    const toPay = fromWeiToString(
+      toPayWei.toString(),
+      tokenDetails.decimals,
+      tokenDetails.decimals < 4 ? tokenDetails.decimals : 4,
+    );
     const positionInSlots = this._getLinkPosition(toPayWei, link, linksInSlots);
 
     if (toPayWei.gt(this.props.tokenDetails.balance!)) {
