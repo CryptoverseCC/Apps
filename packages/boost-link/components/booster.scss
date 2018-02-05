@@ -49,7 +49,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, #4156f3 0%, #263fff 100%);
+  background: #263fff;
   clip-path: polygon(0 0%, 46% 0%, 54% 10%, 100% 10%, 100% 100%, 0 100%);
   transition: background-color ease-in 0.2s;
 
@@ -67,12 +67,26 @@
     background: #f93b63;
 
     .input-button-container {
+      animation: shake 150ms 2 linear;
+
       .to-pay {
         background-color: #e90535;
       }
 
       .next {
         background-color: #fe6888;
+      }
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translate(3px, 0);
+      }
+      50% {
+        transform: translate(-3px, 0);
+      }
+      100% {
+        transform: translate(0, 0);
       }
     }
   }
@@ -91,6 +105,7 @@
       background-color: #2538cf;
       font-size: 24px;
       color: #ffffff;
+      transition: background-color ease-in 0.2s;
     }
 
     .next {
@@ -104,6 +119,7 @@
       background-color: #ffe7cd;
       color: #ffffff;
       text-align: center;
+      transition: background-color ease-in 0.2s;
 
       &:not(.disabled):hover,
       &:not(.disabled):focus {

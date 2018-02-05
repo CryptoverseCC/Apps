@@ -105,7 +105,7 @@ export default class Booster extends Component<IProps, IState> {
               {!disabled ? <img src={MetaFox} className={style.fox} /> : <Icon name="x" className={style.icon} />}
             </div>
           </div>
-          <span className={style.error}>{hasInsufficientFunds ? 'Insufficient Funds' : inputError}</span>
+          <span className={style.error}>{!inputError && hasInsufficientFunds ? 'Insufficient Funds' : inputError}</span>
         </div>
       </>
     );
@@ -267,7 +267,7 @@ export default class Booster extends Component<IProps, IState> {
       }, 'Invalid value'),
     ];
 
-    return validate(rules, value);
+    return validate(rules, value, 'Input');
   };
 
   _isDisabled = () => {

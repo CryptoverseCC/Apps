@@ -2,7 +2,7 @@ export const R = {
   required: (name, value) => (value && value.toString().trim() ? '' : `Field ${name} is required`),
   maxLength: (n: number) => (name, value: string) =>
     value.length <= n ? '' : `${name} has to be shorter than ${n} characters`,
-  number: (name, value) => (!isNaN(parseFloat(value)) && isFinite(value) ? '' : `${name} has to be number`),
+  number: (name, value) => (!isNaN(parseFloat(value)) && isFinite(value) ? '' : `${name} has to be a number`),
   value: (validator: (v: number | string | any) => boolean, reason: string) => (name, value) =>
     validator(value) ? '' : reason,
   link: (name, value) =>
@@ -20,9 +20,9 @@ export const R = {
     }, `The currency decimals are incorrect, should be at most ${decimals}`),
 };
 
-export type TValidationFunc = (name: string, value: any) => string | undefined;
+export type TValidationFunc = (name: string | undefined, value: any) => string | undefined;
 
-export const validate = (rules: TValidationFunc[] | undefined, value: any): string | undefined => {
+export const validate = (rules: TValidationFunc[] | undefined, value: any, name?: string): string | undefined => {
   if (!rules) {
     return undefined;
   }
@@ -33,7 +33,7 @@ export const validate = (rules: TValidationFunc[] | undefined, value: any): stri
 
 export const validateMultipe = (rules: { [key: string]: TValidationFunc[] }, values: { [key: string]: any }) => {
   const errors = Object.entries(rules).reduce((acc, [name, rules]) => {
-    const validations = validate(rules, values[name]);
+    const validations = validate(rules, values[name], name);
     return !validations ? acc : { ...acc, [name]: validations };
   }, {});
 
