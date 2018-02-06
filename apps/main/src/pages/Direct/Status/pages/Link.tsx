@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import { BlockHeader } from 'web3/types';
 import { Location } from 'history';
 
 import wait from '@linkexchange/utils/wait';
@@ -33,6 +34,8 @@ interface IState {
   algorithm: string;
   whitelist: string;
   location: string;
+  currentBlockNumber: number | null;
+  transationStatus: boolean | null;
   transationBlockNumber: number | null;
 }
 
@@ -52,7 +55,7 @@ class LinkStatus extends Component<IProps, IState> {
     const location = params.get('location') || '';
 
     const [network] = asset.split(':');
-    this.web3 = getInfura(network as TNetwork);
+    this.web3 = getInfura(network as TNetwork, true);
 
     this.state = {
       mobileOrTablet: mobileOrTablet(),
@@ -63,7 +66,9 @@ class LinkStatus extends Component<IProps, IState> {
       algorithm,
       whitelist,
       location,
+      currentBlockNumber: null,
       transationBlockNumber: null,
+      transationStatus: null,
     };
   }
 
@@ -174,17 +179,26 @@ class LinkStatus extends Component<IProps, IState> {
     }
   };
 
-  _observeBlockchainState = async () => {
-    do {
-      const [, tx] = this.state.linkId.split(':');
-      const receipt = await this.web3.eth.getTransactionReceipt(tx);
-      if (receipt) {
-        this.setState({
-          transationBlockNumber: receipt.status === '0x1' ? receipt.blockNumber : null,
-        });
+  _observeBlockchainState = () => {
+    const blockHeaders: any = this.web3.eth.subscribe('newBlockHeaders');
+
+    blockHeaders.on('data', ({ number }: BlockHeader) => {
+      this.setState({ currentBlockNumber: number });
+      if (!this.state.transationBlockNumber) {
+        this._checkReceipt();
       }
-      await wait(1000);
-    } while (this.state.transationBlockNumber == null);
+    });
+  };
+
+  _checkReceipt = async () => {
+    const [, tx] = this.state.linkId.split(':');
+    const receipt = await this.web3.eth.getTransactionReceipt(tx);
+    if (receipt) {
+      this.setState({
+        transationStatus: receipt.status === '0x1' ? true : false,
+        transationBlockNumber: receipt.blockNumber,
+      });
+    }
   };
 
   _findLinkById = (linkId) => (links) => {

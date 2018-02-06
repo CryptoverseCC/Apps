@@ -156,4 +156,12 @@ class LinkexchangeLink extends HTMLElement {
   }
 }
 
-window.customElements.define('linkexchange-link', LinkexchangeLink);
+if (!window.customElements.get('linkexchange-link')) {
+  try {
+    window.customElements.define('linkexchange-link', LinkexchangeLink);
+  } catch (e) {
+    if (process.env.NODE_ENV === 'development') {
+      console.info('Error occured when defining custom element', e);
+    }
+  }
+}
