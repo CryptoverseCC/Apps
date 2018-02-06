@@ -130,6 +130,7 @@ class LinkexchangeLink extends HTMLElement {
       description,
       impression,
       tillDate,
+      location: window.location.href,
     };
   }
 

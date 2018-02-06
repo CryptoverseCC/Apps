@@ -115,7 +115,7 @@ class LinkStatus extends Component<IProps, IState> {
           <div className={style.introduction}>
             <img src={heartSvg} />
             <h2>Your link has been successfully submitted!</h2>
-            <p>In order to track its progress please save the link</p>
+            <p>In order to track its progress, bookmark the URL</p>
           </div>
           <div className={style.info}>
             <div className={style.label}>Widget location:</div>
@@ -125,7 +125,7 @@ class LinkStatus extends Component<IProps, IState> {
           </div>
           <Steps stepsStates={this._getStepsStates()}>
             <Step icon={<Icon className={style.icon} name="eye" />}>
-              <p>Visible on blockchain</p>
+              <p>On a blockchain</p>
             </Step>
             <Step
               icon={
@@ -134,12 +134,10 @@ class LinkStatus extends Component<IProps, IState> {
                 </div>
               }
             >
-              <p>Userfeeds Address</p>
-              <span>Visible to publisher</span>
+              <p>In Review</p>
             </Step>
             <Step icon={<Icon className={style.icon} name="check" />}>
-              <p>Put on whitelist</p>
-              <span>All set!</span>
+              <p>Whitelistedt</p>
             </Step>
           </Steps>
         </Paper>

@@ -2,4 +2,4 @@
 
 cd /apps
 cd widgets/linkexchange-link
-npm publish
+# npm publish
