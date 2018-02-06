@@ -33,6 +33,7 @@ class LinkexchangeLink extends HTMLElement {
       'till-date',
       'translations',
       'translations-url',
+      'open-details',
     ];
   }
 
@@ -95,7 +96,7 @@ class LinkexchangeLink extends HTMLElement {
 
     render(
       <IntlProvider locale="en" messages={{ ...this.customMessages }}>
-        <Banner widgetSettings={this._argsToState()} root={this} />
+        <Banner widgetSettings={this._argsToState()} root={this} openDetails={this._getOpenMethod()} />
       </IntlProvider>,
       this.querySelector(`.${style.root}`),
     );
@@ -132,6 +133,14 @@ class LinkexchangeLink extends HTMLElement {
       tillDate,
       location: window.location.href,
     };
+  }
+
+  _getOpenMethod(): 'modal' | 'tab' {
+    const attr = this.getAttribute('open-details');
+    if (attr === 'tab') {
+      return 'tab';
+    }
+    return 'modal';
   }
 
   async _fetchTranslations(url: string) {

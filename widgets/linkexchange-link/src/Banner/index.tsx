@@ -13,6 +13,7 @@ import Switch from '@linkexchange/components/src/utils/Switch';
 import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
 import calculateProbabilities from '@linkexchange/utils/links';
 import RootProvider from '@linkexchange/root-provider';
+import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 import Menu from './components/Menu';
 import RandomLinkProvider from './containers/RandomLinkProvider';
@@ -23,6 +24,7 @@ import * as style from './banner.scss';
 const cx = classnames.bind(style);
 
 interface IBannerProps {
+  openDetails: 'modal' | 'tab';
   widgetSettings: IWidgetSettings;
   root: HTMLElement;
 }
@@ -60,7 +62,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
       <RootProvider root={this.props.root}>
         <div className={cx(['self', widgetSettings.size])} onMouseLeave={this._onInfoLeave}>
           <div className={cx('options', { open: optionsOpen })}>
-            <Menu onClick={this._openModal('details')} />
+            <Menu onClick={this._openDetails} />
           </div>
           <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
             <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
@@ -91,7 +93,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
                   <WidgetDatails onAddLink={this._openModal('addLink')} />
                 </Switch.Case>
                 <Switch.Case condition="addLink">
-                  <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._openModal('details')} />
+                  <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._openDetails} />
                 </Switch.Case>
               </Switch>
               <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
@@ -135,8 +137,14 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
   _openModal = (modalName: 'none' | 'details' | 'addLink') => () => {
     this.setState({ openedModal: modalName });
-    if (modalName === 'details') {
+  };
+
+  _openDetails = () => {
+    if (this.props.openDetails === 'modal') {
+      this.setState({ openedModal: 'details' });
       AddLink.preload();
+    } else {
+      openLinkexchangeUrl('/direct/details', this.props.widgetSettings);
     }
   };
 
@@ -174,7 +182,9 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   };
 
   _preloadModals = () => {
-    Provider.preload();
-    WidgetDatails.preload();
+    if (this.props.openDetails === 'modal') {
+      Provider.preload();
+      WidgetDatails.preload();
+    }
   };
 }
