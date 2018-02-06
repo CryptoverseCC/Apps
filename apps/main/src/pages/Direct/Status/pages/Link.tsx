@@ -137,7 +137,7 @@ class LinkStatus extends Component<IProps, IState> {
               <p>In Review</p>
             </Step>
             <Step icon={<Icon className={style.icon} name="check" />}>
-              <p>Whitelistedt</p>
+              <p>Whitelisted</p>
             </Step>
           </Steps>
         </Paper>
