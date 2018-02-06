@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.156",
+  "version": "0.0.157",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "author": "Userfeeds",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/add-link": "^0.0.156",
+    "@linkexchange/add-link": "^0.0.157",
     "@linkexchange/components": "^0.0.152",
     "@linkexchange/details": "^0.0.156",
     "@linkexchange/ducks": "^0.0.144",

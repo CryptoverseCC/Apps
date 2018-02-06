@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/add-link",
-  "version": "0.0.156",
+  "version": "0.0.157",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
