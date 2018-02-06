@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Web3 from 'web3';
+import classnames from 'classnames';
 import { returntypeof } from 'react-redux-typescript';
 
 import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
@@ -35,6 +36,7 @@ const Dispatch2Props = returntypeof(mapDispatchToProps);
 
 type TAddLinkModalProps = typeof State2Props &
   typeof Dispatch2Props & {
+    className?: string;
     web3: Web3;
     tokenDetails: ITokenDetails;
     openWidgetDetails(): void;
@@ -59,11 +61,11 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   };
 
   render() {
-    const { widgetSettings, tokenDetails, web3 } = this.props;
+    const { widgetSettings, tokenDetails, web3, className } = this.props;
     const { step, link, linkId } = this.state;
 
     return (
-      <div className={style.self}>
+      <div className={classnames(style.self, className)}>
         <div className={style.header}>
           <BackButton style={{ marginRight: 'auto', marginLeft: '-20px' }} onClick={this.props.openWidgetDetails} />
           <h2>Create a new link</h2>

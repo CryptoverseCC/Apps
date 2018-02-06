@@ -1,6 +1,10 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 
+import IframePortal from './IframePortal';
+
+import * as style from './lazy.scss';
+
 const Loading = (props) => {
   if (props.pastDelay) {
     return <div>Loading...</div>;
@@ -24,10 +28,12 @@ export const WidgetDatails = Loadable({
   render: ({ Details, Header, Lists }, props) => {
     const { onAddLink, ...restProps } = props;
     return (
-      <Details {...restProps}>
-        <Header onAddClick={onAddLink}/>
-        <Lists />
-      </Details>
+      <IframePortal className={style.details}>
+        <Details {...restProps}>
+          <Header onAddClick={onAddLink} />
+          <Lists />
+        </Details>
+      </IframePortal>
     );
   },
 });
@@ -35,7 +41,11 @@ export const WidgetDatails = Loadable({
 export const AddLink = Loadable({
   loader: () => import('@linkexchange/add-link'),
   loading: Loading,
-  render: ({ AddLinkWithInjectedWeb3AndTokenDetails }, props) => (
-    <AddLinkWithInjectedWeb3AndTokenDetails {...props} />
-  ),
+  render: ({ AddLinkWithInjectedWeb3AndTokenDetails }, props) => {
+    return (
+      <IframePortal className={style.addLink}>
+        <AddLinkWithInjectedWeb3AndTokenDetails className={style.addLinkComponent} {...props} />
+      </IframePortal>
+    );
+  },
 });
