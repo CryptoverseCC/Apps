@@ -14,7 +14,7 @@ import { R, TValidationFunc } from '@linkexchange/utils/validation';
 import TransactionProvider from '@linkexchange/transaction-provider';
 import { Title, Error, TextField, validateField } from '@linkexchange/components/src/Form/Field';
 import { FormValidationsProvider } from '@linkexchange/root-provider';
-import { Form, Field } from 'react-final-form';
+import { Form, Field, FormSpy } from 'react-final-form';
 
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
@@ -51,6 +51,15 @@ export default class AddLinkForm extends Component<IAddLinkFormProps> {
                 onSubmit={() => undefined}
                 render={(formProps) => (
                   <>
+                    <FormSpy
+                      onChange={({values}) => {
+                        this.props.onChange({
+                          title: values.title as (string | null),
+                          summary: values.summary as (string | null),
+                          target: values.target as (string | null),
+                        });
+                      }}
+                    />
                     <Field
                       title="Headline"
                       component={TextField}
