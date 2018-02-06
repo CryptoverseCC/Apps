@@ -127,12 +127,18 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         fetched: true,
         links: calculateProbabilities(links),
       });
+      this._preloadModals();
     } catch (e) {
       console.info('Something went wrong 😞');
     }
   };
 
-  _openModal = (modalName: 'none' | 'details' | 'addLink') => () => this.setState({ openedModal: modalName });
+  _openModal = (modalName: 'none' | 'details' | 'addLink') => () => {
+    this.setState({ openedModal: modalName });
+    if (modalName === 'details') {
+      AddLink.preload();
+    }
+  };
 
   _closeModal = () => {
     this._openModal('none')();
@@ -165,5 +171,10 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
 
   _onLink = (currentLink: ILink) => {
     this.setState({ currentLink });
+  };
+
+  _preloadModals = () => {
+    Provider.preload();
+    WidgetDatails.preload();
   };
 }
