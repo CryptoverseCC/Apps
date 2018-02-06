@@ -94,7 +94,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps> {
                     <TransactionProvider
                       startTransaction={() => this._onSubmit(formProps.values, formValidations.form || [])}
                       renderReady={() => (
-                        <Button disabled={!formProps.valid} style={{ width: '100%' }} color="primary">
+                        <Button disabled={!formProps.valid} color="primary">
                           Create
                         </Button>
                       )}
