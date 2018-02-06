@@ -11,6 +11,7 @@ interface IProps {
 
 export default class MyWindowPortal extends Component<IProps> {
   containerEl: HTMLElement;
+  iframeRef: HTMLIFrameElement;
 
   constructor(props) {
     super(props);
@@ -33,17 +34,26 @@ export default class MyWindowPortal extends Component<IProps> {
     if (!ref) {
       return;
     }
+    this.iframeRef = ref;
 
-    ref.contentWindow.document.body.appendChild(this.containerEl);
-    ref.contentWindow.document.body.style.margin = 0;
-    ref.contentWindow.document.body.style.opacity = 0;
+    if (this.iframeRef.contentWindow.document.readyState === 'complete') {
+      this.onLoad();
+    } else {
+      this.iframeRef.addEventListener('load', this.onLoad);
+    }
+  };
 
-    copyStyles(document, ref.contentWindow.document);
+  onLoad = () => {
+    this.iframeRef.contentWindow.document.body.style.margin = '0';
+    this.iframeRef.contentWindow.document.body.style.opacity = '0';
 
-    // ToDo use mutation observer here
+    this.iframeRef.contentWindow.document.body.appendChild(this.containerEl);
+
+    copyStyles(document, this.iframeRef.contentWindow.document);
+
     setTimeout(() => {
-      copyStyles(document, ref.contentWindow.document);
-      ref.contentWindow.document.body.style.opacity = 1;
+      copyStyles(document, this.iframeRef.contentWindow.document);
+      this.iframeRef.contentWindow.document.body.style.opacity = '1';
     }, 100);
   };
 }
