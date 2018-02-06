@@ -1,7 +1,7 @@
 @import '../styles/colors';
 
 /* mixin for multiline */
-@mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
+@mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white) {
   overflow: hidden;
   position: relative;
   line-height: $lineHeight;
@@ -33,15 +33,14 @@
   font-weight: 300;
 
   .title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
     color: $dodger-blue;
     font-weight: 700;
     font-size: 1em;
     flex-shrink: 0;
-    padding-bottom:0.5em;
-
+    padding-bottom: 0.5em;
   }
 
   .header {
