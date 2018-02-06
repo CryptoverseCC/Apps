@@ -60,6 +60,10 @@ export default class MyWindowPortal extends Component<IProps> {
 
 function copyStyles(sourceDoc, targetDoc) {
   Array.from(sourceDoc.styleSheets).forEach((styleSheet: any) => {
+    if (styleSheet.href && styleSheet.href.startsWith('http')) {
+      return;
+    }
+
     if (styleSheet.cssRules) {
       const newStyleEl = sourceDoc.createElement('style');
       Array.from(styleSheet.cssRules).forEach((cssRule: any) => {
