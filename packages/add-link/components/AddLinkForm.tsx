@@ -52,13 +52,14 @@ export default class AddLinkForm extends Component<IAddLinkFormProps> {
                 render={(formProps) => (
                   <>
                     <FormSpy
-                      onChange={({values}) => {
+                      onChange={({ values }) =>
+                        this.props.onChange &&
                         this.props.onChange({
-                          title: values.title as (string | null),
-                          summary: values.summary as (string | null),
-                          target: values.target as (string | null),
-                        });
-                      }}
+                          title: values.title as string,
+                          summary: values.summary as string,
+                          target: values.target as string,
+                        })
+                      }
                     />
                     <Field
                       title="Headline"
@@ -143,7 +144,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps> {
         });
     });
     return sendClaimPromise;
-  }
+  };
 
   _createClaim({ target, title, summary }) {
     const location = urlWithoutQueryIfLinkExchangeApp();
