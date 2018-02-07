@@ -19,14 +19,24 @@ export default class MyWindowPortal extends Component<IProps> {
     this.containerEl.classList.add(rootClassName);
   }
 
+  componentDidMount() {
+    if (this.iframeRef.contentWindow.document.readyState === 'complete') {
+      this.onLoad();
+    } else {
+      this.iframeRef.addEventListener('load', this.onLoad);
+    }
+  }
+
+  componentWillUnmount() {
+    this.iframeRef.contentWindow.document.body.removeChild(this.containerEl);
+  }
+
   render() {
     return (
-      <>
+      <div className={classnames(style.container, this.props.className)}>
         {createPortal(this.props.children, this.containerEl)}
-        <div className={classnames(style.container, this.props.className)}>
-          <iframe className={style.frame} ref={this.onRef} />
-        </div>
-      </>
+        <iframe className={style.frame} ref={this.onRef} />
+      </div>
     );
   }
 
@@ -35,12 +45,6 @@ export default class MyWindowPortal extends Component<IProps> {
       return;
     }
     this.iframeRef = ref;
-
-    if (this.iframeRef.contentWindow.document.readyState === 'complete') {
-      this.onLoad();
-    } else {
-      this.iframeRef.addEventListener('load', this.onLoad);
-    }
   };
 
   onLoad = () => {

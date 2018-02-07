@@ -67,7 +67,12 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
     return (
       <div className={classnames(style.self, className)}>
         <div className={style.header}>
-          <BackButton style={{ marginRight: 'auto', marginLeft: '-20px' }} onClick={this.props.openWidgetDetails} />
+          <BackButton
+            style={{ marginRight: 'auto', marginLeft: '-20px' }}
+            onClick={() => {
+              this.props.openWidgetDetails();
+            }}
+          />
           <h2>Create a new link</h2>
           <div style={{ marginLeft: 'auto' }}>
             <LightText>Balance:</LightText> {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}

@@ -16,13 +16,17 @@ export function validateField(validators: any[]): (value: any) => Promise<any> {
   };
 }
 
-export const TextField = (props) => (
-  <Field>
-    <Title>{props.title}</Title>
-    <Input {...props.input} type="text" />
-    {props.meta.touched && <Error>{props.meta.error}</Error>}
-  </Field>
-);
+export const TextField = (props) => {
+  const { onChange, ...restInputProps } = props.input;
+
+  return (
+    <Field>
+      <Title>{props.title}</Title>
+      <Input onChange={(e) => onChange(e)} {...restInputProps} type="text" />
+      {props.meta.touched && <Error>{props.meta.error}</Error>}
+    </Field>
+  );
+};
 
 export const Field = ({ children, ...props }) => (
   <div {...props} className={styles.Field}>
