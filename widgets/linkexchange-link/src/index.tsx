@@ -11,10 +11,6 @@ import Banner from './Banner';
 
 import * as style from './styles/all.scss';
 
-if (process.env.NODE_ENV !== 'development') {
-  console.info(`Loaded @linkexchange/widgets@${VERSION}-${process.env.NODE_ENV}`);
-}
-
 class LinkexchangeLink extends HTMLElement {
   static get observedAttributes() {
     return [
