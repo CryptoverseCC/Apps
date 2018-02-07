@@ -9,16 +9,19 @@ export const widgetActions = {
   update: acf<Partial<IWidgetState>>('UPDATE'),
 };
 
-export const updateWidgetSettings =
-  (newSettings: Partial<IWidgetState>, onChange: () => void) =>
-  (dispatch, getState: () => { widget: IWidgetState }) => {
+export const updateWidgetSettings = (newSettings: Partial<IWidgetState>, onChange: () => void) => (
+  dispatch,
+  getState: () => { widget: IWidgetState },
+) => {
   const { widget: oldSettings } = getState();
   dispatch(widgetActions.update(newSettings));
 
-  if (newSettings.recipientAddress !== oldSettings.recipientAddress
-    || newSettings.asset !== oldSettings.asset
-    || newSettings.whitelist !== oldSettings.whitelist
-    || newSettings.algorithm !== oldSettings.algorithm) {
+  if (
+    newSettings.recipientAddress !== oldSettings.recipientAddress ||
+    newSettings.asset !== oldSettings.asset ||
+    newSettings.whitelist !== oldSettings.whitelist ||
+    newSettings.algorithm !== oldSettings.algorithm
+  ) {
     dispatch(onChange());
   }
 };

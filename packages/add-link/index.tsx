@@ -88,6 +88,7 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
               <Switch expresion={step}>
                 <Switch.Case condition="form">
                   <AddLinkForm
+                    widgetSettings={widgetSettings}
                     web3={web3}
                     tokenDetails={tokenDetails}
                     asset={widgetSettings.asset}

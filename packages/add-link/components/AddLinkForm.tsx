@@ -4,6 +4,7 @@ import { BN } from 'web3-utils';
 import { TransactionReceipt, PromiEvent } from 'web3/types';
 
 import core from '@userfeeds/core/src';
+import widget, { IWidgetState } from '@linkexchange/ducks/widget';
 import { resolveOnTransationHash } from '@userfeeds/core/src/utils/index';
 import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { IBaseLink } from '@linkexchange/types/link';
@@ -16,7 +17,10 @@ import { Title, Error, TextField, validateField } from '@linkexchange/components
 import { FormValidationsProvider } from '@linkexchange/root-provider';
 import { Form, Field, FormSpy } from 'react-final-form';
 
-import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
+import {
+  isLinkexchangeAddres,
+  urlWithoutQueryIfLinkExchangeApp,
+} from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 import * as style from './addLinkForm.scss';
 
@@ -26,6 +30,7 @@ interface IAddLinkFormProps {
   tokenDetails: any;
   recipientAddress: string;
   minimalValue?: string;
+  widgetSettings: IWidgetState;
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: IBaseLink) => void;
@@ -147,7 +152,9 @@ export default class AddLinkForm extends Component<IAddLinkFormProps> {
   };
 
   _createClaim({ target, title, summary }) {
-    const location = urlWithoutQueryIfLinkExchangeApp();
+    const { widgetSettings } = this.props;
+    const location =
+      widgetSettings.location && isLinkexchangeAddres() ? widgetSettings.location : urlWithoutQueryIfLinkExchangeApp();
 
     return {
       type: ['link'],
