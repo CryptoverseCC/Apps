@@ -144,7 +144,7 @@ class LinkexchangeLink extends HTMLElement {
     try {
       this.customMessages = await fetch(url).then((res) => res.json());
     } catch (e) {
-      console.info('Something went wrong when fetching translations file');
+      console.info('Something went wrong when fetching translations file', e);
     }
     this.translationsFeatchingState = 'fetched';
 
