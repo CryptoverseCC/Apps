@@ -21,7 +21,7 @@
       height: 35px;
     }
 
-    .options.open~.container {
+    .options.open ~ .container {
       transform: translateY(#{35px - $initial_menu_height});
     }
   }
@@ -34,7 +34,7 @@
       height: 48px;
     }
 
-    .options.open~.container {
+    .options.open ~ .container {
       transform: translateY(#{48px - $initial_menu_height});
     }
   }
@@ -80,7 +80,7 @@
     width: calc(100% - 2 * 10px);
     padding: 0 10px;
     background-color: $alto;
-    box-shadow: inset 0px 5px 25px 0px rgba(19,38,110,0.08);
+    box-shadow: inset 0px 5px 25px 0px rgba(19, 38, 110, 0.08);
     display: flex;
     justify-content: flex-end;
     align-items: center;
