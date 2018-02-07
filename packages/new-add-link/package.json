@@ -1,6 +1,6 @@
 {
   "name": "newer-add-link",
-  "version": "0.0.1",
+  "version": "0.0.166",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -8,7 +8,6 @@
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "jest"
   },
-  "dependencies": {},
   "devDependencies": {
     "@storybook/react": "^3.4.0-alpha.7",
     "@types/storybook__react": "^3.0.6",
@@ -17,11 +16,11 @@
   },
   "peerDependencies": {
     "@types/jest": "^22.1.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^22.2.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "ts-jest": "^22.0.3"
-    }
+  }
 }
