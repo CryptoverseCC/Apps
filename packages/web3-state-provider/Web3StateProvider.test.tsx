@@ -1,14 +1,9 @@
-// import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import { Web3StateProvider } from './';
+// import Web3StateProvider from './index';
 
-Enzyme.configure({
-  adapter: new Adapter(),
-});
-
-describe.skip('Web3StateProvider', () => {
+xdescribe('Web3StateProvider', () => {
   it('calls synchronizeState on mount', () => {
     const render = jest.fn();
     const synchronizeState = jest.fn();

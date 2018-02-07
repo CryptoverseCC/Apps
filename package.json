@@ -32,6 +32,7 @@
     "transform": {
       ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
     },
+    "setupTestFrameworkScriptFile": "./setupTests.ts",
     "testRegex": "(.*\\.(test|spec))\\.(ts|tsx)$",
     "moduleFileExtensions": ["ts", "tsx", "js"],
     "transformIgnorePatterns": ["/node_modules/(?!@userfeeds|@linkexchange).*"],
