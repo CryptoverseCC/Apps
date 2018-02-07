@@ -1,5 +1,5 @@
 #!/bin/sh
 
-cd /apps
-cd widgets/linkexchange-link
-# npm publish
+cd /apps/widgets/linkexchange-link
+
+npm publish
