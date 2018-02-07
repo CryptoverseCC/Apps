@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "module": "esnext",
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  },
+  "typeRoots": [
+    "./node_modules/@types",
+    "./node_modules/web3-typescript-typings"
+  ],
+  "files": [
+    "./global.d.ts"
+  ]
+}
