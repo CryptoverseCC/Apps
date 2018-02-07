@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/boost-link",
-  "version": "0.0.161",
+  "version": "0.0.163",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/components": "^0.0.161",
+    "@linkexchange/components": "^0.0.163",
     "@linkexchange/images": "^0.0.149",
     "@linkexchange/token-details-provider": "^0.0.152",
     "@linkexchange/types": "^0.0.144",

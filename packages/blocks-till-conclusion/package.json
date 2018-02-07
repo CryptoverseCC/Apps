@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "@linkexchange/blocks-till-conclusion",
-  "version": "0.0.161",
+  "version": "0.0.163",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
   "dependencies": {
-    "@linkexchange/components": "^0.0.161",
+    "@linkexchange/components": "^0.0.163",
     "@linkexchange/utils": "^0.0.152",
     "@linkexchange/web3-state-provider": "^0.0.152",
     "@userfeeds/core": "^0.0.152"
