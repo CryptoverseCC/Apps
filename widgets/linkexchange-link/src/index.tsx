@@ -12,6 +12,7 @@ import Banner from './Banner';
 import * as style from './styles/all.scss';
 
 class LinkexchangeLink extends HTMLElement {
+  static version = VERSION;
   static get observedAttributes() {
     return [
       'api-url',
