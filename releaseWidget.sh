@@ -4,4 +4,4 @@ echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 
 cd /apps/widgets/linkexchange-link
 
-npm publish
+npm publish --unsafe-perm
