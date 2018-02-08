@@ -145,6 +145,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
       AddLink.preload();
     } else {
       openLinkexchangeUrl('/direct/details', this.props.widgetSettings);
+      this.setState({ optionsOpen: false });
     }
   };
 
