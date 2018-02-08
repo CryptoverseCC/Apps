@@ -78,7 +78,7 @@ module.exports = {
     new webpack.WatchIgnorePlugin([/scss\.d\.ts$/]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || 'development',
-      VERSION: JSON.stringify(require('./package.json').version),
+      VERSION: JSON.stringify(require(process.cwd() + '/package.json').version),
     }),
     new webpack.NamedModulesPlugin(),
     // new webpack.optimize.ModuleConcatenationPlugin(), // ToDo read about this.
