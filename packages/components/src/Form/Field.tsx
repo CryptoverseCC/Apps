@@ -22,8 +22,13 @@ export const TextField = (props) => {
   return (
     <Field>
       <Title>{props.title}</Title>
-      <Input onChange={(e) => onChange(e)} {...restInputProps} type="text" />
-      {props.meta.touched && <Error>{props.meta.error}</Error>}
+      <Input
+        onChange={(e) => onChange(e)}
+        {...restInputProps}
+        error={props.meta.error}
+        showStatus={props.meta.touched}
+        type="text"
+      />
     </Field>
   );
 };

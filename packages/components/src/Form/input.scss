@@ -1,27 +1,70 @@
+$error: #fc0035;
+$warning: #fcc266;
+
+.InputContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  border: 1px solid #d9e0e7;
+  border-radius: 5px;
+  
+  &:focus {
+    border-color: #263fff;
+  }
+
+  &.hasError {
+    border-color: $error;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.hasWarning {
+    border-color: $error;
+  }
+}
+
 .Input {
+  box-sizing: border-box;
+  flex: 1 0 auto;
   padding: 15px 20px;
   line-height: 1.5em;
   font-size: 14px;
-  background-color: #F5F7FA;
-  border: 1px solid #D9E0E7;
-  border-radius: 5px;
+  background-color: #f5f7fa;
   color: #657092;
+  border: none;
+  border-radius: 5px;
 
   &:focus {
-    border-color: #263FFF;
     outline: none;
   }
+}
 
-  &.invalid {
-    border-color: red;
-  }
-
-  & + .Error {
-    margin-top: 5px;
-  }
+.Status {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 5px 20px;
+  text-align: center;
+  border-radius: 0 0 8px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 14px;
+  font-family: "PT Sans";
 }
 
 .Error {
-  color: red;
+  background-color: $error;
+  color: #fff;
 }
 
+.Warning {
+  color: orange;
+}
+
+.Appended {
+  height: calc(27px + 1.5em);
+  flex: 0 0 auto;
+  border-bottom-right-radius: 0;
+}

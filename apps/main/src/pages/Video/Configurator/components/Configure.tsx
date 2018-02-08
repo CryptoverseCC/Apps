@@ -49,6 +49,7 @@ interface IState {
     slots?: string;
     startBlock?: string;
     endBlock?: string;
+    whitelist?: string;
   };
   blockNumber?: number;
   averageBlockTime: number;
@@ -71,6 +72,7 @@ const initialState = {
 
 const rules = {
   title: [R.required],
+  whitelist: [R.value((v) => v === '' ? true : isAddress(v), 'Has to be valid eth address')],
   description: [R.required],
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
   asset: [R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address')],
@@ -207,6 +209,7 @@ class Configure extends Component<TProps, IState> {
 
     this.setState({ [key]: account });
     this.props.updateQueryParam(key, account);
+    this.validate(key, account);
   };
 
   setBlockNumberFromMM = (key) => async () => {
@@ -262,43 +265,52 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Ethereum address you'll use to receive payments for links</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={recipientAddress}
-              onChange={onChange('recipientAddress')}
-              ref={this.onRef('recipientAddress')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} />
-          </div>
-          {errors.recipientAddress && <Error>{errors.recipientAddress}</Error>}
+          <Input
+            className={style.input}
+            type="text"
+            value={recipientAddress}
+            onChange={onChange('recipientAddress')}
+            ref={this.onRef('recipientAddress')}
+            error={errors.recipientAddress}
+            append={(className) => (
+              <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} className={className} />
+            )}
+          />
         </Field>
         <Field>
           <Title>Whitelist</Title>
           <Description>Address that you'll use for links approval</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={whitelist}
-              onChange={onChange('whitelist')}
-              ref={this.onRef('whitelist')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('whitelist')} />
-          </div>
+          <Input
+            className={style.input}
+            type="text"
+            value={whitelist}
+            onChange={onChange('whitelist')}
+            ref={this.onRef('whitelist')}
+            error={errors.whitelist}
+            append={(className) => <CopyFromMM onClick={this.setAddressFromMM('whitelist')} className={className} />}
+          />
         </Field>
         <Field>
           <Title>Title</Title>
           <Description>Name of Your Widget</Description>
-          <Input type="text" value={title} onChange={onChange('title')} ref={this.onRef('title')} />
-          {errors.title && <Error>{errors.title}</Error>}
+          <Input
+            type="text"
+            value={title}
+            onChange={onChange('title')}
+            ref={this.onRef('title')}
+            error={errors.title}
+          />
         </Field>
         <Field>
           <Title>Description</Title>
           <Description>Short Description of Your Widget (describing links you want to receive etc)</Description>
-          <Input type="text" value={description} onChange={onChange('description')} ref={this.onRef('description')} />
-          {errors.description && <Error>{errors.description}</Error>}
+          <Input
+            type="text"
+            value={description}
+            onChange={onChange('description')}
+            ref={this.onRef('description')}
+            error={errors.description}
+          />
         </Field>
         <Field>
           <Title>Choose token</Title>
@@ -311,42 +323,45 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Slots</Title>
           <Description>Number of links qualified to display</Description>
-          <Input type="text" value={slots} onChange={onChange('slots')} ref={this.onRef('slots')} />
-          {errors.slots && <Error>{errors.slots}</Error>}
+          <Input
+            type="text"
+            value={slots}
+            onChange={onChange('slots')}
+            ref={this.onRef('slots')}
+            error={errors.slots}
+          />
         </Field>
         <Field>
           <Title>Start block</Title>
           <Description>Block number after which adding and boosting links will be allowed</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={startBlock}
-              onChange={onChange('startBlock')}
-              ref={this.onRef('startBlock')}
-            />
-            <CopyFromMM onClick={this.setBlockNumberFromMM('startBlock')} />
-          </div>
+          <Input
+            className={style.input}
+            type="text"
+            value={startBlock}
+            onChange={onChange('startBlock')}
+            ref={this.onRef('startBlock')}
+            error={errors.startBlock}
+            append={(className) => (
+              <CopyFromMM onClick={this.setBlockNumberFromMM('startBlock')} className={className} />
+            )}
+          />
           {this.getEstimatedDate(startBlock)}
-          {errors.startBlock && <Error>{errors.startBlock}</Error>}
         </Field>
         <Field>
           <Title>End block</Title>
           <Description>
             Block number after which adding and boosting links will be <b>not</b> allowed
           </Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={endBlock}
-              onChange={onChange('endBlock')}
-              ref={this.onRef('endBlock')}
-            />
-            <CopyFromMM onClick={this.setBlockNumberFromMM('endBlock')} />
-          </div>
+          <Input
+            className={style.input}
+            type="text"
+            value={endBlock}
+            onChange={onChange('endBlock')}
+            ref={this.onRef('endBlock')}
+            error={errors.endBlock}
+            append={(className) => <CopyFromMM onClick={this.setBlockNumberFromMM('endBlock')} className={className} />}
+          />
           {this.getEstimatedDate(endBlock)}
-          {errors.endBlock && <Error>{errors.endBlock}</Error>}
         </Field>
         <Field>
           <Title>Choose algorithm</Title>

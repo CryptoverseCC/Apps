@@ -103,27 +103,27 @@ class Whitelist extends Component<TProps, IState> {
           <div className={style.body} style={{ padding: '20px' }}>
             <Field>
               <Title>Recipient Address</Title>
-              <div className={style.fieldWithButton}>
                 <Input
                   className={style.input}
                   type="text"
                   value={this.state.recipientAddress}
                   onChange={this._onChange('recipientAddress')}
+                  append={(className) => (
+                    <CopyFromMM onClick={this._setAddressFromMM('recipientAddress')} className={className} />
+                  )}
                 />
-                <CopyFromMM onClick={this._setAddressFromMM('recipientAddress')} />
-              </div>
             </Field>
             <Field>
               <Title>Whitelist Address</Title>
-              <div className={style.fieldWithButton}>
                 <Input
                   className={style.input}
                   type="text"
                   value={this.state.whitelist}
                   onChange={this._onChange('whitelist')}
+                  append={(className) => (
+                    <CopyFromMM onClick={this._setAddressFromMM('whitelist')} className={className} />
+                  )}
                 />
-                <CopyFromMM onClick={this._setAddressFromMM('whitelist')} />
-              </div>
             </Field>
             <Field>
               <Title>Choose token</Title>

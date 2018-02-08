@@ -8,6 +8,11 @@
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "jest"
   },
+  "dependencies": {
+    "@linkexchange/copy-from-mm": "^0.0.166",
+    "@linkexchange/images": "^0.0.149",
+    "@linkexchange/components": "^0.0.166"
+  },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.12",
     "@storybook/addon-knobs": "^3.3.12",

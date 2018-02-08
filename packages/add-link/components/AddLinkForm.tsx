@@ -8,7 +8,6 @@ import { WidgetSettings } from '@linkexchange/widget-settings';
 import { resolveOnTransationHash } from '@userfeeds/core/src/utils/index';
 import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { IBaseLink } from '@linkexchange/types/link';
-import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Checkbox';
 import { R, TValidationFunc } from '@linkexchange/utils/validation';

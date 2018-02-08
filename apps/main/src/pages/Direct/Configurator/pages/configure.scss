@@ -2,15 +2,3 @@
   margin-top: 10px!important;
   text-align: center;
 }
-
-.field-with-button {
-  display: flex;
-  flex-direction: row;
-
-  .input {
-    flex-grow: 1;
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
