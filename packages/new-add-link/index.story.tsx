@@ -3,12 +3,11 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, text } from '@storybook/addon-knobs/react'
 import { action } from '@storybook/addon-actions';
 import Button from './index';
+import Input from '../components/src/Form/Input';
+import * as styles from './index.scss';
 
-storiesOf('Button', module)
+storiesOf('Input', module)
   .addDecorator(withKnobs)
   .add('with text', () => (
-    <Button onClick={action('button-click')}>{text('Button Text', 'text')}</Button>
+    <Input className={styles.input}/>
   ))
-  .add('with some emoji', () => (
-    <Button>😀 😎 👍 💯</Button>
-  ));

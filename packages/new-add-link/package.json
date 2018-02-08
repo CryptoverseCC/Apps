@@ -14,7 +14,9 @@
     "@storybook/react": "^3.4.0-alpha.7",
     "@types/storybook__react": "^3.0.6",
     "awesome-typescript-loader": "^3.4.1",
-    "babel-core": "^6.26.0"
+    "babel-core": "^6.26.0",
+    "style-loader": "^0.20.1",
+    "typings-for-css-modules-loader": "^1.7.0"
   },
   "peerDependencies": {
     "@types/jest": "^22.1.1",
