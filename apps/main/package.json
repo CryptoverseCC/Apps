@@ -8,7 +8,8 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "build-test": "cross-env NODE_ENV=stagging webpack --config webpack.config.prod.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
-    "deploy-test": "firebase deploy -P default --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
+    "deploy-test":
+      "firebase deploy -P default --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
     "deploy": "firebase deploy -P prod --token $FIREBASE_TOKEN"
   },
   "author": "",
@@ -35,6 +36,7 @@
     "lodash.debounce": "^4.0.8",
     "moment": "2.19.1",
     "qs": "^6.5.0",
+    "raven-js": "^3.22.2",
     "react": "16.2.0",
     "react-copy-to-clipboard": "5.0.1",
     "react-datepicker": "0.57.0",
