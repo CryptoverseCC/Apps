@@ -165,7 +165,9 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   _openTargetUrl = () => {
     if (this.state.currentLink) {
       const linkWindow = window.open(this.state.currentLink.target, '_blank');
-      linkWindow!.opener = null;
+      if (linkWindow) {
+        linkWindow.opener = null;
+      }
     }
   };
 
