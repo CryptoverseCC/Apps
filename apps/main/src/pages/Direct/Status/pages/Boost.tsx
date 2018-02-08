@@ -26,7 +26,7 @@ interface IState {
   transationBlockNumber: number | null;
 }
 
-const BACKEND_DELAY = 40;
+const BACKEND_DELAY = 10;
 
 export default class Boost extends Component<IProps, IState> {
   web3: Web3;
@@ -75,10 +75,10 @@ export default class Boost extends Component<IProps, IState> {
           <p>Your link has been successfully boosted</p>
           <Steps stepsStates={this._getStepsStates()}>
             <Step icon={<Icon className={style.icon} name="eye" />}>
-              <p>Visible on blockchain</p>
+              <p>On a blockchain</p>
             </Step>
             <Step icon={<Icon className={style.icon} name="home" />}>
-              <p>All done!</p>
+              <p>Boosted!</p>
             </Step>
           </Steps>
         </Paper>

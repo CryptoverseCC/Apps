@@ -20,10 +20,13 @@ interface IStepProps {
 export class Step extends PureComponent<IStepProps> {
   render() {
     const { icon, state, children } = this.props;
+    const decoratedIcon = React.cloneElement(icon, {
+      className: classnames(icon.props.className, style.icon),
+    });
 
     return (
       <div className={cx(style.step, { [state!]: true })}>
-        <div className={style.iconContainer}>{icon}</div>
+        <div className={style.iconContainer}>{decoratedIcon}</div>
         <div className={style.content}>{children}</div>
       </div>
     );
@@ -95,15 +98,19 @@ export default class Steps extends Component<IStepsProps, {}> {
   render() {
     const { stepsStates, children } = this.props;
 
-    const decoratedChildren = Children.map(children, (child, index) => {
-      if (typeof child === 'string' || typeof child === 'number') {
+    let stepIndex = 0;
+    const decoratedChildren = Children.map(children, (child) => {
+      if (!child || typeof child === 'string' || typeof child === 'number') {
         return child;
       }
 
-      return React.cloneElement(child, {
-        ...stepsStates[index],
-        ref: this._onRef(index),
+      const decorated = React.cloneElement(child, {
+        ...stepsStates[stepIndex],
+        ref: this._onRef(stepIndex),
       });
+
+      ++stepIndex;
+      return decorated;
     });
     return (
       <div className={style.self}>
