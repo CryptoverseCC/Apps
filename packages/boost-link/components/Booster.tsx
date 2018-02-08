@@ -101,6 +101,7 @@ export default class Booster extends Component<IProps, IState> {
         <div className={cx(style.footer, { hasInsufficientFunds, error: !!inputError })}>
           <div className={style.inputButtonContainer}>
             <input type="text" className={style.toPay} value={toPay} onChange={this._onInputChange} />
+            <div className={style.tokenSymbol}>{tokenDetails.symbol}</div>
             <div className={cx(style.next, { disabled })} onClick={this._onSendClick}>
               {!disabled ? <img src={MetaFox} className={style.fox} /> : <Icon name="x" className={style.icon} />}
             </div>

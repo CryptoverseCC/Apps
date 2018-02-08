@@ -57,7 +57,8 @@
     background: #fdba4f;
 
     .input-button-container {
-      .to-pay {
+      .to-pay,
+      .token-symbol {
         background-color: #edad48;
       }
     }
@@ -69,7 +70,8 @@
     .input-button-container {
       animation: shake 150ms 2 linear;
 
-      .to-pay {
+      .to-pay,
+      .token-symbol {
         background-color: #e90535;
       }
 
@@ -95,6 +97,12 @@
     display: flex;
     width: 100%;
 
+    .to-pay,
+    .token-symbol {
+      background-color: #2538cf;
+      transition: background-color ease-in 0.2s;
+    }
+
     .to-pay {
       position: relative;
       overflow: hidden;
@@ -102,10 +110,17 @@
       border-radius: 8px 0px 0px 8px;
       height: 50px;
       text-align: center;
-      background-color: #2538cf;
       font-size: 24px;
       color: #ffffff;
-      transition: background-color ease-in 0.2s;
+    }
+
+    .token-symbol {
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      padding: 5px;
     }
 
     .next {
