@@ -1,17 +1,5 @@
 @import '~@linkexchange/components/styles/colors';
 
-@-webkit-keyframes waiting {
-  0% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.5;
-  }
-}
-
 .self {
   position: relative;
   width: 100%;
@@ -74,7 +62,12 @@
     @media screen and (max-width: 1200px) {
       flex-direction: row;
       margin-top: 0;
+      margin-bottom: 15px;
       margin-left: calc(20px + 0.5em - 1.5em);
+
+      &:last-child {
+        margin-bottom: 0px;
+      }
     }
 
     &.disabled {
@@ -91,9 +84,47 @@
       background-color: #ff0000;
     }
 
-    &.waiting .icon {
-      opacity: 0.2;
-      animation: waiting 1s ease-in-out infinite;
+    &.waiting {
+      .icon {
+        opacity: 0.2;
+        animation: waiting 2s ease-in-out infinite;
+
+        @keyframes waiting {
+          0% {
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0.2;
+          }
+        }
+      }
+
+      .iconContainer::after {
+        content: '';
+        $spinerSize: 3em;
+        position: absolute;
+        top: calc(3em - $spinerSize / 2);
+        left: calc(3em - $spinerSize / 2);
+        width: $spinerSize;
+        height: $spinerSize;
+        border-radius: $spinerSize;
+        border: 2px solid transparent;
+        border-top: 2px solid #263fff;
+        animation: spin 2s linear infinite;
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      }
     }
 
     .icon {
@@ -109,6 +140,7 @@
     }
 
     .iconContainer {
+      position: relative;
       align-self: center;
       width: 3em;
       height: 3em;
@@ -120,12 +152,14 @@
     }
 
     .content {
+      min-width: 140px;
       display: flex;
       flex-direction: column;
       align-items: center;
 
       @media screen and (max-width: 1200px) {
         align-items: flex-start;
+        justify-content: center;
         padding-left: 20px;
       }
     }

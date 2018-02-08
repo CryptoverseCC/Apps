@@ -96,7 +96,7 @@ class LinkStatus extends Component<IProps, IState> {
       return null;
     }
 
-    const { link, location, transationBlockNumber } = this.state;
+    const { whitelist, link, location, transationBlockNumber } = this.state;
 
     return (
       <div className={style.self}>
@@ -127,17 +127,8 @@ class LinkStatus extends Component<IProps, IState> {
             <Step icon={<Icon className={style.icon} name="eye" />}>
               <p>On a blockchain</p>
             </Step>
-            <Step
-              icon={
-                <div className={style.icon}>
-                  <Svg svg={cubeSvg} size="1.2em" viewBox="0 0 23 27" />
-                </div>
-              }
-            >
-              <p>In Review</p>
-            </Step>
             <Step icon={<Icon className={style.icon} name="check" />}>
-              <p>Whitelisted</p>
+              <p>{!!whitelist ? 'In Review' : 'Added'}</p>
             </Step>
           </Steps>
         </Paper>
@@ -207,27 +198,25 @@ class LinkStatus extends Component<IProps, IState> {
   };
 
   _getStepsStates = () => {
-    const { link, transationBlockNumber } = this.state;
+    const { whitelist, link, transationBlockNumber, transationStatus } = this.state;
     let step0State;
     let step0Reason;
 
     if (link) {
       step0State = 'done';
     } else if (transationBlockNumber !== null) {
-      step0State = 'done';
+      step0State = transationStatus ? 'done' : 'failed';
     } else {
       step0State = 'waiting';
       step0Reason = 'Waiting for blockchain';
     }
 
-    const step1State = step0State === 'waiting' ? 'notstarted' : link ? 'done' : 'waiting';
-
-    const step2State =
-      step1State === 'waiting' || step1State === 'notstarted'
+    const step1State =
+      step0State !== 'done'
         ? 'notstarted'
-        : link && link.whitelisted ? 'done' : 'waiting';
+        : (link && !!whitelist && !link.whitelisted) || (!link && !whitelist) ? 'waiting' : 'done';
 
-    return [{ state: step0State, reason: step0Reason }, { state: step1State }, { state: step2State }];
+    return [{ state: step0State, reason: step0Reason }, { state: step1State }];
   };
 }
 
