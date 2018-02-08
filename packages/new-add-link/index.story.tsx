@@ -8,6 +8,9 @@ import * as styles from './index.scss';
 
 storiesOf('Input', module)
   .addDecorator(withKnobs)
-  .add('with text', () => (
-    <Input className={styles.input}/>
+  .add('Basic', () => (
+    <Input value={text('Text', 'This is the input text')}/>
+  ))
+  .add('Invalid', () => (
+    <Input invalid/>
   ))

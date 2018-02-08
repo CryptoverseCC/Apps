@@ -11,7 +11,8 @@ module.exports = (baseConfig, env, defaultConfig) => {
     test: /\.scss$/,
     use: [
       'style-loader',
-      'typings-for-css-modules-loader?modules&sass&namedExport&camelCase'
+      'typings-for-css-modules-loader?modules&sass&namedExport&camelCase',
+      'sass-loader'
     ],
     include: path.resolve(__dirname, '../../../')
   })
