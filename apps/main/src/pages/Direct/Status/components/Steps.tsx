@@ -47,7 +47,6 @@ class Progress extends Component<IProgressProps, IProgressState> {
 
   componentWillReceiveProps(newProps) {
     const { stepsStates, stepsRefs } = newProps;
-    // const stepsRefs = refs.filter((ref) => !!ref);
 
     const lastDoneStep = [...stepsStates].reverse().findIndex(({ state }) => state === 'done');
     const lastDoneElement = [...stepsRefs].reverse()[lastDoneStep];

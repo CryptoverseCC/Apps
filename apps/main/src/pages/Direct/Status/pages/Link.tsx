@@ -127,19 +127,9 @@ class LinkStatus extends Component<IProps, IState> {
             <Step icon={<Icon className={style.icon} name="eye" />}>
               <p>On a blockchain</p>
             </Step>
-            {!!whitelist && (
-              <Step
-                icon={
-                  <div className={style.icon}>
-                    <Svg svg={cubeSvg} size="1.2em" viewBox="0 0 23 27" />
-                  </div>
-                }
-              >
-                <p>Userfeeds platform</p>
-              </Step>
-            )}
+
             <Step icon={<Icon className={style.icon} name="check" />}>
-              <p>{!!whitelist ? 'In Review' : 'Added'}</p>
+              <p>{this._lastStepName()}</p>
             </Step>
           </Steps>
         </Paper>
@@ -222,16 +212,20 @@ class LinkStatus extends Component<IProps, IState> {
       step0Reason = 'Waiting for blockchain';
     }
 
-    const step1State = step0State !== 'done' ? 'notstarted' : link ? 'done' : 'waiting';
-    if (!!whitelist) {
-      const step2State =
-        step1State === 'waiting' || step1State === 'notstarted'
-          ? 'notstarted'
-          : link && link.whitelisted ? 'done' : 'waiting';
+    const step1State =
+      step0State !== 'done'
+        ? 'notstarted'
+        : (link && !!whitelist && link.whitelisted) || (link && !whitelist) ? 'done' : 'waiting';
 
-      return [{ state: step0State, reason: step0Reason }, { state: step1State }, { state: step2State }];
-    }
     return [{ state: step0State, reason: step0Reason }, { state: step1State }];
+  };
+
+  _lastStepName = () => {
+    const { link, whitelist } = this.state;
+    if (whitelist) {
+      return (link && !link.whitelisted) || !link ? 'In Review' : 'Whitelisted';
+    }
+    return !link ? 'Processing' : 'Added';
   };
 }
 

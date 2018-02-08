@@ -26,7 +26,7 @@ interface IState {
   transationBlockNumber: number | null;
 }
 
-const BACKEND_DELAY = 40;
+const BACKEND_DELAY = 10;
 
 export default class Boost extends Component<IProps, IState> {
   web3: Web3;
