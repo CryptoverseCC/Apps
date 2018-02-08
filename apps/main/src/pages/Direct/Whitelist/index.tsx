@@ -104,7 +104,6 @@ class Whitelist extends Component<TProps, IState> {
             <Field>
               <Title>Recipient Address</Title>
                 <Input
-                  className={style.input}
                   type="text"
                   value={this.state.recipientAddress}
                   onChange={this._onChange('recipientAddress')}
@@ -116,7 +115,6 @@ class Whitelist extends Component<TProps, IState> {
             <Field>
               <Title>Whitelist Address</Title>
                 <Input
-                  className={style.input}
                   type="text"
                   value={this.state.whitelist}
                   onChange={this._onChange('whitelist')}

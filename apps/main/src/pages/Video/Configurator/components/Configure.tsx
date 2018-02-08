@@ -26,8 +26,6 @@ import { R, validate, validateMultipe } from '@linkexchange/utils/validation';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 
-import * as style from './configure.scss';
-
 interface IState {
   title: string;
   description: string;
@@ -266,7 +264,6 @@ class Configure extends Component<TProps, IState> {
           <Title>Userfeed Address</Title>
           <Description>Ethereum address you'll use to receive payments for links</Description>
           <Input
-            className={style.input}
             type="text"
             value={recipientAddress}
             onChange={onChange('recipientAddress')}
@@ -281,7 +278,6 @@ class Configure extends Component<TProps, IState> {
           <Title>Whitelist</Title>
           <Description>Address that you'll use for links approval</Description>
           <Input
-            className={style.input}
             type="text"
             value={whitelist}
             onChange={onChange('whitelist')}
@@ -335,7 +331,6 @@ class Configure extends Component<TProps, IState> {
           <Title>Start block</Title>
           <Description>Block number after which adding and boosting links will be allowed</Description>
           <Input
-            className={style.input}
             type="text"
             value={startBlock}
             onChange={onChange('startBlock')}
@@ -353,7 +348,6 @@ class Configure extends Component<TProps, IState> {
             Block number after which adding and boosting links will be <b>not</b> allowed
           </Description>
           <Input
-            className={style.input}
             type="text"
             value={endBlock}
             onChange={onChange('endBlock')}

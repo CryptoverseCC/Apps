@@ -220,7 +220,6 @@ class Configure extends Component<TProps, IState> {
           <Title>Userfeed Address</Title>
           <Description>Ethereum address you'll use to receive payments for links</Description>
           <Input
-            className={style.input}
             type="text"
             value={recipientAddress}
             onChange={onChange('recipientAddress')}
@@ -236,7 +235,6 @@ class Configure extends Component<TProps, IState> {
           <Description>Address that you'll use for links approval</Description>
           <Input
             type="text"
-            className={style.input}
             value={whitelist}
             onChange={onChange('whitelist')}
             ref={this.onRef('whitelist')}
