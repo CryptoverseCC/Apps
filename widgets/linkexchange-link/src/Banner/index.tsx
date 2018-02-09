@@ -70,9 +70,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
               <TokenLogo className={style.icon} asset={widgetSettings.asset} />
             </div>
             <Switch expresion={fetched && !!currentLink}>
-              <Switch.Case condition>
-                {currentLink && <Link link={currentLink} lines={widgetSettings.size === 'rectangle' ? 8 : 2} />}
-              </Switch.Case>
+              <Switch.Case condition>{currentLink && <Link link={currentLink} />}</Switch.Case>
               <Switch.Case condition={false}>
                 <Label>
                   <FormattedMessage id="banner.noLinks" defaultMessage="No links available" />
