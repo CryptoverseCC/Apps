@@ -5,7 +5,10 @@
   outline: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  border-radius: 3px;
+
+  &.rounded {
+    border-radius: 3px;
+  }
 
   &.medium {
     padding: 12px 20px;

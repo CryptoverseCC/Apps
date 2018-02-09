@@ -9,7 +9,7 @@ $warning: #fcc266;
   width: 100%;
   border: 1px solid #d9e0e7;
   border-radius: 5px;
-  
+
   &:focus {
     border-color: #263fff;
   }
@@ -36,6 +36,16 @@ $warning: #fcc266;
   border: none;
   border-radius: 5px;
 
+  &.hasError {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.hasAppend {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
   &:focus {
     outline: none;
   }
@@ -51,7 +61,7 @@ $warning: #fcc266;
   font-size: 11px;
   font-weight: bold;
   line-height: 14px;
-  font-family: "PT Sans";
+  font-family: 'PT Sans';
 }
 
 .Error {
@@ -67,4 +77,5 @@ $warning: #fcc266;
   height: calc(27px + 1.5em);
   flex: 0 0 auto;
   border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }

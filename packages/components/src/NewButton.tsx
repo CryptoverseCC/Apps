@@ -9,9 +9,18 @@ type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: 'small' | 'medium';
   color?: 'primary' | 'secondary' | 'success' | 'pending' | 'metaPending' | 'error' | 'ready' | 'empty';
   outline?: boolean;
+  rounded?: boolean;
 };
 
-const Button = ({ children, className, outline, size = 'medium', color = 'empty', ...props }: TButtonProps) => {
+const Button = ({
+  children,
+  className,
+  outline,
+  size = 'medium',
+  rounded = true,
+  color = 'empty',
+  ...props,
+}: TButtonProps) => {
   let icon;
   const decoratedChildren = React.Children.map(children, (child) => {
     if (isType(child, 'Icon')) {
@@ -25,6 +34,7 @@ const Button = ({ children, className, outline, size = 'medium', color = 'empty'
     <button
       className={classnames(style.Button, className, style[size], style[color], {
         [style.outline]: outline,
+        [style.rounded]: rounded,
       })}
       {...props}
     >

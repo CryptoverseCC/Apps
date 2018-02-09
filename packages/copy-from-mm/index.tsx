@@ -21,8 +21,15 @@ export const CopyFromMM = ({ onClick, web3State, className }: IProps) => {
   const enabled = web3State.enabled || (web3State.reason && web3State.reason.startsWith('You have to switch to'));
   const reason = !enabled ? web3State.reason : '';
   return (
-    <Tooltip text={reason} className={className} >
-      <Button disabled={!enabled} className={style.button} size="small" color="metaPending" onClick={onClick}>
+    <Tooltip text={reason} className={className}>
+      <Button
+        disabled={!enabled}
+        rounded={false}
+        className={style.button}
+        size="small"
+        color="metaPending"
+        onClick={onClick}
+      >
         <img className={style.metamask} src={MetaFox} />
       </Button>
     </Tooltip>
