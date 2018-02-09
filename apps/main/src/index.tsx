@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import qs from 'qs';
 import Raven from 'raven-js';
+import ReactGA from 'react-ga';
 
 import web3, { Web3Provider, getInfura } from '@linkexchange/utils/web3';
 
@@ -50,6 +51,11 @@ const startApp = () => {
 };
 
 if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV === 'production') {
+    ReactGA.initialize('UA-113862523-1');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
   Raven.config('https://cf4174a2d1fb46dabc18269811d5b791@sentry.io/285390', {
     release: `${VERSION}-${process.env.NODE_ENV}`,
   }).install();

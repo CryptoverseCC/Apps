@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "react-ga": "^2.4.1",
     "@linkexchange/add-link": "^0.0.166",
     "@linkexchange/blocks-till-conclusion": "^0.0.166",
     "@linkexchange/blocks-till-conclusion-provider": "^0.0.166",
