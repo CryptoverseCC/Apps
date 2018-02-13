@@ -7,9 +7,9 @@ type TInputProps = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElem
   multiline?: boolean;
   displayName?: string;
   error?: string;
-  warning?: string;
   append?: (className: string) => ReactChild;
   showStatus?: boolean;
+  isActive?: boolean;
 };
 
 export default class Input extends PureComponent<TInputProps> {
@@ -23,31 +23,38 @@ export default class Input extends PureComponent<TInputProps> {
   }
 
   render() {
-    const { multiline, showStatus = true, error, warning, className, displayName, append, ...props } = this.props;
+    const {
+      multiline = false,
+      isActive = false,
+      showStatus = true,
+      error,
+      className,
+      displayName,
+      append,
+      ...props,
+    } = this.props;
     const containerClassNames = classnames(className, InputStyles.InputContainer, {
       [InputStyles.hasError]: showStatus && error,
-      [InputStyles.hasWarning]: showStatus && warning,
+      [InputStyles.focus]: isActive,
     });
     const inputClassNames = classnames(className, InputStyles.Input, {
       [InputStyles.hasError]: showStatus && error,
-      [InputStyles.hasWarning]: showStatus && warning,
       [InputStyles.hasAppend]: !!append,
     });
-    const statusClassNames = classnames(InputStyles.Status, { [InputStyles.Error]: error });
     return multiline ? (
       <React.Fragment>
         <div className={containerClassNames}>
           <textarea className={inputClassNames} {...props} key={1} rows={3} ref={this._onRef} />
         </div>
-        {showStatus && (!!error || !!warning) && <p className={statusClassNames}>{error}</p>}
+        {showStatus && !!error && <p className={InputStyles.Error}>{error}</p>}
       </React.Fragment>
-      ) : (
+    ) : (
       <React.Fragment>
         <div className={containerClassNames}>
           <input className={inputClassNames} {...props} key={1} ref={this._onRef} />
           {append && append(InputStyles.Appended)}
         </div>
-        {showStatus && (!!error || !!warning) && <p className={statusClassNames}>{error}</p>}
+        {showStatus && !!error && <p className={InputStyles.Error}>{error}</p>}
       </React.Fragment>
     );
   }
