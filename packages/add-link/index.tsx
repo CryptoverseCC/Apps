@@ -6,11 +6,11 @@ import { returntypeof } from 'react-redux-typescript';
 
 import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
 import { IBaseLink } from '@linkexchange/types/link';
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Switch from '@linkexchange/components/src/utils/Switch';
-import { openToast, TToastType } from '@linkexchange/toast/duck';
+import { toast } from '@linkexchange/toast';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import LightText from '../components/src/LightText';
 
@@ -21,28 +21,15 @@ import Congratulations from './components/Congratulations';
 
 import * as style from './addLink.scss';
 
-const mapsStateToProps = ({ widget }: { widget: IWidgetState }) => ({
-  widgetSettings: widget,
-});
+interface IProps {
+  className?: string;
+  web3: Web3;
+  widgetSettings: WidgetSettings;
+  tokenDetails: ITokenDetails;
+  openWidgetDetails(): void;
+}
 
-const mapDispatchToProps = (dispatch) => ({
-  openToast(message: string, type?: TToastType) {
-    dispatch(openToast(message, type));
-  },
-});
-
-const State2Props = returntypeof(mapsStateToProps);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-
-type TAddLinkModalProps = typeof State2Props &
-  typeof Dispatch2Props & {
-    className?: string;
-    web3: Web3;
-    tokenDetails: ITokenDetails;
-    openWidgetDetails(): void;
-  };
-
-interface IAddLinkModalState {
+interface IState {
   step: 'form' | 'congratulations';
   link: IBaseLink;
   linkId?: string;
@@ -54,8 +41,8 @@ const DEFAULT_LINK = {
   target: 'http://',
 };
 
-class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
-  state: IAddLinkModalState = {
+class AddLink extends Component<IProps, IState> {
+  state: IState = {
     step: 'form',
     link: DEFAULT_LINK,
   };
@@ -126,11 +113,11 @@ class AddLinkModal extends Component<TAddLinkModalProps, IAddLinkModalState> {
   };
 
   _onError = (e) => {
-    this.props.openToast('Transation rejected ' + e);
+    toast.openToast('Transation rejected ' + e);
   };
 }
 
-const connectedComponent = connect(mapsStateToProps, mapDispatchToProps)(AddLinkModal);
-export default connectedComponent;
+const AddLinkWithWidhetSettings = withWidgetSettings(AddLink);
+export default AddLinkWithWidhetSettings;
 
-export const AddLinkWithInjectedWeb3AndTokenDetails = withInjectedWeb3AndTokenDetails(connectedComponent);
+export const AddLinkWithInjectedWeb3AndTokenDetails = withInjectedWeb3AndTokenDetails(AddLinkWithWidhetSettings);

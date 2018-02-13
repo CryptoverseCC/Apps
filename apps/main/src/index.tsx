@@ -1,20 +1,21 @@
 import { render } from 'react-dom';
 import React from 'react';
-import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
+import { Provider } from 'mobx-react';
 import qs from 'qs';
 import Raven from 'raven-js';
 import ReactGA from 'react-ga';
 
 import web3, { Web3Provider, getInfura } from '@linkexchange/utils/web3';
+import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
 
-import getStore from './store';
+import BlocksStore from './stores/blocks';
 import App from './App';
 
 import '../styles/all.scss';
 
 const [, searchParams] = document.location.href.split('?');
-const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
+const { startBlock, endBlock, ...widgetSettingsFromParams } = qs.parse(searchParams);
 
 const DEFAULT_WIDGET_SETTINGS = {
   apiUrl: 'https://api-staging.userfeeds.io',
@@ -26,10 +27,8 @@ const DEFAULT_WIDGET_SETTINGS = {
   algorithm: 'links',
 };
 
-const store = getStore(
-  { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettings },
-  { startBlock: parseInt(startBlock, 10), endBlock: parseInt(endBlock, 10) },
-);
+const widgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
+const blocksStore = new BlocksStore(startBlock, endBlock);
 
 let infuraWeb3;
 if (widgetSettings.asset) {
@@ -39,13 +38,15 @@ if (widgetSettings.asset) {
 
 const startApp = () => {
   render(
-    <Provider store={store}>
-      <IntlProvider locale="en">
-        <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-          <App />
-        </Web3Provider>
-      </IntlProvider>
-    </Provider>,
+    <WidgetSettingsProvider widgetSettings={widgetSettings}>
+      <Provider blocks={blocksStore}>
+        <IntlProvider locale="en">
+          <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
+            <App />
+          </Web3Provider>
+        </IntlProvider>
+      </Provider>
+    </WidgetSettingsProvider>,
     document.querySelector('.root'),
   );
 };

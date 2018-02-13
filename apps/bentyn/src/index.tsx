@@ -4,7 +4,7 @@ import qs from 'qs';
 import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { IWidgetSettings } from '@linkexchange/widget-settings';
 import { EWidgetSize } from '@linkexchange/types/widget';
 import web3, { getInfura, Web3Provider, TNetwork } from '@linkexchange/utils/web3';
 
@@ -21,7 +21,7 @@ const BENTYN_CONFIG = {
   endBlock: parseInt(endBlock, 10) || 5172495,
 };
 
-const BENTYN_WIDGET_CONFIG: IWidgetState = {
+const BENTYN_WIDGET_CONFIG: IWidgetSettings = {
   apiUrl: 'https://api-staging.userfeeds.io',
   recipientAddress: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
   whitelist: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',

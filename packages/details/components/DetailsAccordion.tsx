@@ -9,7 +9,8 @@ import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import Accordion from '@linkexchange/components/src/Accordion';
 import TextWithLabel from '@linkexchange/components/src/TextWithLabel';
 
-import { EWidgetSize, IWidgetSettings } from '@linkexchange/types/widget';
+import { EWidgetSize } from '@linkexchange/types/widget';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 
 import SimpleLinksList from './SimpleLinksList';
 import UserfeedsAddressInfo from './UserfeedsAddressInfo';
@@ -17,7 +18,7 @@ import UserfeedsAddressInfo from './UserfeedsAddressInfo';
 import * as style from './detailsAccordion.scss';
 
 interface IDetailsAccordinProps {
-  widgetSettings: IWidgetSettings;
+  widgetSettings: WidgetSettings;
   whitelistedLinksCount: number;
   allLinksCount: number;
   hasWhitelist: boolean;

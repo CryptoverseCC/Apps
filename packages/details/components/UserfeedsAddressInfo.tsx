@@ -12,7 +12,6 @@ import * as style from './userfeedsAddressInfo.scss';
 interface IUserfeedsAddressInfoProps {
   recipientAddress: string;
   linksNumber: number;
-  ref?(ref: any): void;
 }
 
 const renderQR = (recipientAddress, ref) => {

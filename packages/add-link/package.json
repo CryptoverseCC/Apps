@@ -23,6 +23,6 @@
     "react-final-form": "^3.0.4"
   },
   "peerDependencies": {
-    "@linkexchange/ducks": "^0.0.143"
+    "@linkexchange/widget-settings": "^0.0.168"
   }
 }

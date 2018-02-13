@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import A from '@linkexchange/components/src/A';
 import Icon from '@linkexchange/components/src/Icon';
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
@@ -16,7 +16,7 @@ const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
 
 interface IWidgetSummaryProps {
   onAddClick(): void;
-  widgetSettings: IWidgetState;
+  widgetSettings: WidgetSettings;
   openInNewWindowHidden?: boolean;
   onOpenInSeparateWindow?: () => void;
 }

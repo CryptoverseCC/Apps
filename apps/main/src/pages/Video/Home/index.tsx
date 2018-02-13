@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 
 import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
@@ -19,13 +19,13 @@ import BoostLink from './components/BoostLink';
 
 const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
 
-import { IBlocksState } from '../../../ducks/blocks';
+import BlocksStore from '../../../stores/blocks';
 
 import * as style from './home.scss';
 
 interface IProps {
-  blocks: IBlocksState;
-  widgetSettings: IWidgetState;
+  blocks: BlocksStore;
+  widgetSettings: WidgetSettings;
 }
 
 interface IState {
@@ -91,9 +91,4 @@ class Home extends Component<IProps, IState> {
   };
 }
 
-const mapStateToProps = ({ widget, blocks }: { widget: IWidgetState; blocks: IBlocksState }) => ({
-  blocks,
-  widgetSettings: widget,
-});
-
-export default connect(mapStateToProps)(Home);
+export default inject('blocks')(withWidgetSettings(Home));

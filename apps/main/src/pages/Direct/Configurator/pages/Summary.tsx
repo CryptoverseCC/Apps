@@ -11,21 +11,18 @@ import 'react-tabs/style/react-tabs.scss';
 import Icon from '@linkexchange/components/src/Icon';
 import Snippet from '@linkexchange/components/src/Snippet';
 import AndroidSnippet from '@linkexchange/components/src/AndroidSnippet';
-import { openToast } from '@linkexchange/toast/duck';
+import { toast } from '@linkexchange/toast';
 import heartSvg from '@linkexchange/images/heart.svg';
 
 import * as style from './summary.scss';
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-
-type TSummaryProps = typeof Dispatch2Props & {
+interface ISummaryProps {
   widgetSettings: any; // ToDo Fix it
   location: Location;
   history: History;
-};
+}
 
-const Summary = (props: TSummaryProps) => {
+const Summary = (props: ISummaryProps) => {
   const widgetSettings = qs.parse(props.location.search.replace('?', ''));
 
   return (
@@ -44,12 +41,15 @@ const Summary = (props: TSummaryProps) => {
           <Tab selectedClassName={style.selectedTab}>Android</Tab>
         </TabList>
         <TabPanel>
-          <Snippet widgetSettings={widgetSettings} onCopy={() => props.toast('Snippet copied! 🚀', 'success', 1000)} />
+          <Snippet
+            widgetSettings={widgetSettings}
+            onCopy={() => toast.openToast('Snippet copied! 🚀', 'success', 1000)}
+          />
         </TabPanel>
         <TabPanel>
           <AndroidSnippet
             widgetSettings={widgetSettings}
-            onCopy={() => props.toast('Snippet copied! 🚀', 'success', 1000)}
+            onCopy={() => toast.openToast('Snippet copied! 🚀', 'success', 1000)}
           />
         </TabPanel>
         <TabPanel />
@@ -58,4 +58,4 @@ const Summary = (props: TSummaryProps) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(Summary);
+export default Summary;
