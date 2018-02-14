@@ -18,4 +18,5 @@ export interface IWidgetSettings {
   impression?: string;
   location?: string;
   tillDate?: string;
+  minimalLinkFee?: string;
 }

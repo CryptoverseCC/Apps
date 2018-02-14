@@ -6,7 +6,8 @@ import qs from 'qs';
 import Raven from 'raven-js';
 import ReactGA from 'react-ga';
 
-import web3, { Web3Provider, getInfura } from '@linkexchange/utils/web3';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import web3, { Web3Provider, getInfura, TNetwork } from '@linkexchange/utils/web3';
 import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
 
 import BlocksStore from './stores/blocks';
@@ -27,13 +28,13 @@ const DEFAULT_WIDGET_SETTINGS = {
   algorithm: 'links',
 };
 
-const widgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
+const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
 const blocksStore = new BlocksStore(startBlock, endBlock);
 
 let infuraWeb3;
 if (widgetSettings.asset) {
   const [network] = widgetSettings.asset.split(':');
-  infuraWeb3 = getInfura(network);
+  infuraWeb3 = getInfura(network as TNetwork);
 }
 
 const startApp = () => {

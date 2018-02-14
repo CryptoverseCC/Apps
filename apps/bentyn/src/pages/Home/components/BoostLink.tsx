@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { inject, observer } from 'mobx-react';
 
 import BoostLinkComponent from '@linkexchange/boost-link';
 import { IDefaultBoostLinkWrapperProps } from '@linkexchange/details';
@@ -8,37 +8,26 @@ import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { withTokenDetails } from '@linkexchange/token-details-provider';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 
-import { IBentynState } from '../../../ducks/bentyn';
+import BlocksStore from '../../../stores/blocks';
 
 const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(BoostLinkComponent));
 
 interface IProps {
-  startBlock: number;
-  endBlock: number;
+  blocks: BlocksStore;
 }
 
 const BoostLink = (props: IDefaultBoostLinkWrapperProps & IProps) => {
-  const { startBlock, endBlock, ...restProps } = props;
+  const { blocks, ...restProps } = props;
   return (
     <BlocksTillConclusionProvider
-      startBlock={startBlock}
-      endBlock={endBlock}
+      startBlock={blocks.startBlock}
+      endBlock={blocks.endBlock}
       asset={props.asset}
       render={({ enabled, reason }) => (
-        <DecoratedBoostLink
-          {...restProps}
-          loadBalance
-          disabled={!enabled}
-          disabledReason={reason}
-        />
+        <DecoratedBoostLink {...restProps} loadBalance disabled={!enabled} disabledReason={reason} />
       )}
     />
   );
 };
 
-const mapStateToProps = ({ bentyn }: { bentyn: IBentynState }) => ({
-  startBlock: bentyn.startBlock,
-  endBlock: bentyn.endBlock,
-});
-
-export default connect(mapStateToProps)(BoostLink);
+export default inject('blocks')(observer(BoostLink));

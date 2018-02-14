@@ -105,7 +105,7 @@ const load = async (web3, [asset], update) => {
     const blockNumber = await core.utils.getBlockNumber(web3);
     const average = await getAverageBlockTime(web3);
     update({ blockNumber, average });
-    await wait(10 * 1000);
+    await wait(DEFAULT_AVERAGE_TIME * 1000);
   }
 };
 
