@@ -21,6 +21,7 @@
     "@linkexchange/widget-settings": "^0.0.168",
     "lodash": "~4.17.4",
     "mobx": "^3.5.1",
+    "raven-js": "^3.22.2",
     "react-intl": "^2.4.0"
   },
   "license": "ISC"

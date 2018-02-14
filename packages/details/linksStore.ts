@@ -1,4 +1,5 @@
 import { observable, computed, action } from 'mobx';
+import Raven from 'raven-js';
 
 import calculateProbabilities from '@linkexchange/utils/links';
 import { ILink, IRemoteLink } from '@linkexchange/types/link';
@@ -55,7 +56,7 @@ export default class LinksStore {
       this.fetched = true;
       this.fetching = false;
     } catch (e) {
-      console.error(e);
+      Raven.captureException(e);
     }
   }
 }
