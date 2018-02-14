@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Web3 from 'web3';
 import classnames from 'classnames';
-import { returntypeof } from 'react-redux-typescript';
 
 import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
 import { IBaseLink } from '@linkexchange/types/link';

@@ -3,7 +3,7 @@
   "name": "@linkexchange/toast",
   "version": "0.0.170",
   "description": "",
-  "main": "RootToast.tsx",
+  "main": "index.tsx",
   "scripts": {},
   "keywords": [],
   "author": "",

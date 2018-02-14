@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import moment from 'moment';
 import Web3 from 'web3';

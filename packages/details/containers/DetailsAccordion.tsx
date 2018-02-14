@@ -1,30 +1,33 @@
-import { connect } from 'react-redux';
+import React from 'react';
+import { inject } from 'mobx-react';
 import differenceBy from 'lodash/differenceBy';
 
-import { WidgetSettings } from '@linkexchange/widget-settings';
+import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 
 import LinksStore from '../linksStore';
-// import { visibleLinks } from '../selectors/links';
-
 import DetailsAccordionComponent from '../components/DetailsAccordion';
 
-// const mapStateToProps = (state: { links: LinksStore; widget: WidgetSettings }, props) => {
-//   const { links, widget } = state;
-//   const linksInSlots = visibleLinks(state);
-//   const whitelistedLinks = differenceBy(links.links, linksInSlots, (a) => a.id);
-//   const allLinks = differenceBy(links.allLinks, linksInSlots, (a) => a.id);
+interface IProps {
+  widgetSettings: WidgetSettings;
+  links?: LinksStore;
+}
 
-//   return {
-//     hasWhitelist: !!widget.whitelist,
-//     widgetSettings: widget,
-//     links: linksInSlots,
-//     whitelistedLinks,
-//     allLinks,
-//     allLinksCount: links.allLinks.length,
-//     whitelistedLinksCount: whitelistedLinks.length,
-//   };
-// };
+const DetailsAccordion = ({ widgetSettings, links }: IProps) => {
+  const linksInSlots = links!.visibleLinks;
+  const whitelistedLinks = differenceBy(links!.whitelistedLinks, linksInSlots, (a) => a.id);
+  const allLinks = differenceBy(links!.allLinks, linksInSlots, (a) => a.id);
 
-// const DetailsAccordion = connect(mapStateToProps)(DetailsAccordionComponent);
+  return (
+    <DetailsAccordionComponent
+      hasWhitelist={!!widgetSettings.whitelist}
+      widgetSettings={widgetSettings}
+      links={linksInSlots}
+      whitelistedLinks={whitelistedLinks}
+      allLinks={allLinks}
+      allLinksCount={links!.allLinks.length}
+      whitelistedLinksCount={whitelistedLinks.length}
+    />
+  );
+};
 
-export default DetailsAccordionComponent;
+export default inject('links')(withWidgetSettings(DetailsAccordion));

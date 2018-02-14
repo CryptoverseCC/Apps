@@ -8,11 +8,16 @@ import * as style from './rootToast.scss';
 
 export type TToastType = 'success' | 'failure';
 
+interface IToast {
+  message: string;
+  type: TToastType;
+}
+
 class ToastState {
   @observable toasts: IToast[] = [];
 
   @action.bound
-  openToast(message: string, type: TToastType, timeout: number = 10000) {
+  openToast(message: string, type: TToastType = 'failure', timeout: number = 10000) {
     this.toasts.push({ message, type });
     setTimeout(() => this.closeToast(message, type), timeout);
   }

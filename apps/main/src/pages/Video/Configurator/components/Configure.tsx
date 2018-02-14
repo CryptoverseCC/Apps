@@ -5,9 +5,6 @@ import Web3 from 'web3';
 import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
 import moment from 'moment';
 

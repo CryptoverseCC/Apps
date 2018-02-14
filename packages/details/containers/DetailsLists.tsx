@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import differenceBy from 'lodash/differenceBy';
 import { inject, observer } from 'mobx-react';
@@ -22,11 +20,11 @@ import WidgetSpecification from '../components/WidgetSpecification';
 import UserfeedAddressInfo from '../components/UserfeedsAddressInfo';
 
 interface IProps {
-  links: LinksStore;
+  links?: LinksStore;
   widgetSettings: WidgetSettings;
-  onBoostSuccess: (transationId: string) => void;
-  onBoostError: (error: any) => void;
-  boostLinkComponent: React.ComponentType<IDefaultBoostLinkWrapperProps>;
+  onBoostSuccess?: (transationId: string) => void;
+  onBoostError?: (error: any) => void;
+  boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
 }
 
 const DetailsLists: React.SFC<IProps> = ({
@@ -37,10 +35,10 @@ const DetailsLists: React.SFC<IProps> = ({
   widgetSettings,
 }) => {
   const hasWhitelist = !!widgetSettings.whitelist;
-  const linksInSlots = linksStore.visibleLinks;
-  const whitelistedLinks = differenceBy(linksStore.whitelistedLinks, linksInSlots, (a) => a.id);
-  const allLinks = differenceBy(linksStore.allLinks, linksInSlots, (a) => a.id);
-  const allLinksCount = linksStore.allLinks.length;
+  const linksInSlots = linksStore!.visibleLinks;
+  const whitelistedLinks = differenceBy(linksStore!.whitelistedLinks, linksInSlots, (a) => a.id);
+  const allLinks = differenceBy(linksStore!.allLinks, linksInSlots, (a) => a.id);
+  const allLinksCount = linksStore!.allLinks.length;
   const whitelistedLinksCount = whitelistedLinks.length;
 
   return (
@@ -125,4 +123,4 @@ const DetailsLists: React.SFC<IProps> = ({
   );
 };
 
-export default inject('links')(withWidgetSettings(DetailsLists));
+export default inject(({ links }) => ({ links: links as LinksStore }))(withWidgetSettings(DetailsLists));

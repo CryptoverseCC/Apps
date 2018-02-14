@@ -18,8 +18,8 @@ export interface IDefaultBoostLinkWrapperProps {
   recipientAddress: string;
   link: ILink | IRemoteLink;
   linksInSlots: ILink[] | IRemoteLink[];
-  onSuccess(transationId: string): void;
-  onError(error: any): void;
+  onSuccess?: (transationId: string) => void;
+  onError?: (error: any) => void;
 }
 
 const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
@@ -43,8 +43,8 @@ interface ILinksListProps {
   asset: string;
   boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
   recipientAddress: string;
-  onBoostSuccess: (transationId: string) => void;
-  onBoostError: (error: any) => void;
+  onBoostSuccess?: (transationId: string) => void;
+  onBoostError?: (error: any) => void;
   showProbability?: boolean;
 }
 
