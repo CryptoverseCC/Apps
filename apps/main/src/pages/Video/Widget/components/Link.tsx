@@ -54,11 +54,15 @@ export default class Link extends Component<IProps> {
   };
 
   _runProgress = (duration) => {
-    if (this.fillRef) {
-      if (this.animation) {
-        this.animation.cancel();
+    try {
+      if (this.fillRef) {
+        if (this.animation) {
+          this.animation.cancel();
+        }
+        this.animation = (this.fillRef as any).animate([{ width: '0' }, { width: '100%' }], duration - 100);
       }
-      this.animation = (this.fillRef as any).animate([{ width: '0' }, { width: '100%' }], duration - 100);
+    } catch (e) {
+      console.info(e);
     }
   };
 }
