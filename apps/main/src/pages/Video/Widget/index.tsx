@@ -104,7 +104,7 @@ export default class Widget extends Component<IProps, IState> {
       )
         .then(throwErrorOnNotOkResponse)
         .then<{ items: IRemoteLink[] }>((res) => res.json());
-      links = items;
+      links = items.slice(0, this.state.widgetSettings.slots);
     } catch (e) {
       console.info('Something went wrong 😞');
     }

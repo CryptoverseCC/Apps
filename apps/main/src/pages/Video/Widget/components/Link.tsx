@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames/bind';
 
-import Icon from '@linkexchange/components/src/Icon';
-import ProgressBar from '@linkexchange/components/src/ProgressBar';
-
 import { ILink } from '@linkexchange/types/link';
 
 import * as style from './link.scss';
@@ -16,40 +13,28 @@ interface IProps {
   position?: 'top' | 'bottom';
 }
 
-interface IState {
-  linkProgress: number;
-}
+export default class Link extends Component<IProps> {
+  fillRef: HTMLDivElement;
+  animation: any;
 
-export default class Link extends Component<IProps, IState> {
-  timeout: number;
-  startTime: number;
-
-  constructor(props) {
-    super(props);
-
-    this.startTime = Date.now();
-    this._runProgress();
-    this.state = {
-      linkProgress: 0,
-    };
+  componentDidMount() {
+    this._runProgress(this.props.linkDuration);
   }
 
   componentWillReceiveProps(newProps: IProps) {
-    if (newProps.linkDuration !== this.props.linkDuration) {
-      window.clearTimeout(this.timeout);
-      this.setState({ linkProgress: 0 });
-      this.startTime = Date.now();
-      this._runProgress();
+    if (newProps.linkDuration !== this.props.linkDuration || newProps.link !== this.props.link) {
+      this._runProgress(newProps.linkDuration);
     }
   }
 
   render() {
     const { link, tokenSymbol, position } = this.props;
-    const { linkProgress } = this.state;
 
     return (
       <div className={cx(style.self, { top: position === 'top' })}>
-        <ProgressBar className={style.progress} fillClassName={style.fill} progress={linkProgress} />
+        <div className={style.progress}>
+          <div ref={this._onRef} className={style.fill} />
+        </div>
         <div>
           <p className={style.title}>
             {link.title}: {link.summary}
@@ -64,11 +49,16 @@ export default class Link extends Component<IProps, IState> {
     );
   }
 
-  _runProgress = () => {
-    this.timeout = window.setTimeout(() => {
-      const linkProgress = Math.round((Date.now() - this.startTime) / (this.props.linkDuration - 100) * 100);
-      this.setState({ linkProgress });
-      this._runProgress();
-    }, 1000 / 60);
+  _onRef = (ref) => {
+    this.fillRef = ref;
+  };
+
+  _runProgress = (duration) => {
+    if (this.fillRef) {
+      if (this.animation) {
+        this.animation.cancel();
+      }
+      this.animation = (this.fillRef as any).animate([{ width: '0' }, { width: '100%' }], duration - 100);
+    }
   };
 }
