@@ -10,6 +10,13 @@
     border-radius: 3px;
   }
 
+  &.big {
+    padding: 15px 20px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: bold;
+  }
+
   &.medium {
     padding: 12px 20px;
   }

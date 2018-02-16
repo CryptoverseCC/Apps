@@ -8,9 +8,10 @@ import Modal from './Modal';
 import { Form, Field, FormSpy } from 'react-final-form';
 
 import { TextField, validateField } from '../components/src/Form/Field';
-import Input from '../components/src/Form/Input';
+import Input from '@linkexchange/components/src/Form/Input';
 import Button from '@linkexchange/components/src/NewButton';
-import { TValidationFunc, R } from '../utils/validation';
+import { TValidationFunc, R } from '@linkexchange/utils/validation';
+import { Balance, Approved } from '@linkexchange/boost-link/components/Header';
 
 storiesOf('Input', module)
   .addDecorator(withKnobs)
@@ -59,7 +60,10 @@ storiesOf('Add Link', module)
               {({ Title, HeaderRight }) => (
                 <React.Fragment>
                   <Title>Create a new link</Title>
-                  <HeaderRight>In Use: 1200 BEN</HeaderRight>
+                  <HeaderRight>
+                    <Balance tokenDetails={{balanceWithDecimalPoint: '10', symbol: 'BEN'}}/>
+                    <Approved tokenDetails={{balanceWithDecimalPoint: '5', symbol: 'BEN'}}/>
+                  </HeaderRight>
                 </React.Fragment>
               )}
             </Header>
@@ -81,13 +85,10 @@ storiesOf('Add Link', module)
                       title="Initial Fee"
                       component={TextField}
                       name="value"
-                      validate={validateField([
-                        R.required,
-                        R.number,
-                        R.currencyDecimals(4),
-                      ])}
+                      validate={validateField([R.required, R.number, R.currencyDecimals(4)])}
                     />
                     <Button
+                      size="big"
                       disabled={invalid}
                       type="submit"
                       color="primary"

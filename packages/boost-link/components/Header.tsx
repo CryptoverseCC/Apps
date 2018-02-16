@@ -1,24 +1,43 @@
-import React from 'react';
+import React, { ReactChild } from 'react';
 
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 
 import * as style from './header.scss';
 
 interface IProps {
-  positionInSlots: number | null;
+  left: ReactChild;
   tokenDetails: ITokenDetails;
 }
 
-const Header = ({ positionInSlots, tokenDetails }: IProps) => (
+export const PositionInSlots = ({ position }) => (
+  <div className={style.positionContainer}>
+    {position !== null && <div className={style.position}>{position + 1}</div>}
+    <span className={style.label}>{position !== null ? 'In Slot' : 'Approved'}</span>
+  </div>
+);
+
+export const Balance = ({ tokenDetails }) => (
+  <p className={style.balance}>
+    Your balance:
+    <span className={style.amount}>
+      {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}
+    </span>
+  </p>
+);
+
+export const Approved = ({ tokenDetails }) => (
+  <p className={style.balance}>
+    Approved:
+    <span className={style.amount}>
+      {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}
+    </span>
+  </p>
+)
+
+const Header = ({ left, tokenDetails }: IProps) => (
   <div className={style.self}>
-    <div className={style.positionContainer}>
-      {positionInSlots !== null && <div className={style.position}>{positionInSlots + 1}</div>}
-      <span className={style.label}>{positionInSlots !== null ? 'In Slot' : 'Approved'}</span>
-    </div>
-    <p className={style.balance}>
-      Your balance:
-      <span className={style.amount}>{tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</span>
-    </p>
+    {left}
+    <Balance tokenDetails={tokenDetails} />
   </div>
 );
 

@@ -6,7 +6,7 @@ import { isType } from '@linkexchange/utils';
 import * as style from './newButton.scss';
 
 type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  size?: 'small' | 'medium';
+  size?: 'small' | 'medium' | 'big';
   color?: 'primary' | 'secondary' | 'success' | 'pending' | 'metaPending' | 'error' | 'ready' | 'empty';
   outline?: boolean;
   rounded?: boolean;
