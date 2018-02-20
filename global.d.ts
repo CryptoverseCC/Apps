@@ -4,6 +4,7 @@ declare const VERSION: string;
 interface Window {
   web3: any;
   Intercom: IItercom;
+  Intl?: TIntl;
 }
 /* tslint:enable */
 
@@ -16,3 +17,5 @@ interface IItercom {
 declare module '*.jpg';
 declare module '*.svg';
 declare module '*.png';
+
+type TIntl = any;
