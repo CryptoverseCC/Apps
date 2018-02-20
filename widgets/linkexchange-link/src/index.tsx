@@ -163,12 +163,22 @@ class LinkexchangeLink extends HTMLElement {
   }
 }
 
-if (!window.customElements.get('linkexchange-link')) {
-  try {
-    window.customElements.define('linkexchange-link', LinkexchangeLink);
-  } catch (e) {
-    if (process.env.NODE_ENV === 'development') {
-      console.info('Error occured when defining custom element', e);
+const registerElement = () => {
+  if (!window.customElements.get('linkexchange-link')) {
+    try {
+      window.customElements.define('linkexchange-link', LinkexchangeLink);
+    } catch (e) {
+      if (process.env.NODE_ENV === 'development') {
+        console.info('Error occured when defining custom element', e);
+      }
     }
   }
+};
+
+if (!window.Intl) {
+  import('intl')
+    .then(() => import('intl/locale-data/jsonp/en'))
+    .then(() => registerElement());
+} else {
+  registerElement();
 }

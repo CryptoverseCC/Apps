@@ -7,3 +7,5 @@ curl "http://purge.jsdelivr.net/npm/@linkexchange/widgets@$TAG_NAME/build/0.bund
 curl "http://purge.jsdelivr.net/npm/@linkexchange/widgets@$TAG_NAME/build/1.bundle.js"
 curl "http://purge.jsdelivr.net/npm/@linkexchange/widgets@$TAG_NAME/build/2.bundle.js"
 curl "http://purge.jsdelivr.net/npm/@linkexchange/widgets@$TAG_NAME/build/3.bundle.js"
+curl "http://purge.jsdelivr.net/npm/@linkexchange/widgets@$TAG_NAME/build/4.bundle.js"
+curl "http://purge.jsdelivr.net/npm/@linkexchange/widgets@$TAG_NAME/build/5.bundle.js"
