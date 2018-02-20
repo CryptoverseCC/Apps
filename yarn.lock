@@ -2870,6 +2870,12 @@ conventional-changelog-eslint@^1.0.0:
   dependencies:
     q "^1.4.1"
 
+conventional-changelog-eslint@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-eslint/-/conventional-changelog-eslint-1.0.3.tgz#023002a3f776266c501e4d4def7b0bb24130f29d"
+  dependencies:
+    q "^1.4.1"
+
 conventional-changelog-express@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/conventional-changelog-express/-/conventional-changelog-express-0.3.0.tgz#5ed006f48682d8615ee0ab5f53cacb26fbd3e1c8"
