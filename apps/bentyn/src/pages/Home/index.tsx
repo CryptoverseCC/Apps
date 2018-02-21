@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { inject } from 'mobx-react';
 
 import { withInfura } from '@linkexchange/utils/web3';
 import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Lists } from '@linkexchange/details';
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
@@ -17,16 +17,15 @@ import Header from './components/Header';
 import Welcome from './components/Welcome';
 import HowToBuy from './components/HowToBuy';
 import BoostLink from './components/BoostLink';
+import BlocksStore from '../../stores/blocks';
 
 const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
-
-import { IBentynState } from '../../ducks/bentyn';
 
 import * as style from './home.scss';
 
 interface IProps {
-  bentyn: IBentynState;
-  widgetSettings: IWidgetState;
+  blocks: BlocksStore;
+  widgetSettings: WidgetSettings;
 }
 
 interface IState {
@@ -39,15 +38,15 @@ class Home extends Component<IProps, IState> {
   };
 
   render() {
-    const { widgetSettings, bentyn } = this.props;
+    const { widgetSettings, blocks } = this.props;
     const { openedModal } = this.state;
     return (
       <div className={style.self}>
-        <Header widgetSettings={widgetSettings} blocks={bentyn} />
+        <Header widgetSettings={widgetSettings} blocks={blocks} />
         <Details standaloneMode className={style.details}>
           <BlocksTillConclusionProvider
-            startBlock={bentyn.startBlock}
-            endBlock={bentyn.endBlock}
+            startBlock={blocks.startBlock}
+            endBlock={blocks.endBlock}
             asset={widgetSettings.asset}
             render={({ enabled, reason }) => (
               <div className={style.addLinkContainer}>
@@ -60,8 +59,8 @@ class Home extends Component<IProps, IState> {
             )}
           />
           <BlocksTillConclusionWithInfura
-            startBlock={bentyn.startBlock}
-            endBlock={bentyn.endBlock}
+            startBlock={blocks.startBlock}
+            endBlock={blocks.endBlock}
             asset={widgetSettings.asset}
             className={style.blocksTillConclusion}
           />
@@ -81,8 +80,8 @@ class Home extends Component<IProps, IState> {
             </Switch.Case>
             <Switch.Case condition="Welcome">
               <Welcome
-                startBlock={bentyn.startBlock}
-                endBlock={bentyn.endBlock}
+                startBlock={blocks.startBlock}
+                endBlock={blocks.endBlock}
                 asset={widgetSettings.asset}
                 purchaseBens={this._purchaseBens}
                 gotBens={this._closeModal}
@@ -108,9 +107,4 @@ class Home extends Component<IProps, IState> {
   };
 }
 
-const mapStateToProps = ({ widget, bentyn }: { widget: IWidgetState; bentyn: IBentynState }) => ({
-  bentyn,
-  widgetSettings: widget,
-});
-
-export default connect(mapStateToProps)(Home);
+export default inject('blocks')(withWidgetSettings(Home));

@@ -5,9 +5,6 @@ import Web3 from 'web3';
 import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
 import moment from 'moment';
 
@@ -15,7 +12,7 @@ import core from '@userfeeds/core/src';
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import { getAverageBlockTime } from '@linkexchange/utils/ethereum';
 import { withInjectedWeb3, getInfura, TNetwork } from '@linkexchange/utils/web3';
-import { openToast } from '@linkexchange/toast/duck';
+import { toast } from '@linkexchange/toast';
 import Button from '@linkexchange/components/src/NewButton';
 import Input from '@linkexchange/components/src/Form/Input';
 import Radio from '@linkexchange/components/src/Form/Radio';
@@ -82,16 +79,12 @@ const rules = {
   endBlock: [R.required, R.number],
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-
-type TProps = typeof Dispatch2Props &
-  IUpdateQueryParamProp & {
-    web3: Web3;
-    location: Location;
-    history: History;
-    match: match<any>;
-  };
+type TProps = IUpdateQueryParamProp & {
+  web3: Web3;
+  location: Location;
+  history: History;
+  match: match<any>;
+};
 
 class Configure extends Component<TProps, IState> {
   infura: Web3;
@@ -141,7 +134,7 @@ class Configure extends Component<TProps, IState> {
     const errors = this.validateAll();
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
-      this.props.toast('Validation error 😅');
+      toast.openToast('Validation error 😅');
       this.focusOnFirstError(errors);
       return;
     }
@@ -376,4 +369,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default flowRight(withInjectedWeb3, updateQueryParam, connect(null, mapDispatchToProps))(Configure);
+export default flowRight(withInjectedWeb3, updateQueryParam)(Configure);

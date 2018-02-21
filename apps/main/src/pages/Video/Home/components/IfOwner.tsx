@@ -1,40 +1,34 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
-import { connect } from 'react-redux';
 import flowRight from 'lodash/flowRight';
-import { returntypeof } from 'react-redux-typescript';
 
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
 
-const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
-  asset: widget.asset,
-  recipientAddress: widget.recipientAddress,
- });
-
-const State2Props = returntypeof(mapStateToProps);
-type TProps = typeof State2Props & {
+interface IProps {
   web3: Web3;
   web3State: IWeb3State;
-};
+  widgetSettings: WidgetSettings;
+  recipientAddress: string;
+}
 
 interface IState {
   enabled: boolean;
 }
 
-class IfOwner extends Component<TProps, IState> {
+class IfOwner extends Component<IProps, IState> {
   state = {
     enabled: false,
   };
 
-  constructor(props: TProps) {
+  constructor(props: IProps) {
     super(props);
     if (props.web3State.enabled) {
       this._getAddress();
     }
   }
 
-  componentWillReceiveProps(nextProps: TProps) {
+  componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.web3State.enabled) {
       this._getAddress();
     }
@@ -53,10 +47,17 @@ class IfOwner extends Component<TProps, IState> {
     this.setState({
       enabled: account === this.props.recipientAddress,
     });
-  }
+  };
 }
 
+// Move to utils and add types
+const propsMapper = (mapper: (props) => any) => (Cmp) => (props) => <Cmp {...props} {...mapper(props)} />;
+
 export default flowRight(
-  connect(mapStateToProps),
+  withWidgetSettings,
+  propsMapper(({ widgetSettings }: { widgetSettings: WidgetSettings }) => ({
+    asset: widgetSettings.asset,
+    recipientAddress: widgetSettings.recipientAddress,
+  })),
   withInjectedWeb3AndWeb3State,
 )(IfOwner);

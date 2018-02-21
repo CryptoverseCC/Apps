@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import classnames from 'classnames/bind';
 import moment from 'moment';
 import Web3 from 'web3';
@@ -83,27 +82,21 @@ export default class BlocksTillConclusion extends Component<IProps, IState> {
         </>
       );
     } else {
-      content = (
-        <p>Auction is closed</p>
-      );
+      content = <p>Auction is closed</p>;
     }
 
-    return (
-      <div className={cx(style.self, this.props.className)}>
-        {content}
-      </div>
-    );
-  }
+    return <div className={cx(style.self, this.props.className)}>{content}</div>;
+  };
 
   _getEstimate = (blocks) => {
     return moment.duration(blocks * this.state.average * 1000).humanize();
-  }
+  };
 }
 
 const load = async (web3, [asset], update) => {
   const [network] = asset.split(':');
 
-  while (!(await web3.eth.net.isListening() || await core.utils.getCurrentNetworkName(web3) === network)) {
+  while (!((await web3.eth.net.isListening()) || (await core.utils.getCurrentNetworkName(web3)) === network)) {
     wait(1000);
   }
 
@@ -111,11 +104,8 @@ const load = async (web3, [asset], update) => {
     const blockNumber = await core.utils.getBlockNumber(web3);
     const average = await getAverageBlockTime(web3);
     update({ blockNumber, average });
-    await wait(average * 1000);
+    await wait(DEFAULT_AVERAGE_TIME * 1000);
   }
 };
 
-const taskRunner = new Web3TaskRunner<
-  { blockNumber: number; average: number },
-  [string]
->(load);
+const taskRunner = new Web3TaskRunner<{ blockNumber: number; average: number }, [string]>(load);

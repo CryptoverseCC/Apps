@@ -2,9 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import { Link, match, withRouter } from 'react-router-dom';
 
-import { IWidgetState } from '@linkexchange/ducks/widget';
-import { withInfuraAndTokenDetails, ITokenDetails } from '@linkexchange/token-details-provider';
 import Button from '@linkexchange/components/src/NewButton';
+import { WidgetSettings } from '@linkexchange/widget-settings';
+import { withInfuraAndTokenDetails, ITokenDetails } from '@linkexchange/token-details-provider';
 
 import IfOwner from './IfOwner';
 
@@ -16,7 +16,7 @@ import * as style from './header.scss';
 
 interface IProps {
   match: match<any>;
-  widgetSettings: IWidgetState;
+  widgetSettings: WidgetSettings;
   tokenDetails: ITokenDetails;
   blocks: {
     startBlock: number;

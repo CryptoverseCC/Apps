@@ -5,9 +5,6 @@ import Web3 from 'web3';
 import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -16,7 +13,7 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import core from '@userfeeds/core/src';
 import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import CopyFromMM from '@linkexchange/copy-from-mm';
-import { openToast } from '@linkexchange/toast/duck';
+import { toast } from '@linkexchange/toast';
 import Input from '@linkexchange/components/src/Form/Input';
 import Radio from '@linkexchange/components/src/Form/Radio';
 import { Input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
@@ -86,16 +83,12 @@ const rules = {
   asset: [R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address')],
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-
-type TProps = typeof Dispatch2Props &
-  IUpdateQueryParamProp & {
-    web3: Web3;
-    location: Location;
-    history: History;
-    match: match<any>;
-  };
+type TProps = IUpdateQueryParamProp & {
+  web3: Web3;
+  location: Location;
+  history: History;
+  match: match<any>;
+};
 
 class Configure extends Component<TProps, IState> {
   inputsRefs: {
@@ -148,7 +141,7 @@ class Configure extends Component<TProps, IState> {
     const errors = this.validateAll();
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
-      this.props.toast('Validation error 😅');
+      toast.openToast('Validation error 😅');
       this.focusOnFirstError(errors);
       return;
     }
@@ -356,4 +349,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default flowRight(withInjectedWeb3, updateQueryParam, connect(null, mapDispatchToProps))(Configure);
+export default flowRight(withInjectedWeb3, updateQueryParam)(Configure);

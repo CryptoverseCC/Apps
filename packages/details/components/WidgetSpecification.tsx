@@ -15,7 +15,6 @@ interface IWidgetSpecificationProps {
   size: EWidgetSize;
   algorithm: string;
   asset: string;
-  ref?(ref: any): void;
 }
 
 export default class WidgetSpecification extends PureComponent<IWidgetSpecificationProps> {

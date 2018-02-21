@@ -8,7 +8,7 @@ const appVariantToUrl = {
 
 const baseUrl = appVariantToUrl[process.env.NODE_ENV!] || appVariantToUrl.production;
 
-export const openLinkexchangeUrl = (path: string, widgetSettings) => {
+export const openLinkexchangeUrl = (path: string, widgetSettings: any) => {
   const queryString = qs.stringify({
     ...widgetSettings,
     ...(widgetSettings.linkId ? { linkId: `claim:${widgetSettings.linkId}` } : {}),

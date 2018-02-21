@@ -3,7 +3,7 @@ import qs from 'qs';
 import classnames from 'classnames';
 
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import Button from '@linkexchange/components/src/NewButton';
 
 import IfOwner from './IfOwner';
@@ -15,7 +15,7 @@ import twitter from '../../../../images/twitter.png';
 import * as style from './header.scss';
 
 interface IProps {
-  widgetSettings: IWidgetState;
+  widgetSettings: WidgetSettings;
   blocks: {
     startBlock: number;
     endBlock: number;

@@ -4,7 +4,7 @@ import { BN } from 'web3-utils';
 import { TransactionReceipt, PromiEvent } from 'web3/types';
 
 import core from '@userfeeds/core/src';
-import widget, { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import { resolveOnTransationHash } from '@userfeeds/core/src/utils/index';
 import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { IBaseLink } from '@linkexchange/types/link';
@@ -30,7 +30,7 @@ interface IAddLinkFormProps {
   tokenDetails: any;
   recipientAddress: string;
   minimalValue?: string;
-  widgetSettings: IWidgetState;
+  widgetSettings: WidgetSettings;
   onSuccess(linkId: string): void;
   onError(error: any): void;
   onChange?: (link: IBaseLink) => void;

@@ -1,58 +1,44 @@
 import React, { Component, Children, ReactElement } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { returntypeof } from 'react-redux-typescript';
 import classnames from 'classnames';
+import { Provider } from 'mobx-react';
 
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 
 import Header from './containers/Header';
 import DetailsLists from './containers/DetailsLists';
 import DetailsAccordion from './containers/DetailsAccordion';
 import { IDefaultBoostLinkWrapperProps } from './components/LinksList';
 
-import { fetchLinks } from './duck';
+import LinksStore from './linksStore';
 
-const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
-  widgetSettings: widget,
-});
+interface IProps {
+  widgetSettings: WidgetSettings;
+  className?: string;
+  standaloneMode?: boolean;
+}
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchLinks,
-    },
-    dispatch,
-  );
-
-const State2Props = returntypeof(mapStateToProps);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-
-type TWidgetDetailsProps = typeof State2Props &
-  typeof Dispatch2Props & {
-    className?: string;
-    standaloneMode?: boolean;
-  };
-
-interface IDetailsState {
+interface IState {
   mobileOrTablet: boolean;
 }
 
 import * as style from './widgetDetails.scss';
 
-class Details extends Component<TWidgetDetailsProps, IDetailsState> {
-  constructor(props: TWidgetDetailsProps) {
+class Details extends Component<IProps, IState> {
+  linksStore: LinksStore;
+
+  constructor(props: IProps) {
     super(props);
+    this.linksStore = new LinksStore(props.widgetSettings);
     this.state = {
       mobileOrTablet: mobileOrTablet(),
     };
   }
 
   componentDidMount() {
-    this.props.fetchLinks();
+    this.linksStore.fetchLinks();
   }
 
   render() {
@@ -78,11 +64,13 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
     const restChildren = childrenArray.filter((c) => !(c === headerElement || c === listsElement));
 
     return (
-      <div className={classnames(style.self, className)}>
-        {header}
-        <div className={style.details}>{lists}</div>
-        {restChildren}
-      </div>
+      <Provider links={this.linksStore}>
+        <div className={classnames(style.self, className)}>
+          {header}
+          <div className={style.details}>{lists}</div>
+          {restChildren}
+        </div>
+      </Provider>
     );
   }
 
@@ -91,7 +79,7 @@ class Details extends Component<TWidgetDetailsProps, IDetailsState> {
   };
 }
 
-const ConnectedDetails = connect(mapStateToProps, mapDispatchToProps)(Details);
+const DetailsWithWidgetSettings = withWidgetSettings(Details);
 
 interface IListsProps {
   mobileOrTablet?: boolean;
@@ -102,5 +90,5 @@ export const Lists = ({ mobileOrTablet, ...restProps }: IListsProps) =>
   !mobileOrTablet ? <DetailsLists {...restProps} /> : <DetailsAccordion />;
 
 export { default as Header } from './containers/Header';
-export { ConnectedDetails as Details };
+export { DetailsWithWidgetSettings as Details };
 export { IDefaultBoostLinkWrapperProps } from './components/LinksList';

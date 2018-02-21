@@ -6,7 +6,6 @@ import { IntlProvider } from 'react-intl';
 
 import { EWidgetSize } from '@linkexchange/types/widget';
 
-import { IRootState } from './ducks';
 import Banner from './Banner';
 
 import * as style from './styles/all.scss';

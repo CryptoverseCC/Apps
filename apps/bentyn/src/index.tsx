@@ -1,27 +1,28 @@
 import { render } from 'react-dom';
 import React from 'react';
 import qs from 'qs';
-import { Provider } from 'react-redux';
+import { Provider } from 'mobx-react';
 import { IntlProvider } from 'react-intl';
 
-import { IWidgetState } from '@linkexchange/ducks/widget';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
 import { EWidgetSize } from '@linkexchange/types/widget';
 import web3, { getInfura, Web3Provider, TNetwork } from '@linkexchange/utils/web3';
 
 import App from './App';
-import getStore from './store';
+import BlocksStore from './stores/blocks';
 
 import '../styles/all.scss';
 
 const [, searchParams] = document.location.href.split('?');
-const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
+const { startBlock, endBlock, ...widgetSettingsFromParams } = qs.parse(searchParams);
 
 const BENTYN_CONFIG = {
   startBlock: parseInt(startBlock, 10) || 4884495,
   endBlock: parseInt(endBlock, 10) || 5172495,
 };
 
-const BENTYN_WIDGET_CONFIG: IWidgetState = {
+const BENTYN_WIDGET_CONFIG: IWidgetSettings = {
   apiUrl: 'https://api-staging.userfeeds.io',
   recipientAddress: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
   whitelist: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
@@ -36,21 +37,24 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
   impression: '',
   location: window.location.href,
   minimalLinkFee: '1',
-  ...widgetSettings,
+  ...widgetSettingsFromParams,
 };
 
-const store = getStore(BENTYN_WIDGET_CONFIG, BENTYN_CONFIG);
+const widgetSettings: IWidgetSettings = { ...BENTYN_WIDGET_CONFIG, ...widgetSettingsFromParams };
+const blocksStore = new BlocksStore(BENTYN_CONFIG.startBlock, BENTYN_CONFIG.endBlock);
 
 const [network] = BENTYN_WIDGET_CONFIG.asset.split(':');
 const infuraWeb3 = getInfura(network as TNetwork);
 
 render(
-  <Provider store={store}>
-    <IntlProvider locale="en">
-      <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-        <App />
-      </Web3Provider>
-    </IntlProvider>
-  </Provider>,
+  <WidgetSettingsProvider widgetSettings={widgetSettings}>
+    <Provider blocks={blocksStore}>
+      <IntlProvider locale="en">
+        <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
+          <App />
+        </Web3Provider>
+      </IntlProvider>
+    </Provider>
+  </WidgetSettingsProvider>,
   document.querySelector('.root'),
 );

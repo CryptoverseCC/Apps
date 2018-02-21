@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { returntypeof } from 'react-redux-typescript';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';

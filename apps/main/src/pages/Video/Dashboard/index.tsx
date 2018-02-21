@@ -1,37 +1,29 @@
 import React, { Component } from 'react';
 import flowRight from 'lodash/flowRight';
-import { returntypeof } from 'react-redux-typescript';
-import { connect } from 'react-redux';
 import Web3 from 'web3';
 import sigUtil from 'eth-sig-util';
 
 import core from '@userfeeds/core/src';
-import { IWidgetState } from '@linkexchange/ducks/widget';
 import Loader from '@linkexchange/components/src/Loader';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
+import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
 
 import * as style from './dashboard.scss';
 
-const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
-  asset: widget.asset,
-  widgetSettings: widget,
-});
-
-const State2Props = returntypeof(mapStateToProps);
-
-type TProps = typeof State2Props & {
+interface IProps {
+  widgetSettings: WidgetSettings;
   web3State: IWeb3State;
   web3: Web3;
-};
+}
 
 interface IState {
   stage: 'notstarted' | 'inprogress' | 'success' | 'failure';
 }
 
-class Dashboard extends Component<TProps, IState> {
+class Dashboard extends Component<IProps, IState> {
   state: IState = {
     stage: 'notstarted',
   };
@@ -113,4 +105,14 @@ class Dashboard extends Component<TProps, IState> {
   };
 }
 
-export default flowRight(connect(mapStateToProps), withInjectedWeb3AndWeb3State)(Dashboard);
+// Move to utils and add types
+const propsMapper = (mapper: (props) => any) => (Cmp) => (props) => <Cmp {...props} {...mapper(props)} />;
+
+export default flowRight(
+  withWidgetSettings,
+  propsMapper(({ widgetSettings }: { widgetSettings: WidgetSettings }) => ({
+    asset: widgetSettings.asset,
+    recipientAddress: widgetSettings.recipientAddress,
+  })),
+  withInjectedWeb3AndWeb3State,
+)(Dashboard);
