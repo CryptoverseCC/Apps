@@ -12,6 +12,5 @@ cd ./widgets/linkexchange-link
 yarn build-test
 npm publish --tag canary --unsafe-perm
 
-
 cd ../../
 ./purgeCDNCach.sh canary

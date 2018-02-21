@@ -10,4 +10,5 @@ yarn lerna run deploy
 cd ./widgets/linkexchange-link
 npm publish --unsafe-perm
 
+cd ../../
 ./purgeCDNCach.sh latest
