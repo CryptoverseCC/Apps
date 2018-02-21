@@ -60,7 +60,7 @@ class Whitelist extends Component<TProps, IState> {
     const params = qs.parse(props.location.search.replace('?', ''));
     const paramsAsset = params.asset;
     let asset;
-    if (paramsAsset) {
+    if (paramsAsset && typeof paramsAsset === 'string') {
       const [network, token = ''] = paramsAsset.split(':');
       asset = { network, token };
     } else {
