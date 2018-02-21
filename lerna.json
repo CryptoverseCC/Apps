@@ -1,11 +1,15 @@
 {
   "lerna": "2.8.0",
   "npmClient": "yarn",
-  "packages": ["packages/*", "apps/*", "widgets/*"],
+  "packages": [
+    "packages/*",
+    "apps/*",
+    "widgets/*"
+  ],
   "commands": {
     "publish": {
       "allowBranch": "master"
     }
   },
-  "version": "0.0.171"
+  "version": "0.0.172"
 }
