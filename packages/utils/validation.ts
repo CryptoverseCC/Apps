@@ -11,6 +11,8 @@ export const R = {
   email: (value) => (emailRegExp.test(value) ? '' : 'Has to be valid email address'),
   greaterThan: (minValue: number) =>
     R.value((v: string) => parseInt(v, 10) >= minValue, `Has to be greater than minimal value: ${minValue}`),
+  lessThen: (minValue: number) =>
+    R.value((v: string) => parseInt(v, 10) <= minValue, `Has to be less then minimal value: ${minValue}`),
   currencyDecimals: (decimals: number) =>
     R.value((v: string) => {
       const dotIndex = v.indexOf('.');

@@ -10,11 +10,13 @@ type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   color?: 'primary' | 'secondary' | 'success' | 'pending' | 'metaPending' | 'error' | 'ready' | 'empty';
   outline?: boolean;
   rounded?: boolean;
+  childrenWrapperStyle?: any;
 };
 
 const Button = ({
   children,
   className,
+  childrenWrapperStyle,
   outline,
   size = 'medium',
   rounded = true,
@@ -40,7 +42,7 @@ const Button = ({
     >
       <div className={style.ButtonInnerWrapper}>
         {icon}
-        <div className={style.Children}>{decoratedChildren}</div>
+        <div className={style.Children} style={childrenWrapperStyle}>{decoratedChildren}</div>
       </div>
     </button>
   );

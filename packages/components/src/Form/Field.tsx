@@ -26,10 +26,14 @@ export const TextField = (props) => {
         onChange={(e) => onChange(e)}
         {...restInputProps}
         error={props.meta.error}
-        showStatus={props.meta.dirty}
+        showStatus={props.meta.touched}
         type="text"
+        bold={props.bold}
+        primary={props.primary}
+        currency={props.currency}
         isActive={props.meta.active}
         multiline={props.multiline}
+        append={props.append}
       />
     </Field>
   );

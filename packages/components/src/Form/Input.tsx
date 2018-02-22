@@ -10,6 +10,9 @@ type TInputProps = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElem
   append?: (className: string) => ReactChild;
   showStatus?: boolean;
   isActive?: boolean;
+  bold?: boolean;
+  primary?: boolean;
+  currency?: ReactChild;
 };
 
 export default class Input extends PureComponent<TInputProps> {
@@ -27,6 +30,9 @@ export default class Input extends PureComponent<TInputProps> {
       multiline = false,
       isActive = false,
       showStatus = true,
+      bold = false,
+      primary = false,
+      currency,
       error,
       className,
       displayName,
@@ -36,10 +42,14 @@ export default class Input extends PureComponent<TInputProps> {
     const containerClassNames = classnames(className, InputStyles.InputContainer, {
       [InputStyles.hasError]: showStatus && error,
       [InputStyles.focus]: isActive,
+      [InputStyles.primary]: primary,
     });
     const inputClassNames = classnames(className, InputStyles.Input, {
       [InputStyles.hasError]: showStatus && error,
       [InputStyles.hasAppend]: !!append,
+      [InputStyles.bold]: bold,
+      [InputStyles.primary]: primary,
+      [InputStyles.Shadow]: multiline
     });
     return multiline ? (
       <React.Fragment>
@@ -51,7 +61,12 @@ export default class Input extends PureComponent<TInputProps> {
     ) : (
       <React.Fragment>
         <div className={containerClassNames}>
-          <input className={inputClassNames} {...props} key={1} ref={this._onRef} />
+          <div className={InputStyles.Shadow} style={{ display: 'flex', flexGrow: 1, maxWidth: '100%' }}>
+            <div style={{ flexGrow: 1 }}>
+              <input style={{width: '100%'}} className={inputClassNames} {...props} key={1} ref={this._onRef} />
+            </div>
+            {currency && <div className={InputStyles.Currency}>{currency}</div>}
+          </div>
           {append && append(InputStyles.Appended)}
         </div>
         {showStatus && !!error && <p className={InputStyles.Error}>{error}</p>}

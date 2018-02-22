@@ -1,28 +1,19 @@
 {
-  "name": "newer-add-link",
-  "version": "0.0.172",
+  "name": "@linkexchange/new-add-link",
+  "version": "0.0.166",
   "main": "index.js",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "jest"
   },
   "dependencies": {
+    "@linkexchange/components": "^0.0.166",
     "@linkexchange/copy-from-mm": "^0.0.166",
     "@linkexchange/images": "^0.0.149",
-    "@linkexchange/components": "^0.0.166"
+    "styled-components": "^3.1.6"
   },
-  "devDependencies": {
-    "@storybook/addon-actions": "^3.3.12",
-    "@storybook/addon-knobs": "^3.3.12",
-    "@storybook/react": "^3.4.0-alpha.7",
-    "@types/storybook__react": "^3.0.6",
-    "awesome-typescript-loader": "^3.4.1",
-    "babel-core": "^6.26.0",
-    "style-loader": "^0.20.1",
-    "typings-for-css-modules-loader": "^1.7.0"
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "@types/jest": "^22.1.1",
     "enzyme": "^3.3.0",

@@ -16,11 +16,11 @@ import If from '@linkexchange/components/src/utils/If';
 import { toWei } from '@linkexchange/utils/balance';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
-import Slide from './components/Slide';
-import Result from './components/Result';
+import Slide from '@linkexchange/components/src/Slide';
+import Result from '@linkexchange/components/src/Result';
 import Booster from './components/Booster';
-import AskForAllowance from './components/AskForAllowance';
-import TransactionInProgress from './components/TransactionInProgress';
+import AskForAllowance from '@linkexchange/components/src/AskForAllowance';
+import TransactionInProgress from '@linkexchange/components/src/TransactionInProgress';
 
 import * as style from './boostLink.scss';
 

@@ -25,15 +25,6 @@ export const Balance = ({ tokenDetails }) => (
   </p>
 );
 
-export const Approved = ({ tokenDetails }) => (
-  <p className={style.balance}>
-    Approved:
-    <span className={style.amount}>
-      {tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}
-    </span>
-  </p>
-)
-
 const Header = ({ left, tokenDetails }: IProps) => (
   <div className={style.self}>
     {left}

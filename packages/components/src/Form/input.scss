@@ -13,6 +13,7 @@ $input-background: #f5f7fa;
   width: 100%;
   border: 1px solid $default;
   border-radius: 5px;
+  background-color: $input-background;
 
   &.focus {
     border-color: $focus;
@@ -23,20 +24,31 @@ $input-background: #f5f7fa;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
   }
+
+  &.primary {
+    background-color: #2538cf;
+
+    .Currency {
+      color: #fff;
+    }
+  }
+}
+
+.Shadow {
+  box-shadow: inset 0 2px 3px 0 $inner-shadow;
 }
 
 .Input {
   box-sizing: border-box;
-  flex: 1 0 auto;
+  width: 100%;
   padding: 15px 20px;
-  line-height: 1.5em;
+  line-height: 30px;
   font-size: 16px;
   font-family: 'PT Sans';
-  background-color: $input-background;
   border: none;
   border-radius: 5px;
   color: $text-color;
-  box-shadow: inset 0 2px 3px 0 $inner-shadow;
+  background-color: transparent;
 
   &.hasError {
     border-bottom-right-radius: 0;
@@ -51,6 +63,15 @@ $input-background: #f5f7fa;
   &:focus {
     outline: none;
   }
+
+  &.bold {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &.primary {
+    color: #ffffff;
+  }
 }
 
 .Error {
@@ -63,14 +84,24 @@ $input-background: #f5f7fa;
   font-size: 11px;
   font-weight: bold;
   line-height: 14px;
-  font-family: 'PT Sans';
   color: #fff;
   background-color: $error;
 }
 
+.Currency {
+  display: flex;
+  background-color: transparent;
+  align-items: center;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 0 10px;
+  margin-left: -20px;
+}
+
 .Appended {
-  height: calc(27px + 1.5em);
-  flex: 0 0 auto;
+  display: flex;
+  flex-shrink: 0;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }

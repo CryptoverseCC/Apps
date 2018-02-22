@@ -16,7 +16,7 @@ const Success: React.SFC<IProps> = ({ type, onClick, children }) => (
   <div className={style.self}>
     <Icon name={type === 'success' ? 'check' : 'x'} className={cx(style.icon, { [type]: true })} />
     <div>{children}</div>
-    <Button color="primary" className={style.button} onClick={onClick}>
+    <Button color="primary" className={style.button} onClick={onClick} size="big">
       {type === 'success' ? 'Check Status' : 'Try again'}
     </Button>
   </div>

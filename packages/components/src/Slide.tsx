@@ -11,7 +11,7 @@ const transitionClassNames = {
   exitActive: style.transitionLeaveActive,
 };
 
-const Slide = ({ children, className, ...restProps }) => (
+const Slide = ({ children, className = '', ...restProps }) => (
   <CSSTransition {...restProps} timeout={300} classNames={transitionClassNames}>
     <div className={classnames(style.container, className)}>{children}</div>
   </CSSTransition>
