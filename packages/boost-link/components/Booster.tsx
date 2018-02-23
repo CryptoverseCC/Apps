@@ -138,8 +138,8 @@ export default class Booster extends Component<IProps, IState> {
   };
 
   _onSendClick = () => {
-    const { inputError, hasInsufficientFunds } = this.state;
-    if (!!inputError || hasInsufficientFunds) {
+    const { inputError, hasInsufficientFunds, toPay } = this.state;
+    if (!!inputError || hasInsufficientFunds || this._isZero(toPay)) {
       return;
     }
 
@@ -170,7 +170,7 @@ export default class Booster extends Component<IProps, IState> {
       tokenDetails.decimals,
       tokenDetails.decimals < 4 ? tokenDetails.decimals : 4,
     );
-    const positionInSlots = this._getLinkPosition(toPayWei, link, linksInSlots);
+    const positionInSlots = this._getLinkPosition(toPayWei.add(link.score.toFixed(0)), link, linksInSlots);
 
     if (toPayWei.gt(this.props.tokenDetails.balance!)) {
       this.setState({
