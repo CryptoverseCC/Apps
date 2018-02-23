@@ -1,13 +1,13 @@
 {
   "private": true,
   "name": "@linkexchange/details",
-  "version": "0.0.172",
+  "version": "0.0.173",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
   "author": "",
   "dependencies": {
-    "@linkexchange/boost-link": "^0.0.172",
+    "@linkexchange/boost-link": "^0.0.173",
     "@linkexchange/components": "^0.0.172",
     "@linkexchange/scrollable-sections-with-menu": "^0.0.172",
     "@linkexchange/toast": "^0.0.172",
