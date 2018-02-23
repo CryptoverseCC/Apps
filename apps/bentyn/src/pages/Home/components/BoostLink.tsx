@@ -7,10 +7,11 @@ import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { withTokenDetails } from '@linkexchange/token-details-provider';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
+import { withWidgetSettings } from '@linkexchange/widget-settings';
 
 import BlocksStore from '../../../stores/blocks';
 
-const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(BoostLinkComponent));
+const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(withWidgetSettings(BoostLinkComponent)));
 
 interface IProps {
   blocks: BlocksStore;

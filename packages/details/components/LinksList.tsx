@@ -10,6 +10,7 @@ import web3, { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
 import { withTokenDetails, TokenDetailsProviderWithInfura } from '@linkexchange/token-details-provider';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { fromWeiToString } from '@linkexchange/utils/balance';
+import { withWidgetSettings } from '@linkexchange/widget-settings';
 
 import * as style from './linksList.scss';
 
@@ -23,7 +24,7 @@ export interface IDefaultBoostLinkWrapperProps {
 }
 
 const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
-const BoostLinkComponent = withInjectedWeb3(withTokenDetails(BoostLinkComponentComponent));
+const BoostLinkComponent = withInjectedWeb3(withTokenDetails(withWidgetSettings(BoostLinkComponentComponent)));
 
 const DefaultBoostLink = (props: IDefaultBoostLinkWrapperProps) => {
   return (
