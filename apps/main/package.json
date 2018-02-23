@@ -8,7 +8,8 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "build-test": "cross-env NODE_ENV=stagging webpack --config webpack.config.prod.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
-    "deploy-test": "firebase deploy -P default --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
+    "deploy-test":
+      "firebase deploy -P default --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
     "deploy": "firebase deploy -P prod --token $FIREBASE_TOKEN"
   },
   "author": "",
@@ -21,6 +22,7 @@
     "@linkexchange/components": "^0.0.170",
     "@linkexchange/copy-from-mm": "^0.0.170",
     "@linkexchange/details": "^0.0.170",
+    "@linkexchange/new-details": "^0.0.171",
     "@linkexchange/scss-unset": "^0.0.146",
     "@linkexchange/status": "^0.0.149",
     "@linkexchange/toast": "^0.0.170",

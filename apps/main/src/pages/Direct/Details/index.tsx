@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Details as DetailsComponent, Header, Lists } from '@linkexchange/details';
+import { Details as DetailsComponent, Header, Lists } from '@linkexchange/new-details';
 import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 
@@ -30,7 +30,7 @@ class Details extends Component<IProps, IState> {
       <div className={style.self}>
         <DetailsComponent standaloneMode className={style.details}>
           <Header onAddClick={this._onAddLink} />
-          <Lists />
+          {/* <Lists /> */}
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>
           <AddLinkWithInjectedWeb3AndTokenDetails
