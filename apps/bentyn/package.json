@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/bentyn",
-  "version": "0.0.172",
+  "version": "0.0.173",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,10 +18,10 @@
     "@linkexchange/add-link": "^0.0.172",
     "@linkexchange/blocks-till-conclusion": "^0.0.172",
     "@linkexchange/blocks-till-conclusion-provider": "^0.0.166",
-    "@linkexchange/boost-link": "^0.0.172",
+    "@linkexchange/boost-link": "^0.0.173",
     "@linkexchange/components": "^0.0.172",
     "@linkexchange/copy-from-mm": "^0.0.172",
-    "@linkexchange/details": "^0.0.172",
+    "@linkexchange/details": "^0.0.173",
     "@linkexchange/ducks": "^0.0.166",
     "@linkexchange/scss-unset": "^0.0.146",
     "@linkexchange/status": "^0.0.149",
