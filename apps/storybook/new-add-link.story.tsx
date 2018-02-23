@@ -15,6 +15,7 @@ import TransactionInProgress from '@linkexchange/components/src/TransactionInPro
 import Result from '@linkexchange/components/src/Result';
 import AskForAllowance from '@linkexchange/components/src/AskForAllowance';
 import { CopyFromMM } from '@linkexchange/copy-from-mm';
+import AddLink from '@linkexchange/new-add-link/index';
 
 storiesOf('Add Link', module)
   .addDecorator(withKnobs)
@@ -23,91 +24,20 @@ storiesOf('Add Link', module)
     const approved = number('approved', 100);
     const minimalValue = number('minimalValue', 0);
     const currency = text('currency', 'BEN')
+    const submitErrorText = text('Submit Error')
     const onSubmit = action('Submitted form');
     const formValidations = { title: [], summary: [], target: [], value: [] };
     return (
       <div style={{ width: '500px' }}>
-        <Modal.default>
-          <Modal.Header>
-            <Modal.Title>Create a new link</Modal.Title>
-            <Modal.HeaderRight>
-              <Modal.Balance>
-                <Modal.BalanceLabel>In Use:</Modal.BalanceLabel>
-                <Modal.BalanceValue>{balance} {currency}</Modal.BalanceValue>
-              </Modal.Balance>
-              <Modal.Balance>
-                <Modal.BalanceLabel>Approved:</Modal.BalanceLabel>
-                <Modal.BalanceValue>{approved} {currency}</Modal.BalanceValue>
-              </Modal.Balance>
-            </Modal.HeaderRight>
-          </Modal.Header>
-          <Form
-            initialValues={{
-              target: 'http://',
-              value: '0' || '',
-            }}
-            onSubmit={onSubmit}
-          >
-            {({ handleSubmit, pristine, invalid, submitError }) => (
-              <React.Fragment>
-                {submitError ||
-                  (text('submitError') && <Modal.Error>{submitError || text('submitError')}</Modal.Error>)}
-                <Modal.Body>
-                  <form onSubmit={handleSubmit}>
-                    <Field
-                      title="Headline"
-                      component={TextField}
-                      name="title"
-                      validate={validateField([R.required, R.maxLength(35), ...(formValidations.title || [])])}
-                    />
-                    <Field
-                      multiline
-                      title="Description"
-                      component={TextField}
-                      name="summary"
-                      validate={validateField([R.required, R.maxLength(70), ...(formValidations.summary || [])])}
-                    />
-                    <Field
-                      title="Link"
-                      component={TextField}
-                      name="target"
-                      validate={validateField([R.required, R.link, ...(formValidations.target || [])])}
-                    />
-                    <Field
-                      title="Initial Fee"
-                      component={TextField}
-                      name="value"
-                      bold
-                      currency={currency}
-                      validate={validateField([
-                        R.required,
-                        R.number,
-                        R.currencyDecimals(4),
-                        R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
-                        R.lessThen(balance),
-                        ...(formValidations.value || []),
-                      ])}
-                    />
-                    <Button
-                      size="big"
-                      type="submit"
-                      color="primary"
-                      style={{ width: '100%', marginTop: '40px' }}
-                    >
-                      Send
-                    </Button>
-                  </form>
-                </Modal.Body>
-              </React.Fragment>
-            )}
-          </Form>
-          <Modal.Footer>
-            <Modal.FooterText>
-              You need to pay initial fee to be considered. Paying fee does not imply that your link will be displayed,
-              as publisher has to whitelist your link.
-            </Modal.FooterText>
-          </Modal.Footer>
-        </Modal.default>
+        <AddLink
+          balance={balance}
+          currency={currency}
+          approved={approved}
+          onSubmit={onSubmit}
+          submitErrorText={submitErrorText}
+          formValidations={formValidations}
+          minimalValue={minimalValue}
+        />
       </div>
     );
   })
