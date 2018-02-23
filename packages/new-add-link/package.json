@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/new-add-link",
-  "version": "0.0.166",
+  "version": "0.0.172",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -8,8 +8,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@linkexchange/components": "^0.0.166",
-    "@linkexchange/copy-from-mm": "^0.0.166",
+    "@linkexchange/components": "^0.0.172",
+    "@linkexchange/copy-from-mm": "^0.0.172",
     "@linkexchange/images": "^0.0.149",
     "styled-components": "^3.1.6"
   },
