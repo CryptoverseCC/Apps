@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.173",
+  "version": "0.0.174",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {

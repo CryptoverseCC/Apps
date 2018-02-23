@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.174"></a>
+## [0.0.174](https://github.com/Userfeeds/Apps/compare/v0.0.173...v0.0.174) (2018-02-23)
+
+
+### Fix
+
+* slice links to match slots in widget ([717901a622ac16bef3cbd13af08af48324f94805](https://github.com/Userfeeds/Apps/commit/717901a622ac16bef3cbd13af08af48324f94805))
+
+
+
+
 <a name="0.0.173"></a>
 ## [0.0.173](https://github.com/Userfeeds/Apps/compare/v0.0.172...v0.0.173) (2018-02-23)
 
