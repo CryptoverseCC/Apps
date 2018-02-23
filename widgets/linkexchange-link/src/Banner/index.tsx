@@ -109,6 +109,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
       asset,
       algorithm,
       whitelist,
+      slots,
     } = this.props.widgetSettings;
     const recipientAddressLower = recipientAddress.toLowerCase();
     const assetLower = asset.toLowerCase();
@@ -123,9 +124,11 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
       )
         .then(throwErrorOnNotOkResponse)
         .then<{ items: IRemoteLink[] }>((res) => res.json());
+
+      const linksInSlots = links.slice(0, slots);
       this.setState({
         fetched: true,
-        links: calculateProbabilities(links),
+        links: calculateProbabilities(linksInSlots),
       });
       this._preloadModals();
     } catch (e) {
