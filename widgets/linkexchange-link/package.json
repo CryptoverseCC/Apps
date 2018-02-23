@@ -13,8 +13,8 @@
   "dependencies": {
     "@linkexchange/add-link": "^0.0.172",
     "@linkexchange/components": "^0.0.172",
-    "@linkexchange/details": "^0.0.172",
-    "@linkexchange/new-details": "^0.0.172",
+    "@linkexchange/details": "^0.0.173",
+    "@linkexchange/new-details": "^0.0.173",
     "@linkexchange/root-provider": "^0.0.149",
     "@linkexchange/scss-unset": "^0.0.146",
     "@linkexchange/toast": "^0.0.172",
