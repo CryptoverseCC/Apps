@@ -18,6 +18,7 @@ const cx = classnames.bind(style);
 interface IProps {
   link: IRemoteLink | ILink;
   linksInSlots: IRemoteLink[];
+  slots: number;
   tokenDetails: ITokenDetails;
   onSend(toPay: string): void;
 }
@@ -125,16 +126,19 @@ export default class Booster extends Component<IProps, IState> {
   };
 
   _toAddToBeInSlots = (decimals?: number) => {
-    const { link, linksInSlots, tokenDetails } = this.props;
+    const { link, linksInSlots, tokenDetails, slots } = this.props;
     const { toPay } = this.state;
-    const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
 
-    const toAdd = new BigNumber(lastLinkInSlots.score.toFixed(0))
-      .minus(new BigNumber(link.score.toFixed(0)).add(toWei(toPay, tokenDetails.decimals)))
-      .add(1)
-      .toString();
+    let toAdd = new BigNumber(1);
+    if (linksInSlots.length === slots) {
+      const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
 
-    return fromWeiToString(toAdd, tokenDetails.decimals, decimals || tokenDetails.decimals);
+      toAdd = new BigNumber(lastLinkInSlots.score.toFixed(0))
+        .minus(new BigNumber(link.score.toFixed(0)).add(toWei(toPay, tokenDetails.decimals)))
+        .add(1);
+    }
+
+    return fromWeiToString(toAdd.toString(), tokenDetails.decimals, decimals || tokenDetails.decimals);
   };
 
   _onSendClick = () => {
@@ -197,7 +201,7 @@ export default class Booster extends Component<IProps, IState> {
       this.setState({ inputError, toPay: e.target.value });
       return;
     }
-    const { link, linksInSlots, tokenDetails } = this.props;
+    const { link, linksInSlots, tokenDetails, slots } = this.props;
     const { sum, isInSlots } = this.state;
 
     const toPay = e.target.value;
@@ -217,26 +221,22 @@ export default class Booster extends Component<IProps, IState> {
       this.setState({ probability });
     } else {
       const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
-      if (linkTotalScore.gt(lastLinkInSlots.score.toFixed(0))) {
-        const newLinksInSlots = linksInSlots
-          .map((l) => new BigNumber(l.score.toFixed(0)))
-          .concat([linkTotalScore])
-          .sort((a, b) => b.comparedTo(a))
-          .slice(0, linksInSlots.length);
+      const newLinksInSlots = linksInSlots
+        .map((l) => new BigNumber(l.score.toFixed(0)))
+        .concat([linkTotalScore])
+        .sort((a, b) => b.comparedTo(a))
+        .slice(0, slots);
 
-        positionInSlots = newLinksInSlots.indexOf(linkTotalScore);
+      positionInSlots = newLinksInSlots.indexOf(linkTotalScore) !== -1 ? newLinksInSlots.indexOf(linkTotalScore) : null;
 
-        const probability = linkTotalScore
-          .div(newLinksInSlots.reduce((acc, score) => score.add(acc), new BigNumber(0)))
-          .mul(1000)
-          .round()
-          .div(10)
-          .toNumber();
+      const probability = linkTotalScore
+        .div(newLinksInSlots.reduce((acc, score) => score.add(acc), new BigNumber(0)))
+        .mul(1000)
+        .round()
+        .div(10)
+        .toNumber();
 
-        this.setState({ probability });
-      } else {
-        positionInSlots = null;
-      }
+      this.setState({ probability });
     }
 
     if (toPayWei.gt(this.props.tokenDetails.balance!)) {

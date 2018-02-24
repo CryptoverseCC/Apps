@@ -8,6 +8,7 @@ import { PromiEvent, TransactionReceipt } from 'web3/types';
 import core from '@userfeeds/core/src';
 import Button from '@linkexchange/components/src/Button';
 import Tooltip from '@linkexchange/components/src/Tooltip';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import { IRemoteLink } from '@linkexchange/types/link';
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
@@ -23,20 +24,20 @@ import TransactionInProgress from './components/TransactionInProgress';
 
 import * as style from './boostLink.scss';
 
-interface IBidLinkProps {
+interface IProps {
   web3: Web3;
   tokenDetails: ITokenDetails;
   disabled?: boolean;
   disabledReason?: string;
   link: IRemoteLink;
   linksInSlots: IRemoteLink[];
-  asset: string;
+  widgetSettings: WidgetSettings;
   recipientAddress: string;
   onSuccess?(linkId: string): void;
   onError?(e: any): void;
 }
 
-interface IBidLinkState {
+interface IState {
   visible: boolean;
   stage: 'booster' | 'allowance' | 'allowanceInProgress' | 'boostInProgress' | 'success' | 'error';
   amount?: string;
@@ -46,15 +47,15 @@ interface IBidLinkState {
   formOpacity?: number;
 }
 
-export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
+export default class BoostLink extends Component<IProps, IState> {
   _buttonRef: Element;
-  state: IBidLinkState = {
+  state: IState = {
     visible: false,
     stage: 'booster',
   };
 
   render() {
-    const { link, linksInSlots, disabled, disabledReason, tokenDetails } = this.props;
+    const { link, linksInSlots, widgetSettings, disabled, disabledReason, tokenDetails } = this.props;
     const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
 
     return (
@@ -77,6 +78,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
                   link={link}
                   linksInSlots={linksInSlots}
                   tokenDetails={tokenDetails}
+                  slots={widgetSettings.slots}
                   onSend={this._onSendClick}
                 />
               </Slide>
@@ -168,8 +170,9 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   _onSendClick = async (toPay: string) => {
-    const { web3, asset, tokenDetails } = this.props;
-    const [_, token] = this.props.asset.split(':');
+    const { web3, widgetSettings, tokenDetails } = this.props;
+    const { asset } = widgetSettings;
+    const [_, token] = asset.split(':');
 
     let nextStage: 'boostInProgress' | 'allowance' = 'boostInProgress';
     if (token) {
@@ -187,7 +190,8 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   _onAllowance = (unlimited: boolean) => {
-    const { asset, web3, tokenDetails } = this.props;
+    const { widgetSettings, web3, tokenDetails } = this.props;
+    const { asset } = widgetSettings;
     const { amount: toPay } = this.state;
     const [, tokenAddress] = asset.split(':');
 
@@ -214,7 +218,8 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   _sendClaim = () => {
-    const { asset, recipientAddress, web3 } = this.props;
+    const { widgetSettings, recipientAddress, web3 } = this.props;
+    const { asset } = widgetSettings;
     const { amount: toPay } = this.state;
     const { id } = this.props.link;
     const location = urlWithoutQueryIfLinkExchangeApp();
@@ -229,7 +234,7 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
       ],
     };
 
-    const [_, token] = this.props.asset.split(':');
+    const [_, token] = asset.split(':');
     let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
     if (token) {
       sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, toPay, claim);
@@ -251,9 +256,9 @@ export default class BoostLink extends Component<IBidLinkProps, IBidLinkState> {
   };
 
   _openBoostStatus = () => {
-    const { asset } = this.props;
+    const { widgetSettings } = this.props;
     const { txHash } = this.state;
 
-    openLinkexchangeUrl('/direct/status/boost', { txHash, asset });
+    openLinkexchangeUrl('/direct/status/boost', { txHash, asset: widgetSettings.asset });
   };
 }

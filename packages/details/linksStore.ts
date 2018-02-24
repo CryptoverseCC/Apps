@@ -22,11 +22,14 @@ export default class LinksStore {
   @computed
   get visibleLinks() {
     const { slots } = this.widgetSettings;
-    if (this.widgetSettings.whitelist !== '') {
-      return calculateProbabilities(this.whitelistedLinks.slice(0, slots));
+    const linksInSlots = (this.widgetSettings.whitelist !== '' ? this.whitelistedLinks : this.allLinks).slice(0, slots);
+    const linksTotalScore = linksInSlots.reduce((acc, { score }) => acc + score, 0);
+
+    if (linksTotalScore === 0) {
+      return calculateProbabilities(linksInSlots);
     }
 
-    return calculateProbabilities(this.allLinks.slice(0, slots));
+    return calculateProbabilities(linksInSlots.filter(({ score }) => score > 0));
   }
 
   @action

@@ -126,9 +126,13 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         .then<{ items: IRemoteLink[] }>((res) => res.json());
 
       const linksInSlots = links.slice(0, slots);
+      const linksTotalScore = linksInSlots.reduce((acc, { score }) => acc + score, 0);
+
       this.setState({
         fetched: true,
-        links: calculateProbabilities(linksInSlots),
+        links: calculateProbabilities(
+          linksTotalScore === 0 ? linksInSlots : linksInSlots.filter(({ score }) => score > 0),
+        ),
       });
       this._preloadModals();
     } catch (e) {

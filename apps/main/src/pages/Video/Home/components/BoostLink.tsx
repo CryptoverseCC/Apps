@@ -2,6 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 
 import BoostLinkComponent from '@linkexchange/boost-link';
+import { withWidgetSettings } from '@linkexchange/widget-settings';
 import { IDefaultBoostLinkWrapperProps } from '@linkexchange/details';
 import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { withInjectedWeb3 } from '@linkexchange/utils/web3';
@@ -10,7 +11,7 @@ import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-p
 
 import BlocksStore from '../../../../stores/blocks';
 
-const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(BoostLinkComponent));
+const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(withWidgetSettings(BoostLinkComponent)));
 
 interface IProps {
   blocks: BlocksStore;
