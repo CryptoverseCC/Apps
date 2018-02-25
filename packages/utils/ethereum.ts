@@ -11,6 +11,6 @@ export const getAverageBlockTime = async (web3): Promise<number> => {
     return DEFAULT_AVERAGE_TIME;
   }
 
-  const average = (currentBlock.timestamp - pastBlock.timestamp) / 100;
+  const average = (currentBlock.timestamp - pastBlock.timestamp) / SPAN;
   return average;
 };
