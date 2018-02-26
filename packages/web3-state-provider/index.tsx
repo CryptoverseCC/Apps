@@ -115,4 +115,4 @@ let taskRunner;
 const getTaskRunner = () => {
   taskRunner = taskRunner || new Web3TaskRunner<IWeb3State, [string]>(load);
   return taskRunner;
-}
+};

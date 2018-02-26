@@ -5,7 +5,7 @@ import { TransactionReceipt, PromiEvent } from 'web3/types';
 
 import core from '@userfeeds/core/src';
 import { WidgetSettings } from '@linkexchange/widget-settings';
-import { resolveOnTransationHash } from '@userfeeds/core/src/utils/index';
+import { resolveOnTransactionHash } from '@userfeeds/core/src/utils/index';
 import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { IBaseLink } from '@linkexchange/types/link';
 import Button from '@linkexchange/components/src/NewButton';
@@ -127,7 +127,7 @@ export default class AddLinkForm extends Component<IAddLinkFormProps> {
         if (new BN(allowance).lte(new BN(toPayWei))) {
           promise = core.ethereum.claims
             .approveUserfeedsContractTokenTransfer(web3, token, values.unlimitedApproval ? MAX_VALUE_256 : toPayWei)
-            .then(({ promiEvent }) => resolveOnTransationHash(promiEvent));
+            .then(({ promiEvent }) => resolveOnTransactionHash(promiEvent));
         }
 
         return promise.then(() =>

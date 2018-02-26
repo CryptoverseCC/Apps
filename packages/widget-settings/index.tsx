@@ -1,10 +1,11 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { extendObservable } from 'mobx';
+import { extendObservable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 
 import { Omit } from '@linkexchange/types';
 import { EWidgetSize, IWidgetSettings } from '@linkexchange/types/widget';
+import { urlWithoutQueryIfLinkExchangeApp } from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
 export class WidgetSettings implements IWidgetSettings {
   apiUrl: string;
@@ -22,6 +23,16 @@ export class WidgetSettings implements IWidgetSettings {
   impression: string;
   location: string;
   tillDate: string;
+
+  @computed
+  get widgetLocation() {
+    return this.location || urlWithoutQueryIfLinkExchangeApp();
+  }
+
+  @computed
+  get tokenAddress() {
+    return this.asset.split(':')[1];
+  }
 
   constructor(initialState: IWidgetSettings) {
     extendObservable(this, initialState);
