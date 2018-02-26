@@ -30,7 +30,7 @@ class Details extends Component<IProps, IState> {
       <div className={style.self}>
         <DetailsComponent standaloneMode className={style.details}>
           <Header onAddClick={this._onAddLink} />
-          {/* <Lists /> */}
+          <Lists />
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>
           <AddLinkWithInjectedWeb3AndTokenDetails

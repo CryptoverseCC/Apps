@@ -34,11 +34,11 @@ const assetToIconMap = new Map([
 ]);
 
 interface ITokenLogoProps {
-  className: any;
+  className?: any;
   asset: string;
 }
 
-const TokenLogo = ({asset, className}) => {
+const TokenLogo = ({ asset, className }) => {
   const icon = assetToIconMap.get(asset) || erc20;
   return <img className={className} src={icon} />;
 };

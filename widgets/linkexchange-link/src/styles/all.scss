@@ -3,9 +3,7 @@
 
 .root {
   @import './flex';
-
   all: initial;
-  @import '~@linkexchange/scss-unset';
 
   ::selection {
     color: $white;

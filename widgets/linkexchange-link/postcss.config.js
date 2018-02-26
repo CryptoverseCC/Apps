@@ -5,6 +5,6 @@ const baseConfig = require('../../config/postcss.base');
 
 module.exports = merge(baseConfig, {
   plugins: [
-    safeImportant(),
+    // safeImportant(),
   ],
 });
