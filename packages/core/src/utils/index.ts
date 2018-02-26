@@ -63,7 +63,7 @@ export function getTransactionReceipt(web3Instance, transactionId): Promise<stri
   return web3Instance.eth.getTransactionReceipt(transactionId);
 }
 
-export function resolveOnTransationHash(p: PromiEvent<TransactionReceipt>): Promise<string> {
+export function resolveOnTransactionHash(p: PromiEvent<TransactionReceipt>): Promise<string> {
   return new Promise((resolve, reject) => {
     p.on('error', reject).on('transactionHash', resolve);
   });

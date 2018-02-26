@@ -9,12 +9,9 @@ import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
 import { Omit, Diff } from '@linkexchange/types';
 import { withInjectedWeb3, withInfura } from '@linkexchange/utils/web3';
 
-const {
-  erc20ContractDecimals,
-  erc20ContractBalance,
-  erc20ContractSymbol,
-  erc20ContractName,
-} = core.ethereum.erc20;
+const { erc20ContractDecimals, erc20ContractBalance, erc20ContractSymbol, erc20ContractName } = core.ethereum.erc20;
+
+const { allowanceUserfeedsContractTokenTransfer } = core.ethereum.claims;
 
 interface IProps {
   web3: Web3;
@@ -29,6 +26,7 @@ export interface ITokenDetails {
   name: string;
   balance: string | null;
   balanceWithDecimalPoint: string | null;
+  allowance: string | null;
 }
 
 interface IState {
@@ -58,7 +56,8 @@ export default class TokenDetailsProvider extends Component<IProps, IState> {
       [this.props.asset, !!this.props.loadBalance],
       (tokenDetails) => {
         this.setState({ loaded: true, tokenDetails });
-    });
+      },
+    );
   }
 
   componentWillUnmount() {
@@ -88,7 +87,8 @@ export const withTokenDetails = <T extends IComponentProps>(Cmp: React.Component
         [this.props.asset, !!this.props.loadBalance],
         (tokenDetails) => {
           this.setState({ loaded: true, tokenDetails });
-      });
+        },
+      );
     }
 
     componentWillUnmount() {
@@ -110,10 +110,13 @@ const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
     return update({ decimals: 18, symbol: 'ETH', name: 'ETH' });
   }
 
-  while (!(
-    web3.currentProvider !== null
-    && await web3.eth.net.isListening()
-    && await core.utils.getCurrentNetworkName(web3) === network)) {
+  while (
+    !(
+      web3.currentProvider !== null &&
+      (await web3.eth.net.isListening()) &&
+      (await core.utils.getCurrentNetworkName(web3)) === network
+    )
+  ) {
     await wait(1000);
   }
 
@@ -128,13 +131,12 @@ const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
   }
 
   while (true) {
-    const [decimals, symbol, name, balance] = await Promise.all([
+    const [decimals, symbol, name, balance, allowance] = await Promise.all([
       erc20ContractDecimals(web3, token).then((d) => parseInt(d, 10)),
       erc20ContractSymbol(web3, token),
       erc20ContractName(web3, token),
-      loadBalance
-        ? erc20ContractBalance(web3, token)
-        : Promise.resolve(null),
+      loadBalance ? erc20ContractBalance(web3, token) : Promise.resolve(null),
+      loadBalance ? allowanceUserfeedsContractTokenTransfer(web3, token) : Promise.resolve(null),
     ]);
 
     const balanceWithDecimalPoint = balance !== null ? fromWeiToString(balance, decimals) : balance;
@@ -145,6 +147,7 @@ const loadTokenDetails = async (web3, [asset = '', loadBalance], update) => {
       name,
       balance,
       balanceWithDecimalPoint,
+      allowance,
     });
 
     await wait(1000);
