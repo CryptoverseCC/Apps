@@ -3,16 +3,43 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import Modal from '@linkexchange/components/src/StyledComponents';
-import {
+import AddLink, {
   AddLinkForm,
   PaymentInProgress,
   ConfirmationToUseTokens,
   ActionRejected,
   TokensAccess,
 } from '@linkexchange/new-add-link/index';
+import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
+import { FormValidationsProvider } from '../../packages/root-provider';
 
 storiesOf('Add Link', module)
+  .addDecorator(withKnobs)
+  .add('Flow', () => {
+    const balance = number('balance', 1000);
+    const minimalValue = number('minimalValue', 0);
+    const currency = text('currency', 'BEN');
+    const submitErrorText = text('Submit Error');
+    const onSubmit = action('Submitted form');
+
+    const formValidationsStore = observable({ 'add-link': { title: [], summary: [], target: [], value: [] } });
+    const widgetSettingsStore = observable({ minimalValue });
+    const web3Store = observable({ balance, currency });
+    return (
+      <div style={{ width: '500px' }}>
+        <Provider
+          web3Store={web3Store}
+          formValidationsStore={formValidationsStore}
+          widgetSettingsStore={widgetSettingsStore}
+        >
+          <AddLink onSubmit={onSubmit} />
+        </Provider>
+      </div>
+    );
+  });
+
+storiesOf('Add Link Components', module)
   .addDecorator(withKnobs)
   .addDecorator((storyFn) => (
     <div style={{ width: '500px' }}>
@@ -21,24 +48,20 @@ storiesOf('Add Link', module)
   ))
   .add('Form', () => {
     const balance = number('balance', 1000);
-    const approved = number('approved', 100);
     const minimalValue = number('minimalValue', 0);
     const currency = text('currency', 'BEN');
     const submitErrorText = text('Submit Error');
     const onSubmit = action('Submitted form');
     const formValidations = { title: [], summary: [], target: [], value: [] };
     return (
-      <Provider
-        balance={balance}
-        currency={currency}
-        approved={approved}
-        onSubmit={onSubmit}
-        submitErrorText={submitErrorText}
+      <AddLinkForm
         formValidations={formValidations}
         minimalValue={minimalValue}
-      >
-        <AddLinkForm />
-      </Provider>
+        balance={balance}
+        currency={currency}
+        onSubmit={onSubmit}
+        submitErrorText={submitErrorText}
+      />
     );
   })
   .add('Payment in progress', () => <PaymentInProgress />)
