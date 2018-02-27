@@ -22,8 +22,11 @@ class Web3Store {
   @action.bound
   async updateInjectedWeb3State() {
     this.currentProvider = this.injectedWeb3.currentProvider;
-    this.isListening = await this.injectedWeb3.eth.net.isListening();
-    const networkId = await this.injectedWeb3.eth.net.getId();
+    const [isListening, networkId] = await Promise.all([
+      this.injectedWeb3.eth.net.isListening(),
+      this.injectedWeb3.eth.net.getId(),
+    ]);
+    this.isListening = isListening;
     this.injectedWeb3ActiveNetwork = networkMapping[networkId];
   }
 
@@ -119,10 +122,17 @@ describe('Web3Store', () => {
   });
 
   test('#updateInjectedWeb3State correctly updates state', async () => {
+    const isListening = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve(true))
+      .mockReturnValueOnce(Promise.resolve(false));
+    const getId = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve(1))
+      .mockReturnValueOnce(Promise.resolve(0));
+    const injectedWeb3 = { eth: { net: { isListening, getId } }, currentProvider: true };
     const web3Store = new Web3Store(injectedWeb3, { asset: 'ethereum' });
     injectedWeb3.currentProvider = false;
-    injectedWeb3.eth.net.isListening.mockReturnValueOnce(Promise.resolve(false));
-    injectedWeb3.eth.net.getId.mockReturnValueOnce(Promise.resolve(1)).mockReturnValueOnce(Promise.resolve(2));
     await web3Store.updateInjectedWeb3State();
     expect(web3Store.currentProvider).toBe(false);
     expect(web3Store.isListening).toBe(false);
