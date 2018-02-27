@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.176"></a>
+## [0.0.176](https://github.com/Userfeeds/Apps/compare/v0.0.175...v0.0.176) (2018-02-27)
+
+
+### Update
+
+* 7 slots for Bentyn ([d1b21e996ef7486c760d81df91c31dc556803f93](https://github.com/Userfeeds/Apps/commit/d1b21e996ef7486c760d81df91c31dc556803f93))
+
+
+
+
 <a name="0.0.175"></a>
 ## [0.0.175](https://github.com/Userfeeds/Apps/compare/v0.0.174...v0.0.175) (2018-02-25)
 
