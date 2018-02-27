@@ -19,20 +19,24 @@ describe('Web3Store', () => {
     const web3Store = new Web3Store({ asset: 'ethereum' });
     expect(web3Store.asset).toBe('ethereum');
   });
-  test('correctly computes ethereum network', () => {
+  test('computes ethereum network', () => {
     const web3Store = new Web3Store({ asset: 'ethereum' });
     expect(web3Store.network).toBe('ethereum');
   });
-  test('correctly computes other network', () => {
+  test('computes other network', () => {
     const web3Store = new Web3Store({ asset: 'rinkeby' });
     expect(web3Store.network).toBe('rinkeby');
   });
-  test('correctly computes network when asset is token', () => {
+  test('computes network when asset is token', () => {
     const web3Store = new Web3Store({ asset: 'ethereum:0x0' });
     expect(web3Store.network).toBe('ethereum');
   });
-  test('correctly computes token when asset is token', () => {
+  test('computes token when asset is token', () => {
     const web3Store = new Web3Store({ asset: 'ethereum:0x0' });
     expect(web3Store.token).toBe('0x0');
+  });
+  test('sets token to undefined when asset is not token', () => {
+    const web3Store = new Web3Store({ asset: 'ethereum' });
+    expect(web3Store.token).toBe(undefined);
   });
 });
