@@ -28,7 +28,7 @@ const BENTYN_WIDGET_CONFIG: IWidgetState = {
   asset: 'ethereum:0x108c05cac356d93b351375434101cfd3e14f7e44',
   algorithm: `betweenblocks;minBlockNumber=${BENTYN_CONFIG.startBlock};maxBlockNumber=${BENTYN_CONFIG.endBlock}`,
   size: 'leaderboard' as EWidgetSize,
-  slots: 5,
+  slots: 7,
   timeslot: 5,
   contactMethod: 'ben@userfeeds.io',
   title: '',
