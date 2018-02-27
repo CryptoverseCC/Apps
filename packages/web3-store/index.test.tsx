@@ -6,7 +6,7 @@ class Web3Store {
   }
   @computed
   get network() {
-    return this.asset;
+    return this.asset.split(':')[0];
   }
 }
 
@@ -17,6 +17,14 @@ describe('Web3Store', () => {
   });
   test('correctly computes ethereum network', () => {
     const web3Store = new Web3Store({ asset: 'ethereum' });
+    expect(web3Store.network).toBe('ethereum');
+  });
+  test('correctly computes other network', () => {
+    const web3Store = new Web3Store({ asset: 'rinkeby' });
+    expect(web3Store.network).toBe('rinkeby');
+  });
+  test('correctly computes network when asset is token', () => {
+    const web3Store = new Web3Store({ asset: 'ethereum:0x0' });
     expect(web3Store.network).toBe('ethereum');
   });
 });
