@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
@@ -32,7 +32,6 @@ interface IProps {
   link: IRemoteLink;
   linksInSlots: IRemoteLink[];
   widgetSettings: WidgetSettings;
-  recipientAddress: string;
   onSuccess?(linkId: string): void;
   onError?(e: any): void;
 }
@@ -55,16 +54,14 @@ export default class BoostLink extends Component<IProps, IState> {
   };
 
   render() {
-    const { link, linksInSlots, widgetSettings, disabled, disabledReason, tokenDetails } = this.props;
+    const { link, linksInSlots, widgetSettings, disabled, disabledReason, tokenDetails, children } = this.props;
     const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
-
+    const decoratedChild = React.cloneElement(Children.only(children), {
+      onClick: this._onBoostClick,
+    });
     return (
       <div ref={this._onButtonRef} className={style.self}>
-        <Tooltip text={disabledReason}>
-          <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>
-            Boost
-          </Button>
-        </Tooltip>
+        <Tooltip text={disabledReason}>{decoratedChild}</Tooltip>
         <If condition={visible && !disabled}>
           <div className={style.overlay} onClick={this._close} />
           <TransitionGroup
@@ -218,8 +215,8 @@ export default class BoostLink extends Component<IProps, IState> {
   };
 
   _sendClaim = () => {
-    const { widgetSettings, recipientAddress, web3 } = this.props;
-    const { asset } = widgetSettings;
+    const { widgetSettings, web3 } = this.props;
+    const { asset, recipientAddress } = widgetSettings;
     const { amount: toPay } = this.state;
     const { id } = this.props.link;
     const location = urlWithoutQueryIfLinkExchangeApp();

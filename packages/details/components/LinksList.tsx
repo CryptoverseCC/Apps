@@ -16,7 +16,6 @@ import * as style from './linksList.scss';
 
 export interface IDefaultBoostLinkWrapperProps {
   asset: string;
-  recipientAddress: string;
   link: ILink | IRemoteLink;
   linksInSlots: ILink[] | IRemoteLink[];
   onSuccess?: (transationId: string) => void;
@@ -43,7 +42,6 @@ interface ILinksListProps {
   linksInSlots: ILink[];
   asset: string;
   boostLinkComponent?: React.ComponentType<IDefaultBoostLinkWrapperProps>;
-  recipientAddress: string;
   onBoostSuccess?: (transationId: string) => void;
   onBoostError?: (error: any) => void;
   showProbability?: boolean;
@@ -87,7 +85,6 @@ export default class LinksList extends Component<ILinksListProps, {}> {
             {link.group_count || 0}
             <BoostLink
               asset={this.props.asset}
-              recipientAddress={this.props.recipientAddress}
               onSuccess={this.props.onBoostSuccess}
               onError={this.props.onBoostError}
               link={link}

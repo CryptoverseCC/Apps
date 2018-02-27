@@ -28,7 +28,7 @@ class Details extends Component<IProps, IState> {
 
     return (
       <div className={style.self}>
-        <DetailsComponent standaloneMode className={style.details}>
+        <DetailsComponent className={style.details}>
           <Header onAddClick={this._onAddLink} />
           <Lists />
         </DetailsComponent>

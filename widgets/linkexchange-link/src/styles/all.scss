@@ -2,8 +2,10 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
 .root {
-  @import './flex';
   all: initial;
+
+  // ToDo
+  @import '~@linkexchange/scss-unset';
 
   ::selection {
     color: $white;

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import { styledComponentWithProps } from '../utils';
 import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
-import TokenLogo from '@linkexchange/components/src/TokenLogo';
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 
 import { ShortAddress } from './ShortAddress';
 import { Columns, Column, FlexColumn } from './Columns';
-import Identicon from './Identicon';
+import { BlackText, SmallBlackText, BlackBoldText } from './Text';
+import IdenticonWithToken from './IdenticonWithToken';
+import LinkexchangeDots from './Dots';
 import Hr from './Hr';
 
 const Title = styled.p`
@@ -18,10 +20,7 @@ const Title = styled.p`
   text-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
 `;
 
-const Description = styled.p`
-  color: #1b2437;
-  font-size: 18px;
-`;
+const Description = BlackText;
 
 const FilteringDescription = styled.p`
   display: inline;
@@ -31,18 +30,11 @@ const FilteringDescription = styled.p`
   color: #a6aeb8;
 `;
 
-const Whitelist = FilteringDescription.extend`
+const BoldLink = styledComponentWithProps<{}, HTMLLinkElement>(FilteringDescription.extend)`
   font-weight: bold;
   color: #000000;
   text-decoration: none;
 `.withComponent('a');
-
-const Algorithm = Whitelist;
-
-const StyledTokenLogo = styled(TokenLogo)`
-  width: 57px;
-  height: 57px;
-`;
 
 const AddLink = styled(Button)`
   height: 46px;
@@ -50,36 +42,47 @@ const AddLink = styled(Button)`
   margin-left: auto;
   border-radius: 8px;
   font-weight: bold;
+  position: fixed;
+  right: 10px;
 `;
 
-const ContactPublisher = styled(Button)`
-  padding: 0 !important;
-  height: 46px;
-  width: 155px;
+const ContactPublisher = styled.button`
+  margin-top: 10px;
+  box-shadow: 0 9px 20px 0 rgba(38, 63, 255, 0.11);
+  padding: 5px 8px;
   border: 1px solid #d9e0e7;
   border-radius: 8px;
-  color: #a6aeb8;
+  color: #263fff;
   font-weight: bold;
 `;
 
 interface IProps {
+  onAddClick?: () => void;
   widgetSettings: WidgetSettings;
 }
 
 class Header extends Component<IProps> {
   render() {
-    const { widgetSettings } = this.props;
+    const { widgetSettings, onAddClick } = this.props;
+    const hasWhitelist = !!widgetSettings.whitelist;
+
     return (
       <>
         <Columns>
-          <FlexColumn justifyContent="center" alignItems="center">
-            <Identicon address={widgetSettings.recipientAddress} />
+          <FlexColumn size={1} justifyContent="center" alignItems="center">
+            <LinkexchangeDots />
           </FlexColumn>
-          <FlexColumn size={7} justifyContent="center" />
-          <FlexColumn size={4} justifyContent="center">
-            <ContactPublisher color="empty" style={{ marginLeft: 'auto' }}>
-              Contact Publisher
-            </ContactPublisher>
+          <FlexColumn size={4}>
+            <SmallBlackText>Powered by</SmallBlackText>
+            <BlackBoldText>Link Exchange</BlackBoldText>
+          </FlexColumn>
+          <FlexColumn justifyContent="center">
+            <div style={{ marginLeft: 'auto' }}>
+              <BoldLink style={{ marginRight: '30px' }}>FAQ</BoldLink>
+              <BoldLink target="_blank" href="https://app.linkexchange.io/direct/configurator">
+                Create own widget
+              </BoldLink>
+            </div>
           </FlexColumn>
         </Columns>
         <Columns>
@@ -90,29 +93,36 @@ class Header extends Component<IProps> {
         </Columns>
         <Columns>
           <FlexColumn justifyContent="center" alignItems="center">
-            <StyledTokenLogo asset={widgetSettings.asset} />
+            <IdenticonWithToken address={widgetSettings.recipientAddress} asset={widgetSettings.asset} />
+            <ContactPublisher color="empty">Contact</ContactPublisher>
           </FlexColumn>
           <FlexColumn size={7}>
             <FilteringDescription>
-              Filtered by{' '}
-              <Whitelist target="_blank" href={`https://etherscan.io/address/${widgetSettings.whitelist}`}>
-                <ShortAddress address={widgetSettings.whitelist} />
-              </Whitelist>{' '}
-              ranked by{' '}
-              <Algorithm
+              {hasWhitelist ? (
+                <>
+                  Filtered by{' '}
+                  <BoldLink target="_blank" href={`https://etherscan.io/address/${widgetSettings.whitelist}`}>
+                    <ShortAddress address={widgetSettings.whitelist} />
+                  </BoldLink>{' '}
+                  ranked by{' '}
+                </>
+              ) : (
+                'Ranked by '
+              )}
+              <BoldLink
                 target="_blank"
                 href={`https://userfeeds-platform.readthedocs-hosted.com/en/latest/ref/algorithms.html#${
                   widgetSettings.algorithm
                 }`}
               >
                 Links Algorithm
-              </Algorithm>
+              </BoldLink>
             </FilteringDescription>
             <Title>{widgetSettings.title}</Title>
             <Description>{widgetSettings.description}</Description>
           </FlexColumn>
           <FlexColumn size={4} justifyContent="center">
-            <AddLink color="primary">
+            <AddLink color="primary" onClick={onAddClick}>
               <Icon name="plus" />
               Add new link
             </AddLink>

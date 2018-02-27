@@ -1,31 +1,18 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import moment from 'moment';
 
+import { styledComponentWithProps } from '../utils';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
+import BoostArrow from '@linkexchange/images/arrow-boost.svg';
 
 import LinksStore from '../linksStore';
 import { Columns, Column, FlexColumn } from './Columns';
+import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr from './Hr';
-
-const BlackBoldText = styled.p`
-  display: inline;
-  font-weight: bold;
-  color: #000000;
-  font-size: 18px;
-`;
-
-const BlueBoldText = BlackBoldText.extend`
-  color: #263fff;
-`;
-
-const LightGreyText = BlackBoldText.extend`
-  color: #a6aeb8;
-  font-weight: normal;
-`;
 
 const SmallGreenText = styled.p`
   display: inline;
@@ -61,28 +48,14 @@ export const ListHeaderSlots = ({ slots, linksCount }: { slots: number; linksCou
   </ListHeader>
 );
 
-export const ListHeaderOutside = () => (
+export const ListHeaderOutside = ({ hasWhitelist }: { hasWhitelist: boolean }) => (
   <ListHeader>
     <BlackBoldText>
       Outside of slots <SmallBlackText style={{ paddingTop: '8px' }}>Not visible in the widget</SmallBlackText>
     </BlackBoldText>
-    <LightGreyText>Accepted by publisher, not boosted enough</LightGreyText>
+    <LightGreyText>{hasWhitelist ? 'Accepted by publisher, not boosted enough' : 'Not boosted enough'}</LightGreyText>
   </ListHeader>
 );
-
-const Score = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 45px;
-  width: 60px;
-  border-radius: 25px;
-  background-color: #ffffff;
-  box-shadow: 0 9px 20px 0 rgba(38, 63, 255, 0.11);
-  color: #263fff;
-  font-size: 16px;
-  font-weight: bold;
-`;
 
 const FlexRow = styled.div`
   display: flex;
@@ -90,13 +63,17 @@ const FlexRow = styled.div`
 `;
 
 const LinkTitle = BlackBoldText.extend`
+  min-width: 250px;
   width: 250px;
 `;
 
-const LinkTarget = BlueBoldText.extend`
+const LinkTarget = styledComponentWithProps<{}, HTMLLinkElement>(BlueBoldText.extend)`
   font-weight: normal;
   padding-left: 20px;
   text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `.withComponent('a');
 
 const Dot = styled.div`
@@ -127,25 +104,82 @@ const LinkInfo = ({ link, tokenDetails }: { link: ILink | IRemoteLink; tokenDeta
   <>
     <SmallLightGreyText>{moment.duration(Date.now() - link.created_at).humanize()} ago</SmallLightGreyText>
     <SmallLightGreyText>
-      {fromWeiToString(link.total, tokenDetails.decimals)}
-      {tokenDetails.symbol} Total
+      {fromWeiToString(link.total, tokenDetails.decimals)} {tokenDetails.symbol} Total
     </SmallLightGreyText>
     <SmallLightGreyText>{link.group_count} Bids </SmallLightGreyText>
   </>
 );
 
-export const LinkRow = ({ link, tokenDetails }: { link: ILink | IRemoteLink; tokenDetails: ITokenDetails }) => (
-  <Columns>
-    <FlexColumn size={1} alignItems="center" justifyContent="center">
-      <Score>{isILink(link) ? `${link.probability}%` : link.score}</Score>
-      {fromWeiToString(link.score, tokenDetails.decimals)}
-      {tokenDetails.symbol}
-    </FlexColumn>
-    <FlexColumn size={6}>
-      <Link link={link} />
-    </FlexColumn>
-    <FlexColumn size={3} alignItems="flex-end">
-      <LinkInfo link={link} tokenDetails={tokenDetails} />
-    </FlexColumn>
-  </Columns>
-);
+const Score = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  width: 60px;
+  border-radius: 25px;
+  background-color: #ffffff;
+  box-shadow: 0 9px 20px 0 rgba(38, 63, 255, 0.11);
+  color: #263fff;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const TokenAmount = styled.span`
+  padding-top: 10px;
+  color: #acb7f5;
+  font-size: 12px;
+  font-weight: bold;
+`;
+
+const bounce = keyframes`
+	0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+	40% {
+    transform: translateY(-4px);
+  }
+	60% {
+    transform: translateY(-2px);
+  }
+`;
+
+const Boost = styled.img.attrs({ src: BoostArrow })`
+  cursor: pointer;
+  padding: 0px 10px 10px 10px;
+
+  ${Columns}:hover & {
+    animation: ${bounce} 1.5s linear infinite;
+  }
+`;
+
+export const LinkRow = ({
+  link,
+  tokenDetails,
+  boostComponent: BoostComponent,
+}: {
+  link: ILink | IRemoteLink;
+  tokenDetails: ITokenDetails;
+  boostComponent: React.ComponentType<{ link: ILink | IRemoteLink }>;
+}) => {
+  const score = fromWeiToString(link.score, tokenDetails.decimals);
+
+  return (
+    <Columns style={{ paddingTop: '20px' }}>
+      <FlexColumn size={1} alignItems="center" justifyContent="center">
+        <BoostComponent link={link}>
+          <Boost />
+        </BoostComponent>
+        <Score>{isILink(link) ? `${link.probability}%` : score}</Score>
+        <TokenAmount>
+          {score} {tokenDetails.symbol}
+        </TokenAmount>
+      </FlexColumn>
+      <FlexColumn size={6} justifyContent="center">
+        <Link link={link} />
+      </FlexColumn>
+      <FlexColumn size={3} alignItems="flex-end" justifyContent="center">
+        <LinkInfo link={link} tokenDetails={tokenDetails} />
+      </FlexColumn>
+    </Columns>
+  );
+};

@@ -6,13 +6,14 @@ import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-setting
 import LinksStore from './linksStore';
 
 interface IProps {
+  className?: string;
   widgetSettings: WidgetSettings;
 }
 
 class DetailsComponent extends Component<IProps> {
   linkStore: LinksStore;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.linkStore = new LinksStore(props.widgetSettings);
     this.linkStore.fetchLinks();
@@ -21,7 +22,7 @@ class DetailsComponent extends Component<IProps> {
   render() {
     return (
       <Provider links={this.linkStore}>
-        <div>{this.props.children}</div>
+        <div className={this.props.className}>{this.props.children}</div>
       </Provider>
     );
   }

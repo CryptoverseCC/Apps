@@ -31,7 +31,7 @@ export const WidgetDatails = Loadable({
       <IframePortal className={style.details}>
         <Details {...restProps}>
           <Header onAddClick={onAddLink} />
-          {/* <Lists /> */}
+          <Lists />
         </Details>
       </IframePortal>
     );

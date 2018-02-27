@@ -73,7 +73,6 @@ const DetailsLists: React.SFC<IProps> = ({
           <LinksList
             label={<FormattedMessage id="list.slots.title" defaultMessage="Slots" />}
             asset={widgetSettings.asset}
-            recipientAddress={widgetSettings.recipientAddress}
             links={linksInSlots}
             linksInSlots={linksInSlots}
             boostLinkComponent={boostLinkComponent}
@@ -87,7 +86,6 @@ const DetailsLists: React.SFC<IProps> = ({
               label={<FormattedMessage id="list.approved.title" defaultMessage="Approved" />}
               showProbability={false}
               asset={widgetSettings.asset}
-              recipientAddress={widgetSettings.recipientAddress}
               links={whitelistedLinks}
               linksInSlots={linksInSlots}
               boostLinkComponent={boostLinkComponent}
@@ -99,7 +97,6 @@ const DetailsLists: React.SFC<IProps> = ({
               label={<FormattedMessage id="list.algorithm.title" defaultMessage="Algorithm" />}
               showProbability={false}
               asset={widgetSettings.asset}
-              recipientAddress={widgetSettings.recipientAddress}
               links={allLinks}
               linksInSlots={linksInSlots}
               boostLinkComponent={boostLinkComponent}
