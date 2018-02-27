@@ -8,6 +8,10 @@ class Web3Store {
   get network() {
     return this.asset.split(':')[0];
   }
+  @computed
+  get token() {
+    return this.asset.split(':')[1];
+  }
 }
 
 describe('Web3Store', () => {
@@ -26,5 +30,9 @@ describe('Web3Store', () => {
   test('correctly computes network when asset is token', () => {
     const web3Store = new Web3Store({ asset: 'ethereum:0x0' });
     expect(web3Store.network).toBe('ethereum');
+  });
+  test('correctly computes token when asset is token', () => {
+    const web3Store = new Web3Store({ asset: 'ethereum:0x0' });
+    expect(web3Store.token).toBe('0x0');
   });
 });
