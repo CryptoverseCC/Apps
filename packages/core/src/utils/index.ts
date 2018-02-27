@@ -1,6 +1,6 @@
 import { PromiEvent, TransactionReceipt } from 'web3/types.d';
 
-const networkMapping = {
+export const networkMapping = {
   1: 'ethereum',
   3: 'ropsten',
   4: 'rinkeby',
@@ -36,7 +36,7 @@ export async function getBalance(web3Instance): Promise<string> {
   return web3Instance.eth.getBalance(account);
 }
 
-export function getBlock(web3Instance, blockNumber): Promise<{ timestamp: number; }> {
+export function getBlock(web3Instance, blockNumber): Promise<{ timestamp: number }> {
   throwIfNotConnected(web3Instance);
   return web3Instance.eth.getBlock(blockNumber);
 }
@@ -65,9 +65,7 @@ export function getTransactionReceipt(web3Instance, transactionId): Promise<stri
 
 export function resolveOnTransationHash(p: PromiEvent<TransactionReceipt>): Promise<string> {
   return new Promise((resolve, reject) => {
-    p
-    .on('error', reject)
-    .on('transactionHash', resolve);
+    p.on('error', reject).on('transactionHash', resolve);
   });
 }
 
