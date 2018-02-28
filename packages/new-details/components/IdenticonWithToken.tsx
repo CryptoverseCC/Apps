@@ -63,14 +63,17 @@ const openEtherscanToken = (asset: string) => () => {
   window.open(`https://${network !== 'ethereum' ? network + '.' : ''}etherscan.io/token/${token}`, '_blank');
 };
 
-const IdenticonWithToken = ({ className, address, asset }: { className?: string; address: string; asset: string }) => (
-  <div className={className}>
-    <Identicon address={address} onClick={openEtherscanAccount(address, asset)} />
-    <TokenLogoContainer onClick={openEtherscanToken(asset)}>
-      <StyledTokenLogo asset={asset} />
-    </TokenLogoContainer>
-  </div>
-);
+const IdenticonWithToken = (props: { address: string; asset: string } & React.HTMLAttributes<HTMLDivElement>) => {
+  const { address, asset, ...restProps } = props;
+  return (
+    <div {...restProps}>
+      <Identicon address={address} onClick={openEtherscanAccount(address, asset)} />
+      <TokenLogoContainer onClick={openEtherscanToken(asset)}>
+        <StyledTokenLogo asset={asset} />
+      </TokenLogoContainer>
+    </div>
+  );
+};
 
 const StyledIdenticonWithToken = styled(IdenticonWithToken)`
   position: relative;

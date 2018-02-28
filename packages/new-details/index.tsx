@@ -30,5 +30,6 @@ class DetailsComponent extends Component<IProps> {
 
 export const Details = withWidgetSettings(DetailsComponent);
 
+export { default as AddLinkButton } from './containers/AddLinkButton';
 export { default as Header } from './components/Header';
 export { default as Lists } from './containers/Lists';

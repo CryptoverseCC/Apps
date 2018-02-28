@@ -7,6 +7,7 @@ import { WidgetSettings } from '@linkexchange/widget-settings';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
+import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import BoostArrow from '@linkexchange/images/arrow-boost.svg';
 
 import LinksStore from '../linksStore';
@@ -26,17 +27,29 @@ const SmallBlackText = SmallGreenText.extend`
   color: #000000;
 `;
 
-const ListHeader: React.SFC<any> = ({ children }) => (
-  <Columns style={{ marginTop: '40px' }}>
+const StickyColumns = Columns.extend`
+  margin-top: 40px;
+  position: sticky;
+  top: -1px;
+  background: #ffffff;
+  z-index: 1;
+`;
+
+const ListHeader: React.SFC<{ mobile?: boolean }> = ({ children, mobile }) => (
+  <StickyColumns>
     <FlexColumn size={1} justifyContent="center">
       <Hr />
     </FlexColumn>
-    <FlexColumn size={6}>{children}</FlexColumn>
-    <FlexColumn size={3} justifyContent="center">
+    <FlexColumn size={mobile ? 10 : 6}>{children}</FlexColumn>
+    <FlexColumn size={mobile ? 1 : 3} justifyContent="center">
       <Hr />
     </FlexColumn>
-  </Columns>
+  </StickyColumns>
 );
+
+ListHeader.defaultProps = {
+  mobile: mobileOrTablet(),
+};
 
 export const ListHeaderSlots = ({ slots, linksCount }: { slots: number; linksCount: number }) => (
   <ListHeader>
@@ -57,9 +70,10 @@ export const ListHeaderOutside = ({ hasWhitelist }: { hasWhitelist: boolean }) =
   </ListHeader>
 );
 
-const FlexRow = styled.div`
+const FlexRow = styledComponentWithProps<{ justifyContent?: string }, HTMLDivElement>(styled.div)`
   display: flex;
   align-items: center;
+  justify-content: ${(props) => (props.justifyContent ? props.justifyContent : '')};
 `;
 
 const LinkTitle = BlackBoldText.extend`
@@ -69,7 +83,6 @@ const LinkTitle = BlackBoldText.extend`
 
 const LinkTarget = styledComponentWithProps<{}, HTMLLinkElement>(BlueBoldText.extend)`
   font-weight: normal;
-  padding-left: 20px;
   text-decoration: none;
   overflow: hidden;
   white-space: nowrap;
@@ -79,19 +92,29 @@ const LinkTarget = styledComponentWithProps<{}, HTMLLinkElement>(BlueBoldText.ex
 const Dot = styled.div`
   height: 8px;
   width: 8px;
+  margin-right: 20px;
   border-radius: 8px;
   background-color: rgba(38, 63, 255, 0.2);
 `;
 
-const Link = ({ link }: { link: ILink | IRemoteLink }) => (
+const Link = ({ link, mobile }: { link: ILink | IRemoteLink; mobile?: boolean }) => (
   <>
-    <FlexRow>
-      <LinkTitle>{link.title}</LinkTitle>
-      <Dot />
-      <LinkTarget target="_blank" href={link.target}>
-        {link.target}
-      </LinkTarget>
-    </FlexRow>
+    {mobile ? (
+      <>
+        <LinkTitle>{link.title}</LinkTitle>
+        <LinkTarget target="_blank" href={link.target}>
+          {link.target}
+        </LinkTarget>
+      </>
+    ) : (
+      <FlexRow>
+        <LinkTitle>{link.title}</LinkTitle>
+        <Dot />
+        <LinkTarget target="_blank" href={link.target}>
+          {link.target}
+        </LinkTarget>
+      </FlexRow>
+    )}
     <LightGreyText style={{ paddingTop: '8px' }}>{link.summary}</LightGreyText>
   </>
 );
@@ -152,20 +175,17 @@ const Boost = styled.img.attrs({ src: BoostArrow })`
   }
 `;
 
-export const LinkRow = ({
-  link,
-  tokenDetails,
-  boostComponent: BoostComponent,
-}: {
+export const LinkRow: React.SFC<{
+  mobile?: boolean;
   link: ILink | IRemoteLink;
   tokenDetails: ITokenDetails;
   boostComponent: React.ComponentType<{ link: ILink | IRemoteLink }>;
-}) => {
+}> = ({ mobile, link, tokenDetails, boostComponent: BoostComponent }) => {
   const score = fromWeiToString(link.score, tokenDetails.decimals);
 
   return (
     <Columns style={{ paddingTop: '20px' }}>
-      <FlexColumn size={1} alignItems="center" justifyContent="center">
+      <FlexColumn size={mobile ? 2 : 1} alignItems="center" justifyContent="center">
         <BoostComponent link={link}>
           <Boost />
         </BoostComponent>
@@ -174,12 +194,24 @@ export const LinkRow = ({
           {score} {tokenDetails.symbol}
         </TokenAmount>
       </FlexColumn>
-      <FlexColumn size={6} justifyContent="center">
-        <Link link={link} />
+      <FlexColumn size={mobile ? 10 : 6} justifyContent="center">
+        <Link link={link} mobile={mobile} />
+
+        {mobile && (
+          <FlexRow justifyContent="space-between">
+            <LinkInfo link={link} tokenDetails={tokenDetails} />
+          </FlexRow>
+        )}
       </FlexColumn>
-      <FlexColumn size={3} alignItems="flex-end" justifyContent="center">
-        <LinkInfo link={link} tokenDetails={tokenDetails} />
-      </FlexColumn>
+      {!mobile && (
+        <FlexColumn size={3} alignItems="flex-end" justifyContent="center">
+          <LinkInfo link={link} tokenDetails={tokenDetails} />
+        </FlexColumn>
+      )}
     </Columns>
   );
+};
+
+LinkRow.defaultProps = {
+  mobile: mobileOrTablet(),
 };

@@ -5,6 +5,7 @@ import { styledComponentWithProps } from '../utils';
 import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
+import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 
 import { ShortAddress } from './ShortAddress';
 import { Columns, Column, FlexColumn } from './Columns';
@@ -36,14 +37,10 @@ const BoldLink = styledComponentWithProps<{}, HTMLLinkElement>(FilteringDescript
   text-decoration: none;
 `.withComponent('a');
 
-const AddLink = styled(Button)`
-  height: 46px;
-  width: 155px;
-  margin-left: auto;
-  border-radius: 8px;
-  font-weight: bold;
+const AddLinkContainer = styled.div`
   position: fixed;
-  right: 10px;
+  right: 30px;
+  z-index: 2;
 `;
 
 const ContactPublisher = styled.button`
@@ -57,13 +54,18 @@ const ContactPublisher = styled.button`
 `;
 
 interface IProps {
-  onAddClick?: () => void;
+  addLink: JSX.Element;
+  mobile?: boolean;
   widgetSettings: WidgetSettings;
 }
 
 class Header extends Component<IProps> {
+  static defaultProps = {
+    mobile: mobileOrTablet(),
+  };
+
   render() {
-    const { widgetSettings, onAddClick } = this.props;
+    const { widgetSettings, addLink, mobile } = this.props;
     const hasWhitelist = !!widgetSettings.whitelist;
 
     return (
@@ -74,16 +76,18 @@ class Header extends Component<IProps> {
           </FlexColumn>
           <FlexColumn size={4}>
             <SmallBlackText>Powered by</SmallBlackText>
-            <BlackBoldText>Link Exchange</BlackBoldText>
+            <BlackBoldText style={{ whiteSpace: 'nowrap' }}>Link Exchange</BlackBoldText>
           </FlexColumn>
-          <FlexColumn justifyContent="center">
-            <div style={{ marginLeft: 'auto' }}>
-              <BoldLink style={{ marginRight: '30px' }}>FAQ</BoldLink>
-              <BoldLink target="_blank" href="https://app.linkexchange.io/direct/configurator">
-                Create own widget
-              </BoldLink>
-            </div>
-          </FlexColumn>
+          {!mobile && (
+            <FlexColumn justifyContent="center">
+              <div style={{ marginLeft: 'auto' }}>
+                <BoldLink style={{ marginRight: '30px' }}>FAQ</BoldLink>
+                <BoldLink target="_blank" href="https://app.linkexchange.io/direct/configurator">
+                  Create own widget
+                </BoldLink>
+              </div>
+            </FlexColumn>
+          )}
         </Columns>
         <Columns>
           <Column />
@@ -92,11 +96,20 @@ class Header extends Component<IProps> {
           </Column>
         </Columns>
         <Columns>
-          <FlexColumn justifyContent="center" alignItems="center">
-            <IdenticonWithToken address={widgetSettings.recipientAddress} asset={widgetSettings.asset} />
-            <ContactPublisher color="empty">Contact</ContactPublisher>
-          </FlexColumn>
-          <FlexColumn size={7}>
+          {!mobile && (
+            <FlexColumn size={1} justifyContent="center" alignItems="center">
+              <IdenticonWithToken address={widgetSettings.recipientAddress} asset={widgetSettings.asset} />
+              {!mobile && <ContactPublisher color="empty">Contact</ContactPublisher>}
+            </FlexColumn>
+          )}
+          <FlexColumn size={!mobile ? 7 : 12}>
+            {!!mobile && (
+              <IdenticonWithToken
+                address={widgetSettings.recipientAddress}
+                asset={widgetSettings.asset}
+                style={{ alignSelf: 'center' }}
+              />
+            )}
             <FilteringDescription>
               {hasWhitelist ? (
                 <>
@@ -121,12 +134,11 @@ class Header extends Component<IProps> {
             <Title>{widgetSettings.title}</Title>
             <Description>{widgetSettings.description}</Description>
           </FlexColumn>
-          <FlexColumn size={4} justifyContent="center">
-            <AddLink color="primary" onClick={onAddClick}>
-              <Icon name="plus" />
-              Add new link
-            </AddLink>
-          </FlexColumn>
+          {!mobile && (
+            <FlexColumn size={4} justifyContent="center">
+              <AddLinkContainer>{addLink}</AddLinkContainer>
+            </FlexColumn>
+          )}
         </Columns>
       </>
     );
