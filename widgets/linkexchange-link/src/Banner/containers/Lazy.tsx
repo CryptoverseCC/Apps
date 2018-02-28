@@ -23,7 +23,7 @@ export const Intercom = Loadable({
 });
 
 export const WidgetDatails = Loadable({
-  loader: () => import('@linkexchange/new-details'),
+  loader: () => import('@linkexchange/details'),
   loading: Loading,
   render: ({ Details, Header, Lists }, props) => {
     const { onAddLink, ...restProps } = props;
