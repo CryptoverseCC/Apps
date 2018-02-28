@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/bentyn",
-  "version": "0.0.176",
+  "version": "0.0.177",
   "description": "",
   "main": "index.js",
   "scripts": {

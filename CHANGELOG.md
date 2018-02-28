@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.177"></a>
+## [0.0.177](https://github.com/Userfeeds/Apps/compare/v0.0.176...v0.0.177) (2018-02-28)
+
+
+### Update
+
+* postpone Benty event end by a month ([29493d61186b60049973673eb5c5dfa4e2d9205a](https://github.com/Userfeeds/Apps/commit/29493d61186b60049973673eb5c5dfa4e2d9205a))
+
+
+
+
 <a name="0.0.176"></a>
 ## [0.0.176](https://github.com/Userfeeds/Apps/compare/v0.0.175...v0.0.176) (2018-02-27)
 
