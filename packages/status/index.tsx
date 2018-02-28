@@ -7,6 +7,7 @@ export class Status extends Component<any, any> {
     return this.props.web3State.enabled ? null : (
       <div
         style={{
+          zIndex: Number.MAX_SAFE_INTEGER,
           position: 'fixed',
           bottom: '15px',
           left: '15px',

@@ -152,6 +152,7 @@ const TokenAmount = styled.span`
   color: #acb7f5;
   font-size: 12px;
   font-weight: bold;
+  white-space: nowrap;
 `;
 
 const bounce = keyframes`

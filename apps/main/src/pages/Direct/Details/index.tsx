@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
-import { Details as DetailsComponent, Header, Lists, AddLinkButton } from '@linkexchange/new-details';
+import { Details as DetailsComponent, Header, Lists, AddLinkButton, Expires } from '@linkexchange/new-details';
 import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 
@@ -29,7 +30,10 @@ class Details extends Component<IProps, IState> {
     return (
       <div className={style.self}>
         <DetailsComponent>
-          <Header addLink={<AddLinkButton onClick={this.onAddLink} />} />
+          <Header
+            addLink={<AddLinkButton onClick={this.onAddLink} />}
+            expires={<Expires in={this.getDurationToExpires()} />}
+          />
           <Lists />
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this.closeModal}>
@@ -50,6 +54,10 @@ class Details extends Component<IProps, IState> {
 
   private closeModal = () => {
     this.setState({ isModalOpen: false });
+  };
+
+  private getDurationToExpires = () => {
+    return moment(this.props.widgetSettings.tillDate, 'MM/DD/YYYY').diff(moment());
   };
 }
 

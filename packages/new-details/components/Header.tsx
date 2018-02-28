@@ -54,7 +54,8 @@ const ContactPublisher = styled.button`
 `;
 
 interface IProps {
-  addLink: JSX.Element;
+  addLink?: JSX.Element;
+  expires?: JSX.Element;
   mobile?: boolean;
   widgetSettings: WidgetSettings;
 }
@@ -65,7 +66,7 @@ class Header extends Component<IProps> {
   };
 
   render() {
-    const { widgetSettings, addLink, mobile } = this.props;
+    const { widgetSettings, addLink, expires, mobile } = this.props;
     const hasWhitelist = !!widgetSettings.whitelist;
 
     return (
@@ -131,6 +132,7 @@ class Header extends Component<IProps> {
                 Links Algorithm
               </BoldLink>
             </FilteringDescription>
+            {expires}
             <Title>{widgetSettings.title}</Title>
             <Description>{widgetSettings.description}</Description>
           </FlexColumn>
