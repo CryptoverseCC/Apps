@@ -19,7 +19,7 @@ const { startBlock, endBlock, ...widgetSettingsFromParams } = qs.parse(searchPar
 
 const BENTYN_CONFIG = {
   startBlock: parseInt(startBlock, 10) || 4884495,
-  endBlock: parseInt(endBlock, 10) || 5172495,
+  endBlock: parseInt(endBlock, 10) || 5357637,
 };
 
 const BENTYN_WIDGET_CONFIG: IWidgetSettings = {
