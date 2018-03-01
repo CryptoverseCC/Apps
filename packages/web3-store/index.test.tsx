@@ -1,5 +1,6 @@
 import { observable, extendObservable, computed, observe, action } from 'mobx';
 import { networkMapping } from '@userfeeds/core/src/utils';
+import { fromWeiToString } from '@linkexchange/utils/balance';
 
 class Web3Store {
   stopUpdatingInjectedWeb3State: any;
@@ -75,6 +76,13 @@ class Web3Store {
   get token() {
     return this.asset.split(':')[1];
   }
+
+  @computed
+  get balanceWithDecimalPoint() {
+    return this.balance !== null && this.balance !== undefined
+      ? fromWeiToString(this.balance, this.decimals)
+      : undefined;
+  }
 }
 
 describe('Web3Store', () => {
@@ -148,6 +156,33 @@ describe('Web3Store', () => {
       injectedWeb3ActiveNetwork: 'ethereum',
     });
     expect(web3Store.activeNetwork).toBe('ethereum');
+  });
+
+  test('computes token balanceWithDecimalPoint is undefined when balance is null', () => {
+    const web3Store = new Web3Store(injectedWeb3, erc20, {
+      asset: 'ethereum:0x0',
+      decimals: '10',
+      balance: null,
+    });
+    expect(web3Store.balanceWithDecimalPoint).toBe(undefined);
+  });
+
+  test('computes token balanceWithDecimalPoint is undefined when balance is undefined', () => {
+    const web3Store = new Web3Store(injectedWeb3, erc20, {
+      asset: 'ethereum:0x0',
+      decimals: '10',
+      balance: undefined,
+    });
+    expect(web3Store.balanceWithDecimalPoint).toBe(undefined);
+  });
+
+  test('computes token balanceWithDecimalPoint correctly from wei', () => {
+    const web3Store = new Web3Store(injectedWeb3, erc20, {
+      asset: 'ethereum:0x0',
+      decimals: '10',
+      balance: '1000000000000',
+    });
+    expect(web3Store.balanceWithDecimalPoint).toBe('100.000');
   });
 
   test('#updateInjectedWeb3State correctly updates state', async () => {
