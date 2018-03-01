@@ -134,6 +134,13 @@ describe('Web3Store', () => {
     expect(web3Store.reason).toBe('Enable Metamask to unlock all the features');
   });
 
+  test('computes no active account reason correctly', async () => {
+    injectedWeb3.eth.getAccounts.mockReturnValue([]);
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.reason).toBe('Unlock your wallet to unlock all the features');
+  });
+
   test('#updateInjectedWeb3State correctly updates state', async () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
     await web3Store.updateInjectedWeb3State();

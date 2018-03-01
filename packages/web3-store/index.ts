@@ -76,6 +76,8 @@ export default class Web3Store {
   get reason() {
     if (!this.currentProvider || !this.isListening) {
       return 'Enable Metamask to unlock all the features';
+    } else if (!this.currentAccount) {
+      return 'Unlock your wallet to unlock all the features';
     }
   }
 
