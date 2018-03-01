@@ -16,7 +16,6 @@ class Web3Store {
   symbol: string;
   name: string;
   balance: string;
-  approval: string;
 
   constructor(private injectedWeb3, private erc20, initialState) {
     extendObservable(this, initialState);
@@ -28,20 +27,24 @@ class Web3Store {
     this.stopUpdatingInjectedWeb3State = setInterval(this.updateInjectedWeb3State, 1000);
   }
 
+  tokenRequests() {
+    return this.token
+      ? [
+          this.erc20.decimals(this.injectedWeb3, this.token),
+          this.erc20.symbol(this.injectedWeb3, this.token),
+          this.erc20.name(this.injectedWeb3, this.token),
+          this.erc20.balance(this.injectedWeb3, this.token),
+        ]
+      : [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance()];
+  }
+
   @action.bound
   async updateTokenDetails() {
-    const [decimals, symbol, name, balance, approval] = await Promise.all([
-      this.erc20.decimals(this.injectedWeb3, this.token),
-      this.erc20.symbol(this.injectedWeb3, this.token),
-      this.erc20.name(this.injectedWeb3, this.token),
-      this.erc20.balance(this.injectedWeb3, this.token),
-      this.erc20.approval(this.injectedWeb3, this.token),
-    ]);
+    const [decimals, symbol, name, balance] = await Promise.all(this.tokenRequests());
     this.decimals = decimals;
     this.symbol = symbol;
     this.name = name;
     this.balance = balance;
-    this.approval = approval;
   }
 
   @action.bound
@@ -160,7 +163,6 @@ describe('Web3Store', () => {
 
   test('computes token balanceWithDecimalPoint is undefined when balance is null', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, {
-      asset: 'ethereum:0x0',
       decimals: '10',
       balance: null,
     });
@@ -169,7 +171,6 @@ describe('Web3Store', () => {
 
   test('computes token balanceWithDecimalPoint is undefined when balance is undefined', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, {
-      asset: 'ethereum:0x0',
       decimals: '10',
       balance: undefined,
     });
@@ -178,7 +179,6 @@ describe('Web3Store', () => {
 
   test('computes token balanceWithDecimalPoint correctly from wei', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, {
-      asset: 'ethereum:0x0',
       decimals: '10',
       balance: '1000000000000',
     });
@@ -214,23 +214,38 @@ describe('Web3Store', () => {
     expect(setInterval).toHaveBeenCalledWith(web3Store.updateInjectedWeb3State, 1000);
   });
 
-  test('#updateTokenDetails correctly updates state', async () => {
+  test('#updateTokenDetails correctly updates state when asset is not a token', async () => {
     const isListening = jest.fn().mockReturnValue(Promise.resolve(true));
     const getId = jest.fn().mockReturnValue(Promise.resolve(1));
     const getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
-    const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts }, currentProvider: true };
+    const getBalance = jest.fn().mockReturnValue(Promise.resolve('100000000'));
+    const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts, getBalance }, currentProvider: true };
+    const erc20 = {};
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
+    await web3Store.updateTokenDetails();
+    expect(web3Store.decimals).toBe(18);
+    expect(web3Store.symbol).toBe('ETH');
+    expect(web3Store.name).toBe('ETH');
+    expect(web3Store.balance).toBe('100000000');
+  });
+
+  test('#updateTokenDetails correctly updates state when asset is a token', async () => {
+    const isListening = jest.fn().mockReturnValue(Promise.resolve(true));
+    const getId = jest.fn().mockReturnValue(Promise.resolve(1));
+    const getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
+    const getBalance = jest.fn().mockReturnValue(Promise.resolve('100000000'));
+    const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts, getBalance }, currentProvider: true };
     const decimals = jest.fn().mockReturnValue(Promise.resolve(18));
     const symbol = jest.fn().mockReturnValue(Promise.resolve('PRC'));
     const name = jest.fn().mockReturnValue(Promise.resolve('Procent'));
     const balance = jest.fn().mockReturnValue(Promise.resolve('1000000'));
     const approval = jest.fn().mockReturnValue(Promise.resolve('100'));
     const erc20 = { decimals, symbol, name, balance, approval };
-    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum:0x0' });
     await web3Store.updateTokenDetails();
     expect(web3Store.decimals).toBe(18);
     expect(web3Store.symbol).toBe('PRC');
     expect(web3Store.name).toBe('Procent');
     expect(web3Store.balance).toBe('1000000');
-    expect(web3Store.approval).toBe('100');
   });
 });
