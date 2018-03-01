@@ -1,6 +1,11 @@
 import { observable, extendObservable, computed, observe, action } from 'mobx';
 import { networkMapping } from '@userfeeds/core/src/utils';
 import { fromWeiToString } from '@linkexchange/utils/balance';
+import {
+  sendClaimTokenTransfer,
+  sendClaimValueTransfer,
+  sendClaimWithoutValueTransfer,
+} from '@userfeeds/core/src/ethereumClaims';
 
 export default class Web3Store {
   stopUpdatingInjectedWeb3State: any;
@@ -105,16 +110,20 @@ export default class Web3Store {
       : undefined;
   }
 
-  sendTokenClaim() {
-    // TODO
+  sendTokenClaim(recipientAddress, claim, value = 0) {
+    return sendClaimTokenTransfer(this.injectedWeb3, recipientAddress, this.token, value, claim);
   }
 
-  sendEthereumClaim() {
-    // TODO
+  sendEthereumClaim(recipientAddress, claim, value?) {
+    if (value === undefined) {
+      return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
+    } else {
+      sendClaimValueTransfer(this.injectedWeb3, recipientAddress, value, claim);
+    }
   }
 
   approveEthereum() {
-    // TODO
+    return true;
   }
 
   approveToken() {
