@@ -192,6 +192,7 @@ describe('Web3Store', () => {
 
   test('#updateTokenDetails correctly updates state when asset is not a token', async () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
     await web3Store.updateTokenDetails();
     expect(web3Store.decimals).toBe(18);
     expect(web3Store.symbol).toBe('ETH');
@@ -201,6 +202,7 @@ describe('Web3Store', () => {
 
   test('#updateTokenDetails correctly updates state when asset is a token', async () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0' });
+    await web3Store.updateInjectedWeb3State();
     await web3Store.updateTokenDetails();
     expect(web3Store.decimals).toBe(18);
     expect(web3Store.symbol).toBe('PRC');
@@ -210,8 +212,10 @@ describe('Web3Store', () => {
 
   test('Erc20 is reconstructed after asset change', async () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0' });
+    await web3Store.updateInjectedWeb3State();
     await web3Store.updateTokenDetails();
-    web3Store.asset = 'ethereum';
+    web3Store.asset = 'rinkeby:0x0';
+    await web3Store.updateTokenDetails();
     expect(Erc20Mock).toHaveBeenCalledTimes(2);
   });
 });

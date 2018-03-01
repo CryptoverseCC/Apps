@@ -9,6 +9,15 @@ import {
 } from '@userfeeds/core/src/ethereumClaims';
 import Web3 from 'web3';
 
+interface IInitialState {
+  asset?: string;
+  currentProvider?: any;
+  isListening?: boolean;
+  injectedWeb3ActiveNetwork?: string;
+  decimals?: string;
+  balance?: any;
+}
+
 export default class Web3Store {
   stopUpdatingInjectedWeb3State: any;
   stopUpdatingTokenDetails: any;
@@ -25,7 +34,15 @@ export default class Web3Store {
   name: string;
   balance: string;
 
-  constructor(private injectedWeb3: Web3, private Erc20Ctor, initialState) {
+  constructor(
+    private injectedWeb3: Web3,
+    private Erc20Ctor,
+    initialState: IInitialState = {
+      asset: '',
+      currentProvider: undefined,
+      isListening: undefined,
+    },
+  ) {
     extendObservable(this, initialState);
     this.startUpdatingInjectedWeb3State();
     this.startUpdatingTokenDetails();
@@ -33,18 +50,24 @@ export default class Web3Store {
 
   startUpdatingInjectedWeb3State() {
     this.updateInjectedWeb3State();
+    clearInterval(this.stopUpdatingInjectedWeb3State);
     this.stopUpdatingInjectedWeb3State = setInterval(this.updateInjectedWeb3State, 1000);
   }
 
   startUpdatingTokenDetails() {
     this.updateTokenDetails();
+    clearInterval(this.stopUpdatingTokenDetails);
     this.stopUpdatingTokenDetails = setInterval(this.updateTokenDetails, 1000);
   }
 
   tokenRequests() {
-    return this.token
-      ? [this.erc20.decimals(), this.erc20.symbol(), this.erc20.name(), this.erc20.balance()]
-      : [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount)];
+    if (!this.ready) {
+      return [undefined, undefined, undefined, undefined];
+    } else if (this.token) {
+      return [this.erc20.decimals(), this.erc20.symbol(), this.erc20.name(), this.erc20.balance()];
+    } else {
+      return [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount)];
+    }
   }
 
   @action.bound
@@ -59,6 +82,9 @@ export default class Web3Store {
   @action.bound
   async updateInjectedWeb3State() {
     this.currentProvider = this.injectedWeb3.currentProvider;
+    if (!this.currentProvider) {
+      return;
+    }
     const [isListening, networkId, accounts] = await Promise.all([
       this.injectedWeb3.eth.net.isListening(),
       this.injectedWeb3.eth.net.getId(),
