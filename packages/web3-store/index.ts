@@ -78,6 +78,8 @@ export default class Web3Store {
       return 'Enable Metamask to unlock all the features';
     } else if (!this.currentAccount) {
       return 'Unlock your wallet to unlock all the features';
+    } else if (this.activeNetwork !== this.network) {
+      return `Switch to ${this.network} network to unlock all the features`
     }
   }
 

@@ -141,6 +141,13 @@ describe('Web3Store', () => {
     expect(web3Store.reason).toBe('Unlock your wallet to unlock all the features');
   });
 
+  test('computes different network reason correctly', async () => {
+    injectedWeb3.eth.net.getId.mockReturnValue(2);
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.reason).toBe('Switch to ethereum network to unlock all the features');
+  });
+
   test('#updateInjectedWeb3State correctly updates state', async () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
     await web3Store.updateInjectedWeb3State();
