@@ -1,98 +1,16 @@
-import { observable, extendObservable, computed, observe, action } from 'mobx';
-import { networkMapping } from '@userfeeds/core/src/utils';
-import { fromWeiToString } from '@linkexchange/utils/balance';
-
-class Web3Store {
-  stopUpdatingInjectedWeb3State: any;
-
-  currentProvider: any;
-  isListening: boolean;
-  injectedWeb3ActiveNetwork: string;
-  currentAccount: string;
-
-  asset: string;
-
-  decimals: number;
-  symbol: string;
-  name: string;
-  balance: string;
-
-  constructor(private injectedWeb3, private erc20, initialState) {
-    extendObservable(this, initialState);
-    this.startUpdatingInjectedWeb3State();
-  }
-
-  startUpdatingInjectedWeb3State() {
-    this.updateInjectedWeb3State();
-    this.stopUpdatingInjectedWeb3State = setInterval(this.updateInjectedWeb3State, 1000);
-  }
-
-  tokenRequests() {
-    return this.token
-      ? [
-          this.erc20.decimals(this.injectedWeb3, this.token),
-          this.erc20.symbol(this.injectedWeb3, this.token),
-          this.erc20.name(this.injectedWeb3, this.token),
-          this.erc20.balance(this.injectedWeb3, this.token),
-        ]
-      : [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance()];
-  }
-
-  @action.bound
-  async updateTokenDetails() {
-    const [decimals, symbol, name, balance] = await Promise.all(this.tokenRequests());
-    this.decimals = decimals;
-    this.symbol = symbol;
-    this.name = name;
-    this.balance = balance;
-  }
-
-  @action.bound
-  async updateInjectedWeb3State() {
-    this.currentProvider = this.injectedWeb3.currentProvider;
-    const [isListening, networkId, accounts] = await Promise.all([
-      this.injectedWeb3.eth.net.isListening(),
-      this.injectedWeb3.eth.net.getId(),
-      this.injectedWeb3.eth.getAccounts(),
-    ]);
-    this.isListening = isListening;
-    this.injectedWeb3ActiveNetwork = networkMapping[networkId];
-    this.currentAccount = accounts[0];
-  }
-
-  @computed
-  get activeNetwork() {
-    return this.ready ? this.injectedWeb3ActiveNetwork : undefined;
-  }
-
-  @computed
-  get ready() {
-    return !!(this.currentProvider && this.isListening);
-  }
-
-  @computed
-  get network() {
-    return this.asset.split(':')[0];
-  }
-
-  @computed
-  get token() {
-    return this.asset.split(':')[1];
-  }
-
-  @computed
-  get balanceWithDecimalPoint() {
-    return this.balance !== null && this.balance !== undefined
-      ? fromWeiToString(this.balance, this.decimals)
-      : undefined;
-  }
-}
+import Web3Store from './';
 
 describe('Web3Store', () => {
-  const erc20 = {};
+  const decimals = jest.fn().mockReturnValue(Promise.resolve(18));
+  const symbol = jest.fn().mockReturnValue(Promise.resolve('PRC'));
+  const name = jest.fn().mockReturnValue(Promise.resolve('Procent'));
+  const balance = jest.fn().mockReturnValue(Promise.resolve('1000000'));
+  const approval = jest.fn().mockReturnValue(Promise.resolve('100'));
+  const erc20 = { decimals, symbol, name, balance, approval };
   const isListening = jest.fn().mockReturnValue(Promise.resolve(true));
   const getId = jest.fn().mockReturnValue(Promise.resolve(1));
   const getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
+  const getBalance = jest.fn().mockReturnValue(Promise.resolve('100000000'));
   const injectedWeb3 = {
     eth: {
       net: {
@@ -100,6 +18,7 @@ describe('Web3Store', () => {
         getId,
       },
       getAccounts,
+      getBalance,
     },
     currentProvider: true,
   };
@@ -163,6 +82,7 @@ describe('Web3Store', () => {
 
   test('computes token balanceWithDecimalPoint is undefined when balance is null', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, {
+      asset: 'ethereum',
       decimals: '10',
       balance: null,
     });
@@ -171,6 +91,7 @@ describe('Web3Store', () => {
 
   test('computes token balanceWithDecimalPoint is undefined when balance is undefined', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, {
+      asset: 'ethereum',
       decimals: '10',
       balance: undefined,
     });
@@ -179,6 +100,7 @@ describe('Web3Store', () => {
 
   test('computes token balanceWithDecimalPoint correctly from wei', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, {
+      asset: 'ethereum',
       decimals: '10',
       balance: '1000000000000',
     });
@@ -198,7 +120,7 @@ describe('Web3Store', () => {
       .fn()
       .mockReturnValueOnce(Promise.resolve([]))
       .mockReturnValueOnce(Promise.resolve(['abc']));
-    const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts }, currentProvider: false };
+    const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts, getBalance }, currentProvider: false };
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
     injectedWeb3.currentProvider = true;
     await web3Store.updateInjectedWeb3State();
@@ -208,10 +130,13 @@ describe('Web3Store', () => {
     expect(web3Store.currentAccount).toBe('abc');
   });
 
-  test('updates data from injectedWeb3 every second', () => {
+  test('updates data every second', () => {
     jest.useFakeTimers();
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
-    expect(setInterval).toHaveBeenCalledWith(web3Store.updateInjectedWeb3State, 1000);
+    expect(setInterval.mock.calls).toEqual([
+      [web3Store.updateInjectedWeb3State, 1000],
+      [web3Store.updateTokenDetails, 1000],
+    ]);
   });
 
   test('#updateTokenDetails correctly updates state when asset is not a token', async () => {
@@ -220,7 +145,6 @@ describe('Web3Store', () => {
     const getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
     const getBalance = jest.fn().mockReturnValue(Promise.resolve('100000000'));
     const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts, getBalance }, currentProvider: true };
-    const erc20 = {};
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
     await web3Store.updateTokenDetails();
     expect(web3Store.decimals).toBe(18);
@@ -233,14 +157,7 @@ describe('Web3Store', () => {
     const isListening = jest.fn().mockReturnValue(Promise.resolve(true));
     const getId = jest.fn().mockReturnValue(Promise.resolve(1));
     const getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
-    const getBalance = jest.fn().mockReturnValue(Promise.resolve('100000000'));
     const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts, getBalance }, currentProvider: true };
-    const decimals = jest.fn().mockReturnValue(Promise.resolve(18));
-    const symbol = jest.fn().mockReturnValue(Promise.resolve('PRC'));
-    const name = jest.fn().mockReturnValue(Promise.resolve('Procent'));
-    const balance = jest.fn().mockReturnValue(Promise.resolve('1000000'));
-    const approval = jest.fn().mockReturnValue(Promise.resolve('100'));
-    const erc20 = { decimals, symbol, name, balance, approval };
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum:0x0' });
     await web3Store.updateTokenDetails();
     expect(web3Store.decimals).toBe(18);
