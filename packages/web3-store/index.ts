@@ -73,6 +73,13 @@ export default class Web3Store {
   }
 
   @computed
+  get reason() {
+    if (!this.currentProvider) {
+      return 'Enable Metamask to unlock all the features';
+    }
+  }
+
+  @computed
   get ready() {
     return !!(this.currentProvider && this.isListening);
   }

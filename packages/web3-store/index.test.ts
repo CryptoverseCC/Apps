@@ -120,10 +120,11 @@ describe('Web3Store', () => {
     expect(web3Store.balanceWithDecimalPoint).toBe('100.000');
   });
 
-  test('computes off no metamask reason correctly', () => {
-    // update({ enabled: false, reason: 'Enable Metamask to unlock all the features' });
-    // update({ enabled: false, reason: 'Unlock your wallet to unlock all the features' });
-    // update({ enabled: false, reason: `Switch to ${network} network to unlock all the features` });
+  test('computes no provider reason correctly', async () => {
+    injectedWeb3.currentProvider = false;
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.reason).toBe('Enable Metamask to unlock all the features');
   });
 
   test('#updateInjectedWeb3State correctly updates state', async () => {
