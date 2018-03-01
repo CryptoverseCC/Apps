@@ -6,6 +6,7 @@ describe('Web3Store', () => {
   let name;
   let balance;
   let approval;
+  let sendClaim;
   let erc20;
   let isListening;
   let getId;
@@ -18,7 +19,8 @@ describe('Web3Store', () => {
     name = jest.fn().mockReturnValue(Promise.resolve('Procent'));
     balance = jest.fn().mockReturnValue(Promise.resolve('1000000'));
     approval = jest.fn().mockReturnValue(Promise.resolve('100'));
-    erc20 = { decimals, symbol, name, balance, approval };
+    sendClaim = jest.fn();
+    erc20 = { decimals, symbol, name, balance, approval, sendClaim };
     isListening = jest.fn().mockReturnValue(Promise.resolve(true));
     getId = jest.fn().mockReturnValue(Promise.resolve(1));
     getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
@@ -34,7 +36,7 @@ describe('Web3Store', () => {
       },
       currentProvider: true,
     };
-  })
+  });
 
   test('sets initial asset', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
@@ -146,6 +148,12 @@ describe('Web3Store', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
     await web3Store.updateInjectedWeb3State();
     expect(web3Store.reason).toBe('Switch to ethereum network to unlock all the features');
+  });
+
+  test('computes correct send claim method for ethereum', async () => {
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.sendClaim).toBe(sendClaim);
   });
 
   test('#updateInjectedWeb3State correctly updates state', async () => {

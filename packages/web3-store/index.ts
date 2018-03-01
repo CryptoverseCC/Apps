@@ -104,4 +104,9 @@ export default class Web3Store {
       ? fromWeiToString(this.balance, this.decimals)
       : undefined;
   }
+
+  @computed
+  get sendClaim() {
+    return this.erc20.sendClaim;
+  }
 }
