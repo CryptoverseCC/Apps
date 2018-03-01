@@ -16,7 +16,6 @@ import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr from './Hr';
 
 const SmallGreenText = styled.p`
-  display: inline;
   padding-left: 20px;
   color: #09d57c;
   font-size: 12px;
@@ -156,13 +155,13 @@ const TokenAmount = styled.span`
 `;
 
 const bounce = keyframes`
-	0%, 20%, 50%, 80%, 100% {
+  0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
   }
-	40% {
+  40% {
     transform: translateY(-4px);
   }
-	60% {
+  60% {
     transform: translateY(-2px);
   }
 `;

@@ -5,8 +5,11 @@ import moment from 'moment';
 import { SmallBlackBoldText } from './Text';
 
 const getColor = (expiresIn) => {
-  if (expiresIn < moment.duration({ weeks: 1 })) {
+  if (expiresIn < moment.duration({ days: 3 })) {
     return '#fb0035';
+  }
+  if (expiresIn < moment.duration({ weeks: 1 })) {
+    return '#ebeb00';
   }
 
   return '#09d57c';
