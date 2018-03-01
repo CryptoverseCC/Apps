@@ -5,6 +5,7 @@ import {
   sendClaimTokenTransfer,
   sendClaimValueTransfer,
   sendClaimWithoutValueTransfer,
+  approveUserfeedsContractTokenTransfer,
 } from '@userfeeds/core/src/ethereumClaims';
 
 export default class Web3Store {
@@ -118,16 +119,16 @@ export default class Web3Store {
     if (value === undefined) {
       return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
     } else {
-      sendClaimValueTransfer(this.injectedWeb3, recipientAddress, value, claim);
+      return sendClaimValueTransfer(this.injectedWeb3, recipientAddress, value, claim);
     }
   }
 
-  approveEthereum() {
-    return true;
+  approveEthereum(value) {
+    return Promise.resolve({ promiEvent: Promise.resolve() });
   }
 
-  approveToken() {
-    // TODO
+  approveToken(value) {
+    return approveUserfeedsContractTokenTransfer(this.injectedWeb3, this.token, value);
   }
 
   @computed
