@@ -6,6 +6,7 @@ class Web3Store {
   currentProvider: any;
   isListening: boolean;
   injectedWeb3ActiveNetwork: string;
+  currentAccount: string;
 
   asset: string;
 
@@ -22,12 +23,14 @@ class Web3Store {
   @action.bound
   async updateInjectedWeb3State() {
     this.currentProvider = this.injectedWeb3.currentProvider;
-    const [isListening, networkId] = await Promise.all([
+    const [isListening, networkId, accounts] = await Promise.all([
       this.injectedWeb3.eth.net.isListening(),
       this.injectedWeb3.eth.net.getId(),
+      this.injectedWeb3.eth.getAccounts(),
     ]);
     this.isListening = isListening;
     this.injectedWeb3ActiveNetwork = networkMapping[networkId];
+    this.currentAccount = accounts[0];
   }
 
   @computed
@@ -54,12 +57,14 @@ class Web3Store {
 describe('Web3Store', () => {
   const isListening = jest.fn().mockReturnValue(Promise.resolve(true));
   const getId = jest.fn().mockReturnValue(Promise.resolve(1));
+  const getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
   const injectedWeb3 = {
     eth: {
       net: {
         isListening,
         getId,
       },
+      getAccounts,
     },
     currentProvider: true,
   };
@@ -124,29 +129,29 @@ describe('Web3Store', () => {
   test('#updateInjectedWeb3State correctly updates state', async () => {
     const isListening = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve(true))
-      .mockReturnValueOnce(Promise.resolve(false));
+      .mockReturnValueOnce(Promise.resolve(false))
+      .mockReturnValueOnce(Promise.resolve(true));
     const getId = jest
       .fn()
-      .mockReturnValueOnce(Promise.resolve(1))
-      .mockReturnValueOnce(Promise.resolve(0));
-    const injectedWeb3 = { eth: { net: { isListening, getId } }, currentProvider: true };
+      .mockReturnValueOnce(Promise.resolve(0))
+      .mockReturnValueOnce(Promise.resolve(1));
+    const getAccounts = jest
+      .fn()
+      .mockReturnValueOnce(Promise.resolve([]))
+      .mockReturnValueOnce(Promise.resolve(['abc']));
+    const injectedWeb3 = { eth: { net: { isListening, getId }, getAccounts }, currentProvider: false };
     const web3Store = new Web3Store(injectedWeb3, { asset: 'ethereum' });
-    injectedWeb3.currentProvider = false;
+    injectedWeb3.currentProvider = true;
     await web3Store.updateInjectedWeb3State();
-    expect(web3Store.currentProvider).toBe(false);
-    expect(web3Store.isListening).toBe(false);
-    expect(web3Store.injectedWeb3ActiveNetwork).toBe(undefined);
+    expect(web3Store.currentProvider).toBe(true);
+    expect(web3Store.isListening).toBe(true);
+    expect(web3Store.injectedWeb3ActiveNetwork).toBe('ethereum');
+    expect(web3Store.currentAccount).toBe('abc');
   });
 
   test('updates data from injectedWeb3 every second', () => {
     jest.useFakeTimers();
-    const web3Store = new Web3Store(injectedWeb3, {
-      asset: 'ethereum',
-      currentProvider: true,
-      isListening: true,
-      injectedWeb3ActiveNetwork: 'ethereum',
-    });
+    const web3Store = new Web3Store(injectedWeb3, { asset: 'ethereum' });
     expect(setInterval).toHaveBeenCalledWith(web3Store.updateInjectedWeb3State, 1000);
   });
 });
