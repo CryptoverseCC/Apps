@@ -7,6 +7,7 @@ import {
   sendClaimWithoutValueTransfer,
   approveUserfeedsContractTokenTransfer,
 } from '@userfeeds/core/src/ethereumClaims';
+import Web3 from 'web3';
 
 export default class Web3Store {
   stopUpdatingInjectedWeb3State: any;
@@ -17,6 +18,8 @@ export default class Web3Store {
   injectedWeb3ActiveNetwork: string;
   currentAccount: string;
 
+  erc20: any;
+
   asset: string;
 
   decimals: number;
@@ -24,8 +27,9 @@ export default class Web3Store {
   name: string;
   balance: string;
 
-  constructor(private injectedWeb3, private erc20, initialState) {
+  constructor(private injectedWeb3: Web3, private Erc20Ctor, initialState) {
     extendObservable(this, initialState);
+    this.erc20 = new Erc20Ctor(this.network, this.token);
     this.startUpdatingInjectedWeb3State();
     this.startUpdatingTokenDetails();
   }
@@ -42,12 +46,7 @@ export default class Web3Store {
 
   tokenRequests() {
     return this.token
-      ? [
-          this.erc20.decimals(this.injectedWeb3, this.token),
-          this.erc20.symbol(this.injectedWeb3, this.token),
-          this.erc20.name(this.injectedWeb3, this.token),
-          this.erc20.balance(this.injectedWeb3, this.token),
-        ]
+      ? [this.erc20.decimals(), this.erc20.symbol(), this.erc20.name(), this.erc20.balance()]
       : [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance()];
   }
 
