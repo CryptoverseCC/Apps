@@ -1,24 +1,24 @@
 import Web3Store from './';
 
-class Erc20Mock {
-  decimals = jest.fn().mockReturnValue(Promise.resolve(18));
-  symbol = jest.fn().mockReturnValue(Promise.resolve('PRC'));
-  name = jest.fn().mockReturnValue(Promise.resolve('Procent'));
-  balance = jest.fn().mockReturnValue(Promise.resolve('1000000'));
-  approval = jest.fn().mockReturnValue(Promise.resolve('100'));
-}
-
 describe('Web3Store', () => {
   let isListening;
   let getId;
   let getAccounts;
   let getBalance;
   let injectedWeb3;
+  let Erc20Mock;
   beforeEach(() => {
     isListening = jest.fn().mockReturnValue(Promise.resolve(true));
     getId = jest.fn().mockReturnValue(Promise.resolve(1));
     getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
     getBalance = jest.fn().mockReturnValue(Promise.resolve('100000000'));
+    Erc20Mock = jest.fn().mockImplementation(() => ({
+      decimals: jest.fn().mockReturnValue(Promise.resolve(18)),
+      symbol: jest.fn().mockReturnValue(Promise.resolve('PRC')),
+      name: jest.fn().mockReturnValue(Promise.resolve('Procent')),
+      balance: jest.fn().mockReturnValue(Promise.resolve('1000000')),
+      approval: jest.fn().mockReturnValue(Promise.resolve('100')),
+    }));
     injectedWeb3 = {
       eth: {
         net: {
@@ -206,5 +206,12 @@ describe('Web3Store', () => {
     expect(web3Store.symbol).toBe('PRC');
     expect(web3Store.name).toBe('Procent');
     expect(web3Store.balance).toBe('1000000');
+  });
+
+  test('Erc20 is reconstructed after asset change', async () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0' });
+    await web3Store.updateTokenDetails();
+    web3Store.asset = 'ethereum';
+    expect(Erc20Mock).toHaveBeenCalledTimes(2);
   });
 });

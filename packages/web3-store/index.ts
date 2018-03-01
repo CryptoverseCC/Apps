@@ -18,8 +18,6 @@ export default class Web3Store {
   injectedWeb3ActiveNetwork: string;
   currentAccount: string;
 
-  erc20: any;
-
   asset: string;
 
   decimals: number;
@@ -29,7 +27,6 @@ export default class Web3Store {
 
   constructor(private injectedWeb3: Web3, private Erc20Ctor, initialState) {
     extendObservable(this, initialState);
-    this.erc20 = new Erc20Ctor(this.network, this.token);
     this.startUpdatingInjectedWeb3State();
     this.startUpdatingTokenDetails();
   }
@@ -47,7 +44,7 @@ export default class Web3Store {
   tokenRequests() {
     return this.token
       ? [this.erc20.decimals(), this.erc20.symbol(), this.erc20.name(), this.erc20.balance()]
-      : [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance()];
+      : [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount)];
   }
 
   @action.bound
@@ -70,6 +67,11 @@ export default class Web3Store {
     this.isListening = isListening;
     this.injectedWeb3ActiveNetwork = networkMapping[networkId];
     this.currentAccount = accounts[0];
+  }
+
+  @computed
+  get erc20() {
+    return new this.Erc20Ctor(this.network, this.token);
   }
 
   @computed
