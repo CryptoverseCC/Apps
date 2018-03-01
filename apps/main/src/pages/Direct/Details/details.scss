@@ -5,8 +5,11 @@
   width: 100vw;
   height: 100vh;
   padding: 0 30px;
-
   overflow-y: scroll;
+
+  @media screen and (max-width: 600px) {
+    padding: 0 10px;
+  }
 
   &::-webkit-scrollbar {
     width: 6px;

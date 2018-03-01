@@ -53,6 +53,15 @@ const ContactPublisher = styled.button`
   font-weight: bold;
 `;
 
+const MobileWarning = styled.div`
+  padding: 15px;
+  border-radius: 8px;
+  background-color: rgba(252, 0, 53, 0.07);
+  color: #fc0035;
+  line-height: 26px;
+  text-align: center;
+`;
+
 interface IProps {
   addLink?: JSX.Element;
   expires?: JSX.Element;
@@ -142,6 +151,16 @@ class Header extends Component<IProps> {
             </FlexColumn>
           )}
         </Columns>
+        {mobile && (
+          <Columns>
+            <FlexColumn>
+              <MobileWarning>
+                <p style={{ fontWeight: 'bold' }}>This is preview only.</p>
+                To boost links visibility or add new ones, please go to desktop browser with Metamask enabled.
+              </MobileWarning>
+            </FlexColumn>
+          </Columns>
+        )}
       </>
     );
   }

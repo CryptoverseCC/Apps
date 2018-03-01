@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
-import MetaFox from '@linkexchange/images/metafox.png';
-import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider';
 
-export class Status extends Component<any, any> {
+import { mobileOrTablet } from '@linkexchange/utils/userAgent';
+import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
+import MetaFox from '@linkexchange/images/metafox.png';
+
+interface IProps {
+  mobile?: boolean;
+  web3State: IWeb3State;
+}
+
+export class Status extends Component<IProps> {
+  static defaultProps = {
+    mobile: mobileOrTablet(),
+  };
+
   render() {
-    return this.props.web3State.enabled ? null : (
+    return this.props.mobile || this.props.web3State.enabled ? null : (
       <div
         style={{
           zIndex: Number.MAX_SAFE_INTEGER,
