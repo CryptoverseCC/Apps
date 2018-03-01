@@ -79,7 +79,7 @@ export default class Web3Store {
     } else if (!this.currentAccount) {
       return 'Unlock your wallet to unlock all the features';
     } else if (this.activeNetwork !== this.network) {
-      return `Switch to ${this.network} network to unlock all the features`
+      return `Switch to ${this.network} network to unlock all the features`;
     }
   }
 
@@ -105,13 +105,29 @@ export default class Web3Store {
       : undefined;
   }
 
+  sendTokenClaim() {
+    // TODO
+  }
+
+  sendEthereumClaim() {
+    // TODO
+  }
+
+  approveEthereum() {
+    // TODO
+  }
+
+  approveToken() {
+    // TODO
+  }
+
   @computed
   get sendClaim() {
-    return this.token ? this.erc20.sendTokenClaim : this.erc20.sendClaim;
+    return this.token ? this.sendTokenClaim : this.sendEthereumClaim;
   }
 
   @computed
   get approve() {
-    return this.token ? this.erc20.approveToken : this.erc20.approveEthereum;
+    return this.token ? this.approveToken : this.approveEthereum;
   }
 }
