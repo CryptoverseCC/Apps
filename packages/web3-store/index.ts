@@ -109,4 +109,9 @@ export default class Web3Store {
   get sendClaim() {
     return this.token ? this.erc20.sendTokenClaim : this.erc20.sendClaim;
   }
+
+  @computed
+  get approve() {
+    return this.token ? this.erc20.approveToken : this.erc20.approveEthereum;
+  }
 }

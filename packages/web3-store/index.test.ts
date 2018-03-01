@@ -8,6 +8,8 @@ describe('Web3Store', () => {
   let approval;
   let sendClaim;
   let sendTokenClaim;
+  let approveEthereum;
+  let approveToken;
   let erc20;
   let isListening;
   let getId;
@@ -22,7 +24,9 @@ describe('Web3Store', () => {
     approval = jest.fn().mockReturnValue(Promise.resolve('100'));
     sendClaim = jest.fn();
     sendTokenClaim = jest.fn();
-    erc20 = { decimals, symbol, name, balance, approval, sendClaim, sendTokenClaim };
+    approveEthereum = jest.fn();
+    approveToken = jest.fn();
+    erc20 = { decimals, symbol, name, balance, approval, sendClaim, sendTokenClaim, approveEthereum, approveToken };
     isListening = jest.fn().mockReturnValue(Promise.resolve(true));
     getId = jest.fn().mockReturnValue(Promise.resolve(1));
     getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
@@ -162,6 +166,18 @@ describe('Web3Store', () => {
     const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum:0x0' });
     await web3Store.updateInjectedWeb3State();
     expect(web3Store.sendClaim).toBe(sendTokenClaim);
+  });
+
+  test('computes correct approve method for ethereum', async () => {
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.approve).toBe(approveEthereum);
+  });
+
+  test('computes correct approve method for token', async () => {
+    const web3Store = new Web3Store(injectedWeb3, erc20, { asset: 'ethereum:0x0' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.approve).toBe(approveToken);
   });
 
   test('#updateInjectedWeb3State correctly updates state', async () => {
