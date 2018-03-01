@@ -107,6 +107,6 @@ export default class Web3Store {
 
   @computed
   get sendClaim() {
-    return this.erc20.sendClaim;
+    return this.token ? this.erc20.sendTokenClaim : this.erc20.sendClaim;
   }
 }
