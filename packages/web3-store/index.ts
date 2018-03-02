@@ -8,24 +8,27 @@ import {
   approveUserfeedsContractTokenTransfer,
 } from '@userfeeds/core/src/ethereumClaims';
 import Web3 from 'web3';
+import { BN } from 'web3-utils';
+import { TNetwork } from '@linkexchange/utils/web3';
+import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 interface IInitialState {
   asset?: string;
   currentProvider?: any;
   isListening?: boolean;
-  injectedWeb3ActiveNetwork?: string;
+  injectedWeb3ActiveNetwork?: TNetwork;
   decimals?: string;
-  balance?: any;
-  allowance?: any;
+  balance?: string | undefined;
+  allowance?: string | undefined;
 }
 
 export default class Web3Store {
-  stopUpdatingInjectedWeb3State: any;
-  stopUpdatingTokenDetails: any;
+  updateInjectedWeb3StateIntervalId: NodeJS.Timer;
+  updateTokenDetailsIntervalId: NodeJS.Timer;
 
   currentProvider: any;
   isListening: boolean;
-  injectedWeb3ActiveNetwork: string;
+  injectedWeb3ActiveNetwork: TNetwork;
   currentAccount: string;
 
   asset: string;
@@ -53,19 +56,19 @@ export default class Web3Store {
 
   startUpdatingInjectedWeb3State() {
     this.updateInjectedWeb3State();
-    clearInterval(this.stopUpdatingInjectedWeb3State);
-    this.stopUpdatingInjectedWeb3State = setInterval(this.updateInjectedWeb3State, 1000);
+    clearInterval(this.updateInjectedWeb3StateIntervalId);
+    this.updateInjectedWeb3StateIntervalId = setInterval(this.updateInjectedWeb3State, 1000);
   }
 
   startUpdatingTokenDetails() {
     this.updateTokenDetails();
-    clearInterval(this.stopUpdatingTokenDetails);
-    this.stopUpdatingTokenDetails = setInterval(this.updateTokenDetails, 1000);
+    clearInterval(this.updateTokenDetailsIntervalId);
+    this.updateTokenDetailsIntervalId = setInterval(this.updateTokenDetails, 1000);
   }
 
   stopUpdating() {
-    clearInterval(this.stopUpdatingInjectedWeb3State);
-    clearInterval(this.stopUpdatingTokenDetails);
+    clearInterval(this.updateInjectedWeb3StateIntervalId);
+    clearInterval(this.updateTokenDetailsIntervalId);
   }
 
   tokenRequests() {
@@ -85,7 +88,7 @@ export default class Web3Store {
   }
 
   @action
-  async changeAssetTo(asset) {
+  async changeAssetTo(asset: string) {
     this.asset = asset;
   }
 
@@ -143,7 +146,7 @@ export default class Web3Store {
 
   @computed
   get network() {
-    return this.asset.split(':')[0];
+    return this.asset.split(':')[0] as TNetwork;
   }
 
   @computed
@@ -185,17 +188,22 @@ export default class Web3Store {
     return Promise.resolve({ promiEvent: Promise.resolve() });
   }
 
-  approveToken(value) {
-    return approveUserfeedsContractTokenTransfer(this.injectedWeb3, this.token, value);
-  }
-
   @computed
-  get sendClaim() {
+  get sendClaim(): (
+    recipientAddress: string,
+    claim: string,
+    value?: string,
+  ) => Promise<{
+    promiEvent: PromiEvent<TransactionReceipt>;
+  }> {
     return this.token ? this.sendTokenClaim : this.sendEthereumClaim;
   }
 
-  @computed
-  get approve() {
-    return this.token ? this.approveToken : this.approveEthereum;
+  shouldApprove(value: string) {
+    return !!this.token && (new BN(this.allowance).lte(new BN(value)) as boolean);
+  }
+
+  approve(value) {
+    return approveUserfeedsContractTokenTransfer(this.injectedWeb3, this.token, value);
   }
 }

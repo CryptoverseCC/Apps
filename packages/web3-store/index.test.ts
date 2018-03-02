@@ -185,18 +185,19 @@ describe('Web3Store', () => {
     expect(web3Store.sendClaim).toBe(sendTokenClaim);
   });
 
-  test('computes correct approve method for ethereum', () => {
+  test('shouldApprove is false when asset is ethereum', () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
-    const approveEthereum = jest.fn();
-    web3Store.approveEthereum = approveEthereum;
-    expect(web3Store.approve).toBe(approveEthereum);
+    expect(web3Store.shouldApprove('10')).toBe(false);
   });
 
-  test('computes correct approve method for token', () => {
-    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0' });
-    const approveToken = jest.fn();
-    web3Store.approveToken = approveToken;
-    expect(web3Store.approve).toBe(approveToken);
+  test('shouldApprove is false when asset is token and allowance is lower than value', () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0', allowance: '1' });
+    expect(web3Store.shouldApprove('10')).toBe(true);
+  });
+
+  test('shouldApprove is true when asset is token and allowance is higher or equal to value', () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0', allowance: '10' });
+    expect(web3Store.shouldApprove('10')).toBe(true);
   });
 
   test('#updateInjectedWeb3State correctly updates state', async () => {
