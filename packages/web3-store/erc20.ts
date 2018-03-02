@@ -6,35 +6,50 @@ import {
   erc20ContractBalance,
 } from '@userfeeds/core/src/erc20';
 import { allowanceUserfeedsContractTokenTransfer } from '@userfeeds/core/src/ethereumClaims';
+import Erc20Cache from './erc20Cache';
 
 export default class Erc20 {
   web3: Web3;
 
-  constructor(private network, private token) {
+  constructor(private network, private token, private cache = new Erc20Cache(token)) {
     const networkName = network === 'ethereum' ? 'mainnet' : network;
     this.web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
   }
 
-  async decimals() {
+  async decimals(): Promise<number> {
+    if (this.cache.decimals) {
+      return parseInt(this.cache.decimals, 10);
+    }
     try {
       const response = await erc20ContractDecimals(this.web3, this.token);
+      this.cache.decimals = response;
       return parseInt(response, 10);
     } catch (e) {
       return undefined;
     }
   }
 
-  async symbol() {
+  async symbol(): Promise<string> {
+    if (this.cache.symbol) {
+      return this.cache.symbol;
+    }
     try {
-      return await erc20ContractSymbol(this.web3, this.token);
+      const response = await erc20ContractSymbol(this.web3, this.token);
+      this.cache.symbol = response;
+      return response;
     } catch (e) {
       return undefined;
     }
   }
 
-  async name() {
+  async name(): Promise<string> {
+    if (this.cache.name) {
+      return this.cache.name;
+    }
     try {
-      return await erc20ContractName(this.web3, this.token);
+      const response = await erc20ContractName(this.web3, this.token);
+      this.cache.name = response;
+      return name;
     } catch (e) {
       return undefined;
     }
