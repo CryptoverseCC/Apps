@@ -21,6 +21,7 @@
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.166",
     "@linkexchange/web3-state-provider": "^0.0.166",
+    "@linkexchange/web3-store": "^0.0.166",
     "@linkexchange/widget-settings": "^0.0.168",
     "@userfeeds/core": "^0.0.166",
     "classnames": "^2.2.5",

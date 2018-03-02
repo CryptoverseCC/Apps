@@ -23,8 +23,8 @@ interface IInitialState {
 }
 
 export default class Web3Store {
-  updateInjectedWeb3StateIntervalId: NodeJS.Timer;
-  updateTokenDetailsIntervalId: NodeJS.Timer;
+  updateInjectedWeb3StateIntervalId: any;
+  updateTokenDetailsIntervalId: any;
 
   currentProvider: any;
   isListening: boolean;
