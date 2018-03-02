@@ -62,6 +62,8 @@ const MobileWarning = styled.div`
   text-align: center;
 `;
 
+const openLinkExchangeHomePage = () => window.open('https://linkexchange.io', '_blank');
+
 interface IProps {
   addLink?: JSX.Element;
   expires?: JSX.Element;
@@ -81,12 +83,23 @@ class Header extends Component<IProps> {
     return (
       <>
         <Columns>
-          <FlexColumn size={1} justifyContent="center" alignItems="center">
+          <FlexColumn
+            size={1}
+            justifyContent="center"
+            alignItems="center"
+            style={{ cursor: 'pointer' }}
+            onClick={openLinkExchangeHomePage}
+          >
             <LinkexchangeDots />
           </FlexColumn>
-          <FlexColumn size={4}>
-            <SmallBlackText>Powered by</SmallBlackText>
-            <BlackBoldText style={{ whiteSpace: 'nowrap' }}>Link Exchange</BlackBoldText>
+          <FlexColumn size={4} alignItems="flex-start">
+            <div
+              style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+              onClick={openLinkExchangeHomePage}
+            >
+              <SmallBlackText>Powered by</SmallBlackText>
+              <BlackBoldText style={{ whiteSpace: 'nowrap' }}>Link Exchange</BlackBoldText>
+            </div>
           </FlexColumn>
           {!mobile && (
             <FlexColumn justifyContent="center">

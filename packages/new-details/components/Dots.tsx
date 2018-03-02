@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import { styledComponentWithProps } from '../utils';
@@ -11,8 +11,8 @@ const Dot = styledComponentWithProps<{ color: string }, HTMLDivElement>(styled.d
   background-color: ${(props) => props.color};
 `;
 
-const LinkexchangeDots = () => (
-  <div style={{ minWidth: '30px' }}>
+const LinkexchangeDots = (props: HTMLAttributes<HTMLDivElement>) => (
+  <div style={{ minWidth: '30px', cursor: 'pointer' }} {...props}>
     <Dot color="#5772FF" />
     <Dot color="#FF5A6B" style={{ marginLeft: '5px' }} />
   </div>
