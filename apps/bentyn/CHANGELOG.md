@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.178"></a>
+## [0.0.178](https://github.com/Userfeeds/Apps/compare/v0.0.177...v0.0.178) (2018-03-02)
+
+
+### Update
+
+* change default api url ([fcc3bac7ad81b8127bbd748c93944285a4df79e1](https://github.com/Userfeeds/Apps/commit/fcc3bac7ad81b8127bbd748c93944285a4df79e1))
+
+
+
+
 <a name="0.0.177"></a>
 ## [0.0.177](https://github.com/Userfeeds/Apps/compare/v0.0.176...v0.0.177) (2018-02-28)
 
