@@ -1,4 +1,4 @@
-import { observable, extendObservable, computed, observe, action } from 'mobx';
+import { extendObservable, computed, action } from 'mobx';
 import { networkMapping } from '@userfeeds/core/src/utils';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import {
@@ -73,6 +73,11 @@ export default class Web3Store {
     } else {
       return [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount)];
     }
+  }
+
+  @action
+  async changeAssetTo(asset) {
+    this.asset = asset;
   }
 
   @action.bound
