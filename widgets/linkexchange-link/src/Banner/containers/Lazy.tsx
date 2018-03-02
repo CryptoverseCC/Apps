@@ -23,16 +23,18 @@ export const Intercom = Loadable({
 });
 
 export const WidgetDatails = Loadable({
-  loader: () => import('@linkexchange/details'),
+  loader: () => import('@linkexchange/new-details'),
   loading: Loading,
-  render: ({ Details, Header, Lists }, props) => {
+  render: ({ Details, Header, Lists, AddLinkButton }, props) => {
     const { onAddLink, ...restProps } = props;
     return (
       <IframePortal className={style.details}>
-        <Details {...restProps}>
-          <Header onAddClick={onAddLink} />
-          <Lists />
-        </Details>
+        <div className={style.detailsComponent}>
+          <Details {...restProps}>
+            <Header addLink={<AddLinkButton onClick={onAddLink} />} />
+            <Lists />
+          </Details>
+        </div>
       </IframePortal>
     );
   },

@@ -1,3 +1,5 @@
+@import '~@linkexchange/components/styles/colors';
+
 .details {
   width: 80vw;
   height: 90vh;
@@ -5,6 +7,31 @@
   @media screen and (max-width: 1200px) {
     width: 98vw;
     height: 98vh;
+  }
+}
+
+.detailsComponent {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: $aqua-haze;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba($black, 0.3);
+    border-radius: 10px;
+    background-color: $aqua-haze;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba($black, 0.3);
+    background-color: $dusty-gray;
   }
 }
 

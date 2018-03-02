@@ -39,7 +39,7 @@ const BoldLink = styledComponentWithProps<{}, HTMLLinkElement>(FilteringDescript
 
 const AddLinkContainer = styled.div`
   position: fixed;
-  right: 30px;
+  right: 10px;
   z-index: 2;
 `;
 

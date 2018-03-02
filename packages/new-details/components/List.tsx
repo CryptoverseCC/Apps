@@ -15,7 +15,7 @@ import { Columns, Column, FlexColumn } from './Columns';
 import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr from './Hr';
 
-const SmallGreenText = styled.p`
+const SmallGreenText = styled.span`
   padding-left: 20px;
   color: #09d57c;
   font-size: 12px;

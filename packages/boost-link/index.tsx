@@ -56,12 +56,25 @@ export default class BoostLink extends Component<IProps, IState> {
   render() {
     const { link, linksInSlots, widgetSettings, disabled, disabledReason, tokenDetails, children } = this.props;
     const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
-    const decoratedChild = React.cloneElement(Children.only(children), {
-      onClick: this._onBoostClick,
-    });
+
+    let decoratedChild;
+    try {
+      decoratedChild = React.cloneElement(Children.only(children), {
+        onClick: this._onBoostClick,
+      });
+    } catch (e) {
+      decoratedChild = null;
+    }
+
     return (
       <div ref={this._onButtonRef} className={style.self}>
-        <Tooltip text={disabledReason}>{decoratedChild}</Tooltip>
+        <Tooltip text={disabledReason}>
+          {decoratedChild || (
+            <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>
+              Boost
+            </Button>
+          )}
+        </Tooltip>
         <If condition={visible && !disabled}>
           <div className={style.overlay} onClick={this._close} />
           <TransitionGroup

@@ -3,7 +3,7 @@
 
 .root {
   all: initial;
-  @import '~@linkexchange/scss-unset';
+  font-family: 'PT Sans', sans-serif;
 
   ::selection {
     color: $white;
