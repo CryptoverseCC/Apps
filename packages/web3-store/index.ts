@@ -148,8 +148,12 @@ export default class Web3Store {
       : undefined;
   }
 
-  sendTokenClaim(recipientAddress, claim, value = 0) {
-    return sendClaimTokenTransfer(this.injectedWeb3, recipientAddress, this.token, value, claim);
+  sendTokenClaim(recipientAddress, claim, value?) {
+    if (value === undefined) {
+      return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
+    } else {
+      return sendClaimTokenTransfer(this.injectedWeb3, recipientAddress, this.token, value, claim);
+    }
   }
 
   sendEthereumClaim(recipientAddress, claim, value?) {
