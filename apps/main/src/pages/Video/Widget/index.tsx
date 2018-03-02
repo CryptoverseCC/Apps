@@ -83,7 +83,7 @@ export default class Widget extends Component<IProps, IState> {
   _fetchLinks = async () => {
     const start = new Date();
     const {
-      apiUrl = 'https://api-staging.userfeeds.io',
+      apiUrl = 'https://api.userfeeds.io',
       recipientAddress,
       asset,
       algorithm,
