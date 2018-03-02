@@ -1,23 +1,39 @@
 import React, { Children } from 'react';
+import { Provider as MobxProvider } from 'mobx-react';
 
 import RootToast from '@linkexchange/toast';
 import web3, { getInfura, Web3Provider } from '@linkexchange/utils/web3';
 import { WidgetSettingsProvider, WidgetSettings } from '@linkexchange/widget-settings';
+import Web3Store from '@linkexchange/web3-store';
+import Erc20 from '@linkexchange/web3-store/erc20';
+import Web3 from 'web3';
 
-const Provider = ({ widgetSettings, children }) => {
-  const [network] = widgetSettings.asset.split(':');
-  const infuraWeb3 = getInfura(network);
+export default class Provider extends React.Component<{ widgetSettings: any }> {
+  web3Store: Web3Store;
+  infuraWeb3: Web3;
+  constructor(props) {
+    super(props);
+    const [network] = this.props.widgetSettings.asset.split(':');
+    this.infuraWeb3 = getInfura(network);
+    this.web3Store = new Web3Store(web3, Erc20, { asset: this.props.widgetSettings.asset });
+  }
 
-  return (
-    <WidgetSettingsProvider widgetSettings={widgetSettings}>
-      <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-        <>
-          {children}
-          <RootToast />
-        </>
-      </Web3Provider>
-    </WidgetSettingsProvider>
-  );
-};
+  componentWillUnmount() {
+    this.web3Store.stopUpdating()
+  }
 
-export default Provider;
+  render() {
+    return (
+      <MobxProvider web3Store={this.web3Store}>
+        <WidgetSettingsProvider widgetSettings={this.props.widgetSettings}>
+          <Web3Provider injectedWeb3={web3} infuraWeb3={this.infuraWeb3}>
+            <>
+              {this.props.children}
+              <RootToast />
+            </>
+          </Web3Provider>
+        </WidgetSettingsProvider>
+      </MobxProvider>
+    );
+  }
+}

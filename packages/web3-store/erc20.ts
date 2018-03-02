@@ -11,12 +11,12 @@ import Erc20Cache from './erc20Cache';
 export default class Erc20 {
   web3: Web3;
 
-  constructor(private network, private token, private cache = new Erc20Cache(token)) {
+  constructor(private network, private token, private cache = new Erc20Cache(network, token)) {
     const networkName = network === 'ethereum' ? 'mainnet' : network;
     this.web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
   }
 
-  async decimals(): Promise<number> {
+  async decimals(): Promise<number | undefined> {
     if (this.cache.decimals) {
       return parseInt(this.cache.decimals, 10);
     }
@@ -29,7 +29,7 @@ export default class Erc20 {
     }
   }
 
-  async symbol(): Promise<string> {
+  async symbol(): Promise<string | undefined> {
     if (this.cache.symbol) {
       return this.cache.symbol;
     }
@@ -42,7 +42,7 @@ export default class Erc20 {
     }
   }
 
-  async name(): Promise<string> {
+  async name(): Promise<string | undefined> {
     if (this.cache.name) {
       return this.cache.name;
     }

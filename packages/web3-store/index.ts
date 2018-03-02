@@ -60,6 +60,11 @@ export default class Web3Store {
     this.stopUpdatingTokenDetails = setInterval(this.updateTokenDetails, 1000);
   }
 
+  stopUpdating() {
+    clearInterval(this.stopUpdatingInjectedWeb3State);
+    clearInterval(this.stopUpdatingTokenDetails);
+  }
+
   tokenRequests() {
     if (!this.ready) {
       return [undefined, undefined, undefined, undefined];
