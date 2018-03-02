@@ -23,7 +23,7 @@ const BENTYN_CONFIG = {
 };
 
 const BENTYN_WIDGET_CONFIG: IWidgetSettings = {
-  apiUrl: 'https://api-staging.userfeeds.io',
+  apiUrl: 'https://api.userfeeds.io',
   recipientAddress: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
   whitelist: '0xD7Bad27E6B797952382860C581A7E4c90BeA5Deb',
   asset: 'ethereum:0x108c05cac356d93b351375434101cfd3e14f7e44',
