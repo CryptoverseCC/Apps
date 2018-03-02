@@ -63,7 +63,7 @@ export default class Erc20 {
     }
   }
 
-  async approval() {
+  async allowance() {
     try {
       return await allowanceUserfeedsContractTokenTransfer(this.web3, this.token);
     } catch (e) {

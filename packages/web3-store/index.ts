@@ -16,6 +16,7 @@ interface IInitialState {
   injectedWeb3ActiveNetwork?: string;
   decimals?: string;
   balance?: any;
+  allowance?: any;
 }
 
 export default class Web3Store {
@@ -33,6 +34,7 @@ export default class Web3Store {
   symbol: string;
   name: string;
   balance: string;
+  allowance: string;
 
   constructor(
     private injectedWeb3: Web3,
@@ -41,6 +43,7 @@ export default class Web3Store {
       asset: '',
       currentProvider: undefined,
       isListening: undefined,
+      allowance: undefined,
     },
   ) {
     extendObservable(this, initialState);
@@ -67,11 +70,17 @@ export default class Web3Store {
 
   tokenRequests() {
     if (!this.ready) {
-      return [undefined, undefined, undefined, undefined];
+      return [undefined, undefined, undefined, undefined, undefined];
     } else if (this.token) {
-      return [this.erc20.decimals(), this.erc20.symbol(), this.erc20.name(), this.erc20.balance()];
+      return [
+        this.erc20.decimals(),
+        this.erc20.symbol(),
+        this.erc20.name(),
+        this.erc20.balance(),
+        this.erc20.allowance(),
+      ];
     } else {
-      return [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount)];
+      return [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount), undefined];
     }
   }
 
@@ -82,11 +91,12 @@ export default class Web3Store {
 
   @action.bound
   async updateTokenDetails() {
-    const [decimals, symbol, name, balance] = await Promise.all(this.tokenRequests());
+    const [decimals, symbol, name, balance, allowance] = await Promise.all(this.tokenRequests());
     this.decimals = decimals;
     this.symbol = symbol;
     this.name = name;
     this.balance = balance;
+    this.allowance = allowance;
   }
 
   @action.bound
@@ -145,6 +155,13 @@ export default class Web3Store {
   get balanceWithDecimalPoint() {
     return this.balance !== null && this.balance !== undefined
       ? fromWeiToString(this.balance, this.decimals)
+      : undefined;
+  }
+
+  @computed
+  get allowanceWithDecimalPoint() {
+    return this.allowance !== null && this.allowance !== undefined
+      ? fromWeiToString(this.allowance, this.decimals)
       : undefined;
   }
 

@@ -17,7 +17,7 @@ describe('Web3Store', () => {
       symbol: jest.fn().mockReturnValue(Promise.resolve('PRC')),
       name: jest.fn().mockReturnValue(Promise.resolve('Procent')),
       balance: jest.fn().mockReturnValue(Promise.resolve('1000000')),
-      approval: jest.fn().mockReturnValue(Promise.resolve('100')),
+      allowance: jest.fn().mockReturnValue(Promise.resolve('100')),
     }));
     injectedWeb3 = {
       eth: {
@@ -107,13 +107,40 @@ describe('Web3Store', () => {
     expect(web3Store.balanceWithDecimalPoint).toBe(undefined);
   });
 
-  test('computes token balanceWithDecimalPoint correctly from wei', () => {
+  test('computes token allowanceWithDecimalPoint correctly from wei', () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, {
       asset: 'ethereum',
       decimals: '10',
-      balance: '1000000000000',
+      allowance: '1000000000000',
     });
-    expect(web3Store.balanceWithDecimalPoint).toBe('100.000');
+    expect(web3Store.allowanceWithDecimalPoint).toBe('100.000');
+  });
+
+  test('computes token allowanceWithDecimalPoint is undefined when balance is null', () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, {
+      asset: 'ethereum',
+      decimals: '10',
+      allowance: null,
+    });
+    expect(web3Store.allowanceWithDecimalPoint).toBe(undefined);
+  });
+
+  test('computes token allowanceWithDecimalPoint is undefined when balance is undefined', () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, {
+      asset: 'ethereum',
+      decimals: '10',
+      allowance: undefined,
+    });
+    expect(web3Store.allowanceWithDecimalPoint).toBe(undefined);
+  });
+
+  test('computes token allowanceWithDecimalPoint correctly from wei', () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, {
+      asset: 'ethereum',
+      decimals: '10',
+      allowance: '100000000000',
+    });
+    expect(web3Store.allowanceWithDecimalPoint).toBe('10.000');
   });
 
   test('computes no provider reason correctly', async () => {
@@ -198,6 +225,7 @@ describe('Web3Store', () => {
     expect(web3Store.symbol).toBe('ETH');
     expect(web3Store.name).toBe('ETH');
     expect(web3Store.balance).toBe('100000000');
+    expect(web3Store.allowance).toBe(undefined);
   });
 
   test('#updateTokenDetails correctly updates state when asset is a token', async () => {
@@ -208,6 +236,7 @@ describe('Web3Store', () => {
     expect(web3Store.symbol).toBe('PRC');
     expect(web3Store.name).toBe('Procent');
     expect(web3Store.balance).toBe('1000000');
+    expect(web3Store.allowance).toBe('100');
   });
 
   test('Erc20 is reconstructed after asset change', async () => {
