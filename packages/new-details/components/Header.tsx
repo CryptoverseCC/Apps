@@ -7,12 +7,13 @@ import Button from '@linkexchange/components/src/NewButton';
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 
+import Hr from './Hr';
+import LinkexchangeDots from './Dots';
+import ContactPublisher from './Contact';
 import { ShortAddress } from './ShortAddress';
+import IdenticonWithToken from './IdenticonWithToken';
 import { Columns, Column, FlexColumn } from './Columns';
 import { BlackText, SmallBlackText, BlackBoldText } from './Text';
-import IdenticonWithToken from './IdenticonWithToken';
-import LinkexchangeDots from './Dots';
-import Hr from './Hr';
 
 const Title = styled.p`
   color: #1b2437;
@@ -41,16 +42,6 @@ const AddLinkContainer = styled.div`
   position: fixed;
   right: 10px;
   z-index: 2;
-`;
-
-const ContactPublisher = styled.button`
-  margin-top: 10px;
-  box-shadow: 0 9px 20px 0 rgba(38, 63, 255, 0.11);
-  padding: 5px 8px;
-  border: 1px solid #d9e0e7;
-  border-radius: 8px;
-  color: #263fff;
-  font-weight: bold;
 `;
 
 const MobileWarning = styled.div`
@@ -104,7 +95,9 @@ class Header extends Component<IProps> {
           {!mobile && (
             <FlexColumn justifyContent="center">
               <div style={{ marginLeft: 'auto' }}>
-                <BoldLink style={{ marginRight: '30px' }}>FAQ</BoldLink>
+                <BoldLink target="_blank" href="https://linkexchange.io/faq.html" style={{ marginRight: '30px' }}>
+                  FAQ
+                </BoldLink>
                 <BoldLink target="_blank" href="https://app.linkexchange.io/direct/configurator">
                   Create own widget
                 </BoldLink>
@@ -122,7 +115,7 @@ class Header extends Component<IProps> {
           {!mobile && (
             <FlexColumn size={1} justifyContent="center" alignItems="center">
               <IdenticonWithToken address={widgetSettings.recipientAddress} asset={widgetSettings.asset} />
-              {!mobile && <ContactPublisher color="empty">Contact</ContactPublisher>}
+              {!mobile && <ContactPublisher contactMethod={widgetSettings.contactMethod} />}
             </FlexColumn>
           )}
           <FlexColumn size={!mobile ? 7 : 12}>

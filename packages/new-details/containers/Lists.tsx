@@ -60,11 +60,21 @@ class Lists extends Component<IProps> {
       <>
         <ListHeaderSlots linksCount={linksInSlots.length} slots={widgetSettings.slots} />
         {linksInSlots.map((link) => (
-          <LinkRowWithTokenDetails key={link.id} link={link} boostComponent={DecoratedDefaultBoostLink} />
+          <LinkRowWithTokenDetails
+            key={link.id}
+            asset={widgetSettings.asset}
+            link={link}
+            boostComponent={DecoratedDefaultBoostLink}
+          />
         ))}
         <ListHeaderOutside hasWhitelist={hasWhitelist} />
         {linksOutside.map((link) => (
-          <LinkRowWithTokenDetails key={link.id} link={link} boostComponent={DecoratedDefaultBoostLink} />
+          <LinkRowWithTokenDetails
+            key={link.id}
+            asset={widgetSettings.asset}
+            link={link}
+            boostComponent={DecoratedDefaultBoostLink}
+          />
         ))}
       </>
     );
