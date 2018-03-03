@@ -8,6 +8,7 @@ export const R = {
   link: (name, value) =>
     R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://')(name, value) ||
     R.value((v: string) => urlRegExp.test(v), 'Has to be valid url')(name, value),
+  email: (value) => (emailRegExp.test(value) ? '' : 'Has to be valid email address'),
   greaterThan: (minValue: number) =>
     R.value((v: string) => parseInt(v, 10) >= minValue, `Has to be greater than minimal value: ${minValue}`),
   currencyDecimals: (decimals: number) =>
@@ -42,3 +43,5 @@ export const validateMultipe = (rules: { [key: string]: TValidationFunc[] }, val
 
 const httpRegExp = /^https?:\/\//;
 const urlRegExp = /^https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+/* tslint:disable */
+const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

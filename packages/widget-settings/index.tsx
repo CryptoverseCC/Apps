@@ -54,6 +54,7 @@ export class WidgetSettingsProvider extends PureComponent<IProps> {
 
 export const withWidgetSettings = <T extends { widgetSettings: WidgetSettings }>(Cmp: React.ComponentType<T>) => {
   const DecoratedComponent = observer(Cmp);
+
   return class extends Component<Omit<T, 'widgetSettings'>> {
     static contextTypes = {
       widgetSettings: PropTypes.object,

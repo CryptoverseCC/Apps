@@ -96,7 +96,9 @@ const load = async (web3, [asset = ''], update) => {
   const [network] = asset.split(':');
 
   while (true) {
-    if (!(web3.currentProvider !== null && (await web3.eth.net.isListening()))) {
+    if (!web3.currentProvider) {
+      update({ enabled: false, reason: 'Install Metamask to unlock all the features' });
+    } else if (!(web3.currentProvider !== null && (await web3.eth.net.isListening()))) {
       update({ enabled: false, reason: 'Enable Metamask to unlock all the features' });
     } else if ((await web3.eth.getAccounts()).length === 0) {
       update({ enabled: false, reason: 'Unlock your wallet to unlock all the features' });

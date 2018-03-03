@@ -1,8 +1,9 @@
 @import '~@linkexchange/components/styles/colors';
-@import url("https://fonts.googleapis.com/css?family=PT+Sans:400,700");
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
 body {
   all: initial;
   font-family: 'PT Sans', sans-serif;
+
   @import '~@linkexchange/scss-unset';
 }

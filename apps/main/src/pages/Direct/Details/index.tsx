@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
-import { Details as DetailsComponent, Header, Lists } from '@linkexchange/details';
+import { Details as DetailsComponent, Header, Lists, AddLinkButton, Expires } from '@linkexchange/new-details';
 import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 
@@ -28,15 +29,18 @@ class Details extends Component<IProps, IState> {
 
     return (
       <div className={style.self}>
-        <DetailsComponent standaloneMode className={style.details}>
-          <Header onAddClick={this._onAddLink} />
+        <DetailsComponent className={style.details}>
+          <Header
+            addLink={<AddLinkButton onClick={this.onAddLink} />}
+            expires={<Expires in={this.getDurationToExpires()} />}
+          />
           <Lists />
         </DetailsComponent>
-        <Modal isOpen={isModalOpen} onCloseRequest={this._closeModal}>
+        <Modal isOpen={isModalOpen} onCloseRequest={this.closeModal}>
           <AddLinkWithInjectedWeb3AndTokenDetails
             loadBalance
             asset={widgetSettings.asset}
-            openWidgetDetails={this._closeModal}
+            openWidgetDetails={this.closeModal}
           />
         </Modal>
         <Status asset={widgetSettings.asset} />
@@ -44,12 +48,16 @@ class Details extends Component<IProps, IState> {
     );
   }
 
-  _onAddLink = () => {
+  private onAddLink = () => {
     this.setState({ isModalOpen: true });
   };
 
-  _closeModal = () => {
+  private closeModal = () => {
     this.setState({ isModalOpen: false });
+  };
+
+  private getDurationToExpires = () => {
+    return moment(this.props.widgetSettings.tillDate, 'MM/DD/YYYY').diff(moment());
   };
 }
 

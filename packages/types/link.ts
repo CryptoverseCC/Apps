@@ -15,3 +15,7 @@ export interface IRemoteLink extends IBaseLink {
 export interface ILink extends IRemoteLink {
   probability: number;
 }
+
+export const isILink = (link: IBaseLink): link is ILink => {
+  return (link as ILink).probability !== undefined;
+};
