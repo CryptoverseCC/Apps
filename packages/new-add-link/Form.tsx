@@ -40,8 +40,9 @@ const AddLinkForm = inject(
     minimalValue: (widgetSettingsStore && widgetSettingsStore.minimalLinkFee) || nextProps.minimalValue,
     balance: (web3Store && web3Store.balance) || nextProps.balance,
     balanceWithDecimalPoint: (web3Store && web3Store.balanceWithDecimalPoint) || nextProps.balance,
-    currency: (web3Store && web3Store.name) || nextProps.currency,
+    currency: (web3Store && web3Store.symbol) || nextProps.currency,
     decimals: (web3Store && web3Store.decimals) || nextProps.decimals,
+    submitErrorText: (web3Store && web3Store.reason) || nextProps.submitErrorText,
   }),
 )(
   observer(
@@ -54,6 +55,7 @@ const AddLinkForm = inject(
       submitErrorText,
       formValidations,
       minimalValue,
+      initialValues,
     }) => (
       <React.Fragment>
         <Modal.Header>
@@ -66,55 +68,65 @@ const AddLinkForm = inject(
           initialValues={{
             target: 'http://',
             value: '0' || '',
+            ...initialValues,
           }}
           onSubmit={onSubmit}
         >
-          {({ handleSubmit, pristine, invalid, submitError }) => (
-            <React.Fragment>
-              {(submitError || submitErrorText) && <Modal.Error>{submitError || submitErrorText}</Modal.Error>}
-              <Modal.Body>
-                <form onSubmit={handleSubmit}>
-                  <Field
-                    title="Headline"
-                    component={TextField}
-                    name="title"
-                    validate={validateField([R.required, R.maxLength(35), ...(formValidations.title || [])])}
-                  />
-                  <Field
-                    multiline
-                    title="Description"
-                    component={TextField}
-                    name="summary"
-                    validate={validateField([R.required, R.maxLength(70), ...(formValidations.summary || [])])}
-                  />
-                  <Field
-                    title="Link"
-                    component={TextField}
-                    name="target"
-                    validate={validateField([R.required, R.link, ...(formValidations.target || [])])}
-                  />
-                  <Field
-                    title="Initial Fee"
-                    component={TextField}
-                    name="value"
-                    bold
-                    currency={currency}
-                    validate={validateField([
-                      R.required,
-                      R.number,
-                      R.currencyDecimals(decimals),
-                      R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
-                      R.lessThenCurrency(balance, decimals),
-                      ...(formValidations.value || []),
-                    ])}
-                  />
-                  <Button size="big" type="submit" color="primary" style={{ width: '100%', marginTop: '40px' }}>
-                    Send
-                  </Button>
-                </form>
-              </Modal.Body>
-            </React.Fragment>
-          )}
+          {({ handleSubmit, pristine, invalid, submitError }) => {
+            const error = submitError || submitErrorText;
+            return (
+              <React.Fragment>
+                {error && <Modal.Error>{error}</Modal.Error>}
+                <Modal.Body>
+                  <form onSubmit={handleSubmit}>
+                    <Field
+                      title="Headline"
+                      component={TextField}
+                      name="title"
+                      validate={validateField([R.required, R.maxLength(35), ...(formValidations.title || [])])}
+                    />
+                    <Field
+                      multiline
+                      title="Description"
+                      component={TextField}
+                      name="summary"
+                      validate={validateField([R.required, R.maxLength(70), ...(formValidations.summary || [])])}
+                    />
+                    <Field
+                      title="Link"
+                      component={TextField}
+                      name="target"
+                      validate={validateField([R.required, R.link, ...(formValidations.target || [])])}
+                    />
+                    <Field
+                      title="Initial Fee"
+                      component={TextField}
+                      name="value"
+                      bold
+                      currency={currency}
+                      validate={validateField([
+                        R.required,
+                        R.number,
+                        R.currencyDecimals(decimals),
+                        R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
+                        R.lessThenCurrency(balance, decimals),
+                        ...(formValidations.value || []),
+                      ])}
+                    />
+                    <Button
+                      size="big"
+                      type="submit"
+                      color="primary"
+                      disabled={error}
+                      style={{ width: '100%', marginTop: '40px' }}
+                    >
+                      Send
+                    </Button>
+                  </form>
+                </Modal.Body>
+              </React.Fragment>
+            );
+          }}
         </Form>
         <Modal.Footer>
           <Modal.FooterText>

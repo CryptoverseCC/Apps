@@ -33,9 +33,19 @@ export interface IWeb3Store {
   balanceWithDecimalPoint?: string;
   allowance: string;
   allowanceWithDecimalPoint?: string;
-  sendClaim: any;
-  shouldApprove: any;
-  approve: any;
+  sendClaim: (
+    recipientAddress: string,
+    claim: any,
+    value?: string,
+  ) => Promise<{
+    promiEvent: PromiEvent<TransactionReceipt>;
+  }>;
+  shouldApprove: (value: string) => boolean;
+  approve: (
+    value: string,
+  ) => Promise<{
+    promiEvent: PromiEvent<TransactionReceipt>;
+  }>;
   reason?: string;
 }
 
@@ -137,7 +147,7 @@ export default class Web3Store implements IWeb3Store {
 
   @computed
   get erc20() {
-    return new this.Erc20Ctor(this.network, this.token);
+    return new this.Erc20Ctor(this.network, this.token, this.currentAccount);
   }
 
   @computed
@@ -185,7 +195,7 @@ export default class Web3Store implements IWeb3Store {
       : undefined;
   }
 
-  sendTokenClaim(recipientAddress, claim, value?) {
+  sendTokenClaim = (recipientAddress, claim, value?) => {
     if (value === undefined) {
       return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
     } else {
@@ -193,7 +203,7 @@ export default class Web3Store implements IWeb3Store {
     }
   }
 
-  sendEthereumClaim(recipientAddress, claim, value?) {
+  sendEthereumClaim = (recipientAddress, claim, value?) => {
     if (value === undefined) {
       return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
     } else {
@@ -201,14 +211,10 @@ export default class Web3Store implements IWeb3Store {
     }
   }
 
-  approveEthereum(value) {
-    return Promise.resolve({ promiEvent: Promise.resolve() });
-  }
-
   @computed
   get sendClaim(): (
     recipientAddress: string,
-    claim: string,
+    claim: any,
     value?: string,
   ) => Promise<{
     promiEvent: PromiEvent<TransactionReceipt>;
@@ -216,11 +222,11 @@ export default class Web3Store implements IWeb3Store {
     return this.token ? this.sendTokenClaim : this.sendEthereumClaim;
   }
 
-  shouldApprove(value: string) {
-    return !!this.token && (new BN(this.allowance).lte(new BN(value)) as boolean);
+  shouldApprove = (value: string) => {
+    return !!this.token && (new BN(this.allowance).lt(new BN(value)) as boolean);
   }
 
-  approve(value: string) {
+  approve = (value: string) => {
     return approveUserfeedsContractTokenTransfer(this.injectedWeb3, this.token, value);
   }
 }

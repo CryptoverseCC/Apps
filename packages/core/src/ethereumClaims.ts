@@ -1,7 +1,12 @@
 import { toWei } from '@linkexchange/utils/balance';
 
 import { getCurrentNetworkName, getAccounts, resolveOnTransactionHash } from './utils';
-import { erc20ContractApprove, erc20ContractAllowance, erc20ContractDecimals } from './erc20';
+import {
+  erc20ContractApprove,
+  erc20ContractAllowance,
+  erc20ContractDecimals,
+  erc20ContractAllowanceForAccount,
+} from './erc20';
 import {
   getContractWithoutValueTransfer,
   getContractValueTransfer,
@@ -55,6 +60,12 @@ export async function allowanceUserfeedsContractTokenTransfer(web3Instance, toke
   const networkName = await getCurrentNetworkName(web3Instance);
   const spenderContractAddress = getContractTokenTransferAddress(networkName);
   return erc20ContractAllowance(web3Instance, tokenContractAddress, spenderContractAddress);
+}
+
+export async function allowanceUserfeedsContractTokenTransferForAccount(web3Instance, tokenContractAddress, from) {
+  const networkName = await getCurrentNetworkName(web3Instance);
+  const spenderContractAddress = getContractTokenTransferAddress(networkName);
+  return erc20ContractAllowanceForAccount(web3Instance, tokenContractAddress, spenderContractAddress, from);
 }
 
 export async function sendClaimTokenTransferImpl(

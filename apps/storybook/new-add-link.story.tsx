@@ -21,18 +21,17 @@ import Erc20 from '@linkexchange/web3-store/erc20';
 storiesOf('Add Link', module)
   .addDecorator(withKnobs)
   .add('Flow', () => {
-    const balance = number('balance', 1000);
     const minimalLinkFee = number('minimalLinkFee', 0);
-    const submitErrorText = text('Submit Error');
     const location = text('Location');
-    const asset = text('asset', 'ethereum')
+    const asset = text('asset', 'ethereum');
+    const recipientAddress = text('recipientAddress', '0x0000000000000000000000000000000000000000');
 
     const formValidationsStore = observable({ 'add-link': { title: [], summary: [], target: [], value: [] } });
     const widgetSettingsStore: IWidgetSettings = new WidgetSettings({
       minimalLinkFee,
       apiUrl: '',
-      recipientAddress: '',
-      asset: '',
+      recipientAddress,
+      asset,
       algorithm: '',
       size: EWidgetSize.leaderboard,
       slots: 0,
