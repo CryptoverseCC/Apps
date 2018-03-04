@@ -11,10 +11,14 @@ import { withInjectedWeb3AndWeb3State } from '../web3-state-provider';
 import { resolveOnTransactionHash } from '@userfeeds/core/src/utils';
 import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
 import AddLinkForm from '@linkexchange/new-add-link/Form';
+import { IWeb3Store } from '@linkexchange/web3-store';
 
-@inject('widgetSettingsStore', 'web3Store', 'web3StateStore')
+@inject('widgetSettingsStore', 'web3Store')
 @observer
-class AddLink extends React.Component<{ widgetSettingsStore?: IWidgetSettings }, { step: string }> {
+export default class AddLink extends React.Component<
+  { widgetSettingsStore?: IWidgetSettings; web3Store?: IWeb3Store },
+  { step: string }
+> {
   state = {
     step: 'form',
   };
@@ -28,7 +32,6 @@ class AddLink extends React.Component<{ widgetSettingsStore?: IWidgetSettings },
       location: widgetSettingsStore!.widgetLocation,
     });
     const approveResult = await this.approve(values.value);
-    const transferResult = await this.transfer(values.value, claim);
   };
 
   private createClaim({ target, title, summary, location }) {
@@ -44,18 +47,8 @@ class AddLink extends React.Component<{ widgetSettingsStore?: IWidgetSettings },
     };
   }
 
-  private async transfer(value, claim) {
-    const transferPromise = await core.ethereum.claims.sendClaimValueTransfer(
-      null,
-      this.props.widgetSettingsStore!.recipientAddress,
-      value,
-      claim,
-    );
-    const transferResult = await resolveOnTransactionHash(transferPromise.promiEvent);
-  }
-
   private async approve(value) {
-    return true;
+    // TODO
   }
 
   render() {
@@ -63,5 +56,3 @@ class AddLink extends React.Component<{ widgetSettingsStore?: IWidgetSettings },
     return <Modal.default>{step === 'form' && <AddLinkForm onSubmit={this.onSubmit} />}</Modal.default>;
   }
 }
-
-export default withInjectedWeb3AndTokenDetails(AddLink);

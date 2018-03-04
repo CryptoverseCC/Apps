@@ -1,3 +1,6 @@
+import { BN } from 'web3-utils';
+import { toWei, fromWeiToString } from '@linkexchange/utils/balance';
+
 export const R = {
   required: (name, value) => (value && value.toString().trim() ? '' : `Field ${name} is required`),
   maxLength: (n: number) => (name, value: string) =>
@@ -10,9 +13,14 @@ export const R = {
     R.value((v: string) => urlRegExp.test(v), 'Has to be valid url')(name, value),
   email: (value) => (emailRegExp.test(value) ? '' : 'Has to be valid email address'),
   greaterThan: (minValue: number) =>
-    R.value((v: string) => parseInt(v, 10) >= minValue, `Has to be greater than minimal value: ${minValue}`),
-  lessThen: (minValue: number) =>
-    R.value((v: string) => parseInt(v, 10) <= minValue, `Has to be less then minimal value: ${minValue}`),
+    R.value((v: string) => new BN(v).gte(minValue), `Has to be greater than minimal value: ${minValue}`),
+  lessThen: (maxValue: number) =>
+    R.value((v: string) => new BN(v).lte(new BN(maxValue)), `Has to be less then minimal value: ${maxValue}`),
+  lessThenCurrency: (maxValue: number, decimals: number) =>
+    R.value(
+      (v: string) => new BN(toWei(v, decimals)).lte(new BN(maxValue)),
+      `Has to be less then minimal value: ${fromWeiToString(maxValue, decimals, decimals)}`,
+    ),
   currencyDecimals: (decimals: number) =>
     R.value((v: string) => {
       const dotIndex = v.indexOf('.');

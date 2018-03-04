@@ -14,15 +14,18 @@ import { Provider } from 'mobx-react';
 import { FormValidationsProvider } from '../../packages/root-provider';
 import { IWidgetSettings, EWidgetSize } from '@linkexchange/types/widget';
 import { WidgetSettings } from '@linkexchange/widget-settings';
+import Web3Store from '@linkexchange/web3-store';
+import web3 from '@linkexchange/utils/web3';
+import Erc20 from '@linkexchange/web3-store/erc20';
 
 storiesOf('Add Link', module)
   .addDecorator(withKnobs)
   .add('Flow', () => {
     const balance = number('balance', 1000);
     const minimalLinkFee = number('minimalLinkFee', 0);
-    const currency = text('currency', 'BEN');
     const submitErrorText = text('Submit Error');
     const location = text('Location');
+    const asset = text('asset', 'ethereum')
 
     const formValidationsStore = observable({ 'add-link': { title: [], summary: [], target: [], value: [] } });
     const widgetSettingsStore: IWidgetSettings = new WidgetSettings({
@@ -36,7 +39,7 @@ storiesOf('Add Link', module)
       timeslot: 0,
       location,
     });
-    const web3Store = observable({ balance, currency });
+    const web3Store = new Web3Store(web3, Erc20, { asset });
     return (
       <div style={{ width: '500px' }}>
         <Provider

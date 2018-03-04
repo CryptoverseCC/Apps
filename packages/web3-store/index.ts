@@ -1,4 +1,4 @@
-import { extendObservable, computed, action } from 'mobx';
+import { extendObservable, computed, action, observable } from 'mobx';
 import { networkMapping } from '@userfeeds/core/src/utils';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import {
@@ -22,22 +22,39 @@ interface IInitialState {
   allowance?: string | undefined;
 }
 
-export default class Web3Store {
+export interface IWeb3Store {
+  asset: string;
+  token: string;
+  network: string;
+  decimals: number;
+  symbol: string;
+  name: string;
+  balance: string;
+  balanceWithDecimalPoint?: string;
+  allowance: string;
+  allowanceWithDecimalPoint?: string;
+  sendClaim: any;
+  shouldApprove: any;
+  approve: any;
+  reason?: string;
+}
+
+export default class Web3Store implements IWeb3Store {
   updateInjectedWeb3StateIntervalId: any;
   updateTokenDetailsIntervalId: any;
 
   currentProvider: any;
   isListening: boolean;
   injectedWeb3ActiveNetwork: TNetwork;
-  currentAccount: string;
+  @observable currentAccount: string;
 
-  asset: string;
+  @observable asset: string;
 
-  decimals: number;
-  symbol: string;
-  name: string;
-  balance: string;
-  allowance: string;
+  @observable decimals: number;
+  @observable symbol: string;
+  @observable name: string;
+  @observable balance: string;
+  @observable allowance: string;
 
   constructor(
     private injectedWeb3: Web3,
@@ -203,7 +220,7 @@ export default class Web3Store {
     return !!this.token && (new BN(this.allowance).lte(new BN(value)) as boolean);
   }
 
-  approve(value) {
+  approve(value: string) {
     return approveUserfeedsContractTokenTransfer(this.injectedWeb3, this.token, value);
   }
 }

@@ -7,6 +7,7 @@ import { TextField, validateField } from '@linkexchange/components/src/Form/Fiel
 import Button from '@linkexchange/components/src/NewButton';
 import { R } from '@linkexchange/utils/validation';
 import { IWidgetSettings } from '@linkexchange/types/widget';
+import { IWeb3Store } from '@linkexchange/web3-store';
 
 const InUse = ({ balance, currency }) => (
   <Modal.Balance>
@@ -32,85 +33,98 @@ const AddLinkForm = inject(
       formValidationsStore,
       widgetSettingsStore,
       web3Store,
-    }: { formValidationsStore: any; widgetSettingsStore: IWidgetSettings; web3Store: any },
+    }: { formValidationsStore: any; widgetSettingsStore: IWidgetSettings; web3Store: IWeb3Store },
     nextProps: any,
   ) => ({
     formValidations: (formValidationsStore && formValidationsStore['add-link']) || nextProps.formValidations,
     minimalValue: (widgetSettingsStore && widgetSettingsStore.minimalLinkFee) || nextProps.minimalValue,
     balance: (web3Store && web3Store.balance) || nextProps.balance,
-    currency: (web3Store && web3Store.currency) || nextProps.currency,
+    balanceWithDecimalPoint: (web3Store && web3Store.balanceWithDecimalPoint) || nextProps.balance,
+    currency: (web3Store && web3Store.name) || nextProps.currency,
+    decimals: (web3Store && web3Store.decimals) || nextProps.decimals,
   }),
 )(
-  observer(({ balance, currency, onSubmit, submitErrorText, formValidations, minimalValue }) => (
-    <React.Fragment>
-      <Modal.Header>
-        <Modal.Title>Create a new link</Modal.Title>
-        <Modal.HeaderRight>
-          <InUse balance={balance} currency={currency} />
-        </Modal.HeaderRight>
-      </Modal.Header>
-      <Form
-        initialValues={{
-          target: 'http://',
-          value: '0' || '',
-        }}
-        onSubmit={onSubmit}
-      >
-        {({ handleSubmit, pristine, invalid, submitError }) => (
-          <React.Fragment>
-            {(submitError || submitErrorText) && <Modal.Error>{submitError || submitErrorText}</Modal.Error>}
-            <Modal.Body>
-              <form onSubmit={handleSubmit}>
-                <Field
-                  title="Headline"
-                  component={TextField}
-                  name="title"
-                  validate={validateField([R.required, R.maxLength(35), ...(formValidations.title || [])])}
-                />
-                <Field
-                  multiline
-                  title="Description"
-                  component={TextField}
-                  name="summary"
-                  validate={validateField([R.required, R.maxLength(70), ...(formValidations.summary || [])])}
-                />
-                <Field
-                  title="Link"
-                  component={TextField}
-                  name="target"
-                  validate={validateField([R.required, R.link, ...(formValidations.target || [])])}
-                />
-                <Field
-                  title="Initial Fee"
-                  component={TextField}
-                  name="value"
-                  bold
-                  currency={currency}
-                  validate={validateField([
-                    R.required,
-                    R.number,
-                    R.currencyDecimals(4),
-                    R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
-                    R.lessThen(balance),
-                    ...(formValidations.value || []),
-                  ])}
-                />
-                <Button size="big" type="submit" color="primary" style={{ width: '100%', marginTop: '40px' }}>
-                  Send
-                </Button>
-              </form>
-            </Modal.Body>
-          </React.Fragment>
-        )}
-      </Form>
-      <Modal.Footer>
-        <Modal.FooterText>
-          You need to pay initial fee to be considered. Paying fee does not imply that your link will be displayed, as
-          publisher has to whitelist your link.
-        </Modal.FooterText>
-      </Modal.Footer>
-    </React.Fragment>
-  )),
+  observer(
+    ({
+      balance,
+      balanceWithDecimalPoint,
+      currency,
+      decimals,
+      onSubmit,
+      submitErrorText,
+      formValidations,
+      minimalValue,
+    }) => (
+      <React.Fragment>
+        <Modal.Header>
+          <Modal.Title>Create a new link</Modal.Title>
+          <Modal.HeaderRight>
+            <InUse balance={balanceWithDecimalPoint} currency={currency} />
+          </Modal.HeaderRight>
+        </Modal.Header>
+        <Form
+          initialValues={{
+            target: 'http://',
+            value: '0' || '',
+          }}
+          onSubmit={onSubmit}
+        >
+          {({ handleSubmit, pristine, invalid, submitError }) => (
+            <React.Fragment>
+              {(submitError || submitErrorText) && <Modal.Error>{submitError || submitErrorText}</Modal.Error>}
+              <Modal.Body>
+                <form onSubmit={handleSubmit}>
+                  <Field
+                    title="Headline"
+                    component={TextField}
+                    name="title"
+                    validate={validateField([R.required, R.maxLength(35), ...(formValidations.title || [])])}
+                  />
+                  <Field
+                    multiline
+                    title="Description"
+                    component={TextField}
+                    name="summary"
+                    validate={validateField([R.required, R.maxLength(70), ...(formValidations.summary || [])])}
+                  />
+                  <Field
+                    title="Link"
+                    component={TextField}
+                    name="target"
+                    validate={validateField([R.required, R.link, ...(formValidations.target || [])])}
+                  />
+                  <Field
+                    title="Initial Fee"
+                    component={TextField}
+                    name="value"
+                    bold
+                    currency={currency}
+                    validate={validateField([
+                      R.required,
+                      R.number,
+                      R.currencyDecimals(decimals),
+                      R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
+                      R.lessThenCurrency(balance, decimals),
+                      ...(formValidations.value || []),
+                    ])}
+                  />
+                  <Button size="big" type="submit" color="primary" style={{ width: '100%', marginTop: '40px' }}>
+                    Send
+                  </Button>
+                </form>
+              </Modal.Body>
+            </React.Fragment>
+          )}
+        </Form>
+        <Modal.Footer>
+          <Modal.FooterText>
+            You need to pay initial fee to be considered. Paying fee does not imply that your link will be displayed, as
+            publisher has to whitelist your link.
+          </Modal.FooterText>
+        </Modal.Footer>
+      </React.Fragment>
+    ),
+  ),
 );
 
 export default AddLinkForm;
