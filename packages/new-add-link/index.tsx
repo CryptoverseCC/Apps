@@ -45,27 +45,18 @@ export default class AddLink extends React.Component<
     approvalProcess: undefined,
   };
 
-  private onSubmit = async (
-    values: { target: string; title: string; summary: string; value: string } = this.state.lastSubmitValues!,
-  ) => {
+  private onSubmit = async (values: IValues = this.state.lastSubmitValues!) => {
     const { approve, sendClaim, shouldApprove, decimals } = this.props.web3Store!;
-    this.setState({ lastSubmitValues: values });
     const { widgetLocation, recipientAddress } = this.props.widgetSettingsStore!;
-    const claim = this.createClaim({
-      target: values.target,
-      title: values.title,
-      summary: values.summary,
-      location: widgetLocation,
-    });
+
+    this.setState({ lastSubmitValues: values });
+    const claim = this.createClaim({ ...values, location: widgetLocation });
     const valueInWei = toWei(values.value, decimals);
     try {
       if (shouldApprove(valueInWei)) {
         let approvalProcess;
         const approval = new Promise((resolve, reject) => {
-          approvalProcess = {
-            resolve,
-            reject,
-          };
+          approvalProcess = { resolve, reject };
         });
         this.setState({ step: 'tokensAccess', approvalProcess });
         const transactionHash = await approval;
@@ -94,7 +85,7 @@ export default class AddLink extends React.Component<
     }
   };
 
-  private createClaim({ target, title, summary, location }) {
+  private createClaim({ target, title, summary, location, ...rest }) {
     return {
       type: ['link'],
       claim: { target, title, summary },
@@ -129,7 +120,6 @@ export default class AddLink extends React.Component<
   }
 
   render() {
-    const { step } = this.state;
     return <Modal.default>{this.renderStep()}</Modal.default>;
   }
 }
