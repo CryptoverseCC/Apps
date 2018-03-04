@@ -49,7 +49,7 @@ export default class Input extends PureComponent<TInputProps> {
       [InputStyles.hasAppend]: !!append,
       [InputStyles.bold]: bold,
       [InputStyles.primary]: primary,
-      [InputStyles.Shadow]: multiline
+      [InputStyles.Shadow]: multiline,
     });
     return multiline ? (
       <React.Fragment>
@@ -63,7 +63,7 @@ export default class Input extends PureComponent<TInputProps> {
         <div className={containerClassNames}>
           <div className={InputStyles.Shadow} style={{ display: 'flex', flexGrow: 1, maxWidth: '100%' }}>
             <div style={{ flexGrow: 1 }}>
-              <input style={{width: '100%'}} className={inputClassNames} {...props} key={1} ref={this._onRef} />
+              <input style={{ width: '100%' }} className={inputClassNames} {...props} key={1} ref={this._onRef} />
             </div>
             {currency && <div className={InputStyles.Currency}>{currency}</div>}
           </div>

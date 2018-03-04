@@ -52,42 +52,11 @@ class AddLink extends React.Component<{ widgetSettingsStore?: IWidgetSettings },
       claim,
     );
     const transferResult = await resolveOnTransactionHash(transferPromise.promiEvent);
-    console.log(transferResult);
   }
 
   private async approve(value) {
     return true;
   }
-
-  //   let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
-  //   if (token) {
-  //     sendClaimPromise = core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token).then((allowance) => {
-  //       let promise: Promise<any> = Promise.resolve(null);
-  //       if (new BN(allowance).lte(new BN(toPayWei))) {
-  //         promise = core.ethereum.claims
-  //           .approveUserfeedsContractTokenTransfer(web3, token, values.unlimitedApproval ? MAX_VALUE_256 : toPayWei)
-  //           .then(({ promiEvent }) => resolveOnTransationHash(promiEvent));
-  //       }
-
-  //       return promise.then(() =>
-  //         core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, values.value, claim),
-  //       );
-  //     });
-  //   } else {
-  //     sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, values.value, claim);
-  //   }
-
-  //   sendClaimPromise.then(({ promiEvent }) => {
-  //     promiEvent
-  //       .on('transactionHash', (linkId) => {
-  //         this.props.onSuccess(linkId);
-  //       })
-  //       .on('error', (e) => {
-  //         this.props.onError(e.message);
-  //       });
-  //   });
-  //   return sendClaimPromise;
-  // };
 
   render() {
     const { step } = this.state;
