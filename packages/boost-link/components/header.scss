@@ -34,18 +34,15 @@
       text-align: center;
     }
   }
-}
 
-.balance {
-  margin: 0;
-  font-size: 11px;
-  color: #A5ACB7;
-  font-family: 'PT Sans';
-  text-align: right;
+  .balance {
+    font-size: 11px;
+    color: #A5ACB7;
 
-  .amount {
-    padding-left: 5px;
-    color: #000000;
-    font-weight: bold;
+    .amount {
+      padding-left: 5px;
+      color: #000000;
+      font-weight: bold;
+    }
   }
 }

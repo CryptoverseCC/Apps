@@ -9,7 +9,7 @@ import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { fromWeiToString, toWei } from '@linkexchange/utils/balance';
 import MetaFox from '@linkexchange/images/metafox_straight.png';
 
-import Header, { PositionInSlots } from './Header';
+import Header from './Header';
 import Slider from './Slider';
 
 import * as style from './booster.scss';
@@ -61,7 +61,7 @@ export default class Booster extends Component<IProps, IState> {
 
     return (
       <>
-        <Header left={<PositionInSlots position={positionInSlots} />} tokenDetails={tokenDetails} />
+        <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
         {isInSlots && (
           <>
             <div className={style.probability}>

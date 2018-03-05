@@ -1,0 +1,67 @@
+.self {
+  .slider {
+    height: 6px;
+    padding: 10px 0px;
+    position: relative;
+
+    .right {
+      border-radius: 3px;
+      width: 100%;
+      cursor: pointer;
+      position: absolute;
+      height: 6px;
+      background: linear-gradient(270deg, rgba(158, 121, 255, 0.3) 0%, rgba(0, 85, 255, 0.3) 100%);
+    }
+
+    .fill {
+      position: absolute;
+      border-radius: 3px;
+      cursor: pointer;
+      height: 6px;
+      background: linear-gradient(270deg, #9e79ff 0%, #0055ff 100%);
+    }
+
+    .toggle {
+      position: absolute;
+      top: 2px;
+      cursor: grab;
+      box-shadow: 0 4px 8px 0 rgba(38, 63, 255, 0.25);
+      border: 2px solid #ffffff;
+      background-color: #9076ff;
+      border-radius: 20px;
+      height: 20px;
+      width: 20px;
+
+      &.dragging {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  .change {
+    height: 25px;
+    position: relative;
+    user-select: none;
+
+    .value {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      height: 100%;
+      width: 50px;
+      border-radius: 14px;
+      background-color: #daf9ec;
+      color: #09d57c;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  .scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: bold;
+  }
+}
