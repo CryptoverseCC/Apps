@@ -13,7 +13,7 @@ import BoostArrowImg from '@linkexchange/images/arrow-boost.svg';
 import LinksStore from '../linksStore';
 import { Columns, Column, FlexColumn } from './Columns';
 import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
-import Hr from './Hr';
+import Hr, { FancyHr } from './Hr';
 
 const SmallGreenText = styled.span`
   padding-left: 20px;
@@ -37,12 +37,12 @@ const StickyColumns = Columns.extend`
 const ListHeader: React.SFC<{ mobile?: boolean }> = ({ children, mobile }) => (
   <StickyColumns>
     <FlexColumn size={mobile ? 2 : 1} justifyContent="center">
-      <Hr />
+      <FancyHr left />
     </FlexColumn>
     <FlexColumn size={mobile ? 10 : 6}>{children}</FlexColumn>
     {!mobile && (
       <FlexColumn size={2} justifyContent="center">
-        <Hr />
+        <FancyHr />
       </FlexColumn>
     )}
   </StickyColumns>
@@ -58,7 +58,7 @@ export const ListHeaderSlots = ({ slots, linksCount }: { slots: number; linksCou
       In Slots <BlueBoldText style={{ paddingLeft: '20px' }}>{linksCount}</BlueBoldText>/{slots}
       <SmallGreenText style={{ paddingTop: '8px' }}>Visible in the widget</SmallGreenText>
     </BlackBoldText>
-    <LightGreyText>Assigned probability of being displayed</LightGreyText>
+    <LightGreyText style={{ marginTop: '10px' }}>Assigned probability of being displayed</LightGreyText>
   </ListHeader>
 );
 
@@ -67,7 +67,9 @@ export const ListHeaderOutside = ({ hasWhitelist }: { hasWhitelist: boolean }) =
     <BlackBoldText>
       Outside of slots <SmallBlackText style={{ paddingTop: '8px' }}>Not visible in the widget</SmallBlackText>
     </BlackBoldText>
-    <LightGreyText>{hasWhitelist ? 'Accepted by publisher, not boosted enough' : 'Not boosted enough'}</LightGreyText>
+    <LightGreyText style={{ marginTop: '10px' }}>
+      {hasWhitelist ? 'Accepted by publisher, not boosted enough' : 'Not boosted enough'}
+    </LightGreyText>
   </ListHeader>
 );
 
@@ -186,7 +188,8 @@ export const LinkRow: React.SFC<{
   link: ILink | IRemoteLink;
   tokenDetails: ITokenDetails;
   boostComponent: React.ComponentType<{ link: ILink | IRemoteLink }>;
-}> = ({ mobile, link, tokenDetails, boostComponent: BoostComponent }) => {
+  lastChild?: boolean;
+}> = ({ mobile, link, tokenDetails, lastChild, boostComponent: BoostComponent }) => {
   const score = fromWeiToString(link.score, tokenDetails.decimals);
 
   return (
@@ -203,21 +206,24 @@ export const LinkRow: React.SFC<{
         {/* </Boost> */}
         {/* </BoostComponent> */}
       </FlexColumn>
-      <FlexColumn size={mobile ? 10 : 8} flexDirection={mobile ? 'column' : 'row'} justifyContent="center">
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Link link={link} mobile={mobile} />
+      <FlexColumn size={mobile ? 10 : 8} justifyContent="center">
+        <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <Link link={link} mobile={mobile} />
+          </div>
+          <div
+            style={{
+              marginLeft: !mobile ? 'auto' : '',
+              display: 'flex',
+              flexDirection: mobile ? 'row' : 'column',
+              justifyContent: mobile ? 'space-between' : 'center',
+              flexShrink: 0,
+            }}
+          >
+            <LinkInfo link={link} tokenDetails={tokenDetails} />
+          </div>
         </div>
-        <div
-          style={{
-            marginLeft: !mobile ? 'auto' : '',
-            display: 'flex',
-            flexDirection: mobile ? 'row' : 'column',
-            justifyContent: mobile ? 'space-between' : 'initial',
-            flexShrink: 0,
-          }}
-        >
-          <LinkInfo link={link} tokenDetails={tokenDetails} />
-        </div>
+        {!lastChild && <Hr style={{ marginTop: '20px' }} />}
       </FlexColumn>
     </Columns>
   );

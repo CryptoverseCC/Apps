@@ -13,6 +13,7 @@ import ContactPublisher from './Contact';
 import { ShortAddress } from './ShortAddress';
 import IdenticonWithToken from './IdenticonWithToken';
 import { Columns, Column, FlexColumn } from './Columns';
+import PoweredByLinkexchange from './PoweredByLinkexchange';
 import { BlackText, SmallBlackText, BlackBoldText } from './Text';
 
 const Title = styled.p`
@@ -26,7 +27,7 @@ const Description = BlackText;
 
 const FilteringDescription = styled.p`
   display: inline;
-  padding: 10px 0;
+  padding-bottom: 10px;
   color: #1b2437;
   font-size: 18px;
   color: #a6aeb8;
@@ -85,13 +86,10 @@ class Header extends Component<IProps> {
             <LinkexchangeDots />
           </FlexColumn>
           <FlexColumn size={8} alignItems="flex-start">
-            <div
+            <PoweredByLinkexchange
               style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
               onClick={openLinkExchangeHomePage}
-            >
-              <SmallBlackText>Powered by</SmallBlackText>
-              <BlackBoldText style={{ whiteSpace: 'nowrap' }}>Link Exchange</BlackBoldText>
-            </div>
+            />
           </FlexColumn>
           {!mobile && (
             <FlexColumn size={3} justifyContent="center">
@@ -106,7 +104,7 @@ class Header extends Component<IProps> {
             </FlexColumn>
           )}
         </Columns>
-        <Columns>
+        <Columns style={{ margin: '70px 0' }}>
           {!mobile && (
             <FlexColumn size={1} justifyContent="center" alignItems="center">
               <IdenticonWithToken address={widgetSettings.recipientAddress} asset={widgetSettings.asset} />

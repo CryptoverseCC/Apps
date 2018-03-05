@@ -20,6 +20,10 @@ const SmallRedText = SmallBlackBoldText.extend`
 `;
 
 const Expires = ({ in: expiresIn }: { in: number }) => {
+  if (isNaN(expiresIn)) {
+    return null;
+  }
+
   if (expiresIn < 0) {
     return <SmallRedText>Expired!</SmallRedText>;
   }

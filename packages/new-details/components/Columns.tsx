@@ -12,7 +12,11 @@ export const Column = styledComponentWithProps<{ size?: number }, HTMLDivElement
   box-sizing: border-box;
   flex: ${(props) => (props.size ? '0 0 auto' : '1 1 0')};
   width: ${(props) => (props.size ? props.size / 12 * 100 + '%' : '')};
-  padding: 0.75rem;
+  padding: 0.75rem 30px;
+
+  @media screen and (max-width: 600px) {
+    padding: 0.75rem;
+  }
 `;
 
 export const FlexColumn = styledComponentWithProps<{

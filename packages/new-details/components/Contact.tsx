@@ -11,12 +11,15 @@ const A = styled.a`
 const ContactPublisherButton = styled.button`
   cursor: pointer;
   margin-top: 10px;
-  box-shadow: 0 9px 20px 0 rgba(38, 63, 255, 0.11);
-  padding: 5px 8px;
-  border: 1px solid #d9e0e7;
+  width: 79px;
+  height: 36px;
   border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 9px 20px 0 rgba(38, 63, 255, 0.11);
   color: #263fff;
+  font-size: 12px;
   font-weight: bold;
+  text-align: center;
 
   :disabled {
     cursor: not-allowed;

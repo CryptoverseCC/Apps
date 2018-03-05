@@ -31,16 +31,21 @@ const TokenLogoContainer = styled.div`
   width: 40px;
   height: 40px;
   background-color: rgba(255, 255, 255, 0.8);
-
-  :hover {
-    transition-duration: 0.3s;
-    background-color: rgba(255, 255, 255, 1);
-  }
 `;
 
 const StyledTokenLogo = styled(TokenLogo)`
   width: 100%;
   height: 100%;
+`;
+
+const A = styled.p`
+  cursor: pointer;
+  white-space: nowrap;
+  color: #263fff;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 0.1px;
 `;
 
 const openEtherscanAccount = (address: string, asset: string) => () => {
@@ -65,12 +70,17 @@ const openEtherscanToken = (asset: string) => () => {
 
 const IdenticonWithToken = (props: { address: string; asset: string } & React.HTMLAttributes<HTMLDivElement>) => {
   const { address, asset, ...restProps } = props;
+  const [_, token] = asset.split(':');
   return (
     <div {...restProps}>
       <Identicon address={address} onClick={openEtherscanAccount(address, asset)} />
       <TokenLogoContainer onClick={openEtherscanToken(asset)}>
         <StyledTokenLogo asset={asset} />
       </TokenLogoContainer>
+      <A onClick={openEtherscanAccount(address, asset)} style={{ marginTop: '20px' }}>
+        Host address
+      </A>
+      {token && <A onClick={openEtherscanToken(asset)}>Token</A>}
     </div>
   );
 };
@@ -78,7 +88,7 @@ const IdenticonWithToken = (props: { address: string; asset: string } & React.HT
 const StyledIdenticonWithToken = styled(IdenticonWithToken)`
   position: relative;
   margin-bottom: 14px;
-  cursor: pointer;
+  margin-bottom: 40px;
 `;
 
 export default StyledIdenticonWithToken;
