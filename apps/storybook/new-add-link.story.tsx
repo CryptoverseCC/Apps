@@ -18,6 +18,16 @@ import Web3Store from '@linkexchange/web3-store';
 import web3 from '@linkexchange/utils/web3';
 import Erc20 from '@linkexchange/web3-store/erc20';
 
+let web3StoreInstance: Web3Store;
+const web3Store = (asset) => {
+  if (web3StoreInstance) {
+    web3StoreInstance.changeAssetTo(asset);
+  } else {
+    web3StoreInstance = new Web3Store(web3, Erc20, { asset });
+  }
+  return web3StoreInstance;
+};
+
 storiesOf('Add Link', module)
   .addDecorator(withKnobs)
   .add('Flow', () => {
@@ -38,11 +48,10 @@ storiesOf('Add Link', module)
       timeslot: 0,
       location,
     });
-    const web3Store = new Web3Store(web3, Erc20, { asset });
     return (
       <div style={{ width: '500px' }}>
         <Provider
-          web3Store={web3Store}
+          web3Store={web3Store(asset)}
           formValidationsStore={formValidationsStore}
           widgetSettingsStore={widgetSettingsStore}
         >

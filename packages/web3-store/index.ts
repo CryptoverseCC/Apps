@@ -53,9 +53,9 @@ export default class Web3Store implements IWeb3Store {
   updateInjectedWeb3StateIntervalId: any;
   updateTokenDetailsIntervalId: any;
 
-  currentProvider: any;
-  isListening: boolean;
-  injectedWeb3ActiveNetwork: TNetwork;
+  @observable currentProvider: any;
+  @observable isListening: boolean;
+  @observable injectedWeb3ActiveNetwork: TNetwork;
   @observable currentAccount: string;
 
   @observable asset: string;

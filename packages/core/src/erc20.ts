@@ -33,6 +33,11 @@ export async function erc20ContractBalance(web3Instance, contractAddress): Promi
   return contract.methods.balanceOf(from).call();
 }
 
+export async function erc20ContractBalanceForAccount(web3Instance, contractAddress, from) {
+  const contract = getErc20Contract(web3Instance, contractAddress);
+  return contract.methods.balanceOf(from).call();
+}
+
 export function erc20ContractDecimals(web3Instance, contractAddress): Promise<any> {
   const contract = getErc20Contract(web3Instance, contractAddress);
   return contract.methods.decimals().call();

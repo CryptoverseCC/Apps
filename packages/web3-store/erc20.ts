@@ -3,7 +3,7 @@ import {
   erc20ContractDecimals,
   erc20ContractSymbol,
   erc20ContractName,
-  erc20ContractBalance,
+  erc20ContractBalanceForAccount,
 } from '@userfeeds/core/src/erc20';
 import { allowanceUserfeedsContractTokenTransferForAccount } from '@userfeeds/core/src/ethereumClaims';
 import Erc20Cache from './erc20Cache';
@@ -57,7 +57,7 @@ export default class Erc20 {
 
   async balance() {
     try {
-      return await erc20ContractBalance(this.web3, this.token);
+      return await erc20ContractBalanceForAccount(this.web3, this.token, this.account);
     } catch (e) {
       return undefined;
     }
