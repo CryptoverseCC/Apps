@@ -11,10 +11,10 @@ import LinkexchangeDots from './Dots';
 import ContactPublisher from './Contact';
 import { ShortAddress } from './ShortAddress';
 import IdenticonWithToken from './IdenticonWithToken';
-import { Columns, Column, FlexColumn } from './Columns';
-import PoweredByLinkexchange from './PoweredByLinkexchange';
+import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
 import { BlackText, SmallBlackText, BlackBoldText } from './Text';
-import { styledComponentWithProps } from '../utils';
+import PoweredByLinkexchange from './PoweredByLinkexchange';
+import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 
 const Title = styled.p`
   color: #1b2437;

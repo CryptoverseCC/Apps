@@ -11,12 +11,12 @@ import ActionRejected from '@linkexchange/new-add-link/ActionRejected';
 import TokensAccess from '@linkexchange/new-add-link/TokensAccess';
 import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
-import { FormValidationsProvider } from '../../packages/root-provider';
 import { IWidgetSettings, EWidgetSize } from '@linkexchange/types/widget';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 import Web3Store from '@linkexchange/web3-store';
 import web3 from '@linkexchange/utils/web3';
 import Erc20 from '@linkexchange/web3-store/erc20';
+import ActionSuccess from '@linkexchange/new-add-link/ActionSuccess';
 
 let web3StoreInstance: Web3Store;
 const web3Store = (asset) => {
@@ -39,10 +39,10 @@ storiesOf('Add Link', module)
     const formValidationsStore = observable({ 'add-link': { title: [], summary: [], target: [], value: [] } });
     const widgetSettingsStore: IWidgetSettings = new WidgetSettings({
       minimalLinkFee,
-      apiUrl: '',
+      apiUrl: 'https://api-dev.userfeeds.io',
       recipientAddress,
       asset,
-      algorithm: '',
+      algorithm: 'links',
       size: EWidgetSize.leaderboard,
       slots: 0,
       timeslot: 0,
@@ -91,4 +91,14 @@ storiesOf('Add Link Components', module)
   .add('Your transaction has been rejected', () => <ActionRejected retry={action('Retrying!')} />)
   .add('Tokens access', () => (
     <TokensAccess goBack={action('Go Back')} startTransaction={action('Start transaction')} />
+  ))
+  .add('Success', () => (
+    <ActionSuccess
+      showStatus={action('Show status')}
+      title={text('title', 'Title')}
+      description={text('description', 'Description')}
+      address={text('address', 'Address')}
+      value={text('fee', '0.1')}
+      currency={text('currency', 'ETH')}
+    />
   ));

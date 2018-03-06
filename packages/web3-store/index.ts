@@ -157,8 +157,8 @@ export default class Web3Store implements IWeb3Store {
 
   @computed
   get reason() {
-    if (!this.currentProvider || !this.isListening) {
-      return 'Enable Metamask to unlock all the features';
+    if (!this.currentProvider) {
+      return 'Install Metamask to unlock all the features';
     } else if (!this.currentAccount) {
       return 'Unlock your wallet to unlock all the features';
     } else if (this.activeNetwork !== this.network) {

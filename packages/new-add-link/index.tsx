@@ -17,6 +17,8 @@ import PaymentInProgress from '@linkexchange/new-add-link/PaymentInProgress';
 import { toWei } from '@linkexchange/utils/balance';
 import TokensAccess from '@linkexchange/new-add-link/TokensAccess';
 import ConfirmationToUseTokens from '@linkexchange/new-add-link/ConfirmationToUseTokens';
+import ActionSuccess from '@linkexchange/new-add-link/ActionSuccess';
+import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 interface IValues {
   target: string;
@@ -36,12 +38,14 @@ export default class AddLink extends React.Component<
   {
     step: string;
     lastSubmitValues?: IValues;
+    lastTransactionHash?: string;
     approvalProcess?: IApprovalProcess;
   }
 > {
   state = {
     step: 'form',
     lastSubmitValues: undefined,
+    lastTransactionHash: undefined,
     approvalProcess: undefined,
   };
 
@@ -64,7 +68,7 @@ export default class AddLink extends React.Component<
       const { promiEvent: claimRequest } = await sendClaim(recipientAddress, claim, values.value);
       this.setState({ step: 'paymentInProgress' });
       const transactionHash = await resolveOnTransactionHash(claimRequest);
-      this.setState({ step: 'success' });
+      this.setState({ step: 'actionSuccess', lastTransactionHash: transactionHash });
     } catch (e) {
       this.setState({ step: 'actionRejected' });
     }
@@ -102,6 +106,13 @@ export default class AddLink extends React.Component<
     this.setState({ step: 'form' });
   };
 
+  private showStatus = () => {
+    const { widgetSettingsStore } = this.props;
+    const { lastTransactionHash } = this.state;
+
+    openLinkexchangeUrl('/direct/status', { linkId: lastTransactionHash, ...widgetSettingsStore });
+  };
+
   private renderStep() {
     switch (this.state.step) {
       case 'form':
@@ -114,6 +125,18 @@ export default class AddLink extends React.Component<
         return <TokensAccess goBack={this.goBack} startTransaction={this.startApproval} />;
       case 'actionRejected':
         return <ActionRejected retry={this.goBack} />;
+      case 'actionSuccess':
+        const lastSubmitValues: IValues = this.state.lastSubmitValues!;
+        return (
+          <ActionSuccess
+            showStatus={this.showStatus}
+            title={lastSubmitValues.title}
+            description={lastSubmitValues.summary}
+            address={lastSubmitValues.target}
+            value={lastSubmitValues.value}
+            currency={this.props.web3Store!.symbol}
+          />
+        );
       default:
         return null;
     }
