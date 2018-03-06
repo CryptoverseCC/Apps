@@ -15,12 +15,12 @@ const AddLink = styled(Button)`
   font-weight: bold;
 `;
 
-const AddLinkButton = (props: { web3State: IWeb3State; widgetSettings: WidgetSettings }) => {
-  const { web3State, widgetSettings, ...restProps } = props;
+const AddLinkButton: React.SFC<{ web3State: IWeb3State; widgetSettings: WidgetSettings }> = (props) => {
+  const { web3State, widgetSettings, children, ...restProps } = props;
   return (
     <Tooltip text={web3State.reason}>
       <AddLink disabled={!web3State.enabled} color="primary" {...restProps}>
-        <Icon name="plus" />Add new link
+        {!children ? [<Icon key="icon" name="plus" />, 'Add new link'] : children}
       </AddLink>
     </Tooltip>
   );

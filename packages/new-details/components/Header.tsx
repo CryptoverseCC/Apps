@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { styledComponentWithProps } from '../utils';
 import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
@@ -15,6 +14,7 @@ import IdenticonWithToken from './IdenticonWithToken';
 import { Columns, Column, FlexColumn } from './Columns';
 import PoweredByLinkexchange from './PoweredByLinkexchange';
 import { BlackText, SmallBlackText, BlackBoldText } from './Text';
+import { styledComponentWithProps } from '../utils';
 
 const Title = styled.p`
   color: #1b2437;

@@ -19,6 +19,10 @@ export const BlackBoldText = BlackText.extend`
   font-weight: bold;
 `;
 
+export const BigBlackBoldText = BlackBoldText.extend`
+  font-size: 34px;
+`;
+
 export const SmallBlackBoldText = BlackBoldText.extend`
   font-size: 14px;
 `;

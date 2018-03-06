@@ -56,6 +56,7 @@ export default class LinksStore {
 
       this.allLinks = allLinks;
       this.whitelistedLinks = whitelistedLinks;
+
       this.fetched = true;
       this.fetching = false;
     } catch (e) {

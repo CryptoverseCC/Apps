@@ -34,7 +34,7 @@ class Details extends Component<IProps, IState> {
             addLink={<AddLinkButton onClick={this.onAddLink} />}
             expires={<Expires in={this.getDurationToExpires()} />}
           />
-          <Lists />
+          <Lists addLink={<AddLinkButton onClick={this.onAddLink} />} />
         </DetailsComponent>
         <Modal isOpen={isModalOpen} onCloseRequest={this.closeModal}>
           <AddLinkWithInjectedWeb3AndTokenDetails

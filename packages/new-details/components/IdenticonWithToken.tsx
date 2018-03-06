@@ -30,7 +30,7 @@ const TokenLogoContainer = styled.div`
   left: 12px;
   width: 40px;
   height: 40px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #ffffff;
 `;
 
 const StyledTokenLogo = styled(TokenLogo)`
