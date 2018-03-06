@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import { BigBlackBoldText, LightGreyText } from './Text';
-import { Columns, Column, FlexColumn } from './Columns';
+import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 
 const boxAnimation = keyframes`

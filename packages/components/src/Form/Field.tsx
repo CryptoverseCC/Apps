@@ -48,7 +48,7 @@ export const Field = ({ children, ...props }) => (
   </div>
 );
 
-export const Title = ({ children, active }) => (
+export const Title = ({ children, active = false }) => (
   <span style={{ color: active ? '#263FFF' : undefined }} className={styles.Header}>
     {children}
   </span>
