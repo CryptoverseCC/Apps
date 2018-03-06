@@ -35,10 +35,10 @@ const Item = styled(Columns.withComponent('li'))`
 
 const ItemWithLabelAndValue = ({ label, value }) => (
   <Item>
-    <Column size={4} withPadding={false}>
+    <Column size={4} withoutPadding={false}>
       <ItemTitle>{label}</ItemTitle>
     </Column>
-    <Column size={8} withPadding={false}>
+    <Column size={8} withoutPadding={false}>
       {value}
     </Column>
   </Item>

@@ -8,14 +8,14 @@ export const Columns = styled.div`
   box-sizing: border-box;
 `;
 
-export const Column = styledComponentWithProps<{ size?: number, withPadding?: boolean }, HTMLDivElement>(styled.div)`
+export const Column = styledComponentWithProps<{ size?: number, withoutPadding?: boolean }, HTMLDivElement>(styled.div)`
   box-sizing: border-box;
   flex: ${(props) => (props.size ? '0 0 auto' : '1 1 0')};
   width: ${(props) => (props.size ? props.size / 12 * 100 + '%' : '')};
-  padding: ${(props) => (props.withPadding ? '0.75rem 30px' : '0')};
+  padding: ${(props) => (props.withoutPadding ? '0' : '0.75rem 30px')};
 
   @media screen and (max-width: 600px) {
-    padding: ${(props) => (props.withPadding ? '0.75rem' : '0')};
+    padding: ${(props) => (props.withoutPadding ? '0' : '0.75rem')};
   }
 `;
 
