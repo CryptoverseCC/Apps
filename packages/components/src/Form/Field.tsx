@@ -21,9 +21,20 @@ export const TextField = (props) => {
 
   return (
     <Field>
-      <Title>{props.title}</Title>
-      <Input onChange={(e) => onChange(e)} {...restInputProps} type="text" />
-      {props.meta.touched && <Error>{props.meta.error}</Error>}
+      <Title active={props.meta.active}>{props.title}</Title>
+      <Input
+        onChange={(e) => onChange(e)}
+        {...restInputProps}
+        error={props.meta.error}
+        showStatus={props.meta.touched}
+        type="text"
+        bold={props.bold}
+        primary={props.primary}
+        currency={props.currency}
+        isActive={props.meta.active}
+        multiline={props.multiline}
+        append={props.append}
+      />
     </Field>
   );
 };
@@ -37,7 +48,11 @@ export const Field = ({ children, ...props }) => (
   </div>
 );
 
-export const Title = ({ children }) => <BoldText className={styles.Header}>{children}</BoldText>;
+export const Title = ({ children, active = false }) => (
+  <span style={{ color: active ? '#263FFF' : undefined }} className={styles.Header}>
+    {children}
+  </span>
+);
 
 export const Description = ({ children }) => <p className={styles.Description}>{children}</p>;
 

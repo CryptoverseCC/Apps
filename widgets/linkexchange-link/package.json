@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@linkexchange/add-link": "^0.0.170",
+    "@linkexchange/new-add-link": "^0.0.170",
     "@linkexchange/components": "^0.0.170",
     "@linkexchange/details": "^0.0.170",
     "@linkexchange/new-details": "^0.0.171",

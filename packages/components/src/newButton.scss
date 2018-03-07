@@ -5,7 +5,17 @@
   outline: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  border-radius: 3px;
+
+  &.rounded {
+    border-radius: 3px;
+  }
+
+  &.big {
+    padding: 15px 20px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: bold;
+  }
 
   &.medium {
     padding: 12px 20px;
@@ -85,7 +95,7 @@
   }
 
   &.metaPending {
-    background-color: rgba(247, 134, 28, 0.6);
+    background-color: #f6b47f;
     color: white;
     font-weight: bold;
   }

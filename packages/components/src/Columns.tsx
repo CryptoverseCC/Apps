@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { styledComponentWithProps } from '../utils';
+import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 
 export const Columns = styled.div`
   display: flex;
   box-sizing: border-box;
 `;
 
-export const Column = styledComponentWithProps<{ size?: number }, HTMLDivElement>(styled.div)`
+export const Column = styledComponentWithProps<{ size?: number, withoutPadding?: boolean }, HTMLDivElement>(styled.div)`
   box-sizing: border-box;
   flex: ${(props) => (props.size ? '0 0 auto' : '1 1 0')};
   width: ${(props) => (props.size ? props.size / 12 * 100 + '%' : '')};
-  padding: 0.75rem 30px;
+  padding: ${(props) => (props.withoutPadding ? '0' : '0.75rem 30px')};
 
   @media screen and (max-width: 600px) {
-    padding: 0.75rem;
+    padding: ${(props) => (props.withoutPadding ? '0' : '0.75rem')};
   }
 `;
 

@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-import { styledComponentWithProps } from '../utils';
+import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 
 const Dot = styledComponentWithProps<{ color: string }, HTMLDivElement>(styled.div)`
   display: inline-block;

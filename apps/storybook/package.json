@@ -1,0 +1,36 @@
+{
+  "name": "@linkexchange/storybook",
+  "version": "0.0.172",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "start-storybook -p 9001 -c .storybook"
+  },
+  "dependencies": {
+    "@linkexchange/new-add-link": "^0.0.170",
+    "@linkexchange/copy-from-mm": "^0.0.170",
+    "@linkexchange/images": "^0.0.149",
+    "@linkexchange/components": "^0.0.170",
+    "@linkexchange/web3-store": "^0.0.166"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^3.3.12",
+    "@storybook/addon-knobs": "^3.3.12",
+    "@storybook/react": "^3.4.0-alpha.7",
+    "@types/storybook__react": "^3.0.6",
+    "awesome-typescript-loader": "^3.4.1",
+    "babel-core": "^6.26.0",
+    "style-loader": "^0.20.1",
+    "typings-for-css-modules-loader": "^1.7.0"
+  },
+  "peerDependencies": {
+    "@types/jest": "^22.1.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^22.2.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "ts-jest": "^22.0.3"
+  }
+}

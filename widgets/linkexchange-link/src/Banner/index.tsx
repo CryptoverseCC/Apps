@@ -91,7 +91,9 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
                   <WidgetDatails onAddLink={this._openModal('addLink')} />
                 </Switch.Case>
                 <Switch.Case condition="addLink">
-                  <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._openDetails} />
+                  <div style={{ width: '500px' }}>
+                    <AddLink />
+                  </div>
                 </Switch.Case>
               </Switch>
               <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />

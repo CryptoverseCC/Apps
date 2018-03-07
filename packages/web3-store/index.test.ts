@@ -147,14 +147,7 @@ describe('Web3Store', () => {
     injectedWeb3.currentProvider = false;
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
     await web3Store.updateInjectedWeb3State();
-    expect(web3Store.reason).toBe('Enable Metamask to unlock all the features');
-  });
-
-  test('computes not listening reason correctly', async () => {
-    injectedWeb3.eth.net.isListening.mockReturnValue(false);
-    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
-    await web3Store.updateInjectedWeb3State();
-    expect(web3Store.reason).toBe('Enable Metamask to unlock all the features');
+    expect(web3Store.reason).toBe('Install Metamask to unlock all the features');
   });
 
   test('computes no active account reason correctly', async () => {
@@ -190,14 +183,19 @@ describe('Web3Store', () => {
     expect(web3Store.shouldApprove('10')).toBe(false);
   });
 
-  test('shouldApprove is false when asset is token and allowance is lower than value', () => {
+  test('shouldApprove is true when asset is token and allowance is lower than value', () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0', allowance: '1' });
     expect(web3Store.shouldApprove('10')).toBe(true);
   });
 
-  test('shouldApprove is true when asset is token and allowance is higher or equal to value', () => {
+  test('shouldApprove is false when asset is token and allowance is equal to value', () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0', allowance: '10' });
-    expect(web3Store.shouldApprove('10')).toBe(true);
+    expect(web3Store.shouldApprove('10')).toBe(false);
+  });
+
+  test('shouldApprove is false when asset is token and allowance is higher than value', () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum:0x0', allowance: '10' });
+    expect(web3Store.shouldApprove('10')).toBe(false);
   });
 
   test('#updateInjectedWeb3State correctly updates state', async () => {

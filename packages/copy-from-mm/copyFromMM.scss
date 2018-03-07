@@ -1,11 +1,14 @@
 .button {
   height: 100%;
   cursor: pointer;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  opacity: 1 !important;
 
   &:not([disabled]):hover {
-    background-color: rgba(247, 134, 28, 0.8);
+    background-color: #f6b47f;
+  }
+
+  &:disabled {
+    background-color: #f6dcc9;
   }
 }
 

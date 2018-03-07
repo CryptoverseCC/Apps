@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import moment from 'moment';
 
-import { styledComponentWithProps } from '../utils';
+import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
@@ -11,7 +11,7 @@ import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import BoostArrowImg from '@linkexchange/images/arrow-boost.svg';
 
 import LinksStore from '../linksStore';
-import { Columns, Column, FlexColumn } from './Columns';
+import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
 import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr, { FancyHr } from './Hr';
 

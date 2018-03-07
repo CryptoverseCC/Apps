@@ -6,12 +6,23 @@ import { isType } from '@linkexchange/utils';
 import * as style from './newButton.scss';
 
 type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  size?: 'small' | 'medium';
+  size?: 'small' | 'medium' | 'big';
   color?: 'primary' | 'secondary' | 'success' | 'pending' | 'metaPending' | 'error' | 'ready' | 'empty';
   outline?: boolean;
+  rounded?: boolean;
+  childrenWrapperStyle?: any;
 };
 
-const Button = ({ children, className, outline, size = 'medium', color = 'empty', ...props }: TButtonProps) => {
+const Button = ({
+  children,
+  className,
+  childrenWrapperStyle,
+  outline,
+  size = 'medium',
+  rounded = true,
+  color = 'empty',
+  ...props,
+}: TButtonProps) => {
   let icon;
   const decoratedChildren = React.Children.map(children, (child) => {
     if (isType(child, 'Icon')) {
@@ -25,12 +36,13 @@ const Button = ({ children, className, outline, size = 'medium', color = 'empty'
     <button
       className={classnames(style.Button, className, style[size], style[color], {
         [style.outline]: outline,
+        [style.rounded]: rounded,
       })}
       {...props}
     >
       <div className={style.ButtonInnerWrapper}>
         {icon}
-        <div className={style.Children}>{decoratedChildren}</div>
+        <div className={style.Children} style={childrenWrapperStyle}>{decoratedChildren}</div>
       </div>
     </button>
   );

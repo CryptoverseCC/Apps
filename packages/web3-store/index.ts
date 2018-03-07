@@ -1,4 +1,4 @@
-import { extendObservable, computed, action } from 'mobx';
+import { extendObservable, computed, action, observable } from 'mobx';
 import { networkMapping } from '@userfeeds/core/src/utils';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import {
@@ -22,22 +22,49 @@ interface IInitialState {
   allowance?: string | undefined;
 }
 
-export default class Web3Store {
-  updateInjectedWeb3StateIntervalId: any;
-  updateTokenDetailsIntervalId: any;
-
-  currentProvider: any;
-  isListening: boolean;
-  injectedWeb3ActiveNetwork: TNetwork;
-  currentAccount: string;
-
+export interface IWeb3Store {
   asset: string;
-
+  token: string;
+  network: string;
   decimals: number;
   symbol: string;
   name: string;
   balance: string;
+  balanceWithDecimalPoint?: string;
   allowance: string;
+  allowanceWithDecimalPoint?: string;
+  sendClaim: (
+    recipientAddress: string,
+    claim: any,
+    value?: string,
+  ) => Promise<{
+    promiEvent: PromiEvent<TransactionReceipt>;
+  }>;
+  shouldApprove: (value: string) => boolean;
+  approve: (
+    value: string,
+  ) => Promise<{
+    promiEvent: PromiEvent<TransactionReceipt>;
+  }>;
+  reason?: string;
+}
+
+export default class Web3Store implements IWeb3Store {
+  updateInjectedWeb3StateIntervalId: any;
+  updateTokenDetailsIntervalId: any;
+
+  @observable currentProvider: any;
+  @observable isListening: boolean;
+  @observable injectedWeb3ActiveNetwork: TNetwork;
+  @observable currentAccount: string;
+
+  @observable asset: string;
+
+  @observable decimals: number;
+  @observable symbol: string;
+  @observable name: string;
+  @observable balance: string;
+  @observable allowance: string;
 
   constructor(
     private injectedWeb3: Web3,
@@ -120,7 +147,7 @@ export default class Web3Store {
 
   @computed
   get erc20() {
-    return new this.Erc20Ctor(this.network, this.token);
+    return new this.Erc20Ctor(this.network, this.token, this.currentAccount);
   }
 
   @computed
@@ -130,8 +157,8 @@ export default class Web3Store {
 
   @computed
   get reason() {
-    if (!this.currentProvider || !this.isListening) {
-      return 'Enable Metamask to unlock all the features';
+    if (!this.currentProvider) {
+      return 'Install Metamask to unlock all the features';
     } else if (!this.currentAccount) {
       return 'Unlock your wallet to unlock all the features';
     } else if (this.activeNetwork !== this.network) {
@@ -168,7 +195,7 @@ export default class Web3Store {
       : undefined;
   }
 
-  sendTokenClaim(recipientAddress, claim, value?) {
+  sendTokenClaim = (recipientAddress, claim, value?) => {
     if (value === undefined) {
       return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
     } else {
@@ -176,7 +203,7 @@ export default class Web3Store {
     }
   }
 
-  sendEthereumClaim(recipientAddress, claim, value?) {
+  sendEthereumClaim = (recipientAddress, claim, value?) => {
     if (value === undefined) {
       return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
     } else {
@@ -184,14 +211,10 @@ export default class Web3Store {
     }
   }
 
-  approveEthereum(value) {
-    return Promise.resolve({ promiEvent: Promise.resolve() });
-  }
-
   @computed
   get sendClaim(): (
     recipientAddress: string,
-    claim: string,
+    claim: any,
     value?: string,
   ) => Promise<{
     promiEvent: PromiEvent<TransactionReceipt>;
@@ -199,11 +222,11 @@ export default class Web3Store {
     return this.token ? this.sendTokenClaim : this.sendEthereumClaim;
   }
 
-  shouldApprove(value: string) {
-    return !!this.token && (new BN(this.allowance).lte(new BN(value)) as boolean);
+  shouldApprove = (value: string) => {
+    return !!this.token && (new BN(this.allowance).lt(new BN(value)) as boolean);
   }
 
-  approve(value) {
+  approve = (value: string) => {
     return approveUserfeedsContractTokenTransfer(this.injectedWeb3, this.token, value);
   }
 }

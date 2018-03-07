@@ -34,7 +34,7 @@ export default class Web3StateProvider extends Component<IProps, IState> {
   };
 
   componentDidMount() {
-    this.removeListener = taskRunner.run(this.props.web3, [this.props.asset || ''], (web3State) => {
+    this.removeListener = getTaskRunner().run(this.props.web3, [this.props.asset || ''], (web3State) => {
       this.setState({ web3State });
     });
   }
@@ -71,7 +71,7 @@ export const withWeb3State = <T extends IComponentProps>(Cmp: React.ComponentTyp
     };
 
     componentDidMount() {
-      this.removeListener = taskRunner.run(
+      this.removeListener = getTaskRunner().run(
         this.props.web3,
         [typeof this.props.asset === 'string' ? this.props.asset : ''],
         (web3State) => {
@@ -111,4 +111,8 @@ const load = async (web3, [asset = ''], update) => {
   }
 };
 
-const taskRunner = new Web3TaskRunner<IWeb3State, [string]>(load);
+let taskRunner;
+const getTaskRunner = () => {
+  taskRunner = taskRunner || new Web3TaskRunner<IWeb3State, [string]>(load);
+  return taskRunner;
+};

@@ -19,4 +19,6 @@ export interface IWidgetSettings {
   location?: string;
   tillDate?: string;
   minimalLinkFee?: string;
+  widgetLocation?: string | undefined;
+  tokenAddress?: string | undefined;
 }

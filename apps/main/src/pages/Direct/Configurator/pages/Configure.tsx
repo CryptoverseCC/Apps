@@ -53,6 +53,7 @@ interface IState {
     contactMethod?: string;
     asset?: string;
     tillDate?: string;
+    whitelist?: string;
   };
 }
 
@@ -76,6 +77,7 @@ const MIN_DATE = moment().add(1, 'day');
 
 const rules = {
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
+  whitelist: [R.value((v) => v === '' ? true : isAddress(v), 'Has to be valid eth address')],
   title: [R.required],
   description: [R.required],
   contactMethod: [R.required],
@@ -192,6 +194,7 @@ class Configure extends Component<TProps, IState> {
 
     this.setState({ [key]: account });
     this.props.updateQueryParam(key, account);
+    this.validate(key, account);
   };
 
   render() {
@@ -216,37 +219,39 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Ethereum address you'll use to receive payments for links</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={recipientAddress}
-              onChange={onChange('recipientAddress')}
-              ref={this.onRef('recipientAddress')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} />
-          </div>
-          {errors.recipientAddress && <Error>{errors.recipientAddress}</Error>}
+          <Input
+            type="text"
+            value={recipientAddress}
+            onChange={onChange('recipientAddress')}
+            ref={this.onRef('recipientAddress')}
+            error={errors.recipientAddress}
+            append={(className) => (
+              <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} className={className} />
+            )}
+          />
         </Field>
         <Field>
           <Title>Whitelist</Title>
           <Description>Address that you'll use for links approval</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              type="text"
-              className={style.input}
-              value={whitelist}
-              onChange={onChange('whitelist')}
-              ref={this.onRef('whitelist')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('whitelist')} />
-          </div>
+          <Input
+            type="text"
+            value={whitelist}
+            onChange={onChange('whitelist')}
+            ref={this.onRef('whitelist')}
+            error={errors.whitelist}
+            append={(className) => <CopyFromMM onClick={this.setAddressFromMM('whitelist')} className={className} />}
+          />
         </Field>
         <Field>
           <Title>Title</Title>
           <Description>Name of Your Widget</Description>
-          <Input type="text" value={title} onChange={onChange('title')} ref={this.onRef('title')} />
-          {errors.title && <Error>{errors.title}</Error>}
+          <Input
+            type="text"
+            value={title}
+            onChange={onChange('title')}
+            ref={this.onRef('title')}
+            error={errors.title}
+          />
         </Field>
         <Field>
           <Title>Description</Title>
@@ -257,8 +262,8 @@ class Configure extends Component<TProps, IState> {
             value={description}
             onChange={onChange('description')}
             ref={this.onRef('description')}
+            error={errors.description}
           />
-          {errors.description && <Error>{errors.description}</Error>}
         </Field>
         <Field>
           <Title>Preferred Contact Method</Title>
@@ -267,8 +272,8 @@ class Configure extends Component<TProps, IState> {
             value={contactMethod}
             onChange={onChange('contactMethod')}
             ref={this.onRef('contactMethod')}
+            error={errors.contactMethod}
           />
-          {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
         </Field>
         <Field>
           <Title>Expiration date</Title>
@@ -279,8 +284,8 @@ class Configure extends Component<TProps, IState> {
             selected={this.state.tillDate}
             onChange={this.onTillDateChange}
             ref={this.onRef('tillDate')}
+            error={errors.tillDate}
           />
-          {errors.tillDate && <Error>{errors.tillDate}</Error>}
         </Field>
         <Field>
           <Title>Expected Traffic (Optional)</Title>

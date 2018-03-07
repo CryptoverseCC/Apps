@@ -3,15 +3,15 @@ import {
   erc20ContractDecimals,
   erc20ContractSymbol,
   erc20ContractName,
-  erc20ContractBalance,
+  erc20ContractBalanceForAccount,
 } from '@userfeeds/core/src/erc20';
-import { allowanceUserfeedsContractTokenTransfer } from '@userfeeds/core/src/ethereumClaims';
+import { allowanceUserfeedsContractTokenTransferForAccount } from '@userfeeds/core/src/ethereumClaims';
 import Erc20Cache from './erc20Cache';
 
 export default class Erc20 {
   web3: Web3;
 
-  constructor(private network, private token, private cache = new Erc20Cache(network, token)) {
+  constructor(private network, private token, private account, private cache = new Erc20Cache(network, token)) {
     const networkName = network === 'ethereum' ? 'mainnet' : network;
     this.web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
   }
@@ -57,7 +57,7 @@ export default class Erc20 {
 
   async balance() {
     try {
-      return await erc20ContractBalance(this.web3, this.token);
+      return await erc20ContractBalanceForAccount(this.web3, this.token, this.account);
     } catch (e) {
       return undefined;
     }
@@ -65,7 +65,7 @@ export default class Erc20 {
 
   async allowance() {
     try {
-      return await allowanceUserfeedsContractTokenTransfer(this.web3, this.token);
+      return await allowanceUserfeedsContractTokenTransferForAccount(this.web3, this.token, this.account);
     } catch (e) {
       return undefined;
     }
