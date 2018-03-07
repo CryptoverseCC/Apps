@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/widgets",
-  "version": "0.0.173",
+  "version": "0.0.171",
   "description": "",
   "main": "build/bundle.js",
   "scripts": {
@@ -11,13 +11,14 @@
   "author": "Userfeeds",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/add-link": "^0.0.172",
-    "@linkexchange/components": "^0.0.172",
-    "@linkexchange/details": "^0.0.173",
-    "@linkexchange/new-details": "^0.0.173",
+    "@linkexchange/add-link": "^0.0.170",
+    "@linkexchange/new-add-link": "^0.0.170",
+    "@linkexchange/components": "^0.0.170",
+    "@linkexchange/details": "^0.0.170",
+    "@linkexchange/new-details": "^0.0.171",
     "@linkexchange/root-provider": "^0.0.149",
     "@linkexchange/scss-unset": "^0.0.146",
-    "@linkexchange/toast": "^0.0.172",
+    "@linkexchange/toast": "^0.0.170",
     "@linkexchange/token-details-provider": "^0.0.166",
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.166",

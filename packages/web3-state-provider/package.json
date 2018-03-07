@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@linkexchange/utils": "^0.0.166",
-    "@userfeeds/core": "^0.0.166",
-    "@linkexchange/components": "^0.0.172"
+    "@userfeeds/core": "^0.0.166"
   }
 }
