@@ -4,7 +4,7 @@ import classnames from 'classnames/bind';
 import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
 
-import * as style from './result.scss';
+import * as style from './newResult.scss';
 const cx = classnames.bind(style);
 
 interface IProps {

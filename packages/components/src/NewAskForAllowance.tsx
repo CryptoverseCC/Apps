@@ -6,7 +6,7 @@ import Icon from '@linkexchange/components/src/Icon';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import TranscactionProvider from '@linkexchange/transaction-provider';
 
-import * as style from './askForAllowance.scss';
+import * as style from './newAskForAllowance.scss';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Form/Checkbox';
 const cx = classnames.bind(style);
@@ -20,7 +20,7 @@ interface IState {
   unlimited: boolean;
 }
 
-export default class AskForAllowance extends Component<IProps> {
+export default class NewAskForAllowance extends Component<IProps> {
   state = {
     unlimited: false,
   };

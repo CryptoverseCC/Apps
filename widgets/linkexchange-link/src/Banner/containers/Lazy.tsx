@@ -29,7 +29,7 @@ export const WidgetDatails = Loadable({
     const { onAddLink, ...restProps } = props;
     return (
       <IframePortal className={style.details}>
-        <div className={style.detailsComponent}>
+        <div className={style.detailsComponent} style={{ backgroundColor: 'white' }}>
           <Details {...restProps}>
             <Header addLink={<AddLinkButton onClick={onAddLink} />} />
             <Lists />
@@ -41,12 +41,14 @@ export const WidgetDatails = Loadable({
 });
 
 export const AddLink = Loadable({
-  loader: () => import('@linkexchange/add-link'),
+  loader: () => import('@linkexchange/new-add-link'),
   loading: Loading,
-  render: ({ AddLinkWithInjectedWeb3AndTokenDetails }, props) => {
+  render: ({ default: AddLink }, props) => {
     return (
       <IframePortal className={style.addLink}>
-        <AddLinkWithInjectedWeb3AndTokenDetails className={style.addLinkComponent} {...props} />
+        <div style={{ backgroundColor: 'white' }}>
+          <AddLink />
+        </div>
       </IframePortal>
     );
   },

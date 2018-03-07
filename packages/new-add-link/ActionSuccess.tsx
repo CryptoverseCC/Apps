@@ -1,5 +1,5 @@
 import React from 'react';
-import Result from '@linkexchange/components/src/Result';
+import Result from '@linkexchange/components/src/NewResult';
 import styled from 'styled-components';
 import { Column, Columns } from '@linkexchange/components/src/Columns';
 import A from '@linkexchange/components/src/A';

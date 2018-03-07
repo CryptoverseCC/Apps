@@ -14,17 +14,21 @@ export default class Provider extends React.Component<{ widgetSettings: WidgetSe
   constructor(props) {
     super(props);
     const [network] = this.props.widgetSettings.asset.split(':');
-    this.infuraWeb3 = getInfura((network as TNetwork));
+    this.infuraWeb3 = getInfura(network as TNetwork);
     this.web3Store = new Web3Store(web3, Erc20, { asset: this.props.widgetSettings.asset });
   }
 
   componentWillUnmount() {
-    this.web3Store.stopUpdating()
+    this.web3Store.stopUpdating();
   }
 
   render() {
     return (
-      <MobxProvider web3Store={this.web3Store}>
+      <MobxProvider
+        web3Store={this.web3Store}
+        widgetSettingsStore={this.props.widgetSettings}
+        formValidationsStore={{ 'add-link': {} }}
+      >
         <WidgetSettingsProvider widgetSettings={this.props.widgetSettings}>
           <Web3Provider injectedWeb3={web3} infuraWeb3={this.infuraWeb3}>
             <>

@@ -1,6 +1,6 @@
 import React from 'react';
-import AskForAllowance from '@linkexchange/components/src/AskForAllowance';
+import NewAskForAllowance from '@linkexchange/components/src/NewAskForAllowance';
 
-const TokensAccess = AskForAllowance;
+const TokensAccess = NewAskForAllowance;
 
 export default TokensAccess;

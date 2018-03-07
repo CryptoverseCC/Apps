@@ -7,7 +7,6 @@ const shadow = css`
 
 const Modal: any = styled.div`
   ${shadow} border-radius: 3px;
-  background-color: #fff;
   min-height: 350px;
   box-sizing: border-box;
   display: flex;
