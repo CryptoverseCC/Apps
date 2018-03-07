@@ -11,6 +11,7 @@ import Web3 from 'web3';
 import { BN } from 'web3-utils';
 import { TNetwork } from '@linkexchange/utils/web3';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
+import Erc20, { IErc20Constructor } from './erc20';
 
 interface IInitialState {
   asset?: string;
@@ -26,12 +27,13 @@ export interface IWeb3Store {
   asset: string;
   token: string;
   network: string;
-  decimals: number;
-  symbol: string;
-  name: string;
-  balance: string;
+  blockNumber?: number;
+  decimals?: number;
+  symbol?: string;
+  name?: string;
+  balance?: string;
   balanceWithDecimalPoint?: string;
-  allowance: string;
+  allowance?: string;
   allowanceWithDecimalPoint?: string;
   sendClaim: (
     recipientAddress: string,
@@ -46,8 +48,10 @@ export interface IWeb3Store {
   ) => Promise<{
     promiEvent: PromiEvent<TransactionReceipt>;
   }>;
+  getTransactionReceipt;
   reason?: string;
   unlocked?: boolean;
+  infuraWeb3?: Web3;
 }
 
 export default class Web3Store implements IWeb3Store {
@@ -58,6 +62,7 @@ export default class Web3Store implements IWeb3Store {
   @observable isListening: boolean;
   @observable injectedWeb3ActiveNetwork: TNetwork;
   @observable currentAccount: string;
+  @observable blockNumber: number | undefined;
 
   @observable asset: string;
 
@@ -69,7 +74,7 @@ export default class Web3Store implements IWeb3Store {
 
   constructor(
     private injectedWeb3: Web3,
-    private Erc20Ctor,
+    private Erc20Ctor: IErc20Constructor,
     initialState: IInitialState = {
       asset: '',
       currentProvider: undefined,
@@ -140,16 +145,20 @@ export default class Web3Store implements IWeb3Store {
   async updateInjectedWeb3State() {
     this.currentProvider = this.injectedWeb3.currentProvider;
     if (!this.currentProvider) {
+      const currentBlock = await this.erc20.currentBlock();
+      this.blockNumber = currentBlock;
       return;
     }
-    const [isListening, networkId, accounts] = await Promise.all([
+    const [isListening, networkId, accounts, currentBlock] = await Promise.all([
       this.injectedWeb3.eth.net.isListening(),
       this.injectedWeb3.eth.net.getId(),
       this.injectedWeb3.eth.getAccounts(),
+      this.injectedWeb3.eth.getBlockNumber(),
     ]);
     this.isListening = isListening;
     this.injectedWeb3ActiveNetwork = networkMapping[networkId];
     this.currentAccount = accounts[0];
+    this.blockNumber = currentBlock;
   }
 
   @computed
@@ -213,7 +222,7 @@ export default class Web3Store implements IWeb3Store {
     } else {
       return sendClaimTokenTransfer(this.injectedWeb3, recipientAddress, this.token, value, claim);
     }
-  }
+  };
 
   sendEthereumClaim = (recipientAddress, claim, value?) => {
     if (value === undefined) {
@@ -221,7 +230,7 @@ export default class Web3Store implements IWeb3Store {
     } else {
       return sendClaimValueTransfer(this.injectedWeb3, recipientAddress, value, claim);
     }
-  }
+  };
 
   @computed
   get sendClaim(): (
@@ -236,9 +245,25 @@ export default class Web3Store implements IWeb3Store {
 
   shouldApprove = (value: string) => {
     return !!this.token && (new BN(this.allowance).lt(new BN(value)) as boolean);
-  }
+  };
 
   approve = (value: string) => {
     return approveUserfeedsContractTokenTransfer(this.injectedWeb3, this.token, value);
+  };
+
+  async transactionReceipt(transactionHash: string) {
+    try {
+      const response = await this.injectedWeb3.eth.getTransactionReceipt(transactionHash);
+      return response;
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  @computed
+  get getTransactionReceipt(): (transactionHash: string) => Promise<TransactionReceipt | undefined> {
+    return this.ready && this.network === this.injectedWeb3ActiveNetwork
+      ? this.transactionReceipt
+      : this.erc20.transactionReceipt;
   }
 }

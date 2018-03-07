@@ -5,7 +5,6 @@ import { Location } from 'history';
 
 import wait from '@linkexchange/utils/wait';
 import { getInfura, TNetwork } from '@linkexchange/utils/web3';
-import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
@@ -19,61 +18,41 @@ const cubeSvg = require('!!svg-inline-loader?removeTags=true&removeSVGTagAttrs=t
 import Steps, { Step } from '../components/Steps';
 
 import * as style from './link.scss';
+import { inject, observer } from 'mobx-react';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { reaction, IReactionDisposer } from 'mobx';
 
 interface IProps {
   location: Location;
+  web3Store?: IWeb3Store;
+  widgetSettingsStore?: IWidgetSettings;
 }
 
 interface IState {
-  mobileOrTablet: boolean;
-  apiUrl: string;
   link?: any;
   linkId: string;
-  asset: string;
-  recipientAddress: string;
-  algorithm: string;
-  whitelist: string;
-  location: string;
-  currentBlockNumber: number | null;
-  transationStatus: boolean | null;
-  transationBlockNumber: number | null;
+  transactionStatus: boolean | null;
+  reactToBlock?: IReactionDisposer;
 }
 
+@inject('web3Store', 'widgetSettingsStore')
+@observer
 class LinkStatus extends Component<IProps, IState> {
-  web3: Web3;
-
   constructor(props: IProps) {
     super(props);
     const params = new URLSearchParams(props.location.search);
-
-    const apiUrl = params.get('apiUrl') || 'https://api.userfeeds.io';
-    const recipientAddress = params.get('recipientAddress') || '';
-    const asset = params.get('asset') || '';
-    const algorithm = params.get('algorithm') || '';
-    const whitelist = params.get('whitelist') || '';
     const linkId = params.get('linkId') || '';
-    const location = params.get('location') || '';
-
-    const [network] = asset.split(':');
-    this.web3 = getInfura(network as TNetwork, true);
-
     this.state = {
-      mobileOrTablet: mobileOrTablet(),
-      apiUrl,
       linkId,
-      recipientAddress,
-      asset,
-      algorithm,
-      whitelist,
-      location,
-      currentBlockNumber: null,
-      transationBlockNumber: null,
-      transationStatus: null,
+      transactionStatus: null,
+      reactToBlock: undefined,
     };
   }
 
   componentDidMount() {
-    const { linkId, apiUrl, recipientAddress, asset, algorithm, whitelist } = this.state;
+    const { apiUrl, recipientAddress, asset, algorithm, whitelist } = this.props.widgetSettingsStore!;
+    const { linkId } = this.state;
 
     const setTimeoutForFetch = (timeout: number | undefined) => {
       setTimeout(() => {
@@ -92,11 +71,8 @@ class LinkStatus extends Component<IProps, IState> {
   }
 
   render() {
-    if (!this.state.recipientAddress) {
-      return null;
-    }
-
-    const { whitelist, link, location, transationBlockNumber } = this.state;
+    const { whitelist, location } = this.props.widgetSettingsStore!;
+    const { link } = this.state;
 
     return (
       <div className={style.self}>
@@ -170,25 +146,16 @@ class LinkStatus extends Component<IProps, IState> {
   };
 
   _observeBlockchainState = () => {
-    const blockHeaders: any = this.web3.eth.subscribe('newBlockHeaders');
-
-    blockHeaders.on('data', ({ number }: BlockHeader) => {
-      this.setState({ currentBlockNumber: number });
-      if (!this.state.transationBlockNumber) {
-        this._checkReceipt();
-      }
-    });
-  };
-
-  _checkReceipt = async () => {
-    const [, tx] = this.state.linkId.split(':');
-    const receipt = await this.web3.eth.getTransactionReceipt(tx);
-    if (receipt) {
-      this.setState({
-        transationStatus: receipt.status === '0x1' ? true : false,
-        transationBlockNumber: receipt.blockNumber,
-      });
-    }
+    reaction(
+      () => this.props.web3Store!.blockNumber,
+      async (blockNumber, blockReaction) => {
+        const receipt = await this.props.web3Store!.getTransactionReceipt(this.state.linkId.split(':')[1]);
+        if (receipt) {
+          this.setState({ transactionStatus: receipt.status === '0x1' ? true : false });
+          blockReaction.dispose();
+        }
+      },
+    );
   };
 
   _findLinkById = (linkId) => (links) => {
@@ -199,14 +166,15 @@ class LinkStatus extends Component<IProps, IState> {
   };
 
   _getStepsStates = () => {
-    const { whitelist, link, transationBlockNumber, transationStatus } = this.state;
+    const { whitelist } = this.props.widgetSettingsStore!;
+    const { link, transactionStatus } = this.state;
     let step0State;
     let step0Reason;
 
     if (link) {
       step0State = 'done';
-    } else if (transationBlockNumber !== null) {
-      step0State = transationStatus ? 'done' : 'failed';
+    } else if (transactionStatus !== null) {
+      step0State = transactionStatus ? 'done' : 'failed';
     } else {
       step0State = 'waiting';
       step0Reason = 'Waiting for blockchain';
@@ -221,7 +189,8 @@ class LinkStatus extends Component<IProps, IState> {
   };
 
   _lastStepName = () => {
-    const { link, whitelist } = this.state;
+    const { whitelist } = this.props.widgetSettingsStore!;
+    const { link } = this.state;
     if (whitelist) {
       return (link && !link.whitelisted) || !link ? 'In Review' : 'Whitelisted';
     }

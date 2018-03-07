@@ -55,7 +55,7 @@ export default class AddLink extends React.Component<
 
     this.setState({ lastSubmitValues: values });
     const claim = this.createClaim({ ...values, location: widgetLocation });
-    const valueInWei = toWei(values.value, decimals);
+    const valueInWei = toWei(values.value, decimals!);
     try {
       if (shouldApprove(valueInWei)) {
         let approvalProcess;
@@ -81,7 +81,7 @@ export default class AddLink extends React.Component<
       this.setState({ step: 'confirmationToUseTokens' });
       const weiToApprove = unlimitedApproval
         ? MAX_VALUE_256
-        : toWei(lastSubmitValues.value, this.props.web3Store!.decimals);
+        : toWei(lastSubmitValues.value, this.props.web3Store!.decimals!);
       const { promiEvent: approveRequest } = await this.props.web3Store!.approve(weiToApprove);
       const transactionHash = await resolveOnTransactionHash(approveRequest);
       approvalProcess.resolve(transactionHash);

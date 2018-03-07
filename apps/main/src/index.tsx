@@ -40,8 +40,8 @@ if (widgetSettings.asset) {
   infuraWeb3 = getInfura(network as TNetwork);
 }
 
+const web3Store = new Web3Store(web3, Erc20, { asset: widgetSettings.asset });
 const startApp = () => {
-  const web3Store = new Web3Store(web3, Erc20, { asset: widgetSettings.asset })
   render(
     <Provider blocks={blocksStore} widgetSettingsStore={widgetSettings} web3Store={web3Store}>
       <IntlProvider locale="en">

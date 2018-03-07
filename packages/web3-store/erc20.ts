@@ -8,12 +8,33 @@ import {
 import { allowanceUserfeedsContractTokenTransferForAccount } from '@userfeeds/core/src/ethereumClaims';
 import Erc20Cache from './erc20Cache';
 
+export interface IErc20Constructor {
+  new (network: string, token: string, account: string, cache?: Erc20Cache): Erc20
+}
 export default class Erc20 {
   web3: Web3;
 
   constructor(private network, private token, private account, private cache = new Erc20Cache(network, token)) {
     const networkName = network === 'ethereum' ? 'mainnet' : network;
     this.web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
+  }
+
+  transactionReceipt = async (transactionHash: string) => {
+    try {
+      const response = await this.web3.eth.getTransactionReceipt(transactionHash);
+      return response;
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  async currentBlock(): Promise<number | undefined> {
+    try {
+      const response = await this.web3.eth.getBlockNumber();
+      return response;
+    } catch (e) {
+      return undefined;
+    }
   }
 
   async decimals(): Promise<number | undefined> {
@@ -65,7 +86,7 @@ export default class Erc20 {
 
   async allowance() {
     try {
-      return await allowanceUserfeedsContractTokenTransferForAccount(this.web3, this.token, this.account);
+      return await allowanceUserfeedsContractTokenTransferForAccount(this.web3, this.network, this.token, this.account);
     } catch (e) {
       return undefined;
     }

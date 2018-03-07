@@ -5,6 +5,9 @@ describe('Web3Store', () => {
   let getId;
   let getAccounts;
   let getBalance;
+  let getBlockNumber;
+  let getTransactionReceipt;
+  let erc20GetTransactionReceipt;
   let injectedWeb3;
   let Erc20Mock;
   beforeEach(() => {
@@ -12,12 +15,17 @@ describe('Web3Store', () => {
     getId = jest.fn().mockReturnValue(Promise.resolve(1));
     getAccounts = jest.fn().mockReturnValue(Promise.resolve(['abc']));
     getBalance = jest.fn().mockReturnValue(Promise.resolve('100000000'));
+    getBlockNumber = jest.fn().mockReturnValue(Promise.resolve(123456));
+    getTransactionReceipt = jest.fn().mockReturnValue(Promise.resolve({}));
+    erc20GetTransactionReceipt = jest.fn().mockReturnValue(Promise.resolve({}));
     Erc20Mock = jest.fn().mockImplementation(() => ({
       decimals: jest.fn().mockReturnValue(Promise.resolve(18)),
       symbol: jest.fn().mockReturnValue(Promise.resolve('PRC')),
       name: jest.fn().mockReturnValue(Promise.resolve('Procent')),
       balance: jest.fn().mockReturnValue(Promise.resolve('1000000')),
       allowance: jest.fn().mockReturnValue(Promise.resolve('100')),
+      currentBlock: jest.fn().mockReturnValue(Promise.resolve(123457)),
+      transactionReceipt: erc20GetTransactionReceipt,
     }));
     injectedWeb3 = {
       eth: {
@@ -27,6 +35,8 @@ describe('Web3Store', () => {
         },
         getAccounts,
         getBalance,
+        getBlockNumber,
+        getTransactionReceipt,
       },
       currentProvider: true,
     };
@@ -228,6 +238,18 @@ describe('Web3Store', () => {
     expect(web3Store.isListening).toBe(true);
     expect(web3Store.injectedWeb3ActiveNetwork).toBe('ethereum');
     expect(web3Store.currentAccount).toBe('abc');
+    expect(web3Store.blockNumber).toBe(123456);
+  });
+
+  test('#updateInjectedWeb3State correctly updates state when provider is falsy', async () => {
+    injectedWeb3.currentProvider = false;
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.currentProvider).toBe(false);
+    expect(web3Store.isListening).toBe(undefined);
+    expect(web3Store.injectedWeb3ActiveNetwork).toBe(undefined);
+    expect(web3Store.currentAccount).toBe(undefined);
+    expect(web3Store.blockNumber).toBe(123457);
   });
 
   test('updates data every second', () => {
@@ -268,5 +290,25 @@ describe('Web3Store', () => {
     web3Store.changeAssetTo('rinkeby:0x0');
     await web3Store.updateTokenDetails();
     expect(Erc20Mock).toHaveBeenCalledTimes(2);
+  });
+
+  test('computes correct getTransactionReceipt method when not ready', async () => {
+    injectedWeb3.currentProvider = false;
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.getTransactionReceipt).toBe(erc20GetTransactionReceipt);
+  });
+
+  test('computes correct getTransactionReceipt method when ready', async () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    web3Store.transactionReceipt = getTransactionReceipt;
+    expect(web3Store.getTransactionReceipt).toBe(getTransactionReceipt);
+  });
+
+  test('computes correct getTransactionReceipt method when ready but networks are different', async () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'rinkeby' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.getTransactionReceipt).toBe(erc20GetTransactionReceipt);
   });
 });
