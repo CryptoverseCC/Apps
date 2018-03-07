@@ -1,9 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
-//   & .checkbox:checked ~ .checkmark:after {
-//     display: block;
-//   }
+import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 
 type TCheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
@@ -15,17 +12,15 @@ const Input = styled.input`
   display: none;
 `;
 
-const Label: any = styled.label`
+const Label = styledComponentWithProps<{ checked?: boolean }, HTMLLabelElement>(styled.label)`
   font-size: 18px;
   display: flex;
   align-items: center;
-  ${(props: any) => props.checked && css`
-    color: #263fff;
-  `};
+  ${(props) => props.checked ? `color: #263fff;` : ''};
   cursor: pointer;
 `;
 
-const Checkmark: any = styled.div`
+const Checkmark = styledComponentWithProps<{ checked?: boolean }, HTMLDivElement>(styled.div)`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -53,12 +48,13 @@ const Checkmark: any = styled.div`
     box-shadow: 0 4px 8px 0 rgba(38, 63, 255, 0.25);
   }
 
-  ${(props: any) => props.checked && css`
-    border-color: #263fff;
-    &:after {
-      display: block;
-    }
-  `};
+  ${(props) => props.checked ?
+    `
+      border-color: #263fff;
+      &:after {
+        display: block;
+      }
+    ` : ''};
 `;
 
 const Checkbox = (props: TCheckboxProps) => (

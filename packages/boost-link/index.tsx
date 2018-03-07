@@ -20,7 +20,7 @@ import Slide from './components/Slide';
 import Result from './components/Result';
 import Booster from './components/Booster';
 import AskForAllowance from './components/AskForAllowance';
-import TransactionInProgress from './components/TransactionInProgress';
+import TransactionInProgress from '@linkexchange/components/src/TransactionInProgress';
 
 import * as style from './boostLink.scss';
 
