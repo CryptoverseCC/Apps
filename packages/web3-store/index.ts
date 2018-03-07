@@ -48,7 +48,7 @@ export interface IWeb3Store {
   ) => Promise<{
     promiEvent: PromiEvent<TransactionReceipt>;
   }>;
-  getTransactionReceipt;
+  getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt | undefined>;
   reason?: string;
   unlocked?: boolean;
   infuraWeb3?: Web3;

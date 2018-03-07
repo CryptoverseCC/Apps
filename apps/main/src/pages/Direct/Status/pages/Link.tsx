@@ -33,7 +33,6 @@ interface IState {
   link?: any;
   linkId: string;
   transactionStatus: boolean | null;
-  reactToBlock?: IReactionDisposer;
 }
 
 @inject('web3Store', 'widgetSettingsStore')
@@ -46,7 +45,6 @@ class LinkStatus extends Component<IProps, IState> {
     this.state = {
       linkId,
       transactionStatus: null,
-      reactToBlock: undefined,
     };
   }
 
