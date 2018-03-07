@@ -47,6 +47,7 @@ export interface IWeb3Store {
     promiEvent: PromiEvent<TransactionReceipt>;
   }>;
   reason?: string;
+  unlocked?: boolean;
 }
 
 export default class Web3Store implements IWeb3Store {
@@ -170,6 +171,11 @@ export default class Web3Store implements IWeb3Store {
     } else if (this.activeNetwork !== this.network) {
       return `Switch to ${this.network} network to unlock all the features`;
     }
+  }
+
+  @computed
+  get unlocked() {
+    return !!(this.ready && this.currentAccount);
   }
 
   @computed

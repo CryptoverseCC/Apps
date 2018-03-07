@@ -14,6 +14,8 @@ import BlocksStore from './stores/blocks';
 import App from './App';
 
 import '../styles/all.scss';
+import Web3Store from '@linkexchange/web3-store';
+import Erc20 from '@linkexchange/web3-store/erc20';
 
 const [, searchParams] = document.location.href.split('?');
 const { startBlock, endBlock, ...widgetSettingsFromParams } = qs.parse(searchParams);
@@ -26,6 +28,7 @@ const DEFAULT_WIDGET_SETTINGS = {
   timeslot: 20,
   location: window.location.href,
   algorithm: 'links',
+  whitelist: '',
 };
 
 const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
@@ -38,16 +41,13 @@ if (widgetSettings.asset) {
 }
 
 const startApp = () => {
+  const web3Store = new Web3Store(web3, Erc20, { asset: widgetSettings.asset })
   render(
-    <WidgetSettingsProvider widgetSettings={widgetSettings}>
-      <Provider blocks={blocksStore}>
-        <IntlProvider locale="en">
-          <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-            <App />
-          </Web3Provider>
-        </IntlProvider>
-      </Provider>
-    </WidgetSettingsProvider>,
+    <Provider blocks={blocksStore} widgetSettingsStore={widgetSettings} web3Store={web3Store}>
+      <IntlProvider locale="en">
+        <App />
+      </IntlProvider>
+    </Provider>,
     document.querySelector('.root'),
   );
 };

@@ -143,6 +143,29 @@ describe('Web3Store', () => {
     expect(web3Store.allowanceWithDecimalPoint).toBe('10.000');
   });
 
+  test('unlocked is false when is not ready', async () => {
+    injectedWeb3.currentProvider = false;
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.ready).toBe(false);
+    expect(web3Store.unlocked).toBe(false);
+  });
+
+  test('unlocked is false when is ready but has no accounts', async () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
+    getAccounts.mockReturnValue(Promise.resolve([]));
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.ready).toBe(true);
+    expect(web3Store.unlocked).toBe(false);
+  });
+
+  test('unlocked is true when is ready and has account', async () => {
+    const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });
+    await web3Store.updateInjectedWeb3State();
+    expect(web3Store.ready).toBe(true);
+    expect(web3Store.unlocked).toBe(true);
+  });
+
   test('computes no provider reason correctly', async () => {
     injectedWeb3.currentProvider = false;
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, { asset: 'ethereum' });

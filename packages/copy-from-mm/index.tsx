@@ -7,21 +7,22 @@ import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider'
 import MetaFox from '@linkexchange/images/metafox.png';
 
 import * as style from './copyFromMM.scss';
+import { inject, observer } from 'mobx-react';
+import { IWeb3Store } from '@linkexchange/web3-store';
 
 interface IProps {
   onClick(): void;
-  web3State: {
-    enabled: boolean;
-    reason?: string;
-  };
+  enabled?: boolean;
+  reason?: string;
   className?: string;
 }
 
-export const CopyFromMM = ({ onClick, web3State, className }: IProps) => {
-  const enabled = web3State.enabled || (web3State.reason && web3State.reason.startsWith('You have to switch to'));
-  const reason = !enabled ? web3State.reason : '';
-  return (
-    <Tooltip text={reason} className={className}>
+export const CopyFromMM = inject(({ web3Store }: { web3Store?: IWeb3Store }, nextProps: IProps) => ({
+  enabled: (web3Store && web3Store.unlocked) || nextProps.enabled,
+  reason: (web3Store && !web3Store.reason) || nextProps.reason,
+}))(
+  observer(({ onClick, enabled, reason, className }: IProps) => (
+    <Tooltip text={enabled ? '' : reason} className={className}>
       <Button
         disabled={!enabled}
         rounded={false}
@@ -33,7 +34,7 @@ export const CopyFromMM = ({ onClick, web3State, className }: IProps) => {
         <img className={style.metamask} src={MetaFox} />
       </Button>
     </Tooltip>
-  );
-};
+  )),
+);
 
-export default withInjectedWeb3AndWeb3State(CopyFromMM);
+export default CopyFromMM;
