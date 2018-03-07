@@ -60,6 +60,7 @@ class Lists extends Component<IProps> {
     const whitelistedLinks = differenceBy(links!.whitelistedLinks, linksInSlots, (a) => a.id);
     const allLinks = differenceBy(links!.allLinks, linksInSlots, (a) => a.id);
     const linksOutside = hasWhitelist ? whitelistedLinks : allLinks;
+    const web3Enabled = true;
 
     return (
       <>
@@ -74,6 +75,7 @@ class Lists extends Component<IProps> {
                   key={link.id}
                   asset={widgetSettings.asset}
                   link={link}
+                  boostEnabled={web3Enabled}
                   boostComponent={DecoratedDefaultBoostLink}
                   lastChild={index === linksInSlots.length - 1}
                 />
@@ -84,6 +86,7 @@ class Lists extends Component<IProps> {
                   key={link.id}
                   asset={widgetSettings.asset}
                   link={link}
+                  boostEnabled={web3Enabled}
                   boostComponent={DecoratedDefaultBoostLink}
                   lastChild={index === linksOutside.length - 1}
                 />

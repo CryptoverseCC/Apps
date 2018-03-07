@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { SmallBlackBoldText } from './Text';
+import { BlackBoldText } from './Text';
 
 const getColor = (expiresIn) => {
   if (expiresIn < moment.duration({ days: 3 })) {
@@ -15,7 +15,7 @@ const getColor = (expiresIn) => {
   return '#09d57c';
 };
 
-const SmallRedText = SmallBlackBoldText.extend`
+const SmallRedText = BlackBoldText.extend`
   color: #fb0035;
 `;
 
@@ -25,13 +25,13 @@ const Expires = ({ in: expiresIn }: { in: number }) => {
   }
 
   if (expiresIn < 0) {
-    return <SmallRedText>Expired!</SmallRedText>;
+    return <SmallRedText style={{ margin: '10px 0' }}>Expired!</SmallRedText>;
   }
 
   return (
-    <SmallBlackBoldText>
+    <BlackBoldText style={{ margin: '10px 0' }}>
       Expires in <span style={{ color: getColor(expiresIn) }}>{moment.duration(expiresIn).humanize()}</span>
-    </SmallBlackBoldText>
+    </BlackBoldText>
   );
 };
 export default Expires;

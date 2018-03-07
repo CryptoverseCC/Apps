@@ -25,10 +25,12 @@ const Identicon = (props: { address: string; onClick?: () => void }) => (
 
 const TokenLogoContainer = styled.div`
   position: absolute;
+  box-sizing: border-box;
   border-radius: 100%;
   top: 38px;
   left: 12px;
   width: 40px;
+  padding: 5px;
   height: 40px;
   background-color: #ffffff;
 `;

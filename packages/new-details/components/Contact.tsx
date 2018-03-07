@@ -23,8 +23,10 @@ const ContactPublisherButton = styled.button`
 
   :disabled {
     cursor: not-allowed;
-    opacity: 0.7;
-    color: #d9e0e7;
+    background-image: linear-gradient(to right, #ffffff, #f5f7fa);
+    box-shadow: none;
+    border: solid 1px #d9e0e7;
+    color: #89939f;
   }
 `;
 

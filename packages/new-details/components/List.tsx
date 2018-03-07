@@ -133,26 +133,27 @@ const LinkInfo = ({ link, tokenDetails }: { link: ILink | IRemoteLink; tokenDeta
   </>
 );
 
-const Score = styled.div`
+const Score = styledComponentWithProps<{ disabled?: boolean }, HTMLDivElement>(styled.div)`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 45px;
   width: 60px;
   border-radius: 25px;
-  background-color: #ffffff;
-  box-shadow: 0 9px 20px 0 rgba(38, 63, 255, 0.11);
-  color: #263fff;
   font-size: 16px;
   font-weight: bold;
+  border: ${(props) => (props.disabled ? 'solid 1px #d9e0e7' : '')} ;
+  color: ${(props) => (props.disabled ? '#1b2437' : '#263fff')};
+  background-color: ${(props) => (props.disabled ? ' #f5f7fa' : '#ffffff')};
+  box-shadow: ${(props) => (!props.disabled ? '0 9px 20px 0 rgba(38, 63, 255, 0.11)' : '')};
 `;
 
-const TokenAmount = styled.span`
+const TokenAmount = styledComponentWithProps<{ disabled?: boolean }, HTMLDivElement>(styled.span)`
   padding-top: 10px;
-  color: #acb7f5;
   font-size: 12px;
   font-weight: bold;
   white-space: nowrap;
+  color: ${(props) => (props.disabled ? '#a6aeb8' : '#acb7f5')};
 `;
 
 const bounce = keyframes`
@@ -188,23 +189,23 @@ export const LinkRow: React.SFC<{
   link: ILink | IRemoteLink;
   tokenDetails: ITokenDetails;
   boostComponent: React.ComponentType<{ link: ILink | IRemoteLink }>;
+  boostEnabled: boolean;
   lastChild?: boolean;
-}> = ({ mobile, link, tokenDetails, lastChild, boostComponent: BoostComponent }) => {
+}> = ({ mobile, link, tokenDetails, lastChild, boostEnabled, boostComponent: BoostComponent }) => {
   const score = fromWeiToString(link.score, tokenDetails.decimals);
 
   return (
     <Columns style={{ paddingTop: '20px' }}>
       <FlexColumn size={mobile ? 2 : 1} alignItems="center" justifyContent="center">
-        <BoostComponent link={link}>
-          {/* <Boost> */}
-          <BoostArrow />
-        </BoostComponent>
-        <Score>{isILink(link) ? `${link.probability}%` : score}</Score>
-        <TokenAmount>
-          {score} {tokenDetails.symbol}
-        </TokenAmount>
-        {/* </Boost> */}
-        {/* </BoostComponent> */}
+        <Boost>
+          <BoostComponent link={link}>
+            <BoostArrow />
+          </BoostComponent>
+          <Score disabled={!boostEnabled}>{isILink(link) ? `${link.probability}%` : score}</Score>
+          <TokenAmount disabled={!boostEnabled}>
+            {score} {tokenDetails.symbol}
+          </TokenAmount>
+        </Boost>
       </FlexColumn>
       <FlexColumn size={mobile ? 10 : 8} justifyContent="center">
         <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row' }}>

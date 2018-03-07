@@ -97,7 +97,11 @@ class Header extends Component<IProps> {
                 <BoldLink target="_blank" href="https://linkexchange.io/faq.html" style={{ marginRight: '30px' }}>
                   FAQ
                 </BoldLink>
-                <BoldLink target="_blank" href="https://app.linkexchange.io/direct/configurator">
+                <BoldLink
+                  target="_blank"
+                  href="https://app.linkexchange.io/direct/configurator"
+                  style={{ whiteSpace: 'nowrap' }}
+                >
                   Create own widget
                 </BoldLink>
               </div>
@@ -145,7 +149,7 @@ class Header extends Component<IProps> {
             <Description>{widgetSettings.description}</Description>
           </FlexColumn>
           {!mobile && (
-            <FlexColumn size={4} justifyContent="center">
+            <FlexColumn size={4}>
               <AddLinkContainer>
                 <div style={{ position: 'fixed' }}>{addLink}</div>
               </AddLinkContainer>

@@ -1,8 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { BigBlackBoldText, LightGreyText } from './Text';
 import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
+
+import { BigBlackBoldText, LightGreyText, BlackBoldText } from './Text';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 
 const boxAnimation = keyframes`
@@ -63,7 +64,6 @@ const EmptyContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 410px;
-  background-color: #f5f7fa;
 `;
 
 const LonelyText = LightGreyText.extend`
@@ -71,11 +71,11 @@ const LonelyText = LightGreyText.extend`
   font-weight: bold;
 `;
 
-const Empty: React.SFC<{ mobile?: boolean }> = ({ mobile, children }) => (
+const Empty: React.SFC<{ mobile?: boolean; style?: any }> = ({ mobile, style, children }) => (
   <Columns>
     {!mobile && <Column size={1} />}
     <FlexColumn size={mobile ? 12 : 8}>
-      <EmptyContainer>
+      <EmptyContainer style={style}>
         <LonelyBlock />
         {children}
       </EmptyContainer>
@@ -88,7 +88,12 @@ export const NoLinks: React.SFC<{ mobile?: boolean; addLink?: JSX.Element }> = (
   const decoratedAddLink = addLink ? React.cloneElement(addLink, { children: 'Add the first one' }) : null;
 
   return (
-    <Empty mobile={mobile}>
+    <Empty
+      mobile={mobile}
+      style={{
+        backgroundColor: '#f5f7fa',
+      }}
+    >
       <LonelyText style={{ margin: '15px 0 20px 0' }}>Another lonely block</LonelyText>
       <BigBlackBoldText style={{ marginBottom: '15px' }}>No links, yet.</BigBlackBoldText>
       {!mobile && decoratedAddLink}
@@ -102,7 +107,7 @@ NoLinks.defaultProps = {
 
 export const Loading: React.SFC<{ mobile?: boolean }> = ({ mobile }) => (
   <Empty mobile={mobile}>
-    <BigBlackBoldText>Links loading</BigBlackBoldText>
+    <BlackBoldText>Links loading</BlackBoldText>
   </Empty>
 );
 
