@@ -103,25 +103,25 @@ class Whitelist extends Component<TProps, IState> {
           <div className={style.body} style={{ padding: '20px' }}>
             <Field>
               <Title>Recipient Address</Title>
-                <Input
-                  type="text"
-                  value={this.state.recipientAddress}
-                  onChange={this._onChange('recipientAddress')}
-                  append={(className) => (
-                    <CopyFromMM onClick={this._setAddressFromMM('recipientAddress')} className={className} />
-                  )}
-                />
+              <Input
+                type="text"
+                value={this.state.recipientAddress}
+                onChange={this._onChange('recipientAddress')}
+                append={(className) => (
+                  <CopyFromMM onClick={this._setAddressFromMM('recipientAddress')} className={className} />
+                )}
+              />
             </Field>
             <Field>
               <Title>Whitelist Address</Title>
-                <Input
-                  type="text"
-                  value={this.state.whitelist}
-                  onChange={this._onChange('whitelist')}
-                  append={(className) => (
-                    <CopyFromMM onClick={this._setAddressFromMM('whitelist')} className={className} />
-                  )}
-                />
+              <Input
+                type="text"
+                value={this.state.whitelist}
+                onChange={this._onChange('whitelist')}
+                append={(className) => (
+                  <CopyFromMM onClick={this._setAddressFromMM('whitelist')} className={className} />
+                )}
+              />
             </Field>
             <Field>
               <Title>Choose token</Title>
@@ -148,11 +148,7 @@ class Whitelist extends Component<TProps, IState> {
                 }}
               />
             ) : this._linksWaitingForApproval().length > 0 ? (
-              <LinksList
-                web3={this.web3}
-                asset={`${asset.network}:${asset.token}`}
-                links={this._linksWaitingForApproval()}
-              />
+              <LinksList links={this._linksWaitingForApproval()} />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
@@ -178,7 +174,7 @@ class Whitelist extends Component<TProps, IState> {
                 }}
               />
             ) : this._linksApproved().length > 0 ? (
-              <LinksList web3={this.web3} asset={`${asset.network}:${asset.token}`} links={this._linksApproved()} />
+              <LinksList links={this._linksApproved()} />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />

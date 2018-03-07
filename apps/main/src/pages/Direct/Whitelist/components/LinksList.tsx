@@ -15,17 +15,42 @@ import web3 from '@linkexchange/utils/web3';
 import { TWhitelistableClickableLink } from '../';
 
 import * as style from './linksList.scss';
+import { inject } from 'mobx-react';
+import { IWeb3Store } from '@linkexchange/web3-store';
 
 interface ILinksListProps {
-  tokenDetails: ITokenDetails;
   links: TWhitelistableClickableLink[];
+  web3Store?: IWeb3Store;
 }
 
-class LinksList extends Component<ILinksListProps> {
+@inject('web3Store')
+export default class LinksList extends Component<ILinksListProps> {
+  private whitelistLink = async (linkId: string) => {
+    const claim = { claim: { target: linkId } };
+    const claimRequest = await this.props.web3Store!.sendClaim(claim);
+    claimRequest.promiEvent
+      .on('transactionHash', (transactionHash) => {
+        sessionStorage.setItem(linkId, `${transactionHash}:pending`);
+      })
+      .on('receipt', (receipt) => {
+        sessionStorage.setItem(linkId, `${receipt.transactionHash}:success`);
+      });
+    return claimRequest;
+  };
+
+  private getInitialStatus = (linkId: string): TStatus => {
+    const transaction = sessionStorage.getItem(linkId);
+    if (!transaction) {
+      return 'ready';
+    }
+    const [transactionId, status] = transaction.split(':');
+
+    return status as TStatus;
+  };
 
   render() {
-    const props = this.props;
-
+    const { links } = this.props;
+    const { decimals } = this.props.web3Store!;
     return (
       <table className={style.Table}>
         <thead>
@@ -39,7 +64,7 @@ class LinksList extends Component<ILinksListProps> {
           </tr>
         </thead>
         <tbody>
-          {props.links.map((link) => (
+          {links.map((link) => (
             <tr key={link.id}>
               <td>
                 <b>{link.title}</b>
@@ -47,13 +72,13 @@ class LinksList extends Component<ILinksListProps> {
                 <A href={link.target}>{link.target}</A>
               </td>
               <td style={{ width: '140px' }}>
-                <b>{fromWeiToString(link.total, props.tokenDetails.decimals)}</b>
+                <b>{fromWeiToString(link.total, decimals!)}</b>
               </td>
               {!link.whitelisted && (
                 <td style={{ width: '200px', textAlign: 'right' }}>
                   <TransactionProvider
-                    initialStatus={this._getInitialStatus(link.id)}
-                    startTransaction={() => this._whitelistLink(link.id)}
+                    initialStatus={this.getInitialStatus(link.id)}
+                    startTransaction={() => this.whitelistLink(link.id)}
                     renderReady={() => (
                       <Button color="ready">
                         <Icon name="check" /> Accept
@@ -68,35 +93,4 @@ class LinksList extends Component<ILinksListProps> {
       </table>
     );
   }
-
-  _whitelistLink = (linkId: string) => {
-    const claim = {
-      claim: { target: linkId },
-    };
-
-    const promiEvent = core.ethereum.claims.sendClaimWithoutValueTransfer(web3, claim);
-
-    promiEvent.then(({ promiEvent }) => {
-      promiEvent.on('transactionHash', (transactionHash) => {
-        sessionStorage.setItem(linkId, `${transactionHash}:pending`);
-      });
-      promiEvent.on('receipt', (receipt) => {
-        sessionStorage.setItem(linkId, `${receipt.transactionHash}:success`);
-      });
-    });
-
-    return promiEvent;
-  }
-
-  _getInitialStatus = (linkId: string): TStatus => {
-    const transaction = sessionStorage.getItem(linkId);
-    if (!transaction) {
-      return 'ready';
-    }
-    const [transactionId, status] = transaction.split(':');
-
-    return status as TStatus;
-  }
 }
-
-export default withTokenDetails(LinksList);

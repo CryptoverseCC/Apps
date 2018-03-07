@@ -36,8 +36,8 @@ export interface IWeb3Store {
   allowance?: string;
   allowanceWithDecimalPoint?: string;
   sendClaim: (
-    recipientAddress: string,
     claim: any,
+    recipientAddress?: string,
     value?: string,
   ) => Promise<{
     promiEvent: PromiEvent<TransactionReceipt>;
@@ -216,7 +216,7 @@ export default class Web3Store implements IWeb3Store {
       : undefined;
   }
 
-  sendTokenClaim = (recipientAddress, claim, value?) => {
+  sendTokenClaim = (claim, recipientAddress?, value?) => {
     if (value === undefined) {
       return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
     } else {
@@ -224,7 +224,7 @@ export default class Web3Store implements IWeb3Store {
     }
   };
 
-  sendEthereumClaim = (recipientAddress, claim, value?) => {
+  sendEthereumClaim = (claim, recipientAddress?, value?) => {
     if (value === undefined) {
       return sendClaimWithoutValueTransfer(this.injectedWeb3, claim);
     } else {
@@ -234,8 +234,8 @@ export default class Web3Store implements IWeb3Store {
 
   @computed
   get sendClaim(): (
-    recipientAddress: string,
     claim: any,
+    recipientAddress?: string,
     value?: string,
   ) => Promise<{
     promiEvent: PromiEvent<TransactionReceipt>;

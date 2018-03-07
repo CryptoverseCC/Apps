@@ -65,7 +65,7 @@ export default class AddLink extends React.Component<
         this.setState({ step: 'tokensAccess', approvalProcess });
         const transactionHash = await approval;
       }
-      const { promiEvent: claimRequest } = await sendClaim(recipientAddress, claim, values.value);
+      const { promiEvent: claimRequest } = await sendClaim(claim, recipientAddress, values.value);
       this.setState({ step: 'paymentInProgress' });
       const transactionHash = await resolveOnTransactionHash(claimRequest);
       this.setState({ step: 'actionSuccess', lastTransactionHash: transactionHash });
