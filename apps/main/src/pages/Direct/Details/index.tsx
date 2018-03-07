@@ -59,7 +59,7 @@ class Details extends Component<IProps, IState> {
             widgetSettingsStore={this.props.widgetSettings}
             formValidationsStore={{ 'add-link': {} }}
           >
-            <div style={{ width: '500px' }}>
+            <div style={{ width: '500px', backgroundColor: 'white' }}>
               <AddLink />
             </div>
           </Provider>
