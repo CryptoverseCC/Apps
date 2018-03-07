@@ -1,19 +1,18 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 
 const shadow = css`
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.25);
 `;
 
-const Modal: any = styled.div`
-  ${shadow} border-radius: 3px;
+const Modal = styled.div`
+  ${shadow}
+  border-radius: 3px;
   min-height: 350px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  ${(props: any) => props.centered && css`
-    padding: 40px 0;
-  `}
 `;
 
 export const Header = styled.div`
