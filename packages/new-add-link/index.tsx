@@ -14,7 +14,7 @@ import AddLinkForm from '@linkexchange/new-add-link/Form';
 import { IWeb3Store } from '@linkexchange/web3-store';
 import ActionRejected from '@linkexchange/new-add-link/ActionRejected';
 import PaymentInProgress from '@linkexchange/new-add-link/PaymentInProgress';
-import { toWei } from '@linkexchange/utils/balance';
+import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import TokensAccess from '@linkexchange/new-add-link/TokensAccess';
 import ConfirmationToUseTokens from '@linkexchange/new-add-link/ConfirmationToUseTokens';
 import ActionSuccess from '@linkexchange/new-add-link/ActionSuccess';
@@ -74,14 +74,15 @@ export default class AddLink extends React.Component<
     }
   };
 
-  private startApproval = async (askAgain) => {
+  private startApproval = async (unlimitedApproval: boolean) => {
     const approvalProcess: IApprovalProcess = this.state.approvalProcess!;
     try {
       const lastSubmitValues: IValues = this.state.lastSubmitValues!;
       this.setState({ step: 'confirmationToUseTokens' });
-      const { promiEvent: approveRequest } = await this.props.web3Store!.approve(
-        toWei(lastSubmitValues.value, this.props.web3Store!.decimals),
-      );
+      const weiToApprove = unlimitedApproval
+        ? MAX_VALUE_256
+        : toWei(lastSubmitValues.value, this.props.web3Store!.decimals);
+      const { promiEvent: approveRequest } = await this.props.web3Store!.approve(weiToApprove);
       const transactionHash = await resolveOnTransactionHash(approveRequest);
       approvalProcess.resolve(transactionHash);
     } catch (e) {
