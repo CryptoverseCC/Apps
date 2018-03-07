@@ -35,14 +35,16 @@ storiesOf('Add Link', module)
     const location = text('Location');
     const asset = text('asset', 'ethereum');
     const recipientAddress = text('recipientAddress', '0x0000000000000000000000000000000000000000');
+    const apiUrl = text('api url', 'https://api-dev.userfeeds.io');
+    const algorithm = text('algorithm', 'links');
 
     const formValidationsStore = observable({ 'add-link': { title: [], summary: [], target: [], value: [] } });
     const widgetSettingsStore: IWidgetSettings = new WidgetSettings({
       minimalLinkFee,
-      apiUrl: 'https://api-dev.userfeeds.io',
+      apiUrl,
       recipientAddress,
       asset,
-      algorithm: 'links',
+      algorithm,
       size: EWidgetSize.leaderboard,
       slots: 0,
       timeslot: 0,
