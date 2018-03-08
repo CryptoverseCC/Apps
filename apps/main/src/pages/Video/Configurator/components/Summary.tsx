@@ -10,7 +10,7 @@ const Summary = (props) => {
     <>
       <h2>Summary</h2>
       <a onClick={() => openLinkexchangeUrl('/video', params)}>
-        <p>Event link</p>
+        <p style={{ textDecoration: 'underline', color: 'blue' }}>Event link</p>
       </a>
     </>
   );

@@ -78,30 +78,34 @@ class Dashboard extends Component<IProps, IState> {
   };
 
   _login = async () => {
-    this.setState({ stage: 'inprogress' });
-    const typedData = [
-      {
-        type: 'string',
-        name: 'Message',
-        value: `Prove you are the owner`,
-      },
-      {
-        type: 'uint32',
-        name: 'Salt',
-        value: Math.floor(Math.random() * (Math.pow(2, 32) - 1)).toString(),
-      },
-    ];
+    // ToDo temporaty disable login
+    this.setState({ stage: 'success' });
+    return;
 
-    try {
-      const [address] = await this.props.web3.eth.getAccounts();
-      const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
-      const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
-      if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
-        this.setState({ stage: 'success' });
-      }
-    } catch (e) {
-      this.setState({ stage: 'failure' });
-    }
+    // this.setState({ stage: 'inprogress' });
+    // const typedData = [
+    //   {
+    //     type: 'string',
+    //     name: 'Message',
+    //     value: `Prove you are the owner`,
+    //   },
+    //   {
+    //     type: 'uint32',
+    //     name: 'Salt',
+    //     value: Math.floor(Math.random() * (Math.pow(2, 32) - 1)).toString(),
+    //   },
+    // ];
+
+    // try {
+    //   const [address] = await this.props.web3.eth.getAccounts();
+    //   const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
+    //   const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
+    //   if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
+    //     this.setState({ stage: 'success' });
+    //   }
+    // } catch (e) {
+    //   this.setState({ stage: 'failure' });
+    // }
   };
 }
 
