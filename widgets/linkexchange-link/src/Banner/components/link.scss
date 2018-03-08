@@ -1,0 +1,25 @@
+.self {
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-weight: 300;
+
+  .title {
+    color: #000000;
+    font-weight: 700;
+    font-size: 32px;
+    flex-shrink: 0;
+    padding-bottom: 0.5em;
+  }
+
+  &:hover .title {
+    color: #263fff;
+  }
+
+  .summary {
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.3px;
+  }
+}
