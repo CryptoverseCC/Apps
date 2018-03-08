@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.180"></a>
+## [0.0.180](https://github.com/Userfeeds/Apps/compare/v0.0.179...v0.0.180) (2018-03-08)
+
+
+### Update
+
+* disable login to dashboard for video ([5af22aa29eda19ee0afefc4ff6f03052dea24852](https://github.com/Userfeeds/Apps/commit/5af22aa29eda19ee0afefc4ff6f03052dea24852))
+
+
+
+
 <a name="0.0.179"></a>
 ## [0.0.179](https://github.com/Userfeeds/Apps/compare/v0.0.178...v0.0.179) (2018-03-08)
 

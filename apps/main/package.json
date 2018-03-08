@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/app",
-  "version": "0.0.179",
+  "version": "0.0.180",
   "description": "",
   "main": "index.js",
   "scripts": {
