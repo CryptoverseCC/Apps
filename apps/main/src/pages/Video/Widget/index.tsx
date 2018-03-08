@@ -65,14 +65,14 @@ export default class Widget extends Component<IProps, IState> {
           web3={this.infura}
           asset={widgetSettings.asset}
           render={(tokenDetails) =>
-            currentLink && (
+            currentLink ? (
               <Link
                 link={currentLink}
                 linkDuration={linkDuration!}
                 tokenSymbol={tokenDetails.symbol}
                 position={position}
               />
-            )
+            ) : null
           }
         />
         <LinkProvider links={links} onLink={this._onLink} timeslot={this.timeslot()} />
