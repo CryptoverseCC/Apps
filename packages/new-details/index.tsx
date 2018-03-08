@@ -3,7 +3,7 @@ import { Provider } from 'mobx-react';
 
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 
-import LinksStore from './linksStore';
+import LinksStore from '@linkexchange/links-store';
 
 interface IProps {
   className?: string;
@@ -16,7 +16,6 @@ class DetailsComponent extends Component<IProps> {
   constructor(props: IProps) {
     super(props);
     this.linkStore = new LinksStore(props.widgetSettings);
-    this.linkStore.fetchLinks();
   }
 
   render() {

@@ -10,7 +10,8 @@
     "prop-types": "^15.6.0"
   },
   "peerDependencies": {
-    "mobx": "^3.5.1"
+    "mobx": "4.0.0-beta.4",
+    "mobx-utils": "4.0.0-beta.2"
   },
   "author": "",
   "license": "ISC"

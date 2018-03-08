@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "@linkexchange/links-store",
+  "version": "0.0.171",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@linkexchange/ranking-request-builder": "^0.0.171",
+    "mobx": "4.0.0-beta.4",
+    "mobx-utils": "4.0.0-beta.2"
+  }
+}

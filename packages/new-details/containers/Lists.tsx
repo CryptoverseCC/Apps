@@ -11,7 +11,7 @@ import Web3StateProvider from '@linkexchange/web3-state-provider';
 import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
 
 import { delayed } from '../utils';
-import LinksStore from '../linksStore';
+import LinksStore from '@linkexchange/links-store';
 import { NoLinks, Loading } from '../components/Placeholders';
 import { ListHeaderSlots, ListHeaderOutside, LinkRow } from '../components/List';
 

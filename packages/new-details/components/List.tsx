@@ -10,7 +10,7 @@ import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import BoostArrowImg from '@linkexchange/images/arrow-boost.svg';
 
-import LinksStore from '../linksStore';
+import LinksStore from '@linkexchange/links-store';
 import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
 import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr, { FancyHr } from './Hr';
