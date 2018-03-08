@@ -25,12 +25,14 @@ interface IInitialState {
 
 export interface IWeb3Store {
   asset: string;
+  changeAssetTo(asset: string): void;
   token: string;
   network: string;
   blockNumber?: number;
   decimals?: number;
   symbol?: string;
   name?: string;
+  currentAccount?: string;
   balance?: string;
   balanceWithDecimalPoint?: string;
   allowance?: string;
@@ -126,8 +128,8 @@ export default class Web3Store implements IWeb3Store {
     }
   }
 
-  @action
-  async changeAssetTo(asset: string) {
+  @action.bound
+  changeAssetTo(asset: string) {
     this.asset = asset;
   }
 
@@ -145,8 +147,8 @@ export default class Web3Store implements IWeb3Store {
   async updateInjectedWeb3State() {
     this.currentProvider = this.injectedWeb3.currentProvider;
     if (!this.currentProvider) {
-      const currentBlock = await this.erc20.currentBlock();
-      this.blockNumber = currentBlock;
+        const currentBlock = await this.erc20.currentBlock();
+        this.blockNumber = currentBlock;
       return;
     }
     const [isListening, networkId, accounts, currentBlock] = await Promise.all([
