@@ -7,7 +7,7 @@ import * as style from './link.scss';
 const cx = classnames.bind(style);
 
 interface IProps {
-  link: ILink;
+  link: ILink | undefined;
   linkDuration: number;
   tokenSymbol?: string;
   position?: 'top' | 'bottom';
@@ -28,7 +28,7 @@ export default class Link extends Component<IProps> {
   }
 
   render() {
-    const { link, tokenSymbol, position } = this.props;
+    const { link = { title: '', summary: '', target: '' }, tokenSymbol, position } = this.props;
 
     return (
       <div className={cx(style.self, { top: position === 'top' })}>
