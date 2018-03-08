@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.179"></a>
+## [0.0.179](https://github.com/Userfeeds/Apps/compare/v0.0.178...v0.0.179) (2018-03-08)
+
+
+### Fix
+
+* video widget when empty links ([2952bef389c119455aa3d20030fdb2ddce2237d0](https://github.com/Userfeeds/Apps/commit/2952bef389c119455aa3d20030fdb2ddce2237d0))
+
+
+
+
 <a name="0.0.178"></a>
 ## [0.0.178](https://github.com/Userfeeds/Apps/compare/v0.0.177...v0.0.178) (2018-03-02)
 
