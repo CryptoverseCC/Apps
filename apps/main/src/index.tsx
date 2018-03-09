@@ -45,8 +45,14 @@ if (widgetSettings.asset) {
 const web3Store = new Web3Store(web3, Erc20, { asset: widgetSettings.asset });
 const startApp = () => {
   render(
-    <WidgetSettingsProvider widgetSettings={widgetSettings} >
-      <Provider blocks={blocksStore} links={linksStore} widgetSettingsStore={widgetSettings} web3Store={web3Store}>
+    <WidgetSettingsProvider widgetSettings={widgetSettings}>
+      <Provider
+        blocks={blocksStore}
+        links={linksStore}
+        widgetSettingsStore={widgetSettings}
+        web3Store={web3Store}
+        formValidationsStore={{ 'add-link': {} }}
+      >
         <IntlProvider locale="en">
           <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
             <App />

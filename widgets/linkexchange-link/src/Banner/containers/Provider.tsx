@@ -7,15 +7,19 @@ import { WidgetSettingsProvider, WidgetSettings } from '@linkexchange/widget-set
 import Web3Store from '@linkexchange/web3-store';
 import Erc20 from '@linkexchange/web3-store/erc20';
 import Web3 from 'web3';
+import LinksStore from '@linkexchange/links-store';
 
 export default class Provider extends React.Component<{ widgetSettings: WidgetSettings }> {
   web3Store: Web3Store;
   infuraWeb3: Web3;
+  linksStore: LinksStore;
+
   constructor(props) {
     super(props);
     const [network] = this.props.widgetSettings.asset.split(':');
     this.infuraWeb3 = getInfura(network as TNetwork);
     this.web3Store = new Web3Store(web3, Erc20, { asset: this.props.widgetSettings.asset });
+    this.linksStore = new LinksStore(this.props.widgetSettings);
   }
 
   componentWillUnmount() {
@@ -28,6 +32,7 @@ export default class Provider extends React.Component<{ widgetSettings: WidgetSe
         web3Store={this.web3Store}
         widgetSettingsStore={this.props.widgetSettings}
         formValidationsStore={{ 'add-link': {} }}
+        links={this.linksStore}
       >
         <WidgetSettingsProvider widgetSettings={this.props.widgetSettings}>
           <Web3Provider injectedWeb3={web3} infuraWeb3={this.infuraWeb3}>
