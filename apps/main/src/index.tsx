@@ -11,6 +11,7 @@ import web3, { Web3Provider, getInfura, TNetwork } from '@linkexchange/utils/web
 import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
 
 import BlocksStore from './stores/blocks';
+import LinksStore from '@linkexchange/links-store';
 import App from './App';
 
 import '../styles/all.scss';
@@ -33,6 +34,7 @@ const DEFAULT_WIDGET_SETTINGS = {
 
 const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
 const blocksStore = new BlocksStore(startBlock, endBlock);
+const linksStore = new LinksStore(widgetSettings);
 
 let infuraWeb3;
 if (widgetSettings.asset) {
@@ -43,11 +45,15 @@ if (widgetSettings.asset) {
 const web3Store = new Web3Store(web3, Erc20, { asset: widgetSettings.asset });
 const startApp = () => {
   render(
-    <Provider blocks={blocksStore} widgetSettingsStore={widgetSettings} web3Store={web3Store}>
-      <IntlProvider locale="en">
-        <App />
-      </IntlProvider>
-    </Provider>,
+    <WidgetSettingsProvider widgetSettings={widgetSettings} >
+      <Provider blocks={blocksStore} links={linksStore} widgetSettingsStore={widgetSettings} web3Store={web3Store}>
+        <IntlProvider locale="en">
+          <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
+            <App />
+          </Web3Provider>
+        </IntlProvider>
+      </Provider>
+    </WidgetSettingsProvider>,
     document.querySelector('.root'),
   );
 };

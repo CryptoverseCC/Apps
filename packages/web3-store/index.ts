@@ -147,8 +147,8 @@ export default class Web3Store implements IWeb3Store {
   async updateInjectedWeb3State() {
     this.currentProvider = this.injectedWeb3.currentProvider;
     if (!this.currentProvider) {
-        const currentBlock = await this.erc20.currentBlock();
-        this.blockNumber = currentBlock;
+      const currentBlock = await this.erc20.currentBlock();
+      this.blockNumber = currentBlock;
       return;
     }
     const [isListening, networkId, accounts, currentBlock] = await Promise.all([
