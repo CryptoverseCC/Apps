@@ -12,18 +12,19 @@ import BoldText from '@linkexchange/components/src/BoldText';
 import core from '@userfeeds/core/src';
 import web3 from '@linkexchange/utils/web3';
 
-import { TWhitelistableClickableLink } from '../';
-
 import * as style from './linksList.scss';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { IWeb3Store } from '@linkexchange/web3-store';
+import { IRemoteLink } from '@linkexchange/types/link';
 
 interface ILinksListProps {
-  links: TWhitelistableClickableLink[];
+  links: IRemoteLink[];
   web3Store?: IWeb3Store;
+  waitingForApproval?: boolean;
 }
 
 @inject('web3Store')
+@observer
 export default class LinksList extends Component<ILinksListProps> {
   private whitelistLink = async (linkId: string) => {
     const claim = { claim: { target: linkId } };
@@ -49,7 +50,7 @@ export default class LinksList extends Component<ILinksListProps> {
   };
 
   render() {
-    const { links } = this.props;
+    const { links, waitingForApproval } = this.props;
     const { decimals } = this.props.web3Store!;
     return (
       <table className={style.Table}>
@@ -74,7 +75,7 @@ export default class LinksList extends Component<ILinksListProps> {
               <td style={{ width: '140px' }}>
                 <b>{fromWeiToString(link.total, decimals!)}</b>
               </td>
-              {!link.whitelisted && (
+              {waitingForApproval && (
                 <td style={{ width: '200px', textAlign: 'right' }}>
                   <TransactionProvider
                     initialStatus={this.getInitialStatus(link.id)}

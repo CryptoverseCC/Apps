@@ -94,12 +94,16 @@ export default class AddLink extends React.Component<
     return {
       type: ['link'],
       claim: { target, title, summary },
-      credits: [
-        {
-          type: 'interface',
-          value: location,
-        },
-      ],
+      ...(location
+        ? {
+            credits: [
+              {
+                type: 'interface',
+                value: location,
+              },
+            ],
+          }
+        : {}),
     };
   }
 

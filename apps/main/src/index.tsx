@@ -8,7 +8,7 @@ import ReactGA from 'react-ga';
 
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import web3, { Web3Provider, getInfura, TNetwork } from '@linkexchange/utils/web3';
-import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
+import { WidgetSettingsProvider, WidgetSettings } from '@linkexchange/widget-settings';
 
 import BlocksStore from './stores/blocks';
 import LinksStore from '@linkexchange/links-store';
@@ -30,11 +30,11 @@ const DEFAULT_WIDGET_SETTINGS = {
   location: window.location.href,
   algorithm: 'links',
   whitelist: '',
+  asset: 'ethereum',
 };
 
 const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
 const blocksStore = new BlocksStore(startBlock, endBlock);
-const linksStore = new LinksStore(widgetSettings);
 
 let infuraWeb3;
 if (widgetSettings.asset) {
@@ -42,24 +42,24 @@ if (widgetSettings.asset) {
   infuraWeb3 = getInfura(network as TNetwork);
 }
 
-const web3Store = new Web3Store(web3, Erc20, { asset: widgetSettings.asset });
+const web3Store = new Web3Store(web3, Erc20, widgetSettings);
+const widgetSettingsStore = new WidgetSettings(widgetSettings);
+const linksStore = new LinksStore(widgetSettingsStore);
 const startApp = () => {
   render(
-    <WidgetSettingsProvider widgetSettings={widgetSettings}>
-      <Provider
-        blocks={blocksStore}
-        links={linksStore}
-        widgetSettingsStore={widgetSettings}
-        web3Store={web3Store}
-        formValidationsStore={{ 'add-link': {} }}
-      >
-        <IntlProvider locale="en">
-          <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-            <App />
-          </Web3Provider>
-        </IntlProvider>
-      </Provider>
-    </WidgetSettingsProvider>,
+    <Provider
+      blocks={blocksStore}
+      links={linksStore}
+      widgetSettingsStore={widgetSettingsStore}
+      web3Store={web3Store}
+      formValidationsStore={{ 'add-link': {} }}
+    >
+      <IntlProvider locale="en">
+        <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
+          <App />
+        </Web3Provider>
+      </IntlProvider>
+    </Provider>,
     document.querySelector('.root'),
   );
 };

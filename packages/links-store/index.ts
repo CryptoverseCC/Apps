@@ -1,4 +1,4 @@
-import { observable, computed, action } from 'mobx';
+import { observable, computed, action, autorun } from 'mobx';
 import { fromPromise, now } from 'mobx-utils';
 import Raven from 'raven-js';
 
@@ -12,15 +12,13 @@ export default class LinksStore {
   @observable fetching: boolean = false;
   @observable fetched: boolean = true;
   @observable nonce = 0;
-
-  widgetSettings: IWidgetSettings;
+  @observable lastAllLinks: IRemoteLink[] = [];
+  @observable lastWhitelistedLinks: IRemoteLink[] = [];
 
   constructor(
-    widgetSettings: IWidgetSettings,
+    private widgetSettings: IWidgetSettings,
     private RankingRequestBuilderCtor: IRankingRequestBuilderCtor = RankingRequestBuilder,
-  ) {
-    this.widgetSettings = widgetSettings;
-  }
+  ) {}
 
   @computed
   get rankingRequestBuilder() {
@@ -48,8 +46,11 @@ export default class LinksStore {
   @computed
   get allLinks(): IRemoteLink[] {
     return this.allLinksPromise.case({
-      pending: () => [],
-      fulfilled: (t) => t.items,
+      pending: () => this.lastAllLinks,
+      fulfilled: (t) => {
+        autorun(() => (this.lastAllLinks = t.items));
+        return t.items;
+      },
       rejected: (t) => [],
     });
   }
@@ -67,8 +68,11 @@ export default class LinksStore {
   @computed
   get whitelistedLinks() {
     return this.whitelistedLinksPromise.case({
-      pending: () => [],
-      fulfilled: (t) => t.items,
+      pending: () => this.lastWhitelistedLinks,
+      fulfilled: (t) => {
+        autorun(() => (this.lastWhitelistedLinks = t.items));
+        return t.items;
+      },
       rejected: (t) => [],
     });
   }

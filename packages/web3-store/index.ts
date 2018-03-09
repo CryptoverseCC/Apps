@@ -12,6 +12,7 @@ import { BN } from 'web3-utils';
 import { TNetwork } from '@linkexchange/utils/web3';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 import Erc20, { IErc20Constructor } from './erc20';
+import { IWidgetSettings } from '@linkexchange/types/widget';
 
 interface IInitialState {
   asset?: string;
@@ -24,8 +25,6 @@ interface IInitialState {
 }
 
 export interface IWeb3Store {
-  asset: string;
-  changeAssetTo(asset: string): void;
   token: string;
   network: string;
   blockNumber?: number;
@@ -66,8 +65,6 @@ export default class Web3Store implements IWeb3Store {
   @observable currentAccount: string;
   @observable blockNumber: number | undefined;
 
-  @observable asset: string;
-
   @observable decimals: number;
   @observable symbol: string;
   @observable name: string;
@@ -77,14 +74,13 @@ export default class Web3Store implements IWeb3Store {
   constructor(
     private injectedWeb3: Web3,
     private Erc20Ctor: IErc20Constructor,
+    private widgetSettings: IWidgetSettings,
     initialState: IInitialState = {
-      asset: '',
       currentProvider: undefined,
       isListening: undefined,
       allowance: undefined,
     },
   ) {
-    this.asset = initialState.asset!;
     this.currentProvider = initialState.currentProvider;
     this.isListening = initialState.isListening!;
     this.injectedWeb3ActiveNetwork = initialState.injectedWeb3ActiveNetwork!;
@@ -104,7 +100,7 @@ export default class Web3Store implements IWeb3Store {
   startUpdatingTokenDetails() {
     this.updateTokenDetails();
     clearInterval(this.updateTokenDetailsIntervalId);
-    this.updateTokenDetailsIntervalId = setInterval(this.updateTokenDetails, 1000);
+    this.updateTokenDetailsIntervalId = setInterval(this.updateTokenDetails, 5000);
   }
 
   stopUpdating() {
@@ -126,11 +122,6 @@ export default class Web3Store implements IWeb3Store {
     } else {
       return [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount), undefined];
     }
-  }
-
-  @action.bound
-  changeAssetTo(asset: string) {
-    this.asset = asset;
   }
 
   @action.bound
@@ -196,12 +187,12 @@ export default class Web3Store implements IWeb3Store {
 
   @computed
   get network() {
-    return this.asset.split(':')[0] as TNetwork;
+    return this.widgetSettings.asset.split(':')[0] as TNetwork;
   }
 
   @computed
   get token() {
-    return this.asset.split(':')[1];
+    return this.widgetSettings.asset.split(':')[1];
   }
 
   @computed
