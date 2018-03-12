@@ -102,21 +102,10 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
               </div>
             </Switch.Case>
           </Switch>
-          <div className={style.arrows}>
-            <ArrowLeft
-              className={style.left}
-              onMouseEnter={this.arrowEnter('left')}
-              onMouseLeave={this.arrowLeave}
-              onClick={this.onPrevClick}
-            />
-            <ArrowRight
-              className={style.right}
-              onMouseEnter={this.arrowEnter('right')}
-              onMouseLeave={this.arrowLeave}
-              onClick={this.onNextClick}
-            />
-          </div>
-          <Menu ref={(ref: Menu) => (this.menu = ref)} onClick={this.openDetails} widgetSettings={widgetSettings} />
+          {widgetSettings.size === 'leaderboard' && this.renderArrows()}
+          <Menu ref={(ref: Menu) => (this.menu = ref)} onClick={this.openDetails} widgetSettings={widgetSettings}>
+            {widgetSettings.size === 'rectangle' && this.renderArrows()}
+          </Menu>
           <RandomLinkProvider
             ref={(ref: RandomLinkProvider) => (this.linkProvider = ref)}
             links={links}
@@ -142,6 +131,23 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
       </RootProvider>
     );
   }
+
+  private renderArrows = () => (
+    <div className={cx(style.arrows, { disabled: this.state.fetched && !this.state.currentLink })}>
+      <ArrowLeft
+        className={style.left}
+        onMouseEnter={this.arrowEnter('left')}
+        onMouseLeave={this.arrowLeave}
+        onClick={this.onPrevClick}
+      />
+      <ArrowRight
+        className={style.right}
+        onMouseEnter={this.arrowEnter('right')}
+        onMouseLeave={this.arrowLeave}
+        onClick={this.onNextClick}
+      />
+    </div>
+  );
 
   private arrowEnter = (activeArrow: 'left' | 'right') => () => {
     this.setState({ activeArrow });

@@ -17,7 +17,6 @@ export default class Modal extends Component<IModalProps, {}> {
     super(props);
     this.containerEl = document.createElement('div');
     document.body.appendChild(this.containerEl);
-    // this.containerEl.classList.add(rootClassName);
   }
 
   componentWillUnmount() {

@@ -74,14 +74,19 @@ class Menu extends PureComponent<{
   circle: Circle;
 
   render() {
-    const { onClick, widgetSettings } = this.props;
+    const { onClick, widgetSettings, children } = this.props;
 
     return (
-      <div className={style.self} onClick={onClick}>
-        <Circle ref={this.onCircleRef} timeout={widgetSettings.timeslot}>
-          <TokenLogo className={style.icon} asset={widgetSettings.asset} />
-        </Circle>
-        <span className={style.putLink}>Put your link here</span>
+      <div className={style.self}>
+        <div className={style.trigger} onClick={onClick}>
+          <Circle ref={this.onCircleRef} timeout={widgetSettings.timeslot}>
+            <TokenLogo className={style.icon} asset={widgetSettings.asset} />
+          </Circle>
+          <span className={style.putLink}>
+            <FormattedMessage id="banner.putYourLink" defaultMessage="Put your link here" />
+          </span>
+        </div>
+        {children}
       </div>
     );
   }
