@@ -19,13 +19,7 @@ class Circle extends PureComponent<{ timeout: number }> {
 
     return (
       <div className={style.circle}>
-        <svg
-          width="120"
-          height="120"
-          viewBox="0 0 120 120"
-          style={{ transform: 'rotate(-90deg)' }}
-          className={style.svg}
-        >
+        <svg viewBox="0 0 120 120" className={style.svg}>
           <circle cx="60" cy="60" r={Circle.RADIUS} fill="none" stroke="transparent" strokeWidth="4" />
           <circle
             className={style.outerCircle}
@@ -113,4 +107,5 @@ class Menu extends PureComponent<{
     this.circle = ref;
   };
 }
+
 export default Menu;

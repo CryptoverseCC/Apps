@@ -136,26 +136,18 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     <div className={cx(style.arrows, { disabled: this.state.fetched && !this.state.currentLink })}>
       <ArrowLeft
         className={style.left}
-        onMouseEnter={this.arrowEnter('left')}
-        onMouseLeave={this.arrowLeave}
         onClick={this.onPrevClick}
+        onMouseEnter={this.onArrowEnter('left')}
+        onMouseLeave={this.onArrowLeave}
       />
       <ArrowRight
         className={style.right}
-        onMouseEnter={this.arrowEnter('right')}
-        onMouseLeave={this.arrowLeave}
         onClick={this.onNextClick}
+        onMouseEnter={this.onArrowEnter('right')}
+        onMouseLeave={this.onArrowLeave}
       />
     </div>
   );
-
-  private arrowEnter = (activeArrow: 'left' | 'right') => () => {
-    this.setState({ activeArrow });
-  };
-
-  private arrowLeave = () => {
-    this.setState({ activeArrow: '' });
-  };
 
   private fetchLinks = async () => {
     const {
@@ -218,9 +210,13 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   };
 
   private onMouseLeave = () => {
+    this.setState({ activeArrow: '' });
     this.linkProvider.resume();
     this.menu.resume();
   };
+
+  private onArrowEnter = (activeArrow) => () => this.setState({ activeArrow });
+  private onArrowLeave = () => this.setState({ activeArrow: '' });
 
   private openTargetUrl = () => {
     if (this.state.currentLink) {
@@ -232,11 +228,15 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   };
 
   private onPrevClick = () => {
-    this.linkProvider.prev();
+    this.setState({ activeArrow: 'left' }, () => {
+      this.linkProvider.prev();
+    });
   };
 
   private onNextClick = () => {
-    this.linkProvider.next();
+    this.setState({ activeArrow: 'right' }, () => {
+      this.linkProvider.next();
+    });
   };
 
   private onLink = (currentLink: ILink, startImmediately?: boolean) => {

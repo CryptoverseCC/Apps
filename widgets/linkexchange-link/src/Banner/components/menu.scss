@@ -35,9 +35,12 @@
     box-shadow: 0px 15px 40px 0px rgba(27, 36, 55, 0.1);
 
     .svg {
+      top: -1px;
+      left: -1px;
       width: 42px;
       height: 42px;
       position: absolute;
+      transform: rotate(-90deg);
     }
 
     .icon {

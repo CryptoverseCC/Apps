@@ -40,27 +40,30 @@
   .link-container {
     flex: 1;
     overflow: hidden;
+    position: relative;
     transition: transform 0.15s ease-in-out;
 
     .transition,
     .transition-left {
       &-enter {
+        position: absolute;
+        top: 0;
         transform: translateX(100%);
+        transition: transform 300ms ease-out;
+
         &-active {
           transform: translateX(0%);
-          transition: transform 300ms ease-out;
         }
       }
 
       &-leave {
         position: absolute;
         top: 0;
-        width: 100%;
         transform: translateX(0%);
+        transition: transform 300ms ease-out;
 
         &-active {
           transform: translateX(-100%);
-          transition: transform 300ms ease-out;
         }
       }
     }
@@ -73,12 +76,8 @@
         }
       }
 
-      &-leave {
-        transform: translateX(0%);
-
-        &-active {
-          transform: translateX(100%);
-        }
+      &-leave-active {
+        transform: translateX(100%);
       }
     }
   }
