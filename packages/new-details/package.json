@@ -21,8 +21,8 @@
   "peerDependencies": {
     "@linkexchange/widget-settings": "^0.0.168",
     "lodash": "~4.17.4",
-    "mobx": "4.0.0-beta.4",
-    "mobx-utils": "4.0.0-beta.2",
+    "mobx": "4.0.0",
+    "mobx-utils": "4.0.0",
     "raven-js": "^3.22.2",
     "react-intl": "^2.4.0"
   },
