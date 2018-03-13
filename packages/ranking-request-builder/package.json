@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "@linkexchange/ranking-request-builder",
+  "version": "0.0.171",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@linkexchange/utils": "^0.0.166",
+    "@userfeeds/core": "^0.0.166"
+  }
+}

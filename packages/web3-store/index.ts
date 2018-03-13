@@ -17,7 +17,7 @@ interface IInitialState {
   currentProvider?: any;
   isListening?: boolean;
   injectedWeb3ActiveNetwork?: TNetwork;
-  decimals?: string;
+  decimals?: number;
   balance?: string | undefined;
   allowance?: string | undefined;
 }
@@ -76,7 +76,13 @@ export default class Web3Store implements IWeb3Store {
       allowance: undefined,
     },
   ) {
-    extendObservable(this, initialState);
+    this.asset = initialState.asset!;
+    this.currentProvider = initialState.currentProvider;
+    this.isListening = initialState.isListening!;
+    this.injectedWeb3ActiveNetwork = initialState.injectedWeb3ActiveNetwork!;
+    this.allowance = initialState.allowance!;
+    this.decimals = initialState.decimals!;
+    this.balance = initialState.balance!;
     this.startUpdatingInjectedWeb3State();
     this.startUpdatingTokenDetails();
   }

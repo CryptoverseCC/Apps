@@ -142,7 +142,7 @@ class LinkStatus extends Component<IProps, IState> {
     try {
       // tslint:disable-next-line max-line-length
       const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
-      const allLinksRequest = fetch(rankingApiUrl, { cache: 'no-store' }).then((res) => res.json());
+      const allLinksRequest = fetch(rankingApiUrl).then((res) => res.json());
       const timedecayFilterAlgorithm = algorithm === 'links' ? 'filter_timedecay/' : '';
       const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
       const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';

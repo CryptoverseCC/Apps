@@ -12,7 +12,10 @@
     "@linkexchange/copy-from-mm": "^0.0.170",
     "@linkexchange/images": "^0.0.149",
     "@linkexchange/components": "^0.0.170",
-    "@linkexchange/web3-store": "^0.0.166"
+    "@linkexchange/web3-store": "^0.0.166",
+    "mobx": "4.0.0",
+    "mobx-react": "5.0.0",
+    "mobx-utils": "4.0.0"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.12",
