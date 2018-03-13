@@ -25,7 +25,7 @@ const renderQR = (recipientAddress, ref) => {
 export default class UserfeedsAddressInfo extends PureComponent<IUserfeedsAddressInfoProps> {
   render() {
     const { recipientAddress, linksNumber } = this.props;
-    const etherscanUrl = `https://etherscan.io/address/${recipientAddress}`;
+    const etherscanUrl = `https://etherscan.io/address/${recipientAddress}#internaltx`;
 
     return (
       <div className={style.self}>
