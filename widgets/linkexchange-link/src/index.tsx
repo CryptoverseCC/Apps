@@ -67,7 +67,7 @@ class LinkexchangeLink extends HTMLElement {
     this.innerHTML = `<div class="${style.root}"></div>`;
 
     if (this.translationsFeatchingState === 'none' || this.translationsFeatchingState === 'fetched') {
-      this._render();
+      this.render();
     }
   }
 
@@ -77,32 +77,32 @@ class LinkexchangeLink extends HTMLElement {
 
   attributeChangedCallback(attr, _oldValue, newValue) {
     if (attr === 'translations-url') {
-      this._fetchTranslations(newValue);
+      this.fetchTranslations(newValue);
     } else if (attr === 'translations') {
-      this._setTranslationsFromWindow(newValue);
+      this.setTranslationsFromWindow(newValue);
     }
 
-    this._render();
+    this.render();
   }
 
-  _render() {
+  private render() {
     if (!this.connected) {
       return;
     }
 
     render(
       <IntlProvider locale="en" messages={{ ...this.customMessages }}>
-        <Banner widgetSettings={this._argsToState()} root={this} openDetails={this._getOpenMethod()} />
+        <Banner widgetSettings={this.argsToState()} root={this} openDetails={this.getOpenMethod()} />
       </IntlProvider>,
       this.querySelector(`.${style.root}`),
     );
   }
 
-  _argsToState() {
+  private argsToState() {
     const apiUrl = this.getAttribute('api-url') || 'https://api.userfeeds.io';
     const size = this.getAttribute('size') === 'rectangle' ? EWidgetSize.rectangle : EWidgetSize.leaderboard;
     const timeslot = parseInt(this.getAttribute('timeslot') || '5', 10);
-    const recipientAddress = this.getAttribute('recipient-address') || this._throwErrorRecipientAddressNotDefined();
+    const recipientAddress = this.getAttribute('recipient-address') || this.throwErrorRecipientAddressNotDefined();
     const whitelist = this.getAttribute('whitelist') || undefined;
     const asset = this.getAttribute('asset') || 'ropsten';
     const slots = parseInt(this.getAttribute('slots') || '10', 10);
@@ -131,7 +131,7 @@ class LinkexchangeLink extends HTMLElement {
     };
   }
 
-  _getOpenMethod(): 'modal' | 'tab' {
+  private getOpenMethod(): 'modal' | 'tab' {
     const attr = this.getAttribute('open-details');
     if (attr === 'tab') {
       return 'tab';
@@ -139,7 +139,7 @@ class LinkexchangeLink extends HTMLElement {
     return 'modal';
   }
 
-  async _fetchTranslations(url: string) {
+  private async fetchTranslations(url: string) {
     this.translationsFeatchingState = 'started';
     try {
       this.customMessages = await fetch(url).then((res) => res.json());
@@ -148,16 +148,16 @@ class LinkexchangeLink extends HTMLElement {
     }
     this.translationsFeatchingState = 'fetched';
 
-    this._render();
+    this.render();
   }
 
-  _setTranslationsFromWindow(key: string) {
+  private setTranslationsFromWindow(key: string) {
     if (typeof window[key] === 'object') {
       this.customMessages = window[key];
     }
   }
 
-  _throwErrorRecipientAddressNotDefined(): never {
+  private throwErrorRecipientAddressNotDefined(): never {
     throw new Error('recipient-address not defined.');
   }
 }

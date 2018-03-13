@@ -1,0 +1,27 @@
+.self {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.rectangle {
+    flex-direction: column;
+  }
+
+  .LonelyBlock {
+    transform: scale(0.5);
+
+    .Block {
+      background-color: #cfd9fa;
+    }
+
+    .Shadow {
+      background-color: #ecf0fd;
+    }
+  }
+
+  .message {
+    font-weight: bold;
+    font-size: 12px;
+  }
+}

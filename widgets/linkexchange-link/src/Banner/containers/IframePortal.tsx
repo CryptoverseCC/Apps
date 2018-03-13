@@ -92,7 +92,7 @@ const observeStyles = (sourceDoc: HTMLDocument, targetDoc: HTMLDocument) => {
     const styles = Array.from(sourceDoc.querySelectorAll('head style'));
 
     styles.forEach((node, index) => {
-      const targetNode = targetDoc.querySelector(`head style[index="${index}"`);
+      const targetNode = targetDoc.querySelector(`head style[index="${index}"]`);
       if (targetNode === null) {
         const nodeToInsert = node.cloneNode(true) as HTMLElement;
         nodeToInsert.setAttribute('index', '' + index);

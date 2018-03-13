@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
 
 import * as style from './modal.scss';
 
@@ -8,8 +9,15 @@ interface IModalProps {
 }
 
 export default class Modal extends Component<IModalProps, {}> {
+  containerEl: HTMLElement;
   pushedState: boolean = false;
   poppedState: boolean = false;
+
+  constructor(props) {
+    super(props);
+    this.containerEl = document.createElement('div');
+    document.body.appendChild(this.containerEl);
+  }
 
   componentWillUnmount() {
     if (this.pushedState && !this.poppedState) {
@@ -39,12 +47,13 @@ export default class Modal extends Component<IModalProps, {}> {
       return <div />;
     }
 
-    return (
+    return createPortal(
       <div className={style.self} onClick={this._onOverlayClick}>
         <div className={style.content} onClick={this._consumeEvent}>
           {children}
         </div>
-      </div>
+      </div>,
+      this.containerEl,
     );
   }
 

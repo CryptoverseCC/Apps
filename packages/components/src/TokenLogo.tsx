@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as bat from '../images/bat.png';
 import * as eos from '../images/eos.png';
-import * as erc20 from '../images/erc20.png';
+import * as erc20 from '../images/erc20.svg';
 import * as ethereum from '../images/ethereum.png';
 import * as kyber from '../images/kyber.png';
 import * as maker from '../images/maker.png';
