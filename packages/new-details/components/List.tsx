@@ -3,7 +3,6 @@ import styled, { keyframes } from 'styled-components';
 import moment from 'moment';
 
 import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
-import { WidgetSettings } from '@linkexchange/widget-settings';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
@@ -14,6 +13,9 @@ import LinksStore from '@linkexchange/links-store';
 import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
 import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr, { FancyHr } from './Hr';
+import { observe } from 'mobx';
+import { inject, observer } from 'mobx-react';
+import { IWeb3Store } from '@linkexchange/web3-store';
 
 const SmallGreenText = styled.span`
   padding-left: 20px;
@@ -123,11 +125,11 @@ const SmallLightGreyText = LightGreyText.extend`
   font-size: 14px;
 `;
 
-const LinkInfo = ({ link, tokenDetails }: { link: ILink | IRemoteLink; tokenDetails: ITokenDetails }) => (
+const LinkInfo = ({ link, decimals, symbol }: { link: ILink | IRemoteLink; decimals: number; symbol: string }) => (
   <>
     <SmallLightGreyText>{moment.duration(Date.now() - link.created_at).humanize()} ago</SmallLightGreyText>
     <SmallLightGreyText>
-      {fromWeiToString(link.total, tokenDetails.decimals)} {tokenDetails.symbol} Total
+      {fromWeiToString(link.total, decimals)} {symbol} Total
     </SmallLightGreyText>
     <SmallLightGreyText>{link.group_count} Bids </SmallLightGreyText>
   </>
@@ -187,48 +189,50 @@ const BoostArrow = styled.img.attrs({ src: BoostArrowImg })`
 export const LinkRow: React.SFC<{
   mobile?: boolean;
   link: ILink | IRemoteLink;
-  tokenDetails: ITokenDetails;
+  web3Store?: IWeb3Store;
   boostComponent: React.ComponentType<{ link: ILink | IRemoteLink }>;
-  boostEnabled: boolean;
   lastChild?: boolean;
-}> = ({ mobile, link, tokenDetails, lastChild, boostEnabled, boostComponent: BoostComponent }) => {
-  const score = fromWeiToString(link.score, tokenDetails.decimals);
+}> = inject('web3Store')(
+  observer(({ mobile, link, web3Store, lastChild, boostComponent: BoostComponent }) => {
+    const { decimals, symbol, unlocked } = web3Store!;
+    const score = fromWeiToString(link.score, decimals);
 
-  return (
-    <Columns style={{ paddingTop: '20px' }}>
-      <FlexColumn size={mobile ? 2 : 1} alignItems="center" justifyContent="center">
-        <Boost>
-          <BoostComponent link={link}>
-            <BoostArrow />
-          </BoostComponent>
-          <Score disabled={!boostEnabled}>{isILink(link) ? `${link.probability}%` : score}</Score>
-          <TokenAmount disabled={!boostEnabled}>
-            {score} {tokenDetails.symbol}
-          </TokenAmount>
-        </Boost>
-      </FlexColumn>
-      <FlexColumn size={mobile ? 10 : 8} justifyContent="center">
-        <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <Link link={link} mobile={mobile} />
+    return (
+      <Columns style={{ paddingTop: '20px' }}>
+        <FlexColumn size={mobile ? 2 : 1} alignItems="center" justifyContent="center">
+          <Boost>
+            <BoostComponent link={link}>
+              <BoostArrow />
+            </BoostComponent>
+            <Score disabled={!unlocked}>{isILink(link) ? `${link.probability}%` : score}</Score>
+            <TokenAmount disabled={!unlocked}>
+              {score} {symbol}
+            </TokenAmount>
+          </Boost>
+        </FlexColumn>
+        <FlexColumn size={mobile ? 10 : 8} justifyContent="center">
+          <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Link link={link} mobile={mobile} />
+            </div>
+            <div
+              style={{
+                marginLeft: !mobile ? 'auto' : '',
+                display: 'flex',
+                flexDirection: mobile ? 'row' : 'column',
+                justifyContent: mobile ? 'space-between' : 'center',
+                flexShrink: 0,
+              }}
+            >
+              <LinkInfo link={link} decimals={decimals} symbol={symbol} />
+            </div>
           </div>
-          <div
-            style={{
-              marginLeft: !mobile ? 'auto' : '',
-              display: 'flex',
-              flexDirection: mobile ? 'row' : 'column',
-              justifyContent: mobile ? 'space-between' : 'center',
-              flexShrink: 0,
-            }}
-          >
-            <LinkInfo link={link} tokenDetails={tokenDetails} />
-          </div>
-        </div>
-        {!lastChild && <Hr style={{ marginTop: '20px' }} />}
-      </FlexColumn>
-    </Columns>
-  );
-};
+          {!lastChild && <Hr style={{ marginTop: '20px' }} />}
+        </FlexColumn>
+      </Columns>
+    );
+  }),
+);
 
 LinkRow.defaultProps = {
   mobile: mobileOrTablet(),

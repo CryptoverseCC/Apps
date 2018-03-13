@@ -13,7 +13,7 @@ import { IRemoteLink } from '@linkexchange/types/link';
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import If from '@linkexchange/components/src/utils/If';
-import { toWei } from '@linkexchange/utils/balance';
+import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 import Slide from './components/Slide';
@@ -23,15 +23,18 @@ import AskForAllowance from './components/AskForAllowance';
 import TransactionInProgress from '@linkexchange/components/src/TransactionInProgress';
 
 import * as style from './boostLink.scss';
+import { observer, inject } from 'mobx-react';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { resolveOnTransactionHash } from '@userfeeds/core/src/utils';
 
 interface IProps {
   web3: Web3;
-  tokenDetails: ITokenDetails;
+  web3Store: IWeb3Store;
   disabled?: boolean;
   disabledReason?: string;
   link: IRemoteLink;
-  linksInSlots: IRemoteLink[];
-  widgetSettings: WidgetSettings;
+  widgetSettingsStore?: IWidgetSettings;
   onSuccess?(linkId: string): void;
   onError?(e: any): void;
 }
@@ -46,6 +49,8 @@ interface IState {
   formOpacity?: number;
 }
 
+@inject('widgetSettingsStore', 'web3Store')
+@observer
 export default class BoostLink extends Component<IProps, IState> {
   _buttonRef: Element;
   state: IState = {
@@ -54,7 +59,7 @@ export default class BoostLink extends Component<IProps, IState> {
   };
 
   render() {
-    const { link, linksInSlots, widgetSettings, disabled, disabledReason, tokenDetails, children } = this.props;
+    const { link, disabled, disabledReason, children } = this.props;
     const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
 
     let decoratedChild;
@@ -84,13 +89,7 @@ export default class BoostLink extends Component<IProps, IState> {
           >
             {stage === 'booster' && (
               <Slide key="booster" className={style.slideContainer}>
-                <Booster
-                  link={link}
-                  linksInSlots={linksInSlots}
-                  tokenDetails={tokenDetails}
-                  slots={widgetSettings.slots}
-                  onSend={this._onSendClick}
-                />
+                <Booster link={link} onSend={this._onSendClick} />
               </Slide>
             )}
             {stage === 'allowance' && (
@@ -180,17 +179,11 @@ export default class BoostLink extends Component<IProps, IState> {
   };
 
   _onSendClick = async (toPay: string) => {
-    const { web3, widgetSettings, tokenDetails } = this.props;
-    const { asset } = widgetSettings;
-    const [_, token] = asset.split(':');
+    const { web3Store } = this.props;
 
     let nextStage: 'boostInProgress' | 'allowance' = 'boostInProgress';
-    if (token) {
-      const tokenWei = toWei(toPay, tokenDetails.decimals);
-      const allowance = await core.ethereum.claims.allowanceUserfeedsContractTokenTransfer(web3, token);
-      if (new BigNumber(tokenWei).gt(allowance)) {
-        nextStage = 'allowance';
-      }
+    if (web3Store.shouldApprove(toWei(toPay, web3Store.decimals!))) {
+      nextStage = 'allowance';
     }
     this.setState({ stage: nextStage, amount: toPay }, () => {
       if (nextStage === 'boostInProgress') {
@@ -199,76 +192,58 @@ export default class BoostLink extends Component<IProps, IState> {
     });
   };
 
-  _onAllowance = (unlimited: boolean) => {
-    const { widgetSettings, web3, tokenDetails } = this.props;
-    const { asset } = widgetSettings;
-    const { amount: toPay } = this.state;
-    const [, tokenAddress] = asset.split(':');
-
-    this.setState({ stage: 'allowanceInProgress' });
-
-    const approvePromise = core.ethereum.claims.approveUserfeedsContractTokenTransfer(
-      web3,
-      tokenAddress,
-      unlimited ? new BigNumber(2).pow(256).minus(1) : toWei(toPay!, tokenDetails.decimals),
-    );
-
-    approvePromise.then(({ promiEvent }) => {
-      promiEvent
-        .on('transactionHash', () => {
-          this._sendClaim();
-          this.setState({ stage: 'boostInProgress' });
-        })
-        .on('error', (e) => {
-          this.setState({ stage: 'error' });
-        });
-    });
-
-    return approvePromise;
+  _onAllowance = async (unlimited: boolean) => {
+    try {
+      this.setState({ stage: 'allowanceInProgress' });
+      const { approve, decimals } = this.props.web3Store;
+      const { amount: toPay } = this.state;
+      const weiToApprove = unlimited ? MAX_VALUE_256 : toWei(toPay!, decimals!);
+      const { promiEvent: approveRequest } = await this.props.web3Store!.approve(weiToApprove);
+      const transactionHash = await resolveOnTransactionHash(approveRequest);
+      this._sendClaim();
+    } catch (e) {
+      this.setState({ stage: 'error' });
+    }
   };
 
-  _sendClaim = () => {
-    const { widgetSettings, web3 } = this.props;
-    const { asset, recipientAddress } = widgetSettings;
-    const { amount: toPay } = this.state;
-    const { id } = this.props.link;
-    const location = urlWithoutQueryIfLinkExchangeApp();
-
-    const claim = {
-      claim: { target: id },
-      credits: [
-        {
-          type: 'interface',
-          value: location,
-        },
-      ],
+  private createClaim(target, location) {
+    return {
+      claim: { target },
+      ...(location
+        ? {
+            credits: [
+              {
+                type: 'interface',
+                value: location,
+              },
+            ],
+          }
+        : {}),
     };
+  }
 
-    const [_, token] = asset.split(':');
-    let sendClaimPromise: Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
-    if (token) {
-      sendClaimPromise = core.ethereum.claims.sendClaimTokenTransfer(web3, recipientAddress, token, toPay, claim);
-    } else {
-      sendClaimPromise = core.ethereum.claims.sendClaimValueTransfer(web3, recipientAddress, toPay, claim);
+  _sendClaim = async () => {
+    try {
+      this.setState({ stage: 'boostInProgress' });
+      const { sendClaim } = this.props.web3Store!;
+      const { recipientAddress } = this.props.widgetSettingsStore!;
+      const { amount: toPay } = this.state;
+      const { id } = this.props.link;
+      const location = urlWithoutQueryIfLinkExchangeApp();
+      const claim = this.createClaim(id, location);
+      const { promiEvent: claimRequest } = await sendClaim(claim, recipientAddress, toPay);
+      this.setState({ stage: 'boostInProgress' });
+      const transactionHash = await resolveOnTransactionHash(claimRequest);
+      this.setState({ stage: 'success', txHash: transactionHash });
+    } catch (e) {
+      this.setState({ stage: 'error' });
     }
-
-    sendClaimPromise.then(({ promiEvent }) => {
-      promiEvent
-        .on('transactionHash', (txHash: string) => {
-          this.setState({ stage: 'success', txHash });
-        })
-        .on('error', (e) => {
-          this.setState({ stage: 'error' });
-        });
-    });
-
-    return sendClaimPromise;
   };
 
   _openBoostStatus = () => {
-    const { widgetSettings } = this.props;
+    const { asset } = this.props.widgetSettingsStore!;
     const { txHash } = this.state;
 
-    openLinkexchangeUrl('/direct/status/boost', { txHash, asset: widgetSettings.asset });
+    openLinkexchangeUrl('/direct/status/boost', { txHash, asset });
   };
 }

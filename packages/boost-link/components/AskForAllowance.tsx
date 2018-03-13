@@ -11,7 +11,7 @@ const cx = classnames.bind(style);
 
 interface IProps {
   goBack(): void;
-  startTransaction(unlimitedApproval: boolean): Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
+  startTransaction(unlimitedApproval: boolean): Promise<any>;
 }
 
 interface IState {

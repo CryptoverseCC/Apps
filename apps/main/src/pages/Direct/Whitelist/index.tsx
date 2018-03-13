@@ -86,17 +86,18 @@ class Whitelist extends Component<TProps, IState> {
   };
 
   private setAddressFromMM = (key) => () => {
-    const account = this.props.web3Store.currentAccount;
-    this.setState({ [key]: account }, () => {
+    const {changeRecipientAddress, changeWhitelist} = this.props.widgetSettingsStore!
+    const {currentAccount} = this.props.web3Store!;
+    this.setState({ [key]: currentAccount }, () => {
       switch (key) {
         case 'recipientAddress':
-          this.props.widgetSettingsStore.changeRecipientAddress(account!);
+          changeRecipientAddress!(currentAccount!);
           break;
         case 'whitelist':
-          this.props.widgetSettingsStore.changeWhitelist(account!);
+          changeWhitelist!(currentAccount!);
           break;
       }
-      this.props.updateQueryParam(key, account);
+      this.props.updateQueryParam(key, currentAccount);
     });
   };
 
@@ -109,7 +110,7 @@ class Whitelist extends Component<TProps, IState> {
       if (value.isCustom) {
         this.debouncedUpdateWidgetSettings();
       } else {
-        this.props.widgetSettingsStore.changeAssetTo(`${value.network}${value.token ? `:${value.token}` : ''}`);
+        this.props.widgetSettingsStore!.changeAssetTo!(`${value.network}${value.token ? `:${value.token}` : ''}`);
       }
       this.props.updateQueryParam('asset', this.props.widgetSettingsStore.asset);
     });
@@ -127,9 +128,9 @@ class Whitelist extends Component<TProps, IState> {
   private updateWidgetSettings() {
     const { changeAssetTo, changeRecipientAddress, changeWhitelist } = this.props.widgetSettingsStore!;
     const { recipientAddress, whitelist, asset: { token, network } } = this.state;
-    changeAssetTo(`${network}${token ? `:${token}` : ''}`);
-    changeRecipientAddress(recipientAddress);
-    changeWhitelist(whitelist);
+    changeAssetTo!(`${network}${token ? `:${token}` : ''}`);
+    changeRecipientAddress!(recipientAddress);
+    changeWhitelist!(whitelist);
   }
 
   private debouncedUpdateWidgetSettings = debounce(this.updateWidgetSettings, 500);

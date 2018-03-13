@@ -4,8 +4,9 @@ import flowRight from 'lodash/flowRight';
 
 import Icon from '@linkexchange/components/src/Icon';
 import Tooltip from '@linkexchange/components/src/Tooltip';
-import { withWidgetSettings, WidgetSettings } from '@linkexchange/widget-settings';
-import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { observer, inject } from 'mobx-react';
 
 const AddLink = styled.button`
   cursor: pointer;
@@ -32,30 +33,31 @@ const AddLink = styled.button`
   }
 `;
 
-const AddLinkButton: React.SFC<{ web3State: IWeb3State; widgetSettings: WidgetSettings }> = (props) => {
-  const { web3State, widgetSettings, children, ...restProps } = props;
-  const disabled = !web3State.enabled;
-  return (
-    <Tooltip text={web3State.reason}>
-      <AddLink disabled={disabled} {...restProps}>
-        {!children
-          ? [
-              <Icon key="icon" name={disabled ? 'warning' : 'plus'} style={{ paddingRight: '5px', fontSize: '9px' }} />,
-              'Add new link',
-            ]
-          : children}
-      </AddLink>
-    </Tooltip>
-  );
-};
+const AddLinkButton: React.SFC<{
+  web3Store?: IWeb3Store;
+  widgetSettingsStore?: IWidgetSettings;
+  [key: string]: any;
+}> = inject('web3Store', 'widgetSettingsStore')(
+  observer((props) => {
+    const { web3Store, widgetSettingsStore, children, ...restProps } = props;
+    const disabled = !web3Store.unlocked;
+    return (
+      <Tooltip text={web3Store.reason}>
+        <AddLink disabled={disabled} {...restProps}>
+          {!children
+            ? [
+                <Icon
+                  key="icon"
+                  name={disabled ? 'warning' : 'plus'}
+                  style={{ paddingRight: '5px', fontSize: '9px' }}
+                />,
+                'Add new link',
+              ]
+            : children}
+        </AddLink>
+      </Tooltip>
+    );
+  }),
+);
 
-// Move to utils and add types
-const propsMapper = (mapper: (props) => any) => (Cmp) => (props) => <Cmp {...props} {...mapper(props)} />;
-
-export default flowRight(
-  withWidgetSettings,
-  propsMapper(({ widgetSettings }: { widgetSettings: WidgetSettings }) => ({
-    asset: widgetSettings.asset,
-  })),
-  withInjectedWeb3AndWeb3State,
-)(AddLinkButton);
+export default AddLinkButton;

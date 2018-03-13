@@ -25,6 +25,18 @@ export default class Details extends Component<IProps, IState> {
     isModalOpen: false,
   };
 
+  private onAddLink = () => {
+    this.setState({ isModalOpen: true });
+  };
+
+  private closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
+  private getDurationToExpires = () => {
+    return moment(this.props.widgetSettingsStore!.tillDate, 'MM/DD/YYYY').diff(moment());
+  };
+
   render() {
     const { asset } = this.props.widgetSettingsStore!;
     const { isModalOpen } = this.state;
@@ -47,16 +59,4 @@ export default class Details extends Component<IProps, IState> {
       </div>
     );
   }
-
-  private onAddLink = () => {
-    this.setState({ isModalOpen: true });
-  };
-
-  private closeModal = () => {
-    this.setState({ isModalOpen: false });
-  };
-
-  private getDurationToExpires = () => {
-    return moment(this.props.widgetSettingsStore!.tillDate, 'MM/DD/YYYY').diff(moment());
-  };
 }

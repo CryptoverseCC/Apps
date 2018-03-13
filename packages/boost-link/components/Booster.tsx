@@ -13,13 +13,17 @@ import Header from './Header';
 import Slider from './Slider';
 
 import * as style from './booster.scss';
+import { inject, observer } from 'mobx-react';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import LinksStore from '@linkexchange/links-store';
 const cx = classnames.bind(style);
 
 interface IProps {
   link: IRemoteLink | ILink;
-  linksInSlots: IRemoteLink[];
-  slots: number;
-  tokenDetails: ITokenDetails;
+  links?: LinksStore;
+  web3Store?: IWeb3Store;
+  widgetSettingsStore?: IWidgetSettings;
   onSend(toPay: string): void;
 }
 
@@ -33,17 +37,20 @@ interface IState {
   probability: number | null;
 }
 
+@inject('web3Store', 'widgetSettingsStore', 'links')
+@observer
 export default class Booster extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    const { visibleLinks } = this.props.links!;
 
-    const positionInRanking = this.props.linksInSlots.findIndex((l) => l.id === this.props.link.id);
+    const positionInRanking = visibleLinks.findIndex((l) => l.id === this.props.link.id);
     this.state = {
       isInSlots: positionInRanking >= 0,
       toPay: '0',
       positionInSlots: positionInRanking >= 0 ? positionInRanking : null,
       hasInsufficientFunds: false,
-      sum: this.props.linksInSlots.reduce((acc, { score }) => acc.add(score.toFixed(0)), new BigNumber(0)),
+      sum: visibleLinks.reduce((acc, { score }) => acc.add(score.toFixed(0)), new BigNumber(0)),
       probability: null,
     };
   }
@@ -55,13 +62,19 @@ export default class Booster extends Component<IProps, IState> {
   }
 
   render() {
-    const { tokenDetails, link } = this.props;
+    const { link, web3Store } = this.props;
+    const { balanceWithDecimalPoint, symbol } = web3Store!;
+
     const { isInSlots, inputError, toPay, probability, positionInSlots, hasInsufficientFunds } = this.state;
     const disabled = this._isDisabled();
 
     return (
       <>
-        <Header positionInSlots={positionInSlots} tokenDetails={tokenDetails} />
+        <Header
+          positionInSlots={positionInSlots}
+          balanceWithDecimalPoint={balanceWithDecimalPoint!}
+          symbol={symbol!}
+        />
         {isInSlots && (
           <>
             <div className={style.probability}>
@@ -84,7 +97,7 @@ export default class Booster extends Component<IProps, IState> {
               <p>
                 This link needs{' '}
                 <span className={style.value}>
-                  {this._toAddToBeInSlots(3)} {tokenDetails.symbol}
+                  {this._toAddToBeInSlots(3)} {symbol}
                 </span>{' '}
               </p>
               <p>to be in slots.</p>
@@ -102,7 +115,7 @@ export default class Booster extends Component<IProps, IState> {
         <div className={cx(style.footer, { hasInsufficientFunds, error: !!inputError })}>
           <div className={style.inputButtonContainer}>
             <input type="text" className={style.toPay} value={toPay} onChange={this._onInputChange} />
-            <div className={style.tokenSymbol}>{tokenDetails.symbol}</div>
+            <div className={style.tokenSymbol}>{symbol}</div>
             <div className={cx(style.next, { disabled })} onClick={this._onSendClick}>
               {!disabled ? <img src={MetaFox} className={style.fox} /> : <Icon name="x" className={style.icon} />}
             </div>
@@ -125,20 +138,23 @@ export default class Booster extends Component<IProps, IState> {
     this._onInputChange({ target: { value: totalToPay } } as ChangeEvent<HTMLInputElement>); // ToDo make it better
   };
 
-  _toAddToBeInSlots = (decimals?: number) => {
-    const { link, linksInSlots, tokenDetails, slots } = this.props;
+  _toAddToBeInSlots = (decimalPositions?: number) => {
+    const { visibleLinks } = this.props.links!;
+    const { link, widgetSettingsStore, web3Store } = this.props;
+    const { decimals } = web3Store!;
+    const { slots } = widgetSettingsStore!;
     const { toPay } = this.state;
 
     let toAdd = new BigNumber(1);
-    if (linksInSlots.length === slots) {
-      const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
+    if (visibleLinks.length === slots) {
+      const lastLinkInSlots = visibleLinks[visibleLinks.length - 1];
 
       toAdd = new BigNumber(lastLinkInSlots.score.toFixed(0))
-        .minus(new BigNumber(link.score.toFixed(0)).add(toWei(toPay, tokenDetails.decimals)))
+        .minus(new BigNumber(link.score.toFixed(0)).add(toWei(toPay!, decimals!)))
         .add(1);
     }
 
-    return fromWeiToString(toAdd.toString(), tokenDetails.decimals, decimals || tokenDetails.decimals);
+    return fromWeiToString(toAdd.toString(), decimals!, decimalPositions! || decimals!);
   };
 
   _onSendClick = () => {
@@ -151,7 +167,9 @@ export default class Booster extends Component<IProps, IState> {
   };
 
   _onSliderChange = (newProbability: number) => {
-    const { link, linksInSlots, tokenDetails } = this.props;
+    const { visibleLinks } = this.props.links!;
+    const { link, web3Store } = this.props;
+    const { decimals, balance } = web3Store!
     const { sum } = this.state;
 
     if (this._isILink(link) && newProbability === link.probability) {
@@ -171,12 +189,12 @@ export default class Booster extends Component<IProps, IState> {
 
     const toPay = fromWeiToString(
       toPayWei.toString(),
-      tokenDetails.decimals,
-      tokenDetails.decimals < 4 ? tokenDetails.decimals : 4,
+      decimals!,
+      decimals! < 4 ? decimals! : 4,
     );
-    const positionInSlots = this._getLinkPosition(toPayWei.add(link.score.toFixed(0)), link, linksInSlots);
+    const positionInSlots = this._getLinkPosition(toPayWei.add(link.score.toFixed(0)), link, visibleLinks);
 
-    if (toPayWei.gt(this.props.tokenDetails.balance!)) {
+    if (toPayWei.gt(balance)) {
       this.setState({
         toPay,
         positionInSlots,
@@ -201,11 +219,14 @@ export default class Booster extends Component<IProps, IState> {
       this.setState({ inputError, toPay: e.target.value });
       return;
     }
-    const { link, linksInSlots, tokenDetails, slots } = this.props;
+    const { visibleLinks } = this.props.links!;
+    const { link, widgetSettingsStore, web3Store } = this.props;
+    const { slots } = widgetSettingsStore!;
+    const { decimals, balance } = web3Store!;
     const { sum, isInSlots } = this.state;
 
     const toPay = e.target.value;
-    const toPayWei = new BigNumber(toWei(toPay, tokenDetails.decimals));
+    const toPayWei = new BigNumber(toWei(toPay!, decimals!));
     const linkTotalScore = toPayWei.add(link.score.toFixed(0));
 
     let positionInSlots;
@@ -216,12 +237,12 @@ export default class Booster extends Component<IProps, IState> {
         .round()
         .div(10)
         .toNumber();
-      positionInSlots = this._getLinkPosition(linkTotalScore, link, linksInSlots);
+      positionInSlots = this._getLinkPosition(linkTotalScore, link, visibleLinks);
 
       this.setState({ probability });
     } else {
-      const lastLinkInSlots = linksInSlots[linksInSlots.length - 1];
-      const newLinksInSlots = linksInSlots
+      const lastLinkInSlots = visibleLinks[visibleLinks.length - 1];
+      const newLinksInSlots = visibleLinks
         .map((l) => new BigNumber(l.score.toFixed(0)))
         .concat([linkTotalScore])
         .sort((a, b) => b.comparedTo(a))
@@ -239,7 +260,7 @@ export default class Booster extends Component<IProps, IState> {
       this.setState({ probability });
     }
 
-    if (toPayWei.gt(this.props.tokenDetails.balance!)) {
+    if (toPayWei.gt(balance!)) {
       this.setState({ toPay, positionInSlots, hasInsufficientFunds: true, inputError: '' });
     } else {
       this.setState({ toPay, positionInSlots, hasInsufficientFunds: false, inputError: '' });
@@ -262,7 +283,7 @@ export default class Booster extends Component<IProps, IState> {
       R.value((v: string) => {
         const dotIndex = v.indexOf('.');
         if (dotIndex !== -1) {
-          return v.length - 1 - dotIndex <= this.props.tokenDetails.decimals;
+          return v.length - 1 - dotIndex <= this.props.web3Store!.decimals!;
         }
         return true;
       }, 'Invalid value'),

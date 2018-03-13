@@ -7,8 +7,8 @@ import Raven from 'raven-js';
 import ReactGA from 'react-ga';
 
 import { IWidgetSettings } from '@linkexchange/types/widget';
-import web3, { Web3Provider, getInfura, TNetwork } from '@linkexchange/utils/web3';
-import { WidgetSettingsProvider, WidgetSettings } from '@linkexchange/widget-settings';
+import web3 from '@linkexchange/utils/web3';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 
 import BlocksStore from './stores/blocks';
 import LinksStore from '@linkexchange/links-store';
@@ -36,12 +36,6 @@ const DEFAULT_WIDGET_SETTINGS = {
 const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
 const blocksStore = new BlocksStore(startBlock, endBlock);
 
-let infuraWeb3;
-if (widgetSettings.asset) {
-  const [network] = widgetSettings.asset.split(':');
-  infuraWeb3 = getInfura(network as TNetwork);
-}
-
 const web3Store = new Web3Store(web3, Erc20, widgetSettings);
 const widgetSettingsStore = new WidgetSettings(widgetSettings);
 const linksStore = new LinksStore(widgetSettingsStore);
@@ -55,9 +49,7 @@ const startApp = () => {
       formValidationsStore={{ 'add-link': {} }}
     >
       <IntlProvider locale="en">
-        <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-          <App />
-        </Web3Provider>
+        <App />
       </IntlProvider>
     </Provider>,
     document.querySelector('.root'),
