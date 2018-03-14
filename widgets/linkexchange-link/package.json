@@ -17,7 +17,6 @@
     "@linkexchange/root-provider": "^0.0.149",
     "@linkexchange/scss-unset": "^0.0.146",
     "@linkexchange/toast": "^0.0.170",
-    "@linkexchange/token-details-provider": "^0.0.166",
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.166",
     "@linkexchange/web3-store": "^0.0.166",

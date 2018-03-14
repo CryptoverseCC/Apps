@@ -3,9 +3,11 @@ import classnames from 'classnames/bind';
 import BigNumber from 'bignumber.js';
 
 import Icon from '@linkexchange/components/src/Icon';
+import LinksStore from '@linkexchange/links-store';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
 import { IRemoteLink, ILink } from '@linkexchange/types/link';
 import { R, validate } from '@linkexchange/utils/validation';
-import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { fromWeiToString, toWei } from '@linkexchange/utils/balance';
 import MetaFox from '@linkexchange/images/metafox_straight.png';
 
@@ -14,9 +16,6 @@ import Slider from './Slider';
 
 import * as style from './booster.scss';
 import { inject, observer } from 'mobx-react';
-import { IWeb3Store } from '@linkexchange/web3-store';
-import { IWidgetSettings } from '@linkexchange/types/widget';
-import LinksStore from '@linkexchange/links-store';
 const cx = classnames.bind(style);
 
 interface IProps {
@@ -70,11 +69,7 @@ export default class Booster extends Component<IProps, IState> {
 
     return (
       <>
-        <Header
-          positionInSlots={positionInSlots}
-          balanceWithDecimalPoint={balanceWithDecimalPoint!}
-          symbol={symbol!}
-        />
+        <Header positionInSlots={positionInSlots} balanceWithDecimalPoint={balanceWithDecimalPoint!} symbol={symbol!} />
         {isInSlots && (
           <>
             <div className={style.probability}>
@@ -169,7 +164,7 @@ export default class Booster extends Component<IProps, IState> {
   _onSliderChange = (newProbability: number) => {
     const { visibleLinks } = this.props.links!;
     const { link, web3Store } = this.props;
-    const { decimals, balance } = web3Store!
+    const { decimals, balance } = web3Store!;
     const { sum } = this.state;
 
     if (this._isILink(link) && newProbability === link.probability) {
@@ -187,11 +182,7 @@ export default class Booster extends Component<IProps, IState> {
       toPayWei = new BigNumber(0);
     }
 
-    const toPay = fromWeiToString(
-      toPayWei.toString(),
-      decimals!,
-      decimals! < 4 ? decimals! : 4,
-    );
+    const toPay = fromWeiToString(toPayWei.toString(), decimals!, decimals! < 4 ? decimals! : 4);
     const positionInSlots = this._getLinkPosition(toPayWei.add(link.score.toFixed(0)), link, visibleLinks);
 
     if (toPayWei.gt(balance)) {

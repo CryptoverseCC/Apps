@@ -6,18 +6,12 @@ import AddLink from '@linkexchange/new-add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 import { Details, Header, Lists } from '@linkexchange/new-details';
-
 import Switch from '@linkexchange/components/src/utils/Switch';
-import Tooltip from '@linkexchange/components/src/Tooltip';
-import Button from '@linkexchange/components/src/NewButton';
-
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
-import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 import Status from '@linkexchange/status';
 
 import AddLinkButton from './components/AddLink';
 import BoostLink from './components/BoostLink';
-
 import BlocksStore from '../../../stores/blocks';
 
 import * as style from './home.scss';
@@ -52,31 +46,16 @@ class Home extends Component<IProps, IState> {
                 className={style.blocksTillConclusion}
               />
             }
-            addLink={<AddLinkButton />}
+            addLink={<AddLinkButton onClick={this.addLink} />}
           />
-          {/* <BlocksTillConclusionProvider
-            startBlock={blocks.startBlock}
-            endBlock={blocks.endBlock}
-            asset={widgetSettingsStore.asset}
-            render={({ enabled, reason }) => (
-              <div className={style.addLinkContainer}>
-                <Tooltip text={reason}>
-                  <Button disabled={!enabled} color="empty" className={style.addLink} onClick={this._addLink}>
-                    Add link
-                  </Button>
-                </Tooltip>
-              </div>
-            )}
-          /> */}
-          <Lists boostLinkComponent={BoostLink} />
+          <Lists boostComponent={BoostLink} addLink={<AddLinkButton onClick={this.addLink} />} />
         </Details>
-        <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
+        <Modal isOpen={openedModal !== 'none'} onCloseRequest={this.closeModal}>
           <Switch expresion={this.state.openedModal}>
             <Switch.Case condition="AddLink">
-              {/* <AddLinkWithInjectedWeb3AndTokenDetails
-                asset={widgetSettingsStore.asset}
-                openWidgetDetails={this._closeModal}
-              /> */}
+              <div style={{ width: '500px', backgroundColor: 'white' }}>
+                <AddLink />
+              </div>
             </Switch.Case>
           </Switch>
         </Modal>
@@ -85,11 +64,11 @@ class Home extends Component<IProps, IState> {
     );
   }
 
-  _addLink = () => {
+  private addLink = () => {
     this.setState({ openedModal: 'AddLink' });
   };
 
-  _closeModal = () => {
+  private closeModal = () => {
     this.setState({ openedModal: 'none' });
   };
 }

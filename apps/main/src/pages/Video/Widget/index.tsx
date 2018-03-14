@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import qs from 'qs';
 import Web3 from 'web3';
 
-import { getInfura } from '@linkexchange/utils/web3';
-import TokenDetailsProvider from '@linkexchange/token-details-provider';
-import { IWidgetSettings } from '@linkexchange/types/widget';
+import Web3Store from '@linkexchange/web3-store';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import { IRemoteLink, ILink } from '@linkexchange/types/link';
 import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
 import calculateProbabilities from '@linkexchange/utils/links';
@@ -14,10 +13,11 @@ import LinkProvider from './containers/LinkProvider';
 
 interface IProps {
   location: Location;
+  web3Store: Web3Store;
+  widgetSettingsStore: WidgetSettings;
 }
 
 interface IState {
-  widgetSettings: IWidgetSettings;
   position?: 'bottom' | 'top';
   fetched: boolean;
   links: ILink[];
@@ -31,12 +31,9 @@ export default class Widget extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    const { position, ...widgetSettings } = qs.parse(props.location.search.replace('?', ''));
-    const [network] = widgetSettings.asset.split(':');
-    this.infura = getInfura(network);
+    const { position } = qs.parse(props.location.search.replace('?', ''));
 
     this.state = {
-      widgetSettings,
       position: position || 'bottom',
       fetched: false,
       links: [],
@@ -44,16 +41,17 @@ export default class Widget extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    this._fetchLinks();
+    this.fetchLinks();
   }
 
   timeslot = () => {
-    const { timeslot = 20 } = this.state.widgetSettings;
+    const { timeslot = 20 } = this.props.widgetSettingsStore;
     return timeslot * 1000;
   };
 
   render() {
-    const { currentLink, linkDuration, links, position, fetched, widgetSettings } = this.state;
+    const { web3Store, widgetSettingsStore } = this.props;
+    const { currentLink, linkDuration, links, position, fetched } = this.state;
 
     if (!fetched) {
       return null;
@@ -61,24 +59,13 @@ export default class Widget extends Component<IProps, IState> {
 
     return (
       <div>
-        <TokenDetailsProvider
-          web3={this.infura}
-          asset={widgetSettings.asset}
-          render={(tokenDetails) => (
-            <Link
-              link={currentLink}
-              linkDuration={linkDuration!}
-              tokenSymbol={tokenDetails.symbol}
-              position={position}
-            />
-          )}
-        />
-        <LinkProvider links={links} onLink={this._onLink} timeslot={this.timeslot()} />
+        <Link link={currentLink} linkDuration={linkDuration!} tokenSymbol={web3Store.symbol} position={position} />
+        <LinkProvider links={links} onLink={this.onLink} timeslot={this.timeslot()} />
       </div>
     );
   }
 
-  _fetchLinks = async () => {
+  private fetchLinks = async () => {
     const start = new Date();
     const {
       apiUrl = 'https://api.userfeeds.io',
@@ -86,7 +73,7 @@ export default class Widget extends Component<IProps, IState> {
       asset,
       algorithm,
       whitelist,
-    } = this.state.widgetSettings;
+    } = this.props.widgetSettingsStore;
 
     // tslint:disable-next-line max-line-length
     const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
@@ -102,7 +89,7 @@ export default class Widget extends Component<IProps, IState> {
       )
         .then(throwErrorOnNotOkResponse)
         .then<{ items: IRemoteLink[] }>((res) => res.json());
-      links = items.slice(0, this.state.widgetSettings.slots);
+      links = items.slice(0, this.props.widgetSettingsStore.slots);
     } catch (e) {
       console.info('Something went wrong 😞');
     }
@@ -113,11 +100,11 @@ export default class Widget extends Component<IProps, IState> {
         links: calculateProbabilities(links),
       });
     }, 2 * this.lastFetchTime - duration);
-    setTimeout(this._fetchLinks, this.timeslot() * 1000 - 2 * duration);
+    setTimeout(this.fetchLinks, this.timeslot() * 1000 - 2 * duration);
     this.lastFetchTime = duration;
   };
 
-  _onLink = (currentLink: ILink, duration: number) => {
+  private onLink = (currentLink: ILink, duration: number) => {
     this.setState({ currentLink, linkDuration: duration });
   };
 }

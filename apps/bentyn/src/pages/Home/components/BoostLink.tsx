@@ -2,7 +2,6 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 
 import BoostLinkComponent from '@linkexchange/boost-link';
-import { withTokenDetails } from '@linkexchange/token-details-provider';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 

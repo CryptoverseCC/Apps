@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import differenceBy from 'lodash/differenceBy';
 
-import BoostLink from '@linkexchange/boost-link';
+import LinksStore from '@linkexchange/links-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { IRemoteLink, ILink } from '@linkexchange/types/link';
 
 import { delayed } from '../utils';
-import LinksStore from '@linkexchange/links-store';
+import BoostLink from './BoostLink';
 import { NoLinks, Loading } from '../components/Placeholders';
 import { ListHeaderSlots, ListHeaderOutside, LinkRow } from '../components/List';
-import { IWidgetSettings } from '@linkexchange/types/widget';
 
 const DebouncedLoading = delayed(200)(Loading);
 
 interface IProps {
   widgetSettingsStore?: IWidgetSettings;
+  boostComponent?: React.ComponentType<{
+    link: ILink | IRemoteLink;
+    render(state: { enabled: boolean; reason?: string }): JSX.Element;
+  }>;
   links?: LinksStore;
   addLink?: JSX.Element;
 }
@@ -23,7 +28,7 @@ interface IProps {
 export default class Lists extends Component<IProps> {
   render() {
     const { whitelist, slots } = this.props.widgetSettingsStore!;
-    const { links, addLink } = this.props;
+    const { links, addLink, boostComponent } = this.props;
     const hasWhitelist = !!whitelist;
     const linksInSlots = links!.visibleLinks;
     const whitelistedLinks = differenceBy(links!.whitelistedLinks, linksInSlots, (a) => a.id);
@@ -42,7 +47,7 @@ export default class Lists extends Component<IProps> {
                 <LinkRow
                   key={link.id}
                   link={link}
-                  boostComponent={BoostLink}
+                  boostComponent={boostComponent || BoostLink}
                   lastChild={index === linksInSlots.length - 1}
                 />
               ))}
@@ -51,7 +56,7 @@ export default class Lists extends Component<IProps> {
                 <LinkRow
                   key={link.id}
                   link={link}
-                  boostComponent={BoostLink}
+                  boostComponent={boostComponent || BoostLink}
                   lastChild={index === linksOutside.length - 1}
                 />
               ))}

@@ -257,7 +257,7 @@ describe('Web3Store', () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, createWidgetSettings('ethereum'));
     expect((setInterval as jest.Mock).mock.calls).toEqual([
       [web3Store.updateInjectedWeb3State, 1000],
-      [web3Store.updateTokenDetails, 5000],
+      [web3Store.updateTokenDetails, 1000],
     ]);
   });
 

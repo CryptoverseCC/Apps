@@ -5,7 +5,6 @@ import moment from 'moment';
 import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
-import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import LinksStore from '@linkexchange/links-store';
 import ToolTip from '@linkexchange/components/src/tooltip';
@@ -202,17 +201,18 @@ export const LinkRow: React.SFC<{
       <Columns style={{ paddingTop: '20px' }}>
         <FlexColumn size={mobile ? 2 : 1} alignItems="center" justifyContent="center">
           <ToolTip text={reason}>
-            <Boost>
-              {!reason && (
-                <BoostComponent link={link}>
-                  <BoostArrow />
-                </BoostComponent>
+            <BoostComponent
+              link={link}
+              render={({ enabled }) => (
+                <Boost>
+                  {enabled && <BoostArrow />}
+                  <Score disabled={!enabled}>{isILink(link) ? `${link.probability}%` : score}</Score>
+                  <TokenAmount disabled={!enabled}>
+                    {score} {symbol}
+                  </TokenAmount>
+                </Boost>
               )}
-              <Score disabled={!!reason}>{isILink(link) ? `${link.probability}%` : score}</Score>
-              <TokenAmount disabled={!!reason}>
-                {score} {symbol}
-              </TokenAmount>
-            </Boost>
+            />
           </ToolTip>
         </FlexColumn>
         <FlexColumn size={mobile ? 10 : 8} justifyContent="center">

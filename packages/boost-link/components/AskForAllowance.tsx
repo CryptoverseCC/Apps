@@ -3,7 +3,6 @@ import classnames from 'classnames/bind';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import Icon from '@linkexchange/components/src/Icon';
-import { ITokenDetails } from '@linkexchange/token-details-provider';
 import TranscactionProvider from '@linkexchange/transaction-provider';
 
 import * as style from './askForAllowance.scss';

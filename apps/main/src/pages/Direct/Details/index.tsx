@@ -55,7 +55,7 @@ export default class Details extends Component<IProps, IState> {
             <AddLink />
           </div>
         </Modal>
-        <Status asset={asset} />
+        <Status />
       </div>
     );
   }

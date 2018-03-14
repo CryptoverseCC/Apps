@@ -23,7 +23,6 @@
     "@linkexchange/scss-unset": "^0.0.146",
     "@linkexchange/status": "^0.0.149",
     "@linkexchange/toast": "^0.0.170",
-    "@linkexchange/token-details-provider": "^0.0.166",
     "@linkexchange/utils": "^0.0.166",
     "@linkexchange/widget-settings": "^0.0.168",
     "@userfeeds/core": "^0.0.166",

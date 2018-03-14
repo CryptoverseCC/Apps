@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { ITokenDetails } from '@linkexchange/token-details-provider';
-
 import * as style from './header.scss';
 
 interface IProps {
@@ -18,7 +16,9 @@ const Header = ({ positionInSlots, balanceWithDecimalPoint, symbol }: IProps) =>
     </div>
     <p className={style.balance}>
       Your balance:
-      <span className={style.amount}>{balanceWithDecimalPoint} {symbol}</span>
+      <span className={style.amount}>
+        {balanceWithDecimalPoint} {symbol}
+      </span>
     </p>
   </div>
 );

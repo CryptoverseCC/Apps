@@ -33,6 +33,18 @@ const AddLink = styled.button`
   }
 `;
 
+type TButtonProps = React.HtmlHTMLAttributes<HTMLButtonElement> & { disabled?: boolean };
+export const AddLinkButtonComponent: React.SFC<TButtonProps> = ({ children, disabled, ...restProps }) => (
+  <AddLink disabled={disabled} {...restProps}>
+    {!children
+      ? [
+          <Icon key="icon" name={disabled ? 'warning' : 'plus'} style={{ paddingRight: '5px', fontSize: '9px' }} />,
+          'Add new link',
+        ]
+      : children}
+  </AddLink>
+);
+
 type TProps = {
   web3Store?: IWeb3Store;
   widgetSettingsStore?: IWidgetSettings;
@@ -45,18 +57,9 @@ const AddLinkButton: React.SFC<TProps> = inject('web3Store', 'widgetSettingsStor
 
     return (
       <Tooltip text={web3Store.reason}>
-        <AddLink disabled={disabled} {...restProps}>
-          {!children
-            ? [
-                <Icon
-                  key="icon"
-                  name={disabled ? 'warning' : 'plus'}
-                  style={{ paddingRight: '5px', fontSize: '9px' }}
-                />,
-                'Add new link',
-              ]
-            : children}
-        </AddLink>
+        <AddLinkButtonComponent disabled={disabled} {...restProps}>
+          {children}
+        </AddLinkButtonComponent>
       </Tooltip>
     );
   }),

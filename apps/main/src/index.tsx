@@ -34,7 +34,7 @@ const DEFAULT_WIDGET_SETTINGS = {
 };
 
 const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
-const blocksStore = new BlocksStore(startBlock, endBlock);
+const blocksStore = new BlocksStore(parseInt(startBlock, 10), parseInt(endBlock, 10));
 
 const web3Store = new Web3Store(web3, Erc20, widgetSettings);
 const widgetSettingsStore = new WidgetSettings(widgetSettings);

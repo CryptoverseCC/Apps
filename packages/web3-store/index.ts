@@ -100,7 +100,7 @@ export default class Web3Store implements IWeb3Store {
   startUpdatingTokenDetails() {
     this.updateTokenDetails();
     clearInterval(this.updateTokenDetailsIntervalId);
-    this.updateTokenDetailsIntervalId = setInterval(this.updateTokenDetails, 5000);
+    this.updateTokenDetailsIntervalId = setInterval(this.updateTokenDetails, 1000);
   }
 
   stopUpdating() {

@@ -3,7 +3,6 @@ import classnames from 'classnames/bind';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import Icon from '@linkexchange/components/src/Icon';
-import { ITokenDetails } from '@linkexchange/token-details-provider';
 import TranscactionProvider from '@linkexchange/transaction-provider';
 
 import * as style from './newAskForAllowance.scss';
@@ -32,7 +31,9 @@ export default class NewAskForAllowance extends Component<IProps> {
     return (
       <>
         <div className={style.body}>
-          <a className={style.back} onClick={goBack}><Icon name="arrow-thick-left" className={style.backIcon} /></a>
+          <a className={style.back} onClick={goBack}>
+            <Icon name="arrow-thick-left" className={style.backIcon} />
+          </a>
           <h2 style={{ color: '#1B2437' }}>Tokens Access</h2>
           <p>We need a confirmation to use tokens stored on this address.</p>
           <Checkbox
@@ -44,7 +45,7 @@ export default class NewAskForAllowance extends Component<IProps> {
             color="primary"
             size="big"
             childrenWrapperStyle={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             onClick={this._startTransaction}
           >
             Grant permission

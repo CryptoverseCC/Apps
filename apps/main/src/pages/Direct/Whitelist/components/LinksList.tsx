@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import TransactionProvider, { TStatus } from '@linkexchange/transaction-provider';
-import { ITokenDetails, withTokenDetails } from '@linkexchange/token-details-provider';
 
 import A from '@linkexchange/components/src/A';
 import Icon from '@linkexchange/components/src/Icon';

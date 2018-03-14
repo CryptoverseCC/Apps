@@ -11,7 +11,6 @@ import Tooltip from '@linkexchange/components/src/Tooltip';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 import { IRemoteLink } from '@linkexchange/types/link';
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
-import { ITokenDetails } from '@linkexchange/token-details-provider';
 import If from '@linkexchange/components/src/utils/If';
 import { toWei, MAX_VALUE_256 } from '@linkexchange/utils/balance';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
@@ -29,11 +28,8 @@ import { IWidgetSettings } from '@linkexchange/types/widget';
 import { resolveOnTransactionHash } from '@userfeeds/core/src/utils';
 
 interface IProps {
-  web3: Web3;
-  web3Store: IWeb3Store;
-  disabled?: boolean;
-  disabledReason?: string;
   link: IRemoteLink;
+  web3Store?: IWeb3Store;
   widgetSettingsStore?: IWidgetSettings;
   onSuccess?(linkId: string): void;
   onError?(e: any): void;
@@ -59,7 +55,7 @@ export default class BoostLink extends Component<IProps, IState> {
   };
 
   render() {
-    const { link, disabled, disabledReason, children } = this.props;
+    const { link, children } = this.props;
     const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
 
     let decoratedChild;
@@ -73,14 +69,8 @@ export default class BoostLink extends Component<IProps, IState> {
 
     return (
       <div ref={this._onButtonRef} className={style.self}>
-        <Tooltip text={disabledReason}>
-          {decoratedChild || (
-            <Button secondary className={style.boostButton} disabled={disabled} onClick={this._onBoostClick}>
-              Boost
-            </Button>
-          )}
-        </Tooltip>
-        <If condition={visible && !disabled}>
+        {decoratedChild}
+        <If condition={visible}>
           <div className={style.overlay} onClick={this._close} />
           <TransitionGroup
             ref={this._onFormRef}
