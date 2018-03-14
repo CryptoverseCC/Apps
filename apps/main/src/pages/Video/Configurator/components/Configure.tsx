@@ -11,7 +11,7 @@ import moment from 'moment';
 import core from '@userfeeds/core/src';
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import { getAverageBlockTime } from '@linkexchange/utils/ethereum';
-import { withInjectedWeb3, getInfura, TNetwork } from '@linkexchange/utils/web3';
+import { getInfura, TNetwork } from '@linkexchange/utils/web3';
 import { toast } from '@linkexchange/toast';
 import Button from '@linkexchange/components/src/NewButton';
 import Input from '@linkexchange/components/src/Form/Input';
@@ -70,7 +70,7 @@ const initialState = {
 
 const rules = {
   title: [R.required],
-  whitelist: [R.value((v) => v === '' ? true : isAddress(v), 'Has to be valid eth address')],
+  whitelist: [R.value((v) => (v === '' ? true : isAddress(v)), 'Has to be valid eth address')],
   description: [R.required],
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
   asset: [R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address')],
@@ -378,4 +378,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default flowRight(withInjectedWeb3, updateQueryParam)(Configure);
+export default flowRight(updateQueryParam)(Configure);

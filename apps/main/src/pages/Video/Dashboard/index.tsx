@@ -1,44 +1,30 @@
 import React, { Component } from 'react';
-import flowRight from 'lodash/flowRight';
-import Web3 from 'web3';
-import sigUtil from 'eth-sig-util';
+import { inject, observer } from 'mobx-react';
+
+// import sigUtil from 'eth-sig-util';
 
 import core from '@userfeeds/core/src';
 import Loader from '@linkexchange/components/src/Loader';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
-import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
-import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
 
 import * as style from './dashboard.scss';
 
 interface IProps {
-  widgetSettings: WidgetSettings;
-  web3State: IWeb3State;
-  web3: Web3;
+  widgetSettingsStore: WidgetSettings;
 }
 
 interface IState {
   stage: 'notstarted' | 'inprogress' | 'success' | 'failure';
 }
 
-class Dashboard extends Component<IProps, IState> {
+@inject('widgetSettingsStore')
+@observer
+export default class Dashboard extends Component<IProps, IState> {
   state: IState = {
-    stage: 'notstarted',
+    stage: 'success',
   };
-
-  componentDidMount() {
-    if (this.props.web3State.enabled) {
-      this._login();
-    }
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.web3State.enabled && this.state.stage === 'notstarted') {
-      this._login();
-    }
-  }
 
   render() {
     const { stage } = this.state;
@@ -56,11 +42,11 @@ class Dashboard extends Component<IProps, IState> {
             <h4>You shouldn't be here</h4>
           </Switch.Case>
           <Switch.Case condition="success">
-            <Button color="primary" onClick={this._goToWhitelist}>
+            <Button color="primary" onClick={this.goToWhitelist}>
               Go to whitelist
             </Button>
 
-            <Button color="primary" onClick={this._goToObsUrl}>
+            <Button color="primary" onClick={this.goToObsUrl}>
               Go to obs link
             </Button>
           </Switch.Case>
@@ -69,15 +55,15 @@ class Dashboard extends Component<IProps, IState> {
     );
   }
 
-  _goToWhitelist = () => {
-    openLinkexchangeUrl('/direct/whitelist', this.props.widgetSettings);
+  private goToWhitelist = () => {
+    openLinkexchangeUrl('/direct/whitelist', this.props.widgetSettingsStore);
   };
 
-  _goToObsUrl = () => {
-    openLinkexchangeUrl('/video/widget', this.props.widgetSettings);
+  private goToObsUrl = () => {
+    openLinkexchangeUrl('/video/widget', this.props.widgetSettingsStore);
   };
 
-  _login = async () => {
+  private login = async () => {
     // ToDo temporaty disable login
     this.setState({ stage: 'success' });
     return;
@@ -108,15 +94,3 @@ class Dashboard extends Component<IProps, IState> {
     // }
   };
 }
-
-// Move to utils and add types
-const propsMapper = (mapper: (props) => any) => (Cmp) => (props) => <Cmp {...props} {...mapper(props)} />;
-
-export default flowRight(
-  withWidgetSettings,
-  propsMapper(({ widgetSettings }: { widgetSettings: WidgetSettings }) => ({
-    asset: widgetSettings.asset,
-    recipientAddress: widgetSettings.recipientAddress,
-  })),
-  withInjectedWeb3AndWeb3State,
-)(Dashboard);

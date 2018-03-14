@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import Web3 from 'web3';
-import flowRight from 'lodash/flowRight';
+import { inject, observer } from 'mobx-react';
 
-import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
-import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
+import Web3Store from '@linkexchange/web3-store';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 
 interface IProps {
-  web3: Web3;
-  web3State: IWeb3State;
-  widgetSettings: WidgetSettings;
+  web3Store: Web3Store;
+  widgetSettingsStore: WidgetSettings;
   recipientAddress: string;
 }
 
@@ -16,48 +14,16 @@ interface IState {
   enabled: boolean;
 }
 
+@inject('web3Store', 'widgetSettingsStore')
+@observer
 class IfOwner extends Component<IProps, IState> {
-  state = {
-    enabled: false,
-  };
-
-  constructor(props: IProps) {
-    super(props);
-    if (props.web3State.enabled) {
-      this._getAddress();
-    }
-  }
-
-  componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.web3State.enabled) {
-      this._getAddress();
-    }
-  }
-
   render() {
-    if (this.state.enabled) {
+    if (!this.props.web3Store.reason && this.props.web3Store.currentAccount === this.props.recipientAddress) {
       return this.props.children;
     }
 
     return null;
   }
-
-  _getAddress = async () => {
-    const [account] = await this.props.web3.eth.getAccounts();
-    this.setState({
-      enabled: account === this.props.recipientAddress,
-    });
-  };
 }
 
-// Move to utils and add types
-const propsMapper = (mapper: (props) => any) => (Cmp) => (props) => <Cmp {...props} {...mapper(props)} />;
-
-export default flowRight(
-  withWidgetSettings,
-  propsMapper(({ widgetSettings }: { widgetSettings: WidgetSettings }) => ({
-    asset: widgetSettings.asset,
-    recipientAddress: widgetSettings.recipientAddress,
-  })),
-  withInjectedWeb3AndWeb3State,
-)(IfOwner);
+export default IfOwner;

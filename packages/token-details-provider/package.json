@@ -13,7 +13,6 @@
     "@userfeeds/core": "^0.0.166"
   },
   "peerDependencies": {
-    "@linkexchange/widget-settings": "^0.0.168",
-    "@linkexchange/web3-state-provider": "^0.0.147"
+    "@linkexchange/widget-settings": "^0.0.168"
   }
 }

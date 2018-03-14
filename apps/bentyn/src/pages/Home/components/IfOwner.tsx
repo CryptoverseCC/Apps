@@ -3,7 +3,6 @@ import Web3 from 'web3';
 import flowRight from 'lodash/flowRight';
 
 import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
-import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
 
 interface IProps {
   web3: Web3;
@@ -59,5 +58,5 @@ export default flowRight(
     asset: widgetSettings.asset,
     recipientAddress: widgetSettings.recipientAddress,
   })),
-  withInjectedWeb3AndWeb3State,
+  // withInjectedWeb3AndWeb3State,
 )(IfOwner);

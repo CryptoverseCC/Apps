@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
-import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider';
 
 import MetaFox from '@linkexchange/images/metafox.png';
 

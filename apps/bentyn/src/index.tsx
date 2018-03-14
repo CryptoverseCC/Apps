@@ -5,7 +5,6 @@ import { Provider } from 'mobx-react';
 import { IntlProvider } from 'react-intl';
 
 import { IWidgetSettings } from '@linkexchange/types/widget';
-import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
 import { EWidgetSize } from '@linkexchange/types/widget';
 import web3, { getInfura, Web3Provider, TNetwork } from '@linkexchange/utils/web3';
 
@@ -47,14 +46,10 @@ const [network] = BENTYN_WIDGET_CONFIG.asset.split(':');
 const infuraWeb3 = getInfura(network as TNetwork);
 
 render(
-  <WidgetSettingsProvider widgetSettings={widgetSettings}>
-    <Provider blocks={blocksStore}>
-      <IntlProvider locale="en">
-        <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-          <App />
-        </Web3Provider>
-      </IntlProvider>
-    </Provider>
-  </WidgetSettingsProvider>,
+  <Provider blocks={blocksStore}>
+    <IntlProvider locale="en">
+      <App />
+    </IntlProvider>
+  </Provider>,
   document.querySelector('.root'),
 );

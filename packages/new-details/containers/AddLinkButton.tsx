@@ -33,14 +33,16 @@ const AddLink = styled.button`
   }
 `;
 
-const AddLinkButton: React.SFC<{
+type TProps = {
   web3Store?: IWeb3Store;
   widgetSettingsStore?: IWidgetSettings;
-  [key: string]: any;
-}> = inject('web3Store', 'widgetSettingsStore')(
+} & React.HtmlHTMLAttributes<HTMLButtonElement>;
+
+const AddLinkButton: React.SFC<TProps> = inject('web3Store', 'widgetSettingsStore')(
   observer((props) => {
     const { web3Store, widgetSettingsStore, children, ...restProps } = props;
-    const disabled = !web3Store.unlocked;
+    const disabled = !!web3Store.reason;
+
     return (
       <Tooltip text={web3Store.reason}>
         <AddLink disabled={disabled} {...restProps}>

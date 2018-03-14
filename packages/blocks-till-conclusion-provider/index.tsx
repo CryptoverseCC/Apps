@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import Web3 from 'web3';
 
 import core from '@userfeeds/core/src';
 import wait from '@linkexchange/utils/wait';
-import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
-import {IWeb3State, withInjectedWeb3AndWeb3State} from '@linkexchange/web3-state-provider';
+import Web3Store from '@linkexchange/web3-store';
 
 interface IProps {
-  web3: Web3;
-  web3State: IWeb3State;
+  web3Store: Web3Store;
   asset: string;
   startBlock: number;
   endBlock: number;
-  render(state: IWeb3State): JSX.Element;
+  render(state: Web3Store): JSX.Element;
 }
 
 interface IState {
@@ -23,51 +22,37 @@ interface IState {
 const HASNT_STARTED = `The auction hasn't begun yet`;
 const IS_CLOSED = 'The auction is closed';
 
+@inject('web3Store')
+@observer
 class BlocksTillConclusionProvider extends Component<IProps, IState> {
-
   static reasons = {
     HASNT_STARTED,
     IS_CLOSED,
   };
-  removeListener: () => void;
-  state: IState = {
-    loaded: false,
-  };
-
-  componentDidMount() {
-    const { web3, asset, startBlock, endBlock } = this.props;
-    this.removeListener = taskRunner.run(web3, [asset, startBlock, endBlock], (blocksState) => {
-      this.setState({ loaded: true, blocksState });
-    });
-  }
-
-  componentWillUnmount() {
-    this.removeListener();
-  }
 
   render() {
-    const { web3State } = this.props;
-    const { loaded, blocksState } = this.state;
+    const { web3Store } = this.props;
 
-    if (loaded && !blocksState!.enabled) {
-      return this.props.render(blocksState!);
-    } else if (!web3State.enabled || !loaded) {
-      return this.props.render(web3State);
+    if (web3Store.reason) {
+      return this.props.render(web3Store);
     }
 
-    return this.props.render(blocksState!);
+    return this.props.render(HASNT_STARTED);
   }
 }
 
-export default withInjectedWeb3AndWeb3State(BlocksTillConclusionProvider);
+export default BlocksTillConclusionProvider;
 
 const load = async (web3, [asset, startBlock, endBlock], update) => {
   const [network] = asset.split(':');
 
-  while (!(
-    web3.currentProvider !== null
-    && await web3.eth.net.isListening()
-    && await core.utils.getCurrentNetworkName(web3) === network)) {
+  while (
+    !(
+      web3.currentProvider !== null &&
+      (await web3.eth.net.isListening()) &&
+      (await core.utils.getCurrentNetworkName(web3)) === network
+    )
+  ) {
     await wait(1000);
   }
 
@@ -85,7 +70,4 @@ const load = async (web3, [asset, startBlock, endBlock], update) => {
   }
 };
 
-const taskRunner = new Web3TaskRunner<
-  { enabled: boolean; reason?: string; },
-  [string, number, number]
->(load);
+// const taskRunner = new Web3TaskRunner<{ enabled: boolean; reason?: string }, [string, number, number]>(load);

@@ -151,7 +151,12 @@ export default class Web3Store implements IWeb3Store {
     this.isListening = isListening;
     this.injectedWeb3ActiveNetwork = networkMapping[networkId];
     this.currentAccount = accounts[0];
-    this.blockNumber = currentBlock;
+
+    if (this.network === this.injectedWeb3ActiveNetwork) {
+      this.blockNumber = currentBlock;
+    } else {
+      this.blockNumber = await this.erc20.currentBlock();
+    }
   }
 
   @computed

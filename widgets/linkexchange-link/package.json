@@ -11,10 +11,8 @@
   "author": "Userfeeds",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/add-link": "^0.0.170",
     "@linkexchange/new-add-link": "^0.0.170",
     "@linkexchange/components": "^0.0.170",
-    "@linkexchange/details": "^0.0.170",
     "@linkexchange/new-details": "^0.0.171",
     "@linkexchange/root-provider": "^0.0.149",
     "@linkexchange/scss-unset": "^0.0.146",
@@ -22,7 +20,6 @@
     "@linkexchange/token-details-provider": "^0.0.166",
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.166",
-    "@linkexchange/web3-state-provider": "^0.0.166",
     "@linkexchange/web3-store": "^0.0.166",
     "@linkexchange/widget-settings": "^0.0.168",
     "@userfeeds/core": "^0.0.166",

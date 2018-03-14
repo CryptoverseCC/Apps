@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { inject } from 'mobx-react';
 
 import { withInfura } from '@linkexchange/utils/web3';
-import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
+import AddLink from '@linkexchange/new-add-link';
 import Modal from '@linkexchange/components/src/Modal';
-import { Details, Lists } from '@linkexchange/details';
-import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
+import { Details, Lists } from '@linkexchange/new-details';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
@@ -43,7 +43,7 @@ class Home extends Component<IProps, IState> {
     return (
       <div className={style.self}>
         <Header widgetSettings={widgetSettings} blocks={blocks} />
-        <Details standaloneMode className={style.details}>
+        <Details className={style.details}>
           <BlocksTillConclusionProvider
             startBlock={blocks.startBlock}
             endBlock={blocks.endBlock}

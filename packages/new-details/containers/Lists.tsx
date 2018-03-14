@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import differenceBy from 'lodash/differenceBy';
 
 import BoostLink from '@linkexchange/boost-link';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
 
 import { delayed } from '../utils';
 import LinksStore from '@linkexchange/links-store';
@@ -30,7 +29,6 @@ export default class Lists extends Component<IProps> {
     const whitelistedLinks = differenceBy(links!.whitelistedLinks, linksInSlots, (a) => a.id);
     const allLinks = differenceBy(links!.allLinks, linksInSlots, (a) => a.id);
     const linksOutside = hasWhitelist ? whitelistedLinks : allLinks;
-    const web3Enabled = true;
 
     return (
       <>

@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
-import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
-import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
+import AddLink from '@linkexchange/new-add-link';
 import Modal from '@linkexchange/components/src/Modal';
-import { Details, Lists } from '@linkexchange/details';
-import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
+import { WidgetSettings } from '@linkexchange/widget-settings';
+import { Details, Header, Lists } from '@linkexchange/new-details';
+
+import Switch from '@linkexchange/components/src/utils/Switch';
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import Button from '@linkexchange/components/src/NewButton';
-import Switch from '@linkexchange/components/src/utils/Switch';
+
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 import Status from '@linkexchange/status';
 
-import Header from './components/Header';
+import AddLinkButton from './components/AddLink';
 import BoostLink from './components/BoostLink';
-
-const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
 
 import BlocksStore from '../../../stores/blocks';
 
@@ -25,7 +24,7 @@ import * as style from './home.scss';
 
 interface IProps {
   blocks: BlocksStore;
-  widgetSettings: WidgetSettings;
+  widgetSettingsStore: WidgetSettings;
 }
 
 interface IState {
@@ -38,16 +37,27 @@ class Home extends Component<IProps, IState> {
   };
 
   render() {
-    const { widgetSettings, blocks } = this.props;
+    const { widgetSettingsStore, blocks } = this.props;
     const { openedModal } = this.state;
+
+    // ToDo add dashboard button
     return (
       <div className={style.self}>
-        <Header asset={widgetSettings.asset} widgetSettings={widgetSettings} blocks={blocks} />
-        <Details standaloneMode className={style.details}>
-          <BlocksTillConclusionProvider
+        <Details className={style.details}>
+          <Header
+            expires={
+              <BlocksTillConclusion
+                startBlock={blocks.startBlock}
+                endBlock={blocks.endBlock}
+                className={style.blocksTillConclusion}
+              />
+            }
+            addLink={<AddLinkButton />}
+          />
+          {/* <BlocksTillConclusionProvider
             startBlock={blocks.startBlock}
             endBlock={blocks.endBlock}
-            asset={widgetSettings.asset}
+            asset={widgetSettingsStore.asset}
             render={({ enabled, reason }) => (
               <div className={style.addLinkContainer}>
                 <Tooltip text={reason}>
@@ -57,27 +67,20 @@ class Home extends Component<IProps, IState> {
                 </Tooltip>
               </div>
             )}
-          />
-          <BlocksTillConclusionWithInfura
-            startBlock={blocks.startBlock}
-            endBlock={blocks.endBlock}
-            asset={widgetSettings.asset}
-            className={style.blocksTillConclusion}
-          />
+          /> */}
           <Lists boostLinkComponent={BoostLink} />
         </Details>
         <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
           <Switch expresion={this.state.openedModal}>
             <Switch.Case condition="AddLink">
-              <AddLinkWithInjectedWeb3AndTokenDetails
-                loadBalance
-                asset={widgetSettings.asset}
+              {/* <AddLinkWithInjectedWeb3AndTokenDetails
+                asset={widgetSettingsStore.asset}
                 openWidgetDetails={this._closeModal}
-              />
+              /> */}
             </Switch.Case>
           </Switch>
         </Modal>
-        <Status asset={widgetSettings.asset} />
+        <Status />
       </div>
     );
   }
@@ -91,4 +94,4 @@ class Home extends Component<IProps, IState> {
   };
 }
 
-export default inject('blocks')(withWidgetSettings(Home));
+export default inject('widgetSettingsStore', 'blocks')(observer(Home));

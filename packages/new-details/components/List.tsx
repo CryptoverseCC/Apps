@@ -7,9 +7,10 @@ import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
 import { ITokenDetails } from '@linkexchange/token-details-provider';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
+import LinksStore from '@linkexchange/links-store';
+import ToolTip from '@linkexchange/components/src/tooltip';
 import BoostArrowImg from '@linkexchange/images/arrow-boost.svg';
 
-import LinksStore from '@linkexchange/links-store';
 import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
 import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr, { FancyHr } from './Hr';
@@ -194,21 +195,25 @@ export const LinkRow: React.SFC<{
   lastChild?: boolean;
 }> = inject('web3Store')(
   observer(({ mobile, link, web3Store, lastChild, boostComponent: BoostComponent }) => {
-    const { decimals, symbol, unlocked } = web3Store!;
+    const { decimals, symbol, reason } = web3Store!;
     const score = fromWeiToString(link.score, decimals);
 
     return (
       <Columns style={{ paddingTop: '20px' }}>
         <FlexColumn size={mobile ? 2 : 1} alignItems="center" justifyContent="center">
-          <Boost>
-            <BoostComponent link={link}>
-              <BoostArrow />
-            </BoostComponent>
-            <Score disabled={!unlocked}>{isILink(link) ? `${link.probability}%` : score}</Score>
-            <TokenAmount disabled={!unlocked}>
-              {score} {symbol}
-            </TokenAmount>
-          </Boost>
+          <ToolTip text={reason}>
+            <Boost>
+              {!reason && (
+                <BoostComponent link={link}>
+                  <BoostArrow />
+                </BoostComponent>
+              )}
+              <Score disabled={!!reason}>{isILink(link) ? `${link.probability}%` : score}</Score>
+              <TokenAmount disabled={!!reason}>
+                {score} {symbol}
+              </TokenAmount>
+            </Boost>
+          </ToolTip>
         </FlexColumn>
         <FlexColumn size={mobile ? 10 : 8} justifyContent="center">
           <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row' }}>

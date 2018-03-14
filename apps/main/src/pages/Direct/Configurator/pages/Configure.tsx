@@ -11,7 +11,6 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 import core from '@userfeeds/core/src';
-import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import { toast } from '@linkexchange/toast';
 import Input from '@linkexchange/components/src/Form/Input';
@@ -77,7 +76,7 @@ const MIN_DATE = moment().add(1, 'day');
 
 const rules = {
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
-  whitelist: [R.value((v) => v === '' ? true : isAddress(v), 'Has to be valid eth address')],
+  whitelist: [R.value((v) => (v === '' ? true : isAddress(v)), 'Has to be valid eth address')],
   title: [R.required],
   description: [R.required],
   contactMethod: [R.required],
@@ -354,4 +353,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default flowRight(withInjectedWeb3, updateQueryParam)(Configure);
+export default flowRight(updateQueryParam)(Configure);

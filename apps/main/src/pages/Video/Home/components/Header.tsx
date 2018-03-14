@@ -1,10 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
+import { inject, observer } from 'mobx-react';
 import { Link, match, withRouter } from 'react-router-dom';
 
+import Web3Store from '@linkexchange/web3-store';
 import Button from '@linkexchange/components/src/NewButton';
 import { WidgetSettings } from '@linkexchange/widget-settings';
-import { withInfuraAndTokenDetails, ITokenDetails } from '@linkexchange/token-details-provider';
 
 import IfOwner from './IfOwner';
 
@@ -17,7 +18,7 @@ import * as style from './header.scss';
 interface IProps {
   match: match<any>;
   widgetSettings: WidgetSettings;
-  tokenDetails: ITokenDetails;
+  web3Store: Web3Store;
   blocks: {
     startBlock: number;
     endBlock: number;
@@ -27,7 +28,7 @@ interface IProps {
 const Header = (props: IProps) => (
   <div className={style.self}>
     <div className={style.about}>
-      <div className={style.token}>{props.tokenDetails.symbol}</div>
+      <div className={style.token}>{props.web3Store.symbol}</div>
       <div className={style.bio}>
         <p className={style.name}>{props.widgetSettings.title}</p>
         <p className={style.description}>{props.widgetSettings.description}</p>
@@ -48,5 +49,5 @@ const Header = (props: IProps) => (
 );
 
 // ToDo fix when withRouter will be have valid signature
-const wrappedHeader: React.ComponentClass<any> = withRouter(withInfuraAndTokenDetails(Header));
+const wrappedHeader: React.ComponentClass<any> = withRouter(inject('web3Store')(observer(Header)));
 export default wrappedHeader;

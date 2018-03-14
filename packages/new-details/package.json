@@ -12,7 +12,6 @@
     "@linkexchange/token-details-provider": "^0.0.166",
     "@linkexchange/types": "^0.0.144",
     "@linkexchange/utils": "^0.0.166",
-    "@linkexchange/web3-state-provider": "^0.0.166",
     "@userfeeds/core": "^0.0.166",
     "moment": "2.19.1",
     "react-blockies": "^1.2.2",

@@ -77,22 +77,3 @@ export class WidgetSettingsProvider extends PureComponent<IProps> {
     return this.props.children;
   }
 }
-
-export const withWidgetSettings = <T extends { widgetSettings: WidgetSettings }>(Cmp: React.ComponentType<T>) => {
-  const DecoratedComponent = observer(Cmp);
-
-  return class extends Component<Omit<T, 'widgetSettings'>> {
-    static contextTypes = {
-      widgetSettings: PropTypes.object,
-    };
-
-    static displayName = `withWidgetSettings(${Cmp.displayName || Cmp.name})`;
-
-    render() {
-      if (!this.context.widgetSettings) {
-        throw Error(`Couldn't find widgetSettings`);
-      }
-      return <DecoratedComponent widgetSettings={this.context.widgetSettings} {...this.props} />;
-    }
-  };
-};
