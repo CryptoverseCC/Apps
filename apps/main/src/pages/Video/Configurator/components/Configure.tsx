@@ -59,7 +59,7 @@ const initialState = {
   description: '',
   startBlock: '',
   endBlock: '',
-  algorithm: 'links',
+  algorithm: 'betweenblocks',
   asset: {
     token: WIDGET_NETWORKS[0].tokens[0].value,
     network: WIDGET_NETWORKS[0].value,
@@ -156,7 +156,7 @@ class Configure extends Component<TProps, IState> {
         title,
         description,
         slots,
-        algorithm,
+        algorithm: `${algorithm};minBlockNumber=${startBlock};maxBlockNumber=${endBlock}`,
         recipientAddress,
         whitelist,
         asset: asset.token ? `${asset.network}:${asset.token}` : asset.network,
