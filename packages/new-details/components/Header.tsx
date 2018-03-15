@@ -105,12 +105,12 @@ export default class Header extends Component<IProps> {
           {!mobile && (
             <FlexColumn size={3} justifyContent="center">
               <div style={{ marginLeft: 'auto' }}>
-                <BoldLink target="_blank" href="https://linkexchange.io/faq.html" style={{ marginRight: '30px' }}>
+                <BoldLink target="_blank" href="https://linkexchange.io/faq" style={{ marginRight: '30px' }}>
                   FAQ
                 </BoldLink>
                 <BoldLink
                   target="_blank"
-                  href="https://app.linkexchange.io/direct/configurator"
+                  href="https://linkexchange.io/publisher-manual.html"
                   style={{ whiteSpace: 'nowrap' }}
                 >
                   Create own widget
