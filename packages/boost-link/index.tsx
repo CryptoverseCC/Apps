@@ -172,7 +172,7 @@ export default class BoostLink extends Component<IProps, IState> {
     const { web3Store } = this.props;
 
     let nextStage: 'boostInProgress' | 'allowance' = 'boostInProgress';
-    if (web3Store.shouldApprove(toWei(toPay, web3Store.decimals!))) {
+    if (web3Store!.shouldApprove(toWei(toPay, web3Store!.decimals!))) {
       nextStage = 'allowance';
     }
     this.setState({ stage: nextStage, amount: toPay }, () => {
@@ -185,7 +185,7 @@ export default class BoostLink extends Component<IProps, IState> {
   _onAllowance = async (unlimited: boolean) => {
     try {
       this.setState({ stage: 'allowanceInProgress' });
-      const { approve, decimals } = this.props.web3Store;
+      const { approve, decimals } = this.props.web3Store!;
       const { amount: toPay } = this.state;
       const weiToApprove = unlimited ? MAX_VALUE_256 : toWei(toPay!, decimals!);
       const { promiEvent: approveRequest } = await this.props.web3Store!.approve(weiToApprove);

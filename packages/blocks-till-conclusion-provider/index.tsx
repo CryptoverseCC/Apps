@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
 import Web3Store from '@linkexchange/web3-store';
+import { Omit } from '@linkexchange/types';
 
 interface IProps {
   web3Store?: Web3Store;
@@ -19,23 +20,24 @@ class BlocksTillConclusionProvider extends Component<IProps> {
   };
 
   render() {
-    const { web3Store, blocks } = this.props;
+    const { blocks } = this.props;
+    const web3Store: any = this.props.web3Store; // ToDo
 
-    if (web3Store!.reason) {
+    if (web3Store.reason) {
       return this.props.render({
         enabled: false,
         reason: web3Store.reason,
       });
     }
 
-    if (web3Store!.blockNumber > blocks!.endBlock) {
+    if (web3Store.blockNumber > blocks.endBlock) {
       return this.props.render({
         enabled: false,
         reason: IS_CLOSED,
       });
     }
 
-    if (web3Store!.blockNumber < blocks!.startBlock) {
+    if (web3Store.blockNumber < blocks.startBlock) {
       return this.props.render({
         enabled: false,
         reason: HASNT_STARTED,

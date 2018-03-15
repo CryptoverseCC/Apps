@@ -13,12 +13,12 @@ interface IProps {
 }
 
 const BoostLink = ({ web3Store, render, link }: IProps) => {
-  const children = render({ enabled: !web3Store.reason, reason: web3Store.reason });
-  if (!web3Store.reason) {
+  const children = render({ enabled: !web3Store!.reason, reason: web3Store!.reason });
+  if (!web3Store!.reason) {
     return <BoostLinkComponent link={link}>{children}</BoostLinkComponent>;
   }
 
-  return <Tooltip text={web3Store.reason}>{children}</Tooltip>;
+  return <Tooltip text={web3Store!.reason}>{children}</Tooltip>;
 };
 
 export default inject('web3Store')(observer(BoostLink));

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3';
 
-import { Omit, Diff } from '@linkexchange/types';
-
 const web3 = new Web3('');
 
 const setProviderIfAvailable = () => {
@@ -40,65 +38,4 @@ export const getInfura = (network: TNetwork, ws?: boolean): Web3 => {
   infuraNetworkMapping.set(key, web3);
 
   return web3;
-};
-
-interface IProviderProps {
-  injectedWeb3?: Web3;
-  infuraWeb3?: Web3;
-}
-
-export class Web3Provider extends Component<IProviderProps, {}> {
-  static childContextTypes = {
-    injectedWeb3: PropTypes.object,
-    infuraWeb3: PropTypes.object,
-  };
-
-  getChildContext() {
-    return {
-      injectedWeb3: this.props.injectedWeb3,
-      infuraWeb3: this.props.infuraWeb3,
-    };
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
-
-interface IComponentProps {
-  web3?: Web3;
-}
-
-export const withInfura = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
-  return class extends Component<Omit<T, keyof IComponentProps>> {
-    static contextTypes = {
-      infuraWeb3: PropTypes.object,
-    };
-
-    static displayName = `withInfura(${Cmp.displayName || Cmp.name})`;
-
-    render() {
-      if (!this.context.infuraWeb3) {
-        throw Error(`Couldn't find infuraWeb3`);
-      }
-      return <Cmp web3={this.context.infuraWeb3} {...this.props} />;
-    }
-  };
-};
-
-export const withInjectedWeb3 = <T extends IComponentProps>(Cmp: React.ComponentType<T>) => {
-  return class extends Component<Omit<T, keyof IComponentProps>> {
-    static contextTypes = {
-      injectedWeb3: PropTypes.object,
-    };
-
-    static displayName = `withInjectedWeb3(${Cmp.displayName || Cmp.name})`;
-
-    render() {
-      if (!this.context.injectedWeb3) {
-        throw Error(`Couldn't find injectedWeb3`);
-      }
-      return <Cmp web3={this.context.injectedWeb3} {...this.props} />;
-    }
-  };
 };

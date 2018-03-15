@@ -7,7 +7,7 @@ import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import LinksStore from '@linkexchange/links-store';
-import ToolTip from '@linkexchange/components/src/tooltip';
+import ToolTip from '@linkexchange/components/src/Tooltip';
 import BoostArrowImg from '@linkexchange/images/arrow-boost.svg';
 
 import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';

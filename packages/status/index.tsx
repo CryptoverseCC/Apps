@@ -34,7 +34,7 @@ export class Status extends Component<IProps> {
         }}
       >
         <img src={MetaFox} style={{ height: '2em' }} />
-        <span style={{ marginLeft: '15px', color: '#814718' }}>{this.props.web3Store.reason}</span>
+        <span style={{ marginLeft: '15px', color: '#814718' }}>{this.props.web3Store!.reason}</span>
       </div>
     );
   }

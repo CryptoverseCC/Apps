@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 // import sigUtil from 'eth-sig-util';
 
 import core from '@userfeeds/core/src';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import Loader from '@linkexchange/components/src/Loader';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';

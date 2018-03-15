@@ -57,23 +57,3 @@ export class WidgetSettings implements IWidgetSettings {
 interface IProps {
   widgetSettings: IWidgetSettings;
 }
-
-export class WidgetSettingsProvider extends PureComponent<IProps> {
-  static childContextTypes = {
-    widgetSettings: PropTypes.object,
-  };
-  store: WidgetSettings;
-
-  constructor(props) {
-    super(props);
-    this.store = new WidgetSettings(props.widgetSettings);
-  }
-
-  getChildContext() {
-    return { widgetSettings: this.store };
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
