@@ -28,7 +28,7 @@
     &:not([disabled]):hover,
     &:not([disabled]):focus {
       cursor: pointer;
-      box-shadow: 0px 5px 15px rgba(9,213,124,0.45);
+      box-shadow: 0px 5px 15px rgba(9, 213, 124, 0.45);
       transform: translateY(-1px);
     }
   }
@@ -40,6 +40,6 @@
     margin: 5px;
     padding: 15px;
     border-radius: 3px;
-    background-color: rgba(212,217,255,0.4);
+    background-color: rgba(212, 217, 255, 0.4);
   }
 }

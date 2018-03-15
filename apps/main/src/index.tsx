@@ -26,7 +26,7 @@ const DEFAULT_WIDGET_SETTINGS = {
   title: 'Title',
   description: 'Description',
   slots: 5,
-  timeslot: 20,
+  timeslot: 60,
   location: window.location.href,
   algorithm: 'links',
   whitelist: '',

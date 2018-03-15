@@ -1,62 +1,20 @@
 import React, { Component } from 'react';
-import Web3 from 'web3';
-import flowRight from 'lodash/flowRight';
+import { inject, observer } from 'mobx-react';
 
-import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
+import Web3Store from '@linkexchange/web3-store';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 
 interface IProps {
-  web3: Web3;
-  web3State: IWeb3State;
-  widgetSettings: WidgetSettings;
-  recipientAddress: string;
+  web3Store?: Web3Store;
+  widgetSettingsStore?: WidgetSettings;
+  children: JSX.Element;
 }
 
-interface IState {
-  enabled: boolean;
-}
-
-class IfOwner extends Component<IProps, IState> {
-  state = {
-    enabled: false,
-  };
-
-  constructor(props: IProps) {
-    super(props);
-    if (props.web3State.enabled) {
-      this._getAddress();
-    }
+const IfOwner = ({ web3Store, widgetSettingsStore, children }: IProps) => {
+  if (web3Store!.currentAccount === widgetSettingsStore!.recipientAddress) {
+    return children;
   }
+  return null;
+};
 
-  componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.web3State.enabled) {
-      this._getAddress();
-    }
-  }
-
-  render() {
-    if (this.state.enabled) {
-      return this.props.children;
-    }
-
-    return null;
-  }
-
-  _getAddress = async () => {
-    const [account] = await this.props.web3.eth.getAccounts();
-    this.setState({
-      enabled: account === this.props.recipientAddress,
-    });
-  };
-}
-
-// Move to utils and add types
-const propsMapper = (mapper: (props) => any) => (Cmp) => (props) => <Cmp {...props} {...mapper(props)} />;
-
-export default flowRight(
-  withWidgetSettings,
-  propsMapper(({ widgetSettings }: { widgetSettings: WidgetSettings }) => ({
-    asset: widgetSettings.asset,
-    recipientAddress: widgetSettings.recipientAddress,
-  })),
-  // withInjectedWeb3AndWeb3State,
-)(IfOwner);
+export default inject('web3Store', 'widgetSettingsStore')(observer(IfOwner));

@@ -1,14 +1,11 @@
 import React from 'react';
 
-import { withInfura } from '@linkexchange/utils/web3';
 import Button from '@linkexchange/components/src/NewButton';
-import BlocksTillConclusionComponent from '@linkexchange/blocks-till-conclusion';
+import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
 
 import avatar from '../../../../images/szczepan.jpg';
 
 import * as style from './welcome.scss';
-
-const BlocksTillConclusion = withInfura(BlocksTillConclusionComponent);
 
 interface IProps {
   asset: string;
@@ -29,16 +26,20 @@ const Welcome = (props: IProps) => (
     </div>
     <div className={style.body}>
       <BlocksTillConclusion
+        className={style.blocksTillConclusion}
         startBlock={props.startBlock}
         endBlock={props.endBlock}
-        asset={props.asset}
       />
       <div className={style.buttons}>
-        <Button color="secondary" onClick={props.purchaseBens}>Purchase BENs here</Button>
-        <Button color="primary" onClick={props.gotBens}>I have BENs</Button>
+        <Button color="secondary" onClick={props.purchaseBens}>
+          Purchase BENs here
+        </Button>
+        <Button color="primary" onClick={props.gotBens}>
+          I have BENs
+        </Button>
       </div>
     </div>
- </div>
+  </div>
 );
 
 export default Welcome;

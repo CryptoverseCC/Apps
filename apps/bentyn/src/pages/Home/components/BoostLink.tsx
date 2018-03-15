@@ -1,31 +1,29 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 
+import Tooltip from '@linkexchange/components/src/Tooltip';
 import BoostLinkComponent from '@linkexchange/boost-link';
+import { IRemoteLink, ILink } from '@linkexchange/types/link';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
-import { WidgetSettings } from '@linkexchange/widget-settings';
-
-import BlocksStore from '../../../stores/blocks';
-
-// const DecoratedBoostLink = withInjectedWeb3(withTokenDetails(withWidgetSettings(BoostLinkComponent)));
 
 interface IProps {
-  blocks: BlocksStore;
+  link: ILink | IRemoteLink;
+  render(state: { enabled: boolean; reason?: string }): JSX.Element;
 }
 
-const BoostLink = (props: IProps) => {
-  const { blocks, ...restProps } = props;
-  return null;
-  // return (
-  //   <BlocksTillConclusionProvider
-  //     startBlock={blocks.startBlock}
-  //     endBlock={blocks.endBlock}
-  //     asset={props.asset}
-  //     render={({ enabled, reason }) => (
-  //       <DecoratedBoostLink {...restProps} loadBalance disabled={!enabled} disabledReason={reason} />
-  //     )}
-  //   />
-  // );
+const AddLink = (props: IProps) => {
+  return (
+    <BlocksTillConclusionProvider
+      render={(state) => {
+        const children = props.render(state);
+        if (state.enabled) {
+          return <BoostLinkComponent link={props.link}>{children}</BoostLinkComponent>;
+        }
+
+        return <Tooltip text={state.reason}>{children}</Tooltip>;
+      }}
+    />
+  );
 };
 
-export default inject('blocks')(observer(BoostLink));
+export default AddLink;

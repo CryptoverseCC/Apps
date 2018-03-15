@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
 import qs from 'qs';
 import Web3 from 'web3';
 
@@ -25,7 +26,7 @@ interface IState {
   currentLink?: ILink;
 }
 
-export default class Widget extends Component<IProps, IState> {
+class Widget extends Component<IProps, IState> {
   lastFetchTime: number = 0;
   infura: Web3;
 
@@ -108,3 +109,5 @@ export default class Widget extends Component<IProps, IState> {
     this.setState({ currentLink, linkDuration: duration });
   };
 }
+
+export default inject('widgetSettingsStore', 'web3Store')(observer(Widget));

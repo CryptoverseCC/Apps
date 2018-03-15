@@ -109,18 +109,22 @@ export default class Web3Store implements IWeb3Store {
   }
 
   tokenRequests() {
-    if (!this.ready) {
-      return [undefined, undefined, undefined, undefined, undefined];
-    } else if (this.token) {
+    if (this.token) {
       return [
         this.erc20.decimals(),
         this.erc20.symbol(),
         this.erc20.name(),
-        this.erc20.balance(),
-        this.erc20.allowance(),
+        this.ready ? this.erc20.balance() : undefined,
+        this.ready ? this.erc20.allowance() : undefined,
       ];
     } else {
-      return [18, 'ETH', 'ETH', this.injectedWeb3.eth.getBalance(this.currentAccount), undefined];
+      return [
+        18,
+        'ETH',
+        'ETH',
+        this.ready ? this.injectedWeb3.eth.getBalance(this.currentAccount) : undefined,
+        undefined,
+      ];
     }
   }
 

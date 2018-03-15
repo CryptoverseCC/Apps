@@ -9,7 +9,9 @@ import IfOwner from './IfOwner';
 const DashboardLink = (props: { match: match<any> }) => (
   <IfOwner>
     <Link to={`${props.match.url}/dashboard`} style={{ textDecoration: 'none' }}>
-      <Button color="primary">Go to dashboard</Button>
+      <Button color="primary" style={{ marginTop: '10px', borderRadius: '8px' }}>
+        Go to dashboard
+      </Button>
     </Link>
   </IfOwner>
 );
