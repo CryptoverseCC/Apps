@@ -54,7 +54,6 @@ const AddLinkButton: React.SFC<TProps> = inject('web3Store', 'widgetSettingsStor
   observer((props) => {
     const { web3Store, widgetSettingsStore, children, ...restProps } = props;
     const disabled = !!web3Store.reason;
-
     return (
       <Tooltip text={web3Store.reason}>
         <AddLinkButtonComponent disabled={disabled} {...restProps}>
