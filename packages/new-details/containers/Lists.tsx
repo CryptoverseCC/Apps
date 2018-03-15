@@ -51,15 +51,19 @@ export default class Lists extends Component<IProps> {
                   lastChild={index === linksInSlots.length - 1}
                 />
               ))}
-              <ListHeaderOutside hasWhitelist={hasWhitelist} />
-              {linksOutside.map((link, index) => (
-                <LinkRow
-                  key={link.id}
-                  link={link}
-                  boostComponent={boostComponent || BoostLink}
-                  lastChild={index === linksOutside.length - 1}
-                />
-              ))}
+              {linksOutside.length > 0 && (
+                <>
+                  <ListHeaderOutside hasWhitelist={hasWhitelist} />
+                  {linksOutside.map((link, index) => (
+                    <LinkRow
+                      key={link.id}
+                      link={link}
+                      boostComponent={boostComponent || BoostLink}
+                      lastChild={index === linksOutside.length - 1}
+                    />
+                  ))}
+                </>
+              )}
             </>
           )}
       </>

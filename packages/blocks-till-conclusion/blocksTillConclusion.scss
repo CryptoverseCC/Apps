@@ -1,14 +1,18 @@
 .self {
-  color: #263fff;
-  font-size: 14px;
-  line-height: 25px;
+  margin: 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+  align-self: flex-start;
 
-  .block-number {
-    font-weight: bold;
+  .block-info {
+    color: #a6aeb8;
+    font-size: 14px;
+    font-weight: normal;
   }
 
   .progress-bar {
-    cursor: pointer;
+    height: 7px;
     margin-top: 10px;
+    background-color: #e9ebff;
   }
 }

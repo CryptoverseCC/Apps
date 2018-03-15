@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
 import AddLink from '@linkexchange/new-add-link';
@@ -10,9 +9,10 @@ import Switch from '@linkexchange/components/src/utils/Switch';
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
 import Status from '@linkexchange/status';
 
+import BlocksStore from '../../../stores/blocks';
+import DashBoardLink from './components/DashboardLink';
 import AddLinkButton from './components/AddLink';
 import BoostLink from './components/BoostLink';
-import BlocksStore from '../../../stores/blocks';
 
 import * as style from './home.scss';
 
@@ -34,19 +34,17 @@ class Home extends Component<IProps, IState> {
     const { widgetSettingsStore, blocks } = this.props;
     const { openedModal } = this.state;
 
-    // ToDo add dashboard button
     return (
       <div className={style.self}>
         <Details className={style.details}>
           <Header
-            expires={
-              <BlocksTillConclusion
-                startBlock={blocks.startBlock}
-                endBlock={blocks.endBlock}
-                className={style.blocksTillConclusion}
-              />
+            expires={<BlocksTillConclusion startBlock={blocks.startBlock} endBlock={blocks.endBlock} />}
+            addLink={
+              <>
+                <AddLinkButton onClick={this.addLink} />
+                <DashBoardLink />
+              </>
             }
-            addLink={<AddLinkButton onClick={this.addLink} />}
           />
           <Lists boostComponent={BoostLink} addLink={<AddLinkButton onClick={this.addLink} />} />
         </Details>
