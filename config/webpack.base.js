@@ -18,7 +18,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
         options: {},
       },
       {

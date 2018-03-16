@@ -114,15 +114,15 @@ export default class Web3Store implements IWeb3Store {
         this.erc20.decimals(),
         this.erc20.symbol(),
         this.erc20.name(),
-        this.ready ? this.erc20.balance() : undefined,
-        this.ready ? this.erc20.allowance() : undefined,
+        this.unlocked ? this.erc20.balance() : undefined,
+        this.unlocked ? this.erc20.allowance() : undefined,
       ];
     } else {
       return [
         18,
         'ETH',
         'ETH',
-        this.ready ? this.injectedWeb3.eth.getBalance(this.currentAccount) : undefined,
+        this.unlocked ? this.injectedWeb3.eth.getBalance(this.currentAccount) : undefined,
         undefined,
       ];
     }
