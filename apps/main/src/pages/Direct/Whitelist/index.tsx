@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { History, Location } from 'history';
+import debounce from 'lodash/debounce';
 
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import Icon from '@linkexchange/components/src/Icon';

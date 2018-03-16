@@ -109,7 +109,7 @@ describe('Web3Store', () => {
   test('computes token balanceWithDecimalPoint is undefined when balance is null', () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, createWidgetSettings('ethereum'), {
       decimals: 10,
-      balance: null,
+      // balance: null,
     });
     expect(web3Store.balanceWithDecimalPoint).toBe(undefined);
   });
@@ -133,7 +133,7 @@ describe('Web3Store', () => {
   test('computes token allowanceWithDecimalPoint is undefined when balance is null', () => {
     const web3Store = new Web3Store(injectedWeb3, Erc20Mock, createWidgetSettings('ethereum'), {
       decimals: 10,
-      allowance: null,
+      // allowance: null,
     });
     expect(web3Store.allowanceWithDecimalPoint).toBe(undefined);
   });
