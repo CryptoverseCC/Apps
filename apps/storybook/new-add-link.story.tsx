@@ -19,27 +19,14 @@ import Erc20 from '@linkexchange/web3-store/erc20';
 import ActionSuccess from '@linkexchange/new-add-link/ActionSuccess';
 
 let web3StoreInstance: Web3Store;
-const web3Store = (asset) => {
+let widgetSettingsStoreInstance: WidgetSettings;
+
+const widgetSettingsStore = (asset, minimalLinkFee, location, recipientAddress, apiUrl, algorithm) => {
   if (web3StoreInstance) {
-    web3StoreInstance.changeAssetTo(asset);
+    widgetSettingsStoreInstance.changeAssetTo(asset);
+    widgetSettingsStoreInstance.changeRecipientAddress(recipientAddress);
   } else {
-    web3StoreInstance = new Web3Store(web3, Erc20, { asset });
-  }
-  return web3StoreInstance;
-};
-
-storiesOf('Add Link', module)
-  .addDecorator(withKnobs)
-  .add('Flow', () => {
-    const minimalLinkFee = number('minimalLinkFee', 0);
-    const location = text('Location');
-    const asset = text('asset', 'ethereum');
-    const recipientAddress = text('recipientAddress', '0x0000000000000000000000000000000000000000');
-    const apiUrl = text('api url', 'https://api-dev.userfeeds.io');
-    const algorithm = text('algorithm', 'links');
-
-    const formValidationsStore = observable({ 'add-link': { title: [], summary: [], target: [], value: [] } });
-    const widgetSettingsStore: IWidgetSettings = new WidgetSettings({
+    widgetSettingsStoreInstance = new WidgetSettings({
       minimalLinkFee,
       apiUrl,
       recipientAddress,
@@ -50,12 +37,33 @@ storiesOf('Add Link', module)
       timeslot: 0,
       location,
     });
+  }
+  return widgetSettingsStoreInstance;
+};
+const web3Store = (widgetSettingsStore) => {
+  if (!web3StoreInstance) {
+    web3StoreInstance = new Web3Store(web3, Erc20, widgetSettingsStore);
+  }
+  return web3StoreInstance;
+};
+
+storiesOf('Add Link', module)
+  .addDecorator(withKnobs)
+  .add('Flow', () => {
+    const asset = text('asset', 'ethereum');
+    const minimalLinkFee = number('minimalLinkFee', 0);
+    const location = text('Location');
+    const recipientAddress = text('recipientAddress', '0x0000000000000000000000000000000000000000');
+    const apiUrl = text('api url', 'https://api-dev.userfeeds.io');
+    const algorithm = text('algorithm', 'links');
+    const formValidationsStore = observable({ 'add-link': { title: [], summary: [], target: [], value: [] } });
+    const widgetSettings = widgetSettingsStore(asset, minimalLinkFee, location, recipientAddress, apiUrl, algorithm);
     return (
       <div style={{ width: '500px' }}>
         <Provider
-          web3Store={web3Store(asset)}
           formValidationsStore={formValidationsStore}
-          widgetSettingsStore={widgetSettingsStore}
+          widgetSettingsStore={widgetSettings}
+          web3Store={web3Store(widgetSettings)}
         >
           <AddLink />
         </Provider>

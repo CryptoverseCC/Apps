@@ -1,6 +1,6 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { extendObservable, computed } from 'mobx';
+import { extendObservable, computed, action } from 'mobx';
 import { observer } from 'mobx-react';
 
 import { Omit } from '@linkexchange/types';
@@ -24,6 +24,21 @@ export class WidgetSettings implements IWidgetSettings {
   location: string;
   tillDate: string;
 
+  @action.bound
+  changeAssetTo(asset: string) {
+    this.asset = asset;
+  }
+
+  @action.bound
+  changeRecipientAddress(recipientAddress: string) {
+    this.recipientAddress = recipientAddress;
+  }
+
+  @action.bound
+  changeWhitelist(whitelist: string) {
+    this.whitelist = whitelist;
+  }
+
   @computed
   get widgetLocation() {
     return this.location || urlWithoutQueryIfLinkExchangeApp();
@@ -42,42 +57,3 @@ export class WidgetSettings implements IWidgetSettings {
 interface IProps {
   widgetSettings: IWidgetSettings;
 }
-
-export class WidgetSettingsProvider extends PureComponent<IProps> {
-  static childContextTypes = {
-    widgetSettings: PropTypes.object,
-  };
-  store: WidgetSettings;
-
-  constructor(props) {
-    super(props);
-    this.store = new WidgetSettings(props.widgetSettings);
-  }
-
-  getChildContext() {
-    return { widgetSettings: this.store };
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
-
-export const withWidgetSettings = <T extends { widgetSettings: WidgetSettings }>(Cmp: React.ComponentType<T>) => {
-  const DecoratedComponent = observer(Cmp);
-
-  return class extends Component<Omit<T, 'widgetSettings'>> {
-    static contextTypes = {
-      widgetSettings: PropTypes.object,
-    };
-
-    static displayName = `withWidgetSettings(${Cmp.displayName || Cmp.name})`;
-
-    render() {
-      if (!this.context.widgetSettings) {
-        throw Error(`Couldn't find widgetSettings`);
-      }
-      return <DecoratedComponent widgetSettings={this.context.widgetSettings} {...this.props} />;
-    }
-  };
-};

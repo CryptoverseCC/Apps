@@ -7,8 +7,8 @@ export interface IRankingRequestBuilderCtor {
 }
 
 export interface IRankingRequestBuilder {
-  allLinksFetch(): Promise<{ items: IRemoteLink[] }>;
-  whitelistedLinksFetch(): Promise<{ items: IRemoteLink[] }>;
+  allLinksFetch(nonce?: any): Promise<{ items: IRemoteLink[] }>;
+  whitelistedLinksFetch(nonce?: any): Promise<{ items: IRemoteLink[] }>;
 }
 
 export default class RankingRequestBuilder implements IRankingRequestBuilder {
@@ -97,7 +97,7 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
       .join('/');
   }
 
-  allLinksFetch = () => {
+  allLinksFetch = (nonce) => {
     const { rankingRequestBody, allLinksFlow, rankingApiUrl, flowToString } = this;
     const whitelistedLinksFetch = flowToString(allLinksFlow());
     return fetch(`${rankingApiUrl}/${whitelistedLinksFetch}`)
@@ -105,7 +105,7 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
       .then<{ items: IRemoteLink[] }>((res) => res.json());
   };
 
-  whitelistedLinksFetch = () => {
+  whitelistedLinksFetch = (nonce) => {
     const { rankingRequestBody, whitelistedLinksFlow, rankingApiUrl, flowToString } = this;
     const whitelistedLinksFetch = flowToString(whitelistedLinksFlow())
     return fetch(`${rankingApiUrl}/${whitelistedLinksFetch}`)

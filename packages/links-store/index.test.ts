@@ -1,6 +1,6 @@
 import LinksStore from './';
 import { EWidgetSize } from '@linkexchange/types/widget';
-import { reaction, autorun, autorunAsync } from 'mobx';
+import { reaction, autorun, toJS } from 'mobx';
 
 const expectComputedPromiseValueToEqual = (observable, property, expected) => {
   return new Promise((resolve) => {
@@ -21,7 +21,7 @@ class RankingRequestBuilderMock {
 }
 
 describe('LinksStore', () => {
-  test('allLinks is undefined by default', async () => {
+  test('allLinks is empty by default', async () => {
     const linksStore = new LinksStore(
       {
         apiUrl: 'http://abc.io',
@@ -34,7 +34,7 @@ describe('LinksStore', () => {
       },
       RankingRequestBuilderMock,
     );
-    expect(linksStore.allLinks).toEqual([]);
+    expect(toJS(linksStore.allLinks)).toEqual([]);
   });
 
   test('allLinks updates to items when promise resolves', async () => {

@@ -27,10 +27,8 @@ storiesOf('Input', module)
           <CopyFromMM
             className={className}
             onClick={action('Copy from MM!')}
-            web3State={{
-              enabled: boolean('Metamask Button Enabled', true),
-              reason: text('Metamask Button Disabled Reason', 'Reason'),
-            }}
+            enabled={boolean('Metamask Button Enabled', true)}
+            reason={text('Metamask Button Disabled Reason', 'Reason')}
           />
         )}
       />
@@ -53,10 +51,8 @@ storiesOf('Input', module)
           <CopyFromMM
             className={className}
             onClick={action('Copy from MM!')}
-            web3State={{
-              enabled: boolean('Metamask Button Enabled', true),
-              reason: text('Metamask Button Disabled Reason', 'Reason'),
-            }}
+            enabled={boolean('Metamask Button Enabled', true)}
+            reason={text('Metamask Button Disabled Reason', 'Reason')}
           />
         )}
       />

@@ -1,31 +1,24 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
-import { withInfura, withInjectedWeb3 } from '@linkexchange/utils/web3';
-import { AddLinkWithInjectedWeb3AndTokenDetails } from '@linkexchange/add-link';
+import AddLink from '@linkexchange/new-add-link';
 import Modal from '@linkexchange/components/src/Modal';
-import { Details, Lists } from '@linkexchange/details';
-import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
-import Tooltip from '@linkexchange/components/src/Tooltip';
-import Button from '@linkexchange/components/src/NewButton';
+import { WidgetSettings } from '@linkexchange/widget-settings';
+import { Details, Header, Lists } from '@linkexchange/new-details';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
-import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 import Status from '@linkexchange/status';
 
-import Header from './components/Header';
-import BoostLink from './components/BoostLink';
-
-const BlocksTillConclusionWithInfura = withInfura(BlocksTillConclusion);
-
 import BlocksStore from '../../../stores/blocks';
+import DashBoardLink from './components/DashboardLink';
+import AddLinkButton from './components/AddLink';
+import BoostLink from './components/BoostLink';
 
 import * as style from './home.scss';
 
 interface IProps {
   blocks: BlocksStore;
-  widgetSettings: WidgetSettings;
+  widgetSettingsStore: WidgetSettings;
 }
 
 interface IState {
@@ -38,57 +31,44 @@ class Home extends Component<IProps, IState> {
   };
 
   render() {
-    const { widgetSettings, blocks } = this.props;
+    const { widgetSettingsStore, blocks } = this.props;
     const { openedModal } = this.state;
+
     return (
       <div className={style.self}>
-        <Header asset={widgetSettings.asset} widgetSettings={widgetSettings} blocks={blocks} />
-        <Details standaloneMode className={style.details}>
-          <BlocksTillConclusionProvider
-            startBlock={blocks.startBlock}
-            endBlock={blocks.endBlock}
-            asset={widgetSettings.asset}
-            render={({ enabled, reason }) => (
-              <div className={style.addLinkContainer}>
-                <Tooltip text={reason}>
-                  <Button disabled={!enabled} color="empty" className={style.addLink} onClick={this._addLink}>
-                    Add link
-                  </Button>
-                </Tooltip>
-              </div>
-            )}
+        <Details className={style.details}>
+          <Header
+            expires={<BlocksTillConclusion startBlock={blocks.startBlock} endBlock={blocks.endBlock} />}
+            addLink={
+              <>
+                <AddLinkButton onClick={this.addLink} />
+                <DashBoardLink />
+              </>
+            }
           />
-          <BlocksTillConclusionWithInfura
-            startBlock={blocks.startBlock}
-            endBlock={blocks.endBlock}
-            asset={widgetSettings.asset}
-            className={style.blocksTillConclusion}
-          />
-          <Lists boostLinkComponent={BoostLink} />
+          <Lists boostComponent={BoostLink} addLink={<AddLinkButton onClick={this.addLink} />} />
         </Details>
-        <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
+        <Modal isOpen={openedModal !== 'none'} onCloseRequest={this.closeModal}>
           <Switch expresion={this.state.openedModal}>
             <Switch.Case condition="AddLink">
-              <AddLinkWithInjectedWeb3AndTokenDetails
-                loadBalance
-                asset={widgetSettings.asset}
-                openWidgetDetails={this._closeModal}
-              />
+              <div style={{ width: '500px', backgroundColor: 'white' }}>
+                <AddLink />
+              </div>
             </Switch.Case>
           </Switch>
         </Modal>
-        <Status asset={widgetSettings.asset} />
+        <Status />
       </div>
     );
   }
 
-  _addLink = () => {
+  private addLink = () => {
     this.setState({ openedModal: 'AddLink' });
   };
 
-  _closeModal = () => {
+  private closeModal = () => {
     this.setState({ openedModal: 'none' });
   };
 }
 
-export default inject('blocks')(withWidgetSettings(Home));
+export default inject('widgetSettingsStore', 'blocks')(observer(Home));

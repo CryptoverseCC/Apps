@@ -7,12 +7,13 @@ interface IProps {
   progress: number | string;
   className?: string;
   fillClassName?: string;
+  fillStyle?: React.CSSProperties;
 }
 
-const ProgressBar = ({ progress, className, fillClassName }: IProps) => {
+const ProgressBar = ({ progress, className, fillClassName, fillStyle }: IProps) => {
   return (
     <div className={classnames(style.self, className)}>
-      <div className={classnames(style.fill, fillClassName)} style={{ width: `${progress}%` }} />
+      <div className={classnames(style.fill, fillClassName)} style={{ ...fillStyle, width: `${progress}%` }} />
     </div>
   );
 };

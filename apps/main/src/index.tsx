@@ -7,13 +7,16 @@ import Raven from 'raven-js';
 import ReactGA from 'react-ga';
 
 import { IWidgetSettings } from '@linkexchange/types/widget';
-import web3, { Web3Provider, getInfura, TNetwork } from '@linkexchange/utils/web3';
-import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
+import web3 from '@linkexchange/utils/web3';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 
 import BlocksStore from './stores/blocks';
+import LinksStore from '@linkexchange/links-store';
 import App from './App';
 
 import '../styles/all.scss';
+import Web3Store from '@linkexchange/web3-store';
+import Erc20 from '@linkexchange/web3-store/erc20';
 
 const [, searchParams] = document.location.href.split('?');
 const { startBlock, endBlock, ...widgetSettingsFromParams } = qs.parse(searchParams);
@@ -23,31 +26,32 @@ const DEFAULT_WIDGET_SETTINGS = {
   title: 'Title',
   description: 'Description',
   slots: 5,
-  timeslot: 20,
+  timeslot: 60,
   location: window.location.href,
   algorithm: 'links',
+  whitelist: '',
+  asset: 'ethereum',
 };
 
 const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
-const blocksStore = new BlocksStore(startBlock, endBlock);
+const blocksStore = new BlocksStore(parseInt(startBlock, 10), parseInt(endBlock, 10));
 
-let infuraWeb3;
-if (widgetSettings.asset) {
-  const [network] = widgetSettings.asset.split(':');
-  infuraWeb3 = getInfura(network as TNetwork);
-}
-
+const web3Store = new Web3Store(web3, Erc20, widgetSettings);
+const widgetSettingsStore = new WidgetSettings(widgetSettings);
+const linksStore = new LinksStore(widgetSettingsStore);
 const startApp = () => {
   render(
-    <WidgetSettingsProvider widgetSettings={widgetSettings}>
-      <Provider blocks={blocksStore}>
-        <IntlProvider locale="en">
-          <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-            <App />
-          </Web3Provider>
-        </IntlProvider>
-      </Provider>
-    </WidgetSettingsProvider>,
+    <Provider
+      blocks={blocksStore}
+      links={linksStore}
+      widgetSettingsStore={widgetSettingsStore}
+      web3Store={web3Store}
+      formValidationsStore={{ 'add-link': {} }}
+    >
+      <IntlProvider locale="en">
+        <App />
+      </IntlProvider>
+    </Provider>,
     document.querySelector('.root'),
   );
 };

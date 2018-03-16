@@ -5,9 +5,12 @@ import { Provider } from 'mobx-react';
 import { IntlProvider } from 'react-intl';
 
 import { IWidgetSettings } from '@linkexchange/types/widget';
-import { WidgetSettingsProvider } from '@linkexchange/widget-settings';
 import { EWidgetSize } from '@linkexchange/types/widget';
-import web3, { getInfura, Web3Provider, TNetwork } from '@linkexchange/utils/web3';
+import web3 from '@linkexchange/utils/web3';
+import { WidgetSettings } from '@linkexchange/widget-settings';
+import Web3Store from '@linkexchange/web3-store';
+import Erc20 from '@linkexchange/web3-store/erc20';
+import LinksStore from '@linkexchange/links-store';
 
 import App from './App';
 import BlocksStore from './stores/blocks';
@@ -31,30 +34,31 @@ const BENTYN_WIDGET_CONFIG: IWidgetSettings = {
   size: 'leaderboard' as EWidgetSize,
   slots: 7,
   timeslot: 5,
-  contactMethod: 'ben@userfeeds.io',
-  title: '',
-  description: '',
+  contactMethod: 'https://web.telegram.org/#/im?p=g176260758',
+  title: 'Szczepan Bentyn',
+  description: 'Talking mostly about cryptocurrencies.',
   impression: '',
   location: window.location.href,
   minimalLinkFee: '1',
   ...widgetSettingsFromParams,
 };
 
-const widgetSettings: IWidgetSettings = { ...BENTYN_WIDGET_CONFIG, ...widgetSettingsFromParams };
+const widgetSettingsStore = new WidgetSettings({ ...BENTYN_WIDGET_CONFIG, ...widgetSettingsFromParams });
 const blocksStore = new BlocksStore(BENTYN_CONFIG.startBlock, BENTYN_CONFIG.endBlock);
-
-const [network] = BENTYN_WIDGET_CONFIG.asset.split(':');
-const infuraWeb3 = getInfura(network as TNetwork);
+const web3Store = new Web3Store(web3, Erc20, widgetSettingsStore);
+const linksStore = new LinksStore(widgetSettingsStore);
 
 render(
-  <WidgetSettingsProvider widgetSettings={widgetSettings}>
-    <Provider blocks={blocksStore}>
-      <IntlProvider locale="en">
-        <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-          <App />
-        </Web3Provider>
-      </IntlProvider>
-    </Provider>
-  </WidgetSettingsProvider>,
+  <Provider
+    blocks={blocksStore}
+    links={linksStore}
+    widgetSettingsStore={widgetSettingsStore}
+    web3Store={web3Store}
+    formValidationsStore={{ 'add-link': {} }}
+  >
+    <IntlProvider locale="en">
+      <App />
+    </IntlProvider>
+  </Provider>,
   document.querySelector('.root'),
 );

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
-import { WidgetSettings, withWidgetSettings } from '@linkexchange/widget-settings';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 
 import Hr from './Hr';
@@ -15,6 +14,8 @@ import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Column
 import { BlackText, SmallBlackText, BlackBoldText } from './Text';
 import PoweredByLinkexchange from './PoweredByLinkexchange';
 import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { inject } from 'mobx-react';
 
 const Title = styled.p`
   color: #1b2437;
@@ -61,17 +62,27 @@ interface IProps {
   addLink?: JSX.Element;
   expires?: JSX.Element;
   mobile?: boolean;
-  widgetSettings: WidgetSettings;
+  widgetSettingsStore?: IWidgetSettings;
 }
 
-class Header extends Component<IProps> {
+@inject('widgetSettingsStore')
+export default class Header extends Component<IProps> {
   static defaultProps = {
     mobile: mobileOrTablet(),
   };
 
   render() {
-    const { widgetSettings, addLink, expires, mobile } = this.props;
-    const hasWhitelist = !!widgetSettings.whitelist;
+    const {
+      whitelist,
+      recipientAddress,
+      asset,
+      contactMethod,
+      algorithm,
+      title,
+      description,
+    } = this.props.widgetSettingsStore!;
+    const { addLink, expires, mobile } = this.props;
+    const hasWhitelist = !!whitelist;
 
     return (
       <>
@@ -94,12 +105,12 @@ class Header extends Component<IProps> {
           {!mobile && (
             <FlexColumn size={3} justifyContent="center">
               <div style={{ marginLeft: 'auto' }}>
-                <BoldLink target="_blank" href="https://linkexchange.io/faq.html" style={{ marginRight: '30px' }}>
+                <BoldLink target="_blank" href="https://linkexchange.io/faq" style={{ marginRight: '30px' }}>
                   FAQ
                 </BoldLink>
                 <BoldLink
                   target="_blank"
-                  href="https://app.linkexchange.io/direct/configurator"
+                  href="https://linkexchange.io/publisher-manual.html"
                   style={{ whiteSpace: 'nowrap' }}
                 >
                   Create own widget
@@ -111,24 +122,20 @@ class Header extends Component<IProps> {
         <Columns style={{ margin: '70px 0' }}>
           {!mobile && (
             <FlexColumn size={1} justifyContent="center" alignItems="center">
-              <IdenticonWithToken address={widgetSettings.recipientAddress} asset={widgetSettings.asset} />
-              {!mobile && <ContactPublisher contactMethod={widgetSettings.contactMethod} />}
+              <IdenticonWithToken address={recipientAddress} asset={asset} />
+              {!mobile && <ContactPublisher contactMethod={contactMethod} />}
             </FlexColumn>
           )}
           <FlexColumn size={!mobile ? 7 : 12}>
             {!!mobile && (
-              <IdenticonWithToken
-                address={widgetSettings.recipientAddress}
-                asset={widgetSettings.asset}
-                style={{ alignSelf: 'center' }}
-              />
+              <IdenticonWithToken address={recipientAddress} asset={asset} style={{ alignSelf: 'center' }} />
             )}
             <FilteringDescription>
               {hasWhitelist ? (
                 <>
                   Filtered by{' '}
-                  <BoldLink target="_blank" href={`https://etherscan.io/address/${widgetSettings.whitelist}`}>
-                    <ShortAddress address={widgetSettings.whitelist} />
+                  <BoldLink target="_blank" href={`https://etherscan.io/address/${whitelist}`}>
+                    <ShortAddress address={whitelist!} />
                   </BoldLink>{' '}
                   ranked by{' '}
                 </>
@@ -137,16 +144,14 @@ class Header extends Component<IProps> {
               )}
               <BoldLink
                 target="_blank"
-                href={`https://userfeeds-platform.readthedocs-hosted.com/en/latest/ref/algorithms.html#${
-                  widgetSettings.algorithm
-                }`}
+                href={`https://userfeeds-platform.readthedocs-hosted.com/en/latest/ref/algorithms.html#${algorithm}`}
               >
                 Links Algorithm
               </BoldLink>
             </FilteringDescription>
-            <Title>{widgetSettings.title}</Title>
+            <Title>{title}</Title>
             {expires}
-            <Description>{widgetSettings.description}</Description>
+            <Description>{description}</Description>
           </FlexColumn>
           {!mobile && (
             <FlexColumn size={4}>
@@ -170,5 +175,3 @@ class Header extends Component<IProps> {
     );
   }
 }
-
-export default withWidgetSettings(Header);

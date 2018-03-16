@@ -1,15 +1,14 @@
 import React from 'react';
 
-import { ITokenDetails } from '@linkexchange/token-details-provider';
-
 import * as style from './header.scss';
 
 interface IProps {
   positionInSlots: number | null;
-  tokenDetails: ITokenDetails;
+  balanceWithDecimalPoint: string;
+  symbol: string;
 }
 
-const Header = ({ positionInSlots, tokenDetails }: IProps) => (
+const Header = ({ positionInSlots, balanceWithDecimalPoint, symbol }: IProps) => (
   <div className={style.self}>
     <div className={style.positionContainer}>
       {positionInSlots !== null && <div className={style.position}>{positionInSlots + 1}</div>}
@@ -17,7 +16,9 @@ const Header = ({ positionInSlots, tokenDetails }: IProps) => (
     </div>
     <p className={style.balance}>
       Your balance:
-      <span className={style.amount}>{tokenDetails.balanceWithDecimalPoint} {tokenDetails.symbol}</span>
+      <span className={style.amount}>
+        {balanceWithDecimalPoint} {symbol}
+      </span>
     </p>
   </div>
 );

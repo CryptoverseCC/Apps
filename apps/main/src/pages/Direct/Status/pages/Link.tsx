@@ -5,7 +5,6 @@ import { Location } from 'history';
 
 import wait from '@linkexchange/utils/wait';
 import { getInfura, TNetwork } from '@linkexchange/utils/web3';
-import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
@@ -19,84 +18,130 @@ const cubeSvg = require('!!svg-inline-loader?removeTags=true&removeSVGTagAttrs=t
 import Steps, { Step } from '../components/Steps';
 
 import * as style from './link.scss';
+import { inject, observer } from 'mobx-react';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import LinksStore from '@linkexchange/links-store';
+import { computed, reaction, IReactionDisposer, observable } from 'mobx';
 
 interface IProps {
   location: Location;
+  links?: LinksStore;
+  web3Store?: IWeb3Store;
+  widgetSettingsStore?: IWidgetSettings;
 }
 
-interface IState {
-  mobileOrTablet: boolean;
-  apiUrl: string;
-  link?: any;
+@inject('web3Store', 'widgetSettingsStore', 'links')
+@observer
+export default class LinkStatus extends Component<IProps> {
+  @observable transactionStatus: boolean | null = null;
   linkId: string;
-  asset: string;
-  recipientAddress: string;
-  algorithm: string;
-  whitelist: string;
-  location: string;
-  currentBlockNumber: number | null;
-  transationStatus: boolean | null;
-  transationBlockNumber: number | null;
-}
-
-class LinkStatus extends Component<IProps, IState> {
-  web3: Web3;
+  intervalId: any;
 
   constructor(props: IProps) {
     super(props);
     const params = new URLSearchParams(props.location.search);
 
-    const apiUrl = params.get('apiUrl') || 'https://api.userfeeds.io';
-    const recipientAddress = params.get('recipientAddress') || '';
-    const asset = params.get('asset') || '';
-    const algorithm = params.get('algorithm') || '';
-    const whitelist = params.get('whitelist') || '';
-    const linkId = params.get('linkId') || '';
-    const location = params.get('location') || '';
-
-    const [network] = asset.split(':');
-    this.web3 = getInfura(network as TNetwork, true);
-
-    this.state = {
-      mobileOrTablet: mobileOrTablet(),
-      apiUrl,
-      linkId,
-      recipientAddress,
-      asset,
-      algorithm,
-      whitelist,
-      location,
-      currentBlockNumber: null,
-      transationBlockNumber: null,
-      transationStatus: null,
-    };
+    this.linkId = params.get('linkId') || '';
   }
 
   componentDidMount() {
-    const { linkId, apiUrl, recipientAddress, asset, algorithm, whitelist } = this.state;
-
-    const setTimeoutForFetch = (timeout: number | undefined) => {
-      setTimeout(() => {
-        this._fetchLinks(apiUrl, recipientAddress, asset, algorithm, whitelist)
-          .then(this._findLinkById(linkId))
-          .then((link) => {
-            if (!link || !link.whitelisted) {
-              setTimeoutForFetch(5000);
-            }
-          });
-      }, timeout);
-    };
-
-    setTimeoutForFetch(0);
-    this._observeBlockchainState();
+    this.observeBlockchainState();
+    this.observeLinks();
   }
 
-  render() {
-    if (!this.state.recipientAddress) {
-      return null;
-    }
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
 
-    const { whitelist, link, location, transationBlockNumber } = this.state;
+  @computed
+  get link() {
+    return this.props.links!.allLinks.find((l) => l.id.startsWith(this.linkId));
+  }
+
+  @computed
+  get whitelistedLink() {
+    return this.props.links!.whitelistedLinks.find((l) => l.id.startsWith(this.linkId));
+  }
+
+  @computed
+  get stepsStates() {
+    const { whitelist } = this.props.widgetSettingsStore!;
+    const { linkId } = this;
+    let step0State;
+    if (this.link || this.transactionStatus === true) {
+      step0State = {
+        state: 'done',
+      };
+    } else if (this.transactionStatus === false) {
+      step0State = {
+        state: 'failed',
+        reason: 'Your transaction has been rejected',
+      };
+    } else {
+      step0State = {
+        state: 'waiting',
+        reason: 'Waiting for blockchain',
+      };
+    }
+    let step1State;
+    if (step0State.state !== 'done') {
+      step1State = {
+        state: 'notstarted',
+      };
+    } else if (this.whitelistedLink) {
+      step1State = {
+        state: 'done',
+      };
+    } else if (this.link) {
+      step1State = {
+        state: 'waiting',
+        reason: 'Waiting for whitelisting',
+      };
+    } else {
+      step1State = {
+        state: 'waiting',
+        reason: 'Processing',
+      };
+    }
+    return [step0State, step1State];
+  }
+
+  private observeBlockchainState = () => {
+    reaction(
+      () => this.props.web3Store!.blockNumber,
+      async (blockNumber, blockReaction) => {
+        const receipt = await this.props.web3Store!.getTransactionReceipt(this.linkId.split(':')[1]);
+        if (receipt) {
+          this.transactionStatus = receipt.status === '0x1' ? true : false;
+          blockReaction.dispose();
+        }
+      },
+    );
+  };
+
+  private observeLinks = () => {
+    this.intervalId = setInterval(() => {
+      if (this.link && this.whitelistedLink) {
+        clearInterval(this.intervalId);
+        return;
+      }
+      this.props.links!.refetch();
+    }, 5000);
+  };
+
+  private lastStepName = () => {
+    const { whitelist } = this.props.widgetSettingsStore!;
+    const { link, whitelistedLink } = this;
+    if (whitelist) {
+      return (link && !whitelistedLink) || !link ? 'In Review' : 'Whitelisted';
+    }
+    return !link ? 'Processing' : 'Added';
+  };
+
+  render() {
+    const { location } = this.props.widgetSettingsStore!;
+    const { link } = this;
 
     return (
       <div className={style.self}>
@@ -123,110 +168,17 @@ class LinkStatus extends Component<IProps, IState> {
               <A href={location}>{location}</A>
             </div>
           </div>
-          <Steps stepsStates={this._getStepsStates()}>
+          <Steps stepsStates={this.stepsStates}>
             <Step icon={<Icon className={style.icon} name="eye" />}>
               <p>On a blockchain</p>
             </Step>
 
             <Step icon={<Icon className={style.icon} name="check" />}>
-              <p>{this._lastStepName()}</p>
+              <p>{this.lastStepName()}</p>
             </Step>
           </Steps>
         </Paper>
       </div>
     );
   }
-
-  // ToDo fix - when network is unavailable
-  _fetchLinks = async (apiUrl, recipientAddress, asset, algorithm, whitelist) => {
-    try {
-      // tslint:disable-next-line max-line-length
-      const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${asset.toLowerCase()};context=${recipientAddress.toLowerCase()}/`;
-      const allLinksRequest = fetch(rankingApiUrl).then((res) => res.json());
-      const timedecayFilterAlgorithm = algorithm === 'links' ? 'filter_timedecay/' : '';
-      const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
-      const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';
-      // tslint:disable-next-line max-line-length
-      const whitelistedLinksRequest = fetch(
-        `${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`,
-        { cache: 'no-store' },
-      ).then((res) => res.json());
-
-      const [allLinks, whitelistedLinks] = await Promise.all([allLinksRequest, whitelistedLinksRequest]);
-      // suboptimal: make a map id to link before mapping links instead
-      const links = allLinks.items.map((link) => {
-        const whitelisted = whitelistedLinks.items.find((a) => link.id === a.id);
-
-        return {
-          ...link,
-          whitelisted: !!whitelisted,
-        };
-      });
-
-      return links;
-    } catch (_) {
-      return [];
-    }
-  };
-
-  _observeBlockchainState = () => {
-    const blockHeaders: any = this.web3.eth.subscribe('newBlockHeaders');
-
-    blockHeaders.on('data', ({ number }: BlockHeader) => {
-      this.setState({ currentBlockNumber: number });
-      if (!this.state.transationBlockNumber) {
-        this._checkReceipt();
-      }
-    });
-  };
-
-  _checkReceipt = async () => {
-    const [, tx] = this.state.linkId.split(':');
-    const receipt = await this.web3.eth.getTransactionReceipt(tx);
-    if (receipt) {
-      this.setState({
-        transationStatus: receipt.status === '0x1' ? true : false,
-        transationBlockNumber: receipt.blockNumber,
-      });
-    }
-  };
-
-  _findLinkById = (linkId) => (links) => {
-    const link = links.find((l) => l.id.startsWith(linkId));
-    this.setState({ link });
-
-    return link;
-  };
-
-  _getStepsStates = () => {
-    const { whitelist, link, transationBlockNumber, transationStatus } = this.state;
-    let step0State;
-    let step0Reason;
-
-    if (link) {
-      step0State = 'done';
-    } else if (transationBlockNumber !== null) {
-      step0State = transationStatus ? 'done' : 'failed';
-    } else {
-      step0State = 'waiting';
-      step0Reason = 'Waiting for blockchain';
-    }
-
-    const step1State =
-      step0State !== 'done'
-        ? 'notstarted'
-        : (link && !!whitelist && link.whitelisted) || (link && !whitelist) ? 'done' : 'waiting';
-
-    return [{ state: step0State, reason: step0Reason }, { state: step1State }];
-  };
-
-  _lastStepName = () => {
-    const { link, whitelist } = this.state;
-    if (whitelist) {
-      return (link && !link.whitelisted) || !link ? 'In Review' : 'Whitelisted';
-    }
-    return !link ? 'Processing' : 'Added';
-  };
 }
-
-export default LinkStatus;

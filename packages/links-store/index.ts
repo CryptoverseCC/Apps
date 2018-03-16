@@ -1,5 +1,5 @@
-import { observable, computed, action } from 'mobx';
-import { fromPromise } from 'mobx-utils';
+import { observable, computed, action, autorun } from 'mobx';
+import { fromPromise, now } from 'mobx-utils';
 import Raven from 'raven-js';
 
 import calculateProbabilities from '@linkexchange/utils/links';
@@ -11,15 +11,14 @@ import RankingRequestBuilder, { IRankingRequestBuilderCtor } from '@linkexchange
 export default class LinksStore {
   @observable fetching: boolean = false;
   @observable fetched: boolean = true;
-
-  widgetSettings: IWidgetSettings;
+  @observable nonce = 0;
+  @observable lastAllLinks: IRemoteLink[] = [];
+  @observable lastWhitelistedLinks: IRemoteLink[] = [];
 
   constructor(
-    widgetSettings: IWidgetSettings,
+    private widgetSettings: IWidgetSettings,
     private RankingRequestBuilderCtor: IRankingRequestBuilderCtor = RankingRequestBuilder,
-  ) {
-    this.widgetSettings = widgetSettings;
-  }
+  ) {}
 
   @computed
   get rankingRequestBuilder() {
@@ -41,28 +40,39 @@ export default class LinksStore {
 
   @computed
   get allLinksPromise() {
-    return fromPromise(this.rankingRequestBuilder.allLinksFetch())
+    return fromPromise(this.rankingRequestBuilder.allLinksFetch(this.nonce));
   }
 
   @computed
-  get allLinks() {
+  get allLinks(): IRemoteLink[] {
     return this.allLinksPromise.case({
-      pending: () => [],
-      fulfilled: (t) => t.items,
+      pending: () => this.lastAllLinks,
+      fulfilled: (t) => {
+        autorun(() => (this.lastAllLinks = t.items));
+        return t.items;
+      },
       rejected: (t) => [],
     });
   }
 
+  @action.bound
+  refetch() {
+    this.nonce += 1;
+  }
+
   @computed
   get whitelistedLinksPromise() {
-    return fromPromise(this.rankingRequestBuilder.whitelistedLinksFetch());
+    return fromPromise(this.rankingRequestBuilder.whitelistedLinksFetch(this.nonce));
   }
 
   @computed
   get whitelistedLinks() {
     return this.whitelistedLinksPromise.case({
-      pending: () => [],
-      fulfilled: (t) => t.items,
+      pending: () => this.lastWhitelistedLinks,
+      fulfilled: (t) => {
+        autorun(() => (this.lastWhitelistedLinks = t.items));
+        return t.items;
+      },
       rejected: (t) => [],
     });
   }

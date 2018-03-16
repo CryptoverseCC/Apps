@@ -2,15 +2,16 @@
   width: 980px;
   display: flex;
   flex-direction: row;
+  background-color: #ffffff;
 
   .left {
-    background-color: #F5F7FA;
+    background-color: #f5f7fa;
     width: 437px;
     padding: 30px;
 
     .header {
       height: 30px;
-      color: #1B2437;
+      color: #1b2437;
       font-size: 22px;
       line-height: 30px;
     }
@@ -20,7 +21,7 @@
       cursor: pointer;
       height: 14px;
       width: 87px;
-      color: #263FFF;
+      color: #263fff;
       font-size: 12px;
       font-weight: bold;
       letter-spacing: 2px;
@@ -42,9 +43,9 @@
       height: 45px;
       width: 212px;
       border-radius: 3px;
-      box-shadow: 0 5px 15px 0 rgba(27,36,55,0.09);
+      box-shadow: 0 5px 15px 0 rgba(27, 36, 55, 0.09);
       background-color: #ffffff;
-      color: #1B2437;
+      color: #1b2437;
       font-size: 12px;
       font-weight: bold;
       letter-spacing: 2px;
@@ -66,19 +67,19 @@
     justify-content: center;
 
     .section {
-      color: #1B2437;
+      color: #1b2437;
       font-size: 22px;
       margin-bottom: 30px;
 
       .description {
         margin-top: 10px;
-        color: #A6AEB8;
+        color: #a6aeb8;
         font-size: 14px;
 
         .time {
           text-decoration: none;
           display: block;
-          color: #263FFF;
+          color: #263fff;
           font-weight: bold;
         }
       }

@@ -10,7 +10,7 @@
   "license": "ISC",
   "peerDependencies": {
     "@linkexchange/images": "^0.0.147",
-    "@linkexchange/transaction-provider": "^0.0.143",
-    "@linkexchange/web3-state-provider": "^0.0.147"
+    "@linkexchange/utils": "^0.0.166",
+    "@linkexchange/web3-store": "^0.0.166"
   }
 }

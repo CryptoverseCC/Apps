@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@linkexchange/utils": "^0.0.166",
-    "@linkexchange/web3-state-provider": "^0.0.166",
     "@userfeeds/core": "^0.0.166"
   }
 }

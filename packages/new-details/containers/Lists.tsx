@@ -1,66 +1,39 @@
 import React, { Component } from 'react';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import differenceBy from 'lodash/differenceBy';
 
-import BoostLinkComponent from '@linkexchange/boost-link';
-import { ILink, IRemoteLink } from '@linkexchange/types/link';
-import { withInfuraAndTokenDetails } from '@linkexchange/token-details-provider';
-import { withWidgetSettings, WidgetSettings } from '@linkexchange/widget-settings';
-import { withInjectedWeb3 } from '@linkexchange/utils/web3';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
-import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
+import LinksStore from '@linkexchange/links-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { IRemoteLink, ILink } from '@linkexchange/types/link';
 
 import { delayed } from '../utils';
-import LinksStore from '@linkexchange/links-store';
+import BoostLink from './BoostLink';
 import { NoLinks, Loading } from '../components/Placeholders';
 import { ListHeaderSlots, ListHeaderOutside, LinkRow } from '../components/List';
 
-const LinkRowWithTokenDetails = withInfuraAndTokenDetails(LinkRow);
-
-const InjectedWeb3StateProvider = withInjectedWeb3(Web3StateProvider);
-const DecoratedBoostLinkComponent = withInjectedWeb3AndTokenDetails(BoostLinkComponent);
-
 const DebouncedLoading = delayed(200)(Loading);
 
-const DefaultBoostLink = (props: { link: ILink | IRemoteLink; links: LinksStore; widgetSettings: WidgetSettings }) => {
-  const { links, widgetSettings, ...restProps } = props;
-  return (
-    <InjectedWeb3StateProvider
-      asset={widgetSettings.asset}
-      render={({ enabled, reason }) => (
-        <DecoratedBoostLinkComponent
-          disabled={!enabled}
-          disabledReason={reason}
-          loadBalance
-          asset={widgetSettings.asset}
-          widgetSettings={widgetSettings}
-          linksInSlots={links.visibleLinks}
-          {...restProps}
-        />
-      )}
-    />
-  );
-};
-
-const DecoratedDefaultBoostLink = inject(({ links }) => ({ links: links as LinksStore }))(
-  withWidgetSettings(DefaultBoostLink),
-);
-
 interface IProps {
-  widgetSettings: WidgetSettings;
+  widgetSettingsStore?: IWidgetSettings;
+  boostComponent?: React.ComponentType<{
+    link: ILink | IRemoteLink;
+    render(state: { enabled: boolean; reason?: string }): JSX.Element;
+  }>;
   links?: LinksStore;
   addLink?: JSX.Element;
 }
 
-class Lists extends Component<IProps> {
+@inject('links', 'widgetSettingsStore')
+@observer
+export default class Lists extends Component<IProps> {
   render() {
-    const { widgetSettings, links, addLink } = this.props;
-    const hasWhitelist = !!widgetSettings.whitelist;
+    const { whitelist, slots } = this.props.widgetSettingsStore!;
+    const { links, addLink, boostComponent } = this.props;
+    const hasWhitelist = !!whitelist;
     const linksInSlots = links!.visibleLinks;
     const whitelistedLinks = differenceBy(links!.whitelistedLinks, linksInSlots, (a) => a.id);
     const allLinks = differenceBy(links!.allLinks, linksInSlots, (a) => a.id);
     const linksOutside = hasWhitelist ? whitelistedLinks : allLinks;
-    const web3Enabled = true;
 
     return (
       <>
@@ -69,33 +42,31 @@ class Lists extends Component<IProps> {
         {links!.fetched &&
           (linksInSlots.length > 0 || linksOutside.length > 0) && (
             <>
-              <ListHeaderSlots linksCount={linksInSlots.length} slots={widgetSettings.slots} />
+              <ListHeaderSlots linksCount={linksInSlots.length} slots={slots} />
               {linksInSlots.map((link, index) => (
-                <LinkRowWithTokenDetails
+                <LinkRow
                   key={link.id}
-                  asset={widgetSettings.asset}
                   link={link}
-                  boostEnabled={web3Enabled}
-                  boostComponent={DecoratedDefaultBoostLink}
+                  boostComponent={boostComponent || BoostLink}
                   lastChild={index === linksInSlots.length - 1}
                 />
               ))}
-              <ListHeaderOutside hasWhitelist={hasWhitelist} />
-              {linksOutside.map((link, index) => (
-                <LinkRowWithTokenDetails
-                  key={link.id}
-                  asset={widgetSettings.asset}
-                  link={link}
-                  boostEnabled={web3Enabled}
-                  boostComponent={DecoratedDefaultBoostLink}
-                  lastChild={index === linksOutside.length - 1}
-                />
-              ))}
+              {linksOutside.length > 0 && (
+                <>
+                  <ListHeaderOutside hasWhitelist={hasWhitelist} />
+                  {linksOutside.map((link, index) => (
+                    <LinkRow
+                      key={link.id}
+                      link={link}
+                      boostComponent={boostComponent || BoostLink}
+                      lastChild={index === linksOutside.length - 1}
+                    />
+                  ))}
+                </>
+              )}
             </>
           )}
       </>
     );
   }
 }
-
-export default inject(({ links }) => ({ links: links as LinksStore }))(withWidgetSettings(Lists));

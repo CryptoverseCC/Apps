@@ -7,9 +7,7 @@ import * as Modal from '@linkexchange/components/src/StyledComponents';
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import core from '@userfeeds/core/src';
-import { withInjectedWeb3AndWeb3State } from '../web3-state-provider';
 import { resolveOnTransactionHash } from '@userfeeds/core/src/utils';
-import { withInjectedWeb3AndTokenDetails } from '@linkexchange/token-details-provider';
 import AddLinkForm from '@linkexchange/new-add-link/Form';
 import { IWeb3Store } from '@linkexchange/web3-store';
 import ActionRejected from '@linkexchange/new-add-link/ActionRejected';
@@ -55,7 +53,7 @@ export default class AddLink extends React.Component<
 
     this.setState({ lastSubmitValues: values });
     const claim = this.createClaim({ ...values, location: widgetLocation });
-    const valueInWei = toWei(values.value, decimals);
+    const valueInWei = toWei(values.value, decimals!);
     try {
       if (shouldApprove(valueInWei)) {
         let approvalProcess;
@@ -65,7 +63,7 @@ export default class AddLink extends React.Component<
         this.setState({ step: 'tokensAccess', approvalProcess });
         const transactionHash = await approval;
       }
-      const { promiEvent: claimRequest } = await sendClaim(recipientAddress, claim, values.value);
+      const { promiEvent: claimRequest } = await sendClaim(claim, recipientAddress, values.value);
       this.setState({ step: 'paymentInProgress' });
       const transactionHash = await resolveOnTransactionHash(claimRequest);
       this.setState({ step: 'actionSuccess', lastTransactionHash: transactionHash });
@@ -81,7 +79,7 @@ export default class AddLink extends React.Component<
       this.setState({ step: 'confirmationToUseTokens' });
       const weiToApprove = unlimitedApproval
         ? MAX_VALUE_256
-        : toWei(lastSubmitValues.value, this.props.web3Store!.decimals);
+        : toWei(lastSubmitValues.value, this.props.web3Store!.decimals!);
       const { promiEvent: approveRequest } = await this.props.web3Store!.approve(weiToApprove);
       const transactionHash = await resolveOnTransactionHash(approveRequest);
       approvalProcess.resolve(transactionHash);
@@ -94,12 +92,16 @@ export default class AddLink extends React.Component<
     return {
       type: ['link'],
       claim: { target, title, summary },
-      credits: [
-        {
-          type: 'interface',
-          value: location,
-        },
-      ],
+      ...(location
+        ? {
+            credits: [
+              {
+                type: 'interface',
+                value: location,
+              },
+            ],
+          }
+        : {}),
     };
   }
 

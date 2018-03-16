@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { match } from 'react-router-dom';
 import qs from 'qs';
-import Web3 from 'web3';
 import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
@@ -11,7 +10,6 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 import core from '@userfeeds/core/src';
-import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import { toast } from '@linkexchange/toast';
 import Input from '@linkexchange/components/src/Form/Input';
@@ -21,7 +19,6 @@ import { Input as input } from '@linkexchange/components/src/Form/input.scss';
 import { Field, Title, Description, RadioGroup, Error } from '@linkexchange/components/src/Form/Field';
 import Icon from '@linkexchange/components/src/Icon';
 import Dropdown from '@linkexchange/components/src/Dropdown';
-import web3 from '@linkexchange/utils/web3';
 import { R, validate, validateMultipe } from '@linkexchange/utils/validation';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 
@@ -30,6 +27,8 @@ import CreateWidget from '../components/CreateWidget';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 
 import * as style from './configure.scss';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { observer, inject } from 'mobx-react';
 
 interface IState {
   recipientAddress: string;
@@ -77,7 +76,7 @@ const MIN_DATE = moment().add(1, 'day');
 
 const rules = {
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
-  whitelist: [R.value((v) => v === '' ? true : isAddress(v), 'Has to be valid eth address')],
+  whitelist: [R.value((v) => (v === '' ? true : isAddress(v)), 'Has to be valid eth address')],
   title: [R.required],
   description: [R.required],
   contactMethod: [R.required],
@@ -86,12 +85,14 @@ const rules = {
 };
 
 type TProps = IUpdateQueryParamProp & {
-  web3: Web3;
   location: Location;
   history: History;
   match: match<any>;
+  web3Store?: IWeb3Store;
 };
 
+@inject('web3Store')
+@observer
 class Configure extends Component<TProps, IState> {
   inputsRefs: {
     [key: string]: Input;
@@ -190,11 +191,10 @@ class Configure extends Component<TProps, IState> {
   };
 
   setAddressFromMM = (key) => async () => {
-    const [account = ''] = await web3.eth.getAccounts();
-
-    this.setState({ [key]: account });
-    this.props.updateQueryParam(key, account);
-    this.validate(key, account);
+    const { currentAccount } = this.props.web3Store!;
+    this.setState({ [key]: currentAccount });
+    this.props.updateQueryParam(key, currentAccount);
+    this.validate(key, currentAccount);
   };
 
   render() {
@@ -354,4 +354,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default flowRight(withInjectedWeb3, updateQueryParam)(Configure);
+export default updateQueryParam(Configure);

@@ -62,8 +62,12 @@ export async function allowanceUserfeedsContractTokenTransfer(web3Instance, toke
   return erc20ContractAllowance(web3Instance, tokenContractAddress, spenderContractAddress);
 }
 
-export async function allowanceUserfeedsContractTokenTransferForAccount(web3Instance, tokenContractAddress, from) {
-  const networkName = await getCurrentNetworkName(web3Instance);
+export async function allowanceUserfeedsContractTokenTransferForAccount(
+  web3Instance,
+  networkName,
+  tokenContractAddress,
+  from,
+) {
   const spenderContractAddress = getContractTokenTransferAddress(networkName);
   return erc20ContractAllowanceForAccount(web3Instance, tokenContractAddress, spenderContractAddress, from);
 }
