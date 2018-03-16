@@ -61,7 +61,7 @@ export default class Booster extends Component<IProps, IState> {
   }
 
   render() {
-    const { link, web3Store } = this.props;
+    const { web3Store } = this.props;
     const { balanceWithDecimalPoint, symbol } = web3Store!;
 
     const { isInSlots, inputError, toPay, probability, positionInSlots, hasInsufficientFunds } = this.state;
@@ -232,7 +232,6 @@ export default class Booster extends Component<IProps, IState> {
 
       this.setState({ probability });
     } else {
-      const lastLinkInSlots = visibleLinks[visibleLinks.length - 1];
       const newLinksInSlots = visibleLinks
         .map((l) => new BigNumber(l.score.toFixed(0)))
         .concat([linkTotalScore])

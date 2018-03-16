@@ -1,4 +1,4 @@
-import { extendObservable, computed, action, observable } from 'mobx';
+import { computed, action, observable } from 'mobx';
 import { networkMapping } from '@userfeeds/core/src/utils';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import {
@@ -11,7 +11,7 @@ import Web3 from 'web3';
 import { BN } from 'web3-utils';
 import { TNetwork } from '@linkexchange/utils/web3';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
-import Erc20, { IErc20Constructor } from './erc20';
+import { IErc20Constructor } from './erc20';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 
 interface IInitialState {

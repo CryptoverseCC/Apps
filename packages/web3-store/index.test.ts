@@ -12,6 +12,7 @@ describe('Web3Store', () => {
   let erc20GetTransactionReceipt;
   let injectedWeb3;
   let Erc20Mock;
+  // tslint:disable-next-line
   let asset;
   const createWidgetSettings = (asset) =>
     new WidgetSettings({

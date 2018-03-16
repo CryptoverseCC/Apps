@@ -5,11 +5,8 @@ import AddLink from '@linkexchange/new-add-link';
 import Modal from '@linkexchange/components/src/Modal';
 import { Details, Header, Lists } from '@linkexchange/new-details';
 import { WidgetSettings } from '@linkexchange/widget-settings';
-import Tooltip from '@linkexchange/components/src/Tooltip';
-import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
-import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';
 import Status from '@linkexchange/status';
 
 import Welcome from './components/Welcome';

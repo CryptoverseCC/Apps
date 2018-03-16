@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 
 type TCheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {

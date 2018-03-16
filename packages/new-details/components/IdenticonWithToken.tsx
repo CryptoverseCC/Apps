@@ -72,7 +72,7 @@ const openEtherscanToken = (asset: string) => () => {
 
 const IdenticonWithToken = (props: { address: string; asset: string } & React.HTMLAttributes<HTMLDivElement>) => {
   const { address, asset, ...restProps } = props;
-  const [_, token] = asset.split(':');
+  const [, token] = asset.split(':');
   return (
     <div {...restProps}>
       <Identicon address={address} onClick={openEtherscanAccount(address, asset)} />

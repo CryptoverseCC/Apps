@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import classnames from 'classnames/bind';
-import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import Icon from '@linkexchange/components/src/Icon';
-import TranscactionProvider from '@linkexchange/transaction-provider';
-
-import * as style from './newAskForAllowance.scss';
 import Button from '@linkexchange/components/src/NewButton';
 import Checkbox from '@linkexchange/components/src/Form/Checkbox';
-const cx = classnames.bind(style);
+
+import * as style from './newAskForAllowance.scss';
 
 interface IProps {
   goBack(): void;
@@ -19,7 +15,7 @@ interface IState {
   unlimited: boolean;
 }
 
-export default class NewAskForAllowance extends Component<IProps> {
+export default class NewAskForAllowance extends Component<IProps, IState> {
   state = {
     unlimited: false,
   };

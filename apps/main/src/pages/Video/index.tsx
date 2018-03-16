@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import Home from './Home';
 import Widget from './Widget';

@@ -213,15 +213,6 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   private onArrowEnter = (activeArrow) => () => this.setState({ activeArrow });
   private onArrowLeave = () => this.setState({ activeArrow: '' });
 
-  private openTargetUrl = () => {
-    if (this.state.currentLink) {
-      const linkWindow = window.open(this.state.currentLink.target, '_blank');
-      if (linkWindow) {
-        linkWindow.opener = null;
-      }
-    }
-  };
-
   private onPrevClick = () => {
     this.setState({ activeArrow: 'left' }, () => {
       this.linkProvider.prev();

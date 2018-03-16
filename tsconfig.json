@@ -17,6 +17,14 @@
     "./node_modules/@types",
     "./node_modules/web3-typescript-typings"
   ],
+  "include": [
+    "**/*.tsx",
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "*.scss.d.ts"
+  ],
   "files": [
     "./global.d.ts"
   ]

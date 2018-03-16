@@ -9,6 +9,6 @@
   "license": "ISC",
   "devDependencies": {
     "tslint": "^5.9.1",
-    "tslint-react": "^3.4.0"
+    "tslint-react": "^3.5.1"
   }
 }

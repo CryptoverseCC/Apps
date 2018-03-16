@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import Icon from '@linkexchange/components/src/Icon';
-import Button from '@linkexchange/components/src/NewButton';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
 
-import Hr from './Hr';
 import LinkexchangeDots from './Dots';
 import ContactPublisher from './Contact';
 import { ShortAddress } from './ShortAddress';
 import IdenticonWithToken from './IdenticonWithToken';
-import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
-import { BlackText, SmallBlackText, BlackBoldText } from './Text';
+import { Columns, FlexColumn } from '@linkexchange/components/src/Columns';
+import { BlackText } from './Text';
 import PoweredByLinkexchange from './PoweredByLinkexchange';
 import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 import { IWidgetSettings } from '@linkexchange/types/widget';

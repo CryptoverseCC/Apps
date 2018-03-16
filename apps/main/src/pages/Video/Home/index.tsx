@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 
 import AddLink from '@linkexchange/new-add-link';
 import Modal from '@linkexchange/components/src/Modal';
-import { WidgetSettings } from '@linkexchange/widget-settings';
 import { Details, Header, Lists } from '@linkexchange/new-details';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import BlocksTillConclusion from '@linkexchange/blocks-till-conclusion';
@@ -18,7 +17,6 @@ import * as style from './home.scss';
 
 interface IProps {
   blocks: BlocksStore;
-  widgetSettingsStore: WidgetSettings;
 }
 
 interface IState {
@@ -31,7 +29,7 @@ class Home extends Component<IProps, IState> {
   };
 
   render() {
-    const { widgetSettingsStore, blocks } = this.props;
+    const { blocks } = this.props;
     const { openedModal } = this.state;
 
     return (
@@ -71,4 +69,4 @@ class Home extends Component<IProps, IState> {
   };
 }
 
-export default inject('widgetSettingsStore', 'blocks')(observer(Home));
+export default inject('blocks')(observer(Home));

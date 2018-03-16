@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { match } from 'react-router-dom';
 import qs from 'qs';
-import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
 import { History, Location } from 'history';
@@ -9,7 +8,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-import core from '@userfeeds/core/src';
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import { toast } from '@linkexchange/toast';
 import Input from '@linkexchange/components/src/Form/Input';

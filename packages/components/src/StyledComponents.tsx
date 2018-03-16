@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithProps';
 
 const shadow = css`
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.25);

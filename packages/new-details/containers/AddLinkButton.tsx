@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import flowRight from 'lodash/flowRight';
 
 import Icon from '@linkexchange/components/src/Icon';
 import Tooltip from '@linkexchange/components/src/Tooltip';

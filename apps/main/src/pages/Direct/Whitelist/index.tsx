@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
-import debounce from 'lodash.debounce';
-import qs from 'qs';
 import { History, Location } from 'history';
 
-import core from '@userfeeds/core/src';
 import CopyFromMM from '@linkexchange/copy-from-mm';
-import wait from '@linkexchange/utils/wait';
-import Link from '@linkexchange/components/src/Link';
 import Icon from '@linkexchange/components/src/Icon';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
-import { IRemoteLink } from '@linkexchange/types/link';
 import Pill from '@linkexchange/components/src/Pill';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 
-import { Field, Title, Description, RadioGroup } from '@linkexchange/components/src/Form/Field';
+import { Field, Title } from '@linkexchange/components/src/Form/Field';
 import { Input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
 import Input from '@linkexchange/components/src/Form/Input';
-import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
+import Asset from '@linkexchange/components/src/Form/Asset';
 
 import LinksList from './components/LinksList';
 
@@ -86,8 +80,8 @@ class Whitelist extends Component<TProps, IState> {
   };
 
   private setAddressFromMM = (key) => () => {
-    const {changeRecipientAddress, changeWhitelist} = this.props.widgetSettingsStore!
-    const {currentAccount} = this.props.web3Store!;
+    const { changeRecipientAddress, changeWhitelist } = this.props.widgetSettingsStore!;
+    const { currentAccount } = this.props.web3Store!;
     this.setState({ [key]: currentAccount }, () => {
       switch (key) {
         case 'recipientAddress':
@@ -99,10 +93,6 @@ class Whitelist extends Component<TProps, IState> {
       }
       this.props.updateQueryParam(key, currentAccount);
     });
-  };
-
-  private fetchLinksAndShowLoader = () => {
-    this.props.links.refetch();
   };
 
   private onAssetChange = (value) => {

@@ -1,14 +1,7 @@
 import React, { Component, Children } from 'react';
 import { findDOMNode } from 'react-dom';
-import BigNumber from 'bignumber.js';
-import Web3 from 'web3';
 import { TransitionGroup } from 'react-transition-group';
-import { PromiEvent, TransactionReceipt } from 'web3/types';
 
-import core from '@userfeeds/core/src';
-import Button from '@linkexchange/components/src/Button';
-import Tooltip from '@linkexchange/components/src/Tooltip';
-import { WidgetSettings } from '@linkexchange/widget-settings';
 import { IRemoteLink } from '@linkexchange/types/link';
 import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import If from '@linkexchange/components/src/utils/If';
@@ -56,7 +49,7 @@ export default class BoostLink extends Component<IProps, IState> {
 
   render() {
     const { link, children } = this.props;
-    const { stage, amount, visible, formLeft, formTop, formOpacity } = this.state;
+    const { stage, visible, formLeft, formTop, formOpacity } = this.state;
 
     let decoratedChild;
     try {
@@ -185,11 +178,11 @@ export default class BoostLink extends Component<IProps, IState> {
   _onAllowance = async (unlimited: boolean) => {
     try {
       this.setState({ stage: 'allowanceInProgress' });
-      const { approve, decimals } = this.props.web3Store!;
+      const { decimals } = this.props.web3Store!;
       const { amount: toPay } = this.state;
       const weiToApprove = unlimited ? MAX_VALUE_256 : toWei(toPay!, decimals!);
       const { promiEvent: approveRequest } = await this.props.web3Store!.approve(weiToApprove);
-      const transactionHash = await resolveOnTransactionHash(approveRequest);
+      await resolveOnTransactionHash(approveRequest);
       this._sendClaim();
     } catch (e) {
       this.setState({ stage: 'error' });

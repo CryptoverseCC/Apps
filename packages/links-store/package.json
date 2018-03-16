@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@linkexchange/ranking-request-builder": "^0.0.171",
-    "mobx": "4.0.0",
+    "mobx": "4.1.0",
     "mobx-utils": "4.0.0"
   }
 }

@@ -7,7 +7,7 @@ import Status from '@linkexchange/status';
 import AddLink from '@linkexchange/new-add-link';
 
 import * as style from './details.scss';
-import { Provider, inject, observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 
 interface IProps {
@@ -38,7 +38,6 @@ export default class Details extends Component<IProps, IState> {
   };
 
   render() {
-    const { asset } = this.props.widgetSettingsStore!;
     const { isModalOpen } = this.state;
 
     return (

@@ -1,6 +1,6 @@
 import LinksStore from './';
 import { EWidgetSize } from '@linkexchange/types/widget';
-import { reaction, autorun, toJS } from 'mobx';
+import { reaction, toJS } from 'mobx';
 
 const expectComputedPromiseValueToEqual = (observable, property, expected) => {
   return new Promise((resolve) => {

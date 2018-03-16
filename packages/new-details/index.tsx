@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 export const Details: React.SFC<{ className?: string }> = ({ className, children }) => (
   <div className={className}>{children}</div>

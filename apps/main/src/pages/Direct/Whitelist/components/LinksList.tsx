@@ -8,9 +8,6 @@ import Icon from '@linkexchange/components/src/Icon';
 import Button from '@linkexchange/components/src/NewButton';
 import BoldText from '@linkexchange/components/src/BoldText';
 
-import core from '@userfeeds/core/src';
-import web3 from '@linkexchange/utils/web3';
-
 import * as style from './linksList.scss';
 import { inject, observer } from 'mobx-react';
 import { IWeb3Store } from '@linkexchange/web3-store';
@@ -43,7 +40,7 @@ export default class LinksList extends Component<ILinksListProps> {
     if (!transaction) {
       return 'ready';
     }
-    const [transactionId, status] = transaction.split(':');
+    const [, status] = transaction.split(':');
 
     return status as TStatus;
   };

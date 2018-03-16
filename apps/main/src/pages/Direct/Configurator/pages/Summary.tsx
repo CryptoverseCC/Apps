@@ -1,6 +1,5 @@
 import React from 'react';
 import qs from 'qs';
-import { Link } from 'react-router-dom';
 import { Location, History } from 'history';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.scss';

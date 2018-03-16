@@ -51,7 +51,7 @@ class Widget extends Component<IProps, IState> {
   };
 
   render() {
-    const { web3Store, widgetSettingsStore } = this.props;
+    const { web3Store } = this.props;
     const { currentLink, linkDuration, links, position, fetched } = this.state;
 
     if (!fetched) {
