@@ -1,7 +1,7 @@
 import React from 'react';
 import { match } from 'react-router';
 import { observer, inject } from 'mobx-react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import Button from '@linkexchange/components/src/NewButton';
 import { WidgetSettings } from '@linkexchange/widget-settings';

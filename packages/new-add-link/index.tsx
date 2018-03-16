@@ -1,12 +1,8 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { MemoryRouter } from 'react-router';
-import { BN } from 'web3-utils';
 
 import * as Modal from '@linkexchange/components/src/StyledComponents';
-import { urlWithoutQueryIfLinkExchangeApp } from '@linkexchange/utils/locationWithoutQueryParamsIfLinkExchangeApp';
 import { IWidgetSettings } from '@linkexchange/types/widget';
-import core from '@userfeeds/core/src';
 import { resolveOnTransactionHash } from '@userfeeds/core/src/utils';
 import AddLinkForm from '@linkexchange/new-add-link/Form';
 import { IWeb3Store } from '@linkexchange/web3-store';
@@ -48,7 +44,7 @@ export default class AddLink extends React.Component<
   };
 
   private onSubmit = async (values: IValues = this.state.lastSubmitValues!) => {
-    const { approve, sendClaim, shouldApprove, decimals } = this.props.web3Store!;
+    const { sendClaim, shouldApprove, decimals } = this.props.web3Store!;
     const { widgetLocation, recipientAddress } = this.props.widgetSettingsStore!;
 
     this.setState({ lastSubmitValues: values });
@@ -61,7 +57,7 @@ export default class AddLink extends React.Component<
           approvalProcess = { resolve, reject };
         });
         this.setState({ step: 'tokensAccess', approvalProcess });
-        const transactionHash = await approval;
+        await approval;
       }
       const { promiEvent: claimRequest } = await sendClaim(claim, recipientAddress, values.value);
       this.setState({ step: 'paymentInProgress' });

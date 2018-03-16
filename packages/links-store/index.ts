@@ -1,10 +1,8 @@
 import { observable, computed, action, autorun } from 'mobx';
-import { fromPromise, now } from 'mobx-utils';
-import Raven from 'raven-js';
+import { fromPromise } from 'mobx-utils';
 
 import calculateProbabilities from '@linkexchange/utils/links';
-import { ILink, IRemoteLink } from '@linkexchange/types/link';
-import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
+import { IRemoteLink } from '@linkexchange/types/link';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import RankingRequestBuilder, { IRankingRequestBuilderCtor } from '@linkexchange/ranking-request-builder';
 

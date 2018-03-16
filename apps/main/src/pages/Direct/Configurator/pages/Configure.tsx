@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { match } from 'react-router-dom';
 import qs from 'qs';
-import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
 import { History, Location } from 'history';
@@ -9,13 +8,12 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-import core from '@userfeeds/core/src';
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import { toast } from '@linkexchange/toast';
 import Input from '@linkexchange/components/src/Form/Input';
 import Radio from '@linkexchange/components/src/Form/Radio';
 import { Input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
-import { Input as input } from '@linkexchange/components/src/Form/input.scss';
+import { InputContainer } from '@linkexchange/components/src/Form/input.scss';
 import { Field, Title, Description, RadioGroup, Error } from '@linkexchange/components/src/Form/Field';
 import Icon from '@linkexchange/components/src/Icon';
 import Dropdown from '@linkexchange/components/src/Dropdown';
@@ -279,7 +277,7 @@ class Configure extends Component<TProps, IState> {
           <Title>Expiration date</Title>
           <Description>How long are you willing to host the widget? (expiration date)</Description>
           <DatePicker
-            className={classnames(input, style.DatePicker)}
+            className={classnames(style.DatePicker, InputContainer)}
             minDate={MIN_DATE}
             selected={this.state.tillDate}
             onChange={this.onTillDateChange}

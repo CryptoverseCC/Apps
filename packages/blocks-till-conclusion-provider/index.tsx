@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
 import Web3Store from '@linkexchange/web3-store';
-import { Omit } from '@linkexchange/types';
 
 interface IProps {
   web3Store?: Web3Store;

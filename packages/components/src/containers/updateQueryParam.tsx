@@ -1,6 +1,5 @@
 import React from 'react';
 import qs from 'qs';
-import { Location , History } from 'history';
 
 const updateQueryParams = (Component) => (props) => {
   const { location, history } = props;

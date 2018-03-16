@@ -1,4 +1,4 @@
-import { getAccounts, resolveOnTransactionHash } from './utils';
+import { getAccounts } from './utils';
 import { getErc20Contract } from './utils/contract';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
 

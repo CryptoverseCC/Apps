@@ -1,5 +1,4 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
 
 import Tooltip from '@linkexchange/components/src/Tooltip';
 import BlocksTillConclusionProvider from '@linkexchange/blocks-till-conclusion-provider';

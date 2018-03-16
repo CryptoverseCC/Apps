@@ -18,15 +18,6 @@ const InUse = ({ balance, currency }) => (
   </Modal.Balance>
 );
 
-const Approved = ({ approved, currency }) => (
-  <Modal.Balance>
-    <Modal.BalanceLabel>Approved:</Modal.BalanceLabel>
-    <Modal.BalanceValue>
-      {approved} {currency}
-    </Modal.BalanceValue>
-  </Modal.Balance>
-);
-
 const AddLinkForm = inject(
   (
     {

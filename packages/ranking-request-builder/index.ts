@@ -98,7 +98,7 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
   }
 
   allLinksFetch = (nonce) => {
-    const { rankingRequestBody, allLinksFlow, rankingApiUrl, flowToString } = this;
+    const { allLinksFlow, rankingApiUrl, flowToString } = this;
     const whitelistedLinksFetch = flowToString(allLinksFlow());
     return fetch(`${rankingApiUrl}/${whitelistedLinksFetch}`)
       .then(throwErrorOnNotOkResponse)
@@ -106,8 +106,8 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
   };
 
   whitelistedLinksFetch = (nonce) => {
-    const { rankingRequestBody, whitelistedLinksFlow, rankingApiUrl, flowToString } = this;
-    const whitelistedLinksFetch = flowToString(whitelistedLinksFlow())
+    const { whitelistedLinksFlow, rankingApiUrl, flowToString } = this;
+    const whitelistedLinksFetch = flowToString(whitelistedLinksFlow());
     return fetch(`${rankingApiUrl}/${whitelistedLinksFetch}`)
       .then(throwErrorOnNotOkResponse)
       .then<{ items: IRemoteLink[] }>((res) => res.json());

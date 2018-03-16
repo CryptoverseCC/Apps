@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 
 // import sigUtil from 'eth-sig-util';
 
-import core from '@userfeeds/core/src';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 import Loader from '@linkexchange/components/src/Loader';
 import Button from '@linkexchange/components/src/NewButton';
@@ -64,34 +63,34 @@ export default class Dashboard extends Component<IProps, IState> {
     openLinkexchangeUrl('/video/widget', this.props.widgetSettingsStore);
   };
 
-  private login = async () => {
-    // ToDo temporaty disable login
-    this.setState({ stage: 'success' });
-    return;
+  // ToDo temporaty disable login
+  // private login = async () => {
+  //   this.setState({ stage: 'success' });
+  //   return;
 
-    // this.setState({ stage: 'inprogress' });
-    // const typedData = [
-    //   {
-    //     type: 'string',
-    //     name: 'Message',
-    //     value: `Prove you are the owner`,
-    //   },
-    //   {
-    //     type: 'uint32',
-    //     name: 'Salt',
-    //     value: Math.floor(Math.random() * (Math.pow(2, 32) - 1)).toString(),
-    //   },
-    // ];
+  // this.setState({ stage: 'inprogress' });
+  // const typedData = [
+  //   {
+  //     type: 'string',
+  //     name: 'Message',
+  //     value: `Prove you are the owner`,
+  //   },
+  //   {
+  //     type: 'uint32',
+  //     name: 'Salt',
+  //     value: Math.floor(Math.random() * (Math.pow(2, 32) - 1)).toString(),
+  //   },
+  // ];
 
-    // try {
-    //   const [address] = await this.props.web3.eth.getAccounts();
-    //   const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
-    //   const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
-    //   if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
-    //     this.setState({ stage: 'success' });
-    //   }
-    // } catch (e) {
-    //   this.setState({ stage: 'failure' });
-    // }
-  };
+  // try {
+  //   const [address] = await this.props.web3.eth.getAccounts();
+  //   const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
+  //   const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
+  //   if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
+  //     this.setState({ stage: 'success' });
+  //   }
+  // } catch (e) {
+  //   this.setState({ stage: 'failure' });
+  // }
+  // };
 }

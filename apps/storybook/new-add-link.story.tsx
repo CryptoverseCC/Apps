@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, text, boolean, number } from '@storybook/addon-knobs/react';
+import { withKnobs, text, number } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import Modal from '@linkexchange/components/src/StyledComponents';
 import AddLink from '@linkexchange/new-add-link';
@@ -11,7 +11,7 @@ import ActionRejected from '@linkexchange/new-add-link/ActionRejected';
 import TokensAccess from '@linkexchange/new-add-link/TokensAccess';
 import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
-import { IWidgetSettings, EWidgetSize } from '@linkexchange/types/widget';
+import { EWidgetSize } from '@linkexchange/types/widget';
 import { WidgetSettings } from '@linkexchange/widget-settings';
 import Web3Store from '@linkexchange/web3-store';
 import web3 from '@linkexchange/utils/web3';

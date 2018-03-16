@@ -1,4 +1,4 @@
-import { extendObservable, computed, action, observable } from 'mobx';
+import { computed, action, observable } from 'mobx';
 import { networkMapping } from '@userfeeds/core/src/utils';
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import {
@@ -11,7 +11,7 @@ import Web3 from 'web3';
 import { BN } from 'web3-utils';
 import { TNetwork } from '@linkexchange/utils/web3';
 import { PromiEvent, TransactionReceipt } from 'web3/types';
-import Erc20, { IErc20Constructor } from './erc20';
+import { IErc20Constructor } from './erc20';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 
 interface IInitialState {
@@ -114,15 +114,15 @@ export default class Web3Store implements IWeb3Store {
         this.erc20.decimals(),
         this.erc20.symbol(),
         this.erc20.name(),
-        this.ready ? this.erc20.balance() : undefined,
-        this.ready ? this.erc20.allowance() : undefined,
+        this.unlocked ? this.erc20.balance() : undefined,
+        this.unlocked ? this.erc20.allowance() : undefined,
       ];
     } else {
       return [
         18,
         'ETH',
         'ETH',
-        this.ready ? this.injectedWeb3.eth.getBalance(this.currentAccount) : undefined,
+        this.unlocked ? this.injectedWeb3.eth.getBalance(this.currentAccount) : undefined,
         undefined,
       ];
     }

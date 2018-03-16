@@ -1,6 +1,6 @@
 import { toWei } from '@linkexchange/utils/balance';
 
-import { getCurrentNetworkName, getAccounts, resolveOnTransactionHash } from './utils';
+import { getCurrentNetworkName, getAccounts } from './utils';
 import {
   erc20ContractApprove,
   erc20ContractAllowance,

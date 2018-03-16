@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import classnames from 'classnames/bind';
 import moment from 'moment';
-import Web3 from 'web3';
 
-import core from '@userfeeds/core/src';
-import wait from '@linkexchange/utils/wait';
 import Web3Store from '@linkexchange/web3-store';
-import { getAverageBlockTime } from '@linkexchange/utils/ethereum';
 import ProgressBar from '@linkexchange/components/src/ProgressBar';
 
 import * as style from './blocksTillConclusion.scss';

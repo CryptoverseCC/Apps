@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import MetaFox from '@linkexchange/images/metafox_straight.png';
 

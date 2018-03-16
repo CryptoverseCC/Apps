@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import qs from 'qs';
 
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';

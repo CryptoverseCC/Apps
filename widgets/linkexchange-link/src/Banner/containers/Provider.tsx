@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { Provider as MobxProvider } from 'mobx-react';
 
 import RootToast from '@linkexchange/toast';
@@ -14,7 +14,6 @@ export default class Provider extends React.Component<{ widgetSettings: IWidgetS
 
   constructor(props) {
     super(props);
-    const [network] = this.props.widgetSettings.asset.split(':');
     this.web3Store = new Web3Store(web3, Erc20, this.props.widgetSettings);
     this.linksStore = new LinksStore(this.props.widgetSettings);
   }

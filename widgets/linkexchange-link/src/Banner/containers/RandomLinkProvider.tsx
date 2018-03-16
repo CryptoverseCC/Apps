@@ -13,7 +13,7 @@ class Timeout {
   private remaining: number = 0;
   private startTime: number = 0;
 
-  constructor(private func: () => void, private timeout: number, startImmediately = true) {
+  constructor(private func: () => void, timeout: number, startImmediately = true) {
     this.remaining = timeout;
     if (startImmediately) {
       this.resume();

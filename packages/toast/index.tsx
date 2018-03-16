@@ -33,12 +33,7 @@ export const toast = new ToastState();
 const RootToast = () => (
   <div className={style.self}>
     {toast.toasts.map(({ message, type }, index) => (
-      <Toast
-        key={`${message}_${index}`}
-        message={message}
-        type={type}
-        onClose={() => toast.closeToast(message, type)}
-      />
+      <Toast key={`${message}_${index}`} message={message} type={type} />
     ))}
   </div>
 );

@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-import Web3 from 'web3';
-import { BlockHeader } from 'web3/types';
 import { Location } from 'history';
 
-import wait from '@linkexchange/utils/wait';
-import { getInfura, TNetwork } from '@linkexchange/utils/web3';
 import Link from '@linkexchange/components/src/Link';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
 import A from '@linkexchange/components/src/A';
-import heartSvg from '@linkexchange/images/heart.svg';
-
-import Svg from '@linkexchange/components/src/Svg';
 import Icon from '@linkexchange/components/src/Icon';
-const cubeSvg = require('!!svg-inline-loader?removeTags=true&removeSVGTagAttrs=true!@linkexchange/images/cube.svg');
+import heartSvg from '@linkexchange/images/heart.svg';
 
 import Steps, { Step } from '../components/Steps';
 
@@ -66,8 +59,6 @@ export default class LinkStatus extends Component<IProps> {
 
   @computed
   get stepsStates() {
-    const { whitelist } = this.props.widgetSettingsStore!;
-    const { linkId } = this;
     let step0State;
     if (this.link || this.transactionStatus === true) {
       step0State = {

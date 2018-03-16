@@ -1,9 +1,6 @@
-import React, { Component, PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { extendObservable, computed, action } from 'mobx';
-import { observer } from 'mobx-react';
 
-import { Omit } from '@linkexchange/types';
 import { EWidgetSize, IWidgetSettings } from '@linkexchange/types/widget';
 import { urlWithoutQueryIfLinkExchangeApp } from '../utils/locationWithoutQueryParamsIfLinkExchangeApp';
 
@@ -52,8 +49,4 @@ export class WidgetSettings implements IWidgetSettings {
   constructor(initialState: IWidgetSettings) {
     extendObservable(this, initialState);
   }
-}
-
-interface IProps {
-  widgetSettings: IWidgetSettings;
 }

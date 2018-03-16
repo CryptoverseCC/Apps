@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { ILink } from '@linkexchange/types/link';
 import { IWidgetSettings } from '@linkexchange/types/widget';
 import TokenLogo from '@linkexchange/components/src/TokenLogo';
 

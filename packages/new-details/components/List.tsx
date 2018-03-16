@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import moment from 'moment';
 
@@ -6,14 +6,12 @@ import styledComponentWithProps from '@linkexchange/utils/styledComponentsWithPr
 import { fromWeiToString } from '@linkexchange/utils/balance';
 import { ILink, IRemoteLink, isILink } from '@linkexchange/types/link';
 import { mobileOrTablet } from '@linkexchange/utils/userAgent';
-import LinksStore from '@linkexchange/links-store';
 import ToolTip from '@linkexchange/components/src/Tooltip';
 import BoostArrowImg from '@linkexchange/images/arrow-boost.svg';
 
-import { Columns, Column, FlexColumn } from '@linkexchange/components/src/Columns';
+import { Columns, FlexColumn } from '@linkexchange/components/src/Columns';
 import { BlackBoldText, BlueBoldText, LightGreyText } from './Text';
 import Hr, { FancyHr } from './Hr';
-import { observe } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { IWeb3Store } from '@linkexchange/web3-store';
 

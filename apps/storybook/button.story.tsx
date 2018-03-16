@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean, select } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
 import Button from '@linkexchange/components/src/NewButton';
 
 storiesOf('Button', module)

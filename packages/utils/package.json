@@ -10,11 +10,11 @@
   "dependencies": {
     "@linkexchange/types": "^0.0.144",
     "prop-types": "15.6.0",
-    "qs": "^6.5.0",
+    "qs": "^6.5.1",
     "web3": "1.0.0-beta.29"
   },
   "devDependencies": {
     "tslint": "^5.9.1",
-    "tslint-react": "^3.4.0"
+    "tslint-react": "^3.5.1"
   }
 }

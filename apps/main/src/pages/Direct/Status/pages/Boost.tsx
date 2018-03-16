@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import Web3 from 'web3';
-import { BlockHeader, Subscribe } from 'web3/types';
 import { Location } from 'history';
 
-import wait from '@linkexchange/utils/wait';
 import Icon from '@linkexchange/components/src/Icon';
 import Paper from '@linkexchange/components/src/Paper';
 import heartSvg from '@linkexchange/images/heart.svg';
