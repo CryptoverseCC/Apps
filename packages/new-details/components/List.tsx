@@ -220,6 +220,7 @@ export const LinkRow: React.SFC<{
             </div>
             <div
               style={{
+                textAlign: !mobile ? 'right' : '',
                 marginLeft: !mobile ? 'auto' : '',
                 display: 'flex',
                 flexDirection: mobile ? 'row' : 'column',

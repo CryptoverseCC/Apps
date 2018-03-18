@@ -111,7 +111,7 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
             <Provider widgetSettings={widgetSettings}>
               <Switch expresion={openedModal}>
                 <Switch.Case condition="details">
-                  <WidgetDatails onAddLink={this.openModal('addLink')} />
+                  <WidgetDatails onAddLink={this.openModal('addLink')} openInNewTab={this.openInNewTab} />
                 </Switch.Case>
                 <Switch.Case condition="addLink">
                   <div style={{ width: '500px' }}>
@@ -223,6 +223,10 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     this.setState({ activeArrow: 'right' }, () => {
       this.linkProvider.next();
     });
+  };
+
+  private openInNewTab = () => {
+    openLinkexchangeUrl('/direct/details', this.props.widgetSettings);
   };
 
   private onLink = (currentLink: ILink, startImmediately?: boolean) => {

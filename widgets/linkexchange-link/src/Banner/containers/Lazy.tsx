@@ -1,6 +1,8 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 
+import Icon from '@linkexchange/components/src/Icon';
+
 import IframePortal from './IframePortal';
 
 import * as style from './lazy.scss';
@@ -26,9 +28,14 @@ export const WidgetDatails = Loadable({
   loader: () => import('@linkexchange/new-details'),
   loading: Loading,
   render: ({ Details, Header, Lists, AddLinkButton }, props) => {
-    const { onAddLink, ...restProps } = props;
+    const { onAddLink, openInNewTab, ...restProps } = props;
     return (
       <IframePortal className={style.details}>
+        <div className={style.openInNewTabContainer}>
+          <div className={style.openInNewTab} onClick={openInNewTab}>
+            <Icon name="external-link" className={style.icon} /> Open in a new tab
+          </div>
+        </div>
         <div className={style.detailsComponent} style={{ backgroundColor: 'white' }}>
           <Details {...restProps}>
             <Header addLink={<AddLinkButton onClick={onAddLink} />} />

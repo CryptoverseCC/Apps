@@ -1,5 +1,31 @@
 @import '~@linkexchange/components/styles/colors';
 
+.open-in-new-tab-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  margin-right: 5px;
+
+  .open-in-new-tab {
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+
+    .icon {
+      padding-right: 5px;
+      display: inline-block;
+      transition: transform 0.3s;
+    }
+
+    &:hover {
+      .icon {
+        transform: translateY(-1.5px);
+      }
+    }
+  }
+}
+
 .details {
   width: 80vw;
   height: 90vh;
