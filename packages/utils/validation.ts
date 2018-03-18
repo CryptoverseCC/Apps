@@ -19,10 +19,10 @@ export const R = {
       (v: string) => new BigNumber(v).lte(new BigNumber(maxValue)),
       `Has to be less then minimal value: ${maxValue}`,
     ),
-  lessThenCurrency: (maxValue: number, decimals: number) =>
+  lessThenCurrency: (maxValue: number, decimals: number, message?: string) =>
     R.value(
       (v: string) => new BigNumber(toWei(v, decimals)).lte(new BigNumber(maxValue)),
-      `Has to be less then minimal value: ${fromWeiToString(maxValue, decimals, decimals)}`,
+      !message ? `Has to be less then minimal value: ${fromWeiToString(maxValue, decimals, decimals)}` : message,
     ),
   currencyDecimals: (decimals: number) =>
     R.value((v: string) => {

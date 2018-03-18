@@ -100,7 +100,7 @@ const AddLinkForm = inject(
                         R.number,
                         R.currencyDecimals(decimals),
                         R.greaterThan(minimalValue ? parseInt(minimalValue, 10) : 0),
-                        R.lessThenCurrency(balance || 0, decimals || 0),
+                        R.lessThenCurrency(balance || 0, decimals || 0, 'Insufficient funds'),
                         ...(formValidations.value || []),
                       ])}
                     />
