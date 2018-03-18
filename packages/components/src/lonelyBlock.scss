@@ -1,29 +1,23 @@
 .LonelyBlock {
   position: relative;
-  width: 60px;
-  height: 60px;
-  margin: 15px;
+  margin: 0 5px 15px 5px;
+  background-color: inherit;
 
   .Block {
+    position: relative;
     width: 50px;
     height: 50px;
     background: #263fff;
     animation: blockAnimation 1s linear infinite;
-    position: absolute;
-    top: 0;
-    left: 0;
     border-radius: 3px;
+    will-change: transform;
 
     @keyframes blockAnimation {
-      17% {
-        border-bottom-right-radius: 3px;
-      }
       25% {
         transform: translateY(9px) rotate(22.5deg);
       }
       50% {
         transform: translateY(18px) scale(1, 0.9) rotate(45deg);
-        border-bottom-right-radius: 40px;
       }
       75% {
         transform: translateY(9px) rotate(67.5deg);
@@ -40,15 +34,27 @@
     background: #e9ebff;
     opacity: 1;
     position: absolute;
-    top: 59px;
-    left: 0;
+    bottom: -20px;
+    left: 0px;
     border-radius: 50%;
     animation: shadowAnimation 1s linear infinite;
+    will-change: transform;
+    z-index: 2;
 
     @keyframes shadowAnimation {
       50% {
         transform: scale(1.2, 1);
       }
     }
+  }
+
+  .Bottom {
+    height: 5px;
+    background-color: inherit;
+    width: 50px;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    bottom: -25px;
   }
 }

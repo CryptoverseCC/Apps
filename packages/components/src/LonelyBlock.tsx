@@ -9,6 +9,7 @@ const LonelyBlock = ({ className, blockClass, shadowClass, ...restProps }: TProp
   <div className={classnames(style.LonelyBlock, className)} {...restProps}>
     <div className={classnames(style.Block, blockClass)} />
     <div className={classnames(style.Shadow, shadowClass)} />
+    <div className={style.Bottom} />
   </div>
 );
 

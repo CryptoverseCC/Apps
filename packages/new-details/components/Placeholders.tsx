@@ -55,8 +55,8 @@ NoLinks.defaultProps = {
 };
 
 export const Loading: React.SFC<{ mobile?: boolean }> = ({ mobile }) => (
-  <Empty mobile={mobile}>
-    <BlackBoldText>Links loading</BlackBoldText>
+  <Empty mobile={mobile} style={{ backgroundColor: '#ffffff' }}>
+    <BlackBoldText style={{ marginTop: '10px' }}>Links loading</BlackBoldText>
   </Empty>
 );
 
