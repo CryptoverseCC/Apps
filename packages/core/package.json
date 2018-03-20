@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "@userfeeds/core",
-  "version": "0.0.181",
+  "version": "0.0.182",
   "description": "",
   "main": "src/index.ts",
   "scripts": {},
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/utils": "^0.0.181"
+    "@linkexchange/utils": "^0.0.182"
   },
   "devDependencies": {
     "tslint": "^5.9.1",

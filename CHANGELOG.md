@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.182"></a>
+## [0.0.182](https://github.com/Userfeeds/Apps/compare/v0.0.181...v0.0.182) (2018-03-20)
+
+
+### Fix
+
+* capture error and try to reconect to infura wss ([3c4c7df4df04cff281aa679b35261b297740f6c9](https://github.com/Userfeeds/Apps/commit/3c4c7df4df04cff281aa679b35261b297740f6c9))
+
+
+
+
 <a name="0.0.181"></a>
 ## [0.0.181](https://github.com/Userfeeds/Apps/compare/v0.0.180...v0.0.181) (2018-03-20)
 
