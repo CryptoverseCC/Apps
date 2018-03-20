@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3';
+import Raven from 'raven-js';
 
 import { Omit, Diff } from '@linkexchange/types';
 
@@ -33,13 +34,23 @@ export const getInfura = (network: TNetwork, ws?: boolean): Web3 => {
   const networkName = network === 'ethereum' ? 'mainnet' : network;
   let web3: Web3;
   if (ws) {
-    web3 = new Web3(new Web3.providers.WebsocketProvider(`wss://${networkName}.infura.io/ws`));
+    web3 = new Web3();
+    connectToInfuraWss(web3, networkName);
   } else {
     web3 = new Web3(new Web3.providers.HttpProvider(`https://${networkName}.infura.io/DjvHIbnUXoxqu4dPRcbB`));
   }
   infuraNetworkMapping.set(key, web3);
 
   return web3;
+};
+
+const connectToInfuraWss = (web3: Web3, networkName: string) => {
+  const wssProvider = new Web3.providers.WebsocketProvider(`wss://${networkName}.infura.io/_ws`);
+  web3.setProvider(wssProvider);
+  wssProvider.on('error', () => {
+    Raven.captureMessage(`Error occured on connection to wss://${networkName}.infura.io/_ws`);
+    setTimeout(() => connectToInfuraWss(web3, networkName), 5000);
+  });
 };
 
 interface IProviderProps {
