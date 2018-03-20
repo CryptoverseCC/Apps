@@ -45,12 +45,15 @@ export const getInfura = (network: TNetwork, ws?: boolean): Web3 => {
 };
 
 const connectToInfuraWss = (web3: Web3, networkName: string) => {
-  const wssProvider = new Web3.providers.WebsocketProvider(`wss://${networkName}.infura.io/_ws`);
+  const socketURL = `wss://${networkName}.infura.io/ws`;
+  const wssProvider = new Web3.providers.WebsocketProvider(socketURL);
   web3.setProvider(wssProvider);
-  wssProvider.on('error', () => {
-    Raven.captureMessage(`Error occured on connection to wss://${networkName}.infura.io/_ws`);
+  const handleError = () => {
+    Raven.captureMessage(`Error occured on connection to ${socketURL}`);
     setTimeout(() => connectToInfuraWss(web3, networkName), 5000);
-  });
+  };
+  wssProvider.on('error', handleError);
+  wssProvider.on('end', handleError);
 };
 
 interface IProviderProps {
