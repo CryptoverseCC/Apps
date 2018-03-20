@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/token-details-provider",
-  "version": "0.0.175",
+  "version": "0.0.181",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/utils": "^0.0.175",
-    "@userfeeds/core": "^0.0.175"
+    "@linkexchange/utils": "^0.0.181",
+    "@userfeeds/core": "^0.0.181"
   },
   "peerDependencies": {
     "@linkexchange/ducks": "^0.0.143",

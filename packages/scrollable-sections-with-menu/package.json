@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/scrollable-sections-with-menu",
-  "version": "0.0.175",
+  "version": "0.0.181",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/components": "^0.0.175",
-    "@linkexchange/utils": "^0.0.175"
+    "@linkexchange/components": "^0.0.181",
+    "@linkexchange/utils": "^0.0.181"
   },
   "peerDependencies": {
     "lodash": "~4.17.4"
