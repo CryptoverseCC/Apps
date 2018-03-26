@@ -1,6 +1,8 @@
 import { render } from 'react-dom';
 import React from 'react';
 import qs from 'qs';
+import Raven from 'raven-js';
+import ReactGA from 'react-ga';
 import { Provider } from 'mobx-react';
 import { IntlProvider } from 'react-intl';
 
@@ -48,17 +50,33 @@ const blocksStore = new BlocksStore(BENTYN_CONFIG.startBlock, BENTYN_CONFIG.endB
 const web3Store = new Web3Store(web3, Erc20, widgetSettingsStore);
 const linksStore = new LinksStore(widgetSettingsStore);
 
-render(
-  <Provider
-    blocks={blocksStore}
-    links={linksStore}
-    widgetSettingsStore={widgetSettingsStore}
-    web3Store={web3Store}
-    formValidationsStore={{ 'add-link': {} }}
-  >
-    <IntlProvider locale="en">
-      <App />
-    </IntlProvider>
-  </Provider>,
-  document.querySelector('.root'),
-);
+const startApp = () => {
+  render(
+    <Provider
+      blocks={blocksStore}
+      links={linksStore}
+      widgetSettingsStore={widgetSettingsStore}
+      web3Store={web3Store}
+      formValidationsStore={{ 'add-link': {} }}
+    >
+      <IntlProvider locale="en">
+        <App />
+      </IntlProvider>
+    </Provider>,
+    document.querySelector('.root'),
+  );
+};
+
+if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV === 'production') {
+    ReactGA.initialize('UA-113862523-2');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  Raven.config('https://0f0fe6921a4d4f6185c0ddbadc71db1c@sentry.io/638020', {
+    release: `${VERSION}-${process.env.NODE_ENV}`,
+  }).install();
+  Raven.context(() => startApp());
+} else {
+  startApp();
+}

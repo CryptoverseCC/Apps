@@ -39,6 +39,7 @@ const blocksStore = new BlocksStore(parseInt(startBlock, 10), parseInt(endBlock,
 const web3Store = new Web3Store(web3, Erc20, widgetSettings);
 const widgetSettingsStore = new WidgetSettings(widgetSettings);
 const linksStore = new LinksStore(widgetSettingsStore);
+
 const startApp = () => {
   render(
     <Provider
