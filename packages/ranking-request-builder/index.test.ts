@@ -23,7 +23,9 @@ describe('LinksStore', () => {
       },
       {
         algorithm: 'filter_timedecay',
-        params: {},
+        params: {
+          period: 28,
+        },
       },
       {
         algorithm: 'filter_group',
@@ -62,7 +64,9 @@ describe('LinksStore', () => {
       },
       {
         algorithm: 'filter_timedecay',
-        params: {},
+        params: {
+          period: 28,
+        },
       },
       {
         algorithm: 'filter_group',
@@ -94,7 +98,9 @@ describe('LinksStore', () => {
       },
       {
         algorithm: 'filter_timedecay',
-        params: {},
+        params: {
+          period: 28,
+        },
       },
       {
         algorithm: 'filter_group',
