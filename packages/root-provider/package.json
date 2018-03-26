@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/root-provider",
-  "version": "0.0.149",
+  "version": "0.1.0",
   "description": "",
   "main": "index.tsx",
   "scripts": {},

@@ -1,12 +1,12 @@
 {
   "private": true,
   "name": "@linkexchange/widget-settings",
-  "version": "0.0.168",
+  "version": "0.1.0",
   "description": "",
   "main": "index.tsx",
   "keywords": [],
   "dependencies": {
-    "@linkexchange/types": "^0.0.144",
+    "@linkexchange/types": "^0.1.0",
     "prop-types": "^15.6.0"
   },
   "peerDependencies": {

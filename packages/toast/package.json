@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@linkexchange/toast",
-  "version": "0.0.182",
+  "version": "0.1.0",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linkexchange/components": "^0.0.182"
+    "@linkexchange/components": "^0.1.0"
   }
 }
