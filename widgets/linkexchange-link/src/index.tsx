@@ -33,7 +33,9 @@ class LinkexchangeLink extends HTMLElement {
     ];
   }
 
-  validations = {};
+  validations = {
+    'add-link': {},
+  };
 
   addValidation(
     formName: string,

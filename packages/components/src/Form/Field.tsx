@@ -15,13 +15,15 @@ export function validateField(validators: any[]): (value: any) => Promise<any> {
 }
 
 export const TextField = (props) => {
-  const { onChange, ...restInputProps } = props.input;
+  const { onChange, onFocus, onBlur, ...restInputProps } = props.input;
 
   return (
     <Field>
       <Title active={props.meta.active}>{props.title}</Title>
       <Input
         onChange={(e) => onChange(e)}
+        onFocus={(e) => onFocus(e)}
+        onBlur={(e) => onBlur(e)}
         {...restInputProps}
         error={props.meta.error}
         showStatus={props.meta.touched}

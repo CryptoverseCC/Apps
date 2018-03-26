@@ -48,7 +48,7 @@ const AddLinkForm = inject(
       minimalValue,
       initialValues,
     }) => (
-      <React.Fragment>
+      <>
         <Modal.Header>
           <Modal.Title>Create a new link</Modal.Title>
           <Modal.HeaderRight>
@@ -65,8 +65,9 @@ const AddLinkForm = inject(
         >
           {({ handleSubmit, pristine, invalid, submitError }) => {
             const error = submitError || submitErrorText;
+
             return (
-              <React.Fragment>
+              <>
                 {error && <Modal.Error>{error}</Modal.Error>}
                 <Modal.Body>
                   <form onSubmit={handleSubmit}>
@@ -115,7 +116,7 @@ const AddLinkForm = inject(
                     </Button>
                   </form>
                 </Modal.Body>
-              </React.Fragment>
+              </>
             );
           }}
         </Form>
@@ -125,7 +126,7 @@ const AddLinkForm = inject(
             publisher has to whitelist your link.
           </Modal.FooterText>
         </Modal.Footer>
-      </React.Fragment>
+      </>
     ),
   ),
 );

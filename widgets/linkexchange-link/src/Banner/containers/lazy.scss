@@ -3,8 +3,10 @@
 .open-in-new-tab-container {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 8px;
-  margin-right: 5px;
+  height: 30px;
+  box-sizing: border-box;
+  padding-bottom: 8px;
+  padding-right: 5px;
 
   .open-in-new-tab {
     cursor: pointer;
@@ -39,7 +41,7 @@
 .detailsComponent {
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 30px);
   padding: 0 10px;
   overflow-y: scroll;
 
