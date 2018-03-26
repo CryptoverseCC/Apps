@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import * as RadioStyles from './radio.scss';
 import Pill from '../Pill';

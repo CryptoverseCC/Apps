@@ -1,6 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
-import BoldText from '../BoldText';
 import { isType } from '@linkexchange/utils';
 import * as styles from './field.scss';
 import Input from './Input';
@@ -17,13 +15,26 @@ export function validateField(validators: any[]): (value: any) => Promise<any> {
 }
 
 export const TextField = (props) => {
-  const { onChange, ...restInputProps } = props.input;
+  const { onChange, onFocus, onBlur, ...restInputProps } = props.input;
 
   return (
     <Field>
-      <Title>{props.title}</Title>
-      <Input onChange={(e) => onChange(e)} {...restInputProps} type="text" />
-      {props.meta.touched && <Error>{props.meta.error}</Error>}
+      <Title active={props.meta.active}>{props.title}</Title>
+      <Input
+        onChange={(e) => onChange(e)}
+        onFocus={(e) => onFocus(e)}
+        onBlur={(e) => onBlur(e)}
+        {...restInputProps}
+        error={props.meta.error}
+        showStatus={props.meta.touched}
+        type="text"
+        bold={props.bold}
+        primary={props.primary}
+        currency={props.currency}
+        isActive={props.meta.active}
+        multiline={props.multiline}
+        append={props.append}
+      />
     </Field>
   );
 };
@@ -37,7 +48,11 @@ export const Field = ({ children, ...props }) => (
   </div>
 );
 
-export const Title = ({ children }) => <BoldText className={styles.Header}>{children}</BoldText>;
+export const Title = ({ children, active = false }) => (
+  <span style={{ color: active ? '#263FFF' : undefined }} className={styles.Header}>
+    {children}
+  </span>
+);
 
 export const Description = ({ children }) => <p className={styles.Description}>{children}</p>;
 

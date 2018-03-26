@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
+  mode: 'development',
   output: {
     path: path.resolve(process.cwd(), 'build'),
     publicPath: '/',
@@ -13,11 +14,11 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
         options: {},
       },
       {

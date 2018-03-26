@@ -18,4 +18,10 @@ export interface IWidgetSettings {
   impression?: string;
   location?: string;
   tillDate?: string;
+  minimalLinkFee?: string;
+  widgetLocation?: string | undefined;
+  tokenAddress?: string | undefined;
+  changeAssetTo?: (asset: string) => void;
+  changeRecipientAddress?: (recipientAddress: string) => void;
+  changeWhitelist?: (whitelist: string) => void;
 }

@@ -1,0 +1,26 @@
+.self {
+  padding: 20px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+
+  .icon {
+    font-size: 34px;
+
+    &.success {
+      color: #61d184;
+    }
+
+    &.failure {
+      color: #e7323f;
+    }
+  }
+
+  .button {
+    font-weight: bold;
+    width: 100%;
+  }
+}

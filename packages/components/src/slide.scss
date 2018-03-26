@@ -1,0 +1,26 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.transition {
+  &-enter {
+    transform: translate(100%);
+    &-active {
+      transform: translate(0%);
+      transition: transform 300ms ease-in;
+    }
+  }
+
+  &-leave {
+    transform: translate(0%);
+
+    &-active {
+      transform: translate(-100%);
+      transition: transform 300ms ease-in;
+    }
+  }
+}

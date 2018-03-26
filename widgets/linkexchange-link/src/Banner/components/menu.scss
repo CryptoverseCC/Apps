@@ -1,27 +1,57 @@
-@import '~@linkexchange/components/styles/colors';
-
 .self {
-  flex-basis: calc(100%/3);
-  text-align: right;
-  outline: 0;
-  cursor: pointer;
-  color: $dodger-blue;
-  background-color: transparent;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-weight: 700;
-  border: 0;
-  margin-bottom: 3px;
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  background-color: #f4f6f9;
+  color: #9ca4af;
 
-  .icon {
-    margin-left: 2px;
-    display: inline-block;
-    width: 11px;
-    fill: $dodger-blue;
+  .outer-circle {
+    stroke: #9ca4af;
   }
 
-  &:hover .icon {
-    transform: translate(3px, -3px);
+  .trigger {
+    cursor: pointer;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .trigger:hover {
+    .put-link {
+      color: #263fff;
+    }
+  }
+
+  .circle {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 100%;
+    box-shadow: 0px 15px 40px 0px rgba(27, 36, 55, 0.1);
+
+    .svg {
+      top: -1px;
+      left: -1px;
+      width: 42px;
+      height: 42px;
+      position: absolute;
+      transform: rotate(-90deg);
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .put-link {
+    margin-left: 5px;
+    font-size: 11px;
+    font-weight: bold;
   }
 }

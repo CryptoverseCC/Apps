@@ -7,7 +7,7 @@ const baseConfig = require('../../config/webpack.base');
 const config = merge.smart(baseConfig, {
   entry: './src/index.tsx',
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
         exclude: /node_modules\/(?!@userfeeds|@linkexchange)/,

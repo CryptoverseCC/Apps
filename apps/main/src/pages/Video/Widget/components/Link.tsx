@@ -62,7 +62,7 @@ export default class Link extends Component<IProps> {
         this.animation = (this.fillRef as any).animate([{ width: '0' }, { width: '100%' }], duration - 100);
       }
     } catch (e) {
-      console.info(e);
+      // Browser doesn't support .animate()
     }
   };
 }

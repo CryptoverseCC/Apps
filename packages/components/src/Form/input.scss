@@ -1,27 +1,107 @@
-.Input {
-  padding: 15px 20px;
-  line-height: 1.5em;
-  font-size: 14px;
-  background-color: #F5F7FA;
-  border: 1px solid #D9E0E7;
+$error: #fc0035;
+$focus: #263fff;
+$default: #d9e0e7;
+$text-color: #1B2437;
+$inner-shadow: rgba(27,36,55,0.15);
+$input-background: #f5f7fa;
+
+.InputContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  border: 1px solid $default;
   border-radius: 5px;
-  color: #657092;
+  background-color: $input-background;
+
+  &.focus {
+    border-color: $focus;
+  }
+
+  &.hasError {
+    border-color: $error;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.primary {
+    background-color: #2538cf;
+
+    .Currency {
+      color: #fff;
+    }
+  }
+}
+
+.Shadow {
+  box-shadow: inset 0 2px 3px 0 $inner-shadow;
+}
+
+.Input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px 20px;
+  line-height: 30px;
+  font-size: 16px;
+  font-family: 'PT Sans';
+  border: none;
+  border-radius: 5px;
+  color: $text-color;
+  background-color: transparent;
+
+  &.hasError {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.hasAppend {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 
   &:focus {
-    border-color: #263FFF;
     outline: none;
   }
 
-  &.invalid {
-    border-color: red;
+  &.bold {
+    font-size: 24px;
+    font-weight: bold;
   }
 
-  & + .Error {
-    margin-top: 5px;
+  &.primary {
+    color: #ffffff;
   }
 }
 
 .Error {
-  color: red;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 5px 20px;
+  text-align: center;
+  border-radius: 0 0 8px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 14px;
+  color: #fff;
+  background-color: $error;
 }
 
+.Currency {
+  display: flex;
+  background-color: transparent;
+  align-items: center;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 0 10px;
+  margin-left: -20px;
+}
+
+.Appended {
+  display: flex;
+  flex-shrink: 0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}

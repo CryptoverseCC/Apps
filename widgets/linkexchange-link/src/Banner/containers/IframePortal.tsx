@@ -5,6 +5,10 @@ import classnames from 'classnames';
 import { root as rootClassName } from './../../styles/all.scss';
 import * as style from './iframePortal.scss';
 
+const scssUnset = require('!!raw-loader!@linkexchange/scss-unset');
+const unset = document.createElement('style');
+unset.innerHTML = scssUnset;
+
 interface IProps {
   className: string;
 }
@@ -12,6 +16,7 @@ interface IProps {
 export default class MyWindowPortal extends Component<IProps> {
   containerEl: HTMLElement;
   iframeRef: HTMLIFrameElement;
+  styleObserver?: number;
 
   constructor(props) {
     super(props);
@@ -28,6 +33,9 @@ export default class MyWindowPortal extends Component<IProps> {
   }
 
   componentWillUnmount() {
+    if (this.styleObserver) {
+      clearInterval(this.styleObserver);
+    }
     this.iframeRef.contentWindow.document.body.removeChild(this.containerEl);
   }
 
@@ -51,18 +59,19 @@ export default class MyWindowPortal extends Component<IProps> {
     this.iframeRef.contentWindow.document.body.style.margin = '0';
     this.iframeRef.contentWindow.document.body.style.opacity = '0';
 
+    this.iframeRef.contentWindow.document.head.insertBefore(unset, this.iframeRef.contentWindow.document.head[0]);
     this.iframeRef.contentWindow.document.body.appendChild(this.containerEl);
-
-    copyStyles(document, this.iframeRef.contentWindow.document);
 
     setTimeout(() => {
       copyStyles(document, this.iframeRef.contentWindow.document);
+      this.styleObserver = observeStyles(document, this.iframeRef.contentWindow.document);
+
       this.iframeRef.contentWindow.document.body.style.opacity = '1';
     }, 100);
   };
 }
 
-function copyStyles(sourceDoc, targetDoc) {
+const copyStyles = (sourceDoc: HTMLDocument, targetDoc: HTMLDocument) => {
   Array.from(sourceDoc.styleSheets).forEach((styleSheet: any) => {
     if (styleSheet.href && styleSheet.href.startsWith('http')) {
       return;
@@ -76,4 +85,21 @@ function copyStyles(sourceDoc, targetDoc) {
       targetDoc.head.appendChild(newStyleEl);
     }
   });
-}
+};
+
+const observeStyles = (sourceDoc: HTMLDocument, targetDoc: HTMLDocument) => {
+  return window.setInterval(() => {
+    const styles = Array.from(sourceDoc.querySelectorAll('head style'));
+
+    styles.forEach((node, index) => {
+      const targetNode = targetDoc.querySelector(`head style[index="${index}"]`);
+      if (targetNode === null) {
+        const nodeToInsert = node.cloneNode(true) as HTMLElement;
+        nodeToInsert.setAttribute('index', '' + index);
+        targetDoc.head.appendChild(nodeToInsert);
+      } else if (targetNode.innerHTML !== node.innerHTML) {
+        targetNode.innerHTML = node.innerHTML;
+      }
+    });
+  }, 100);
+};

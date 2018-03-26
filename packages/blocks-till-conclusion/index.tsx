@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { inject, observer } from 'mobx-react';
 import classnames from 'classnames/bind';
 import moment from 'moment';
-import Web3 from 'web3';
 
-import core from '@userfeeds/core/src';
-import wait from '@linkexchange/utils/wait';
-import Web3TaskRunner from '@linkexchange/utils/web3TaskRunner';
-import { getAverageBlockTime } from '@linkexchange/utils/ethereum';
-import Web3StateProvider from '@linkexchange/web3-state-provider';
-import Tooltip from '@linkexchange/components/src/Tooltip';
+import Web3Store from '@linkexchange/web3-store';
 import ProgressBar from '@linkexchange/components/src/ProgressBar';
 
 import * as style from './blocksTillConclusion.scss';
@@ -17,96 +11,76 @@ import * as style from './blocksTillConclusion.scss';
 const cx = classnames.bind(style);
 
 interface IProps {
-  asset: string;
-  web3: Web3;
   className?: string;
   startBlock: number;
   endBlock: number;
-}
-
-interface IState {
-  average: number;
-  loaded: boolean;
-  blockNumber?: number;
+  web3Store?: Web3Store;
 }
 
 const DEFAULT_AVERAGE_TIME = 12;
 
-export default class BlocksTillConclusion extends Component<IProps, IState> {
-  removeListener: () => void;
-  state: IState = {
-    average: DEFAULT_AVERAGE_TIME,
-    loaded: false,
-  };
-
-  componentDidMount() {
-    this.removeListener = taskRunner.run(this.props.web3, [this.props.asset], ({ blockNumber, average }) => {
-      this.setState({ loaded: true, blockNumber, average });
-    });
-  }
-
-  componentWillUnmount() {
-    this.removeListener();
-  }
-
+class BlocksTillConclusion extends Component<IProps> {
   render() {
-    return this.state.loaded ? this._renderComponent() : null;
-  }
-
-  _renderComponent = () => {
     const { startBlock, endBlock } = this.props;
-    const { blockNumber } = this.state;
+    const { blockNumber } = this.props.web3Store!;
 
     let content: JSX.Element | null = null;
+
     if (startBlock > blockNumber!) {
+      const estimate = this.getEstimate(startBlock - blockNumber!);
       content = (
-        <>
-          <p>Auction will begin at block </p>
-          <p>
-            <span className={style.blockNumber}>{startBlock} </span>
-            (est. {this._getEstimate(startBlock - blockNumber!)})
-          </p>
-        </>
+        <span>
+          Auction will begin in <span style={{ color: getColor(-estimate.valueOf()) }}>{estimate.humanize()}</span>
+          <span className={style.blockInfo}> (after {startBlock - blockNumber!} blocks)</span>
+        </span>
       );
     } else if (endBlock > blockNumber!) {
+      const estimate = this.getEstimate(endBlock - blockNumber!);
       const progress = ((blockNumber! - startBlock) / (endBlock - startBlock) * 100).toFixed(2);
       content = (
         <>
-          <p>Blocks till conclusion</p>
-          <p>
-            <span className={style.blockNumber}>{endBlock - blockNumber!} </span>
-            (est. {this._getEstimate(endBlock - blockNumber!)})
-          </p>
-          <Tooltip text={`${progress}%`}>
-            <ProgressBar progress={progress} className={style.progressBar} />
-          </Tooltip>
+          <span>
+            Expires in <span style={{ color: getColor(estimate.valueOf()) }}>{estimate.humanize()}</span>{' '}
+            <span className={style.blockInfo}>(in {endBlock - blockNumber!} blocks)</span>
+          </span>
+          <ProgressBar
+            progress={progress}
+            className={style.progressBar}
+            fillStyle={{ backgroundColor: getColor(estimate, '#263FFF') }}
+          />
         </>
       );
     } else {
-      content = <p>Auction is closed</p>;
+      content = <span style={{ color: '#fb0035' }}>Auction is closed</span>;
     }
 
     return <div className={cx(style.self, this.props.className)}>{content}</div>;
-  };
+  }
 
-  _getEstimate = (blocks) => {
-    return moment.duration(blocks * this.state.average * 1000).humanize();
+  private getEstimate = (blocks) => {
+    // return moment.duration(blocks * this.state.average * 1000).humanize();
+    return moment.duration(blocks * DEFAULT_AVERAGE_TIME * 1000);
   };
 }
 
-const load = async (web3, [asset], update) => {
-  const [network] = asset.split(':');
-
-  while (!((await web3.eth.net.isListening()) || (await core.utils.getCurrentNetworkName(web3)) === network)) {
-    wait(1000);
+const getColor = (expiresIn, defaultColor = '#09d57c') => {
+  if (expiresIn < 0) {
+    if (expiresIn > -moment.duration({ days: 3 }).valueOf()) {
+      return defaultColor;
+    }
+    if (expiresIn > -moment.duration({ weeks: 1 }).valueOf()) {
+      return '#ebeb00';
+    }
+    return '#fb0035';
+  }
+  if (expiresIn < moment.duration({ days: 3 })) {
+    return '#fb0035';
+  }
+  if (expiresIn < moment.duration({ weeks: 1 })) {
+    return '#ebeb00';
   }
 
-  while (true) {
-    const blockNumber = await core.utils.getBlockNumber(web3);
-    const average = await getAverageBlockTime(web3);
-    update({ blockNumber, average });
-    await wait(DEFAULT_AVERAGE_TIME * 1000);
-  }
+  return defaultColor;
 };
 
-const taskRunner = new Web3TaskRunner<{ blockNumber: number; average: number }, [string]>(load);
+export default inject('web3Store')(observer(BlocksTillConclusion));

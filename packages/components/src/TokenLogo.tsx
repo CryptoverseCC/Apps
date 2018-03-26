@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as bat from '../images/bat.png';
 import * as eos from '../images/eos.png';
-import * as erc20 from '../images/erc20.png';
+import * as erc20 from '../images/erc20.svg';
 import * as ethereum from '../images/ethereum.png';
 import * as kyber from '../images/kyber.png';
 import * as maker from '../images/maker.png';
@@ -34,11 +34,11 @@ const assetToIconMap = new Map([
 ]);
 
 interface ITokenLogoProps {
-  className: any;
+  className?: string;
   asset: string;
 }
 
-const TokenLogo = ({asset, className}) => {
+const TokenLogo = ({ asset, className }: ITokenLogoProps) => {
   const icon = assetToIconMap.get(asset) || erc20;
   return <img className={className} src={icon} />;
 };

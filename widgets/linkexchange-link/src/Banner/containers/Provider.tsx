@@ -1,26 +1,44 @@
-import React, { Children } from 'react';
-import { Provider } from 'react-redux';
+import React from 'react';
+import { Provider as MobxProvider } from 'mobx-react';
 
-import web3, { getInfura, Web3Provider } from '@linkexchange/utils/web3';
-import RootToast from '@linkexchange/toast/RootToast';
+import RootToast from '@linkexchange/toast';
+import web3 from '@linkexchange/utils/web3';
+import Web3Store from '@linkexchange/web3-store';
+import PropTypes from 'prop-types';
 
-import getStore from '../../store';
+import Erc20 from '@linkexchange/web3-store/erc20';
+import LinksStore from '@linkexchange/links-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
 
-const Modal = ({ widgetSettings, children }) => {
-  const store = getStore(widgetSettings);
-  const [network] = widgetSettings.asset.split(':');
-  const infuraWeb3 = getInfura(network);
+export default class Provider extends React.Component<{ widgetSettings: IWidgetSettings }> {
+  static contextTypes = { root: PropTypes.object };
 
-  return (
-    <Provider store={store} >
-      <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
+  web3Store: Web3Store;
+  linksStore: LinksStore;
+
+  constructor(props) {
+    super(props);
+    this.web3Store = new Web3Store(web3, Erc20, this.props.widgetSettings);
+    this.linksStore = new LinksStore(this.props.widgetSettings);
+  }
+
+  componentWillUnmount() {
+    this.web3Store.stopUpdating();
+  }
+
+  render() {
+    return (
+      <MobxProvider
+        web3Store={this.web3Store}
+        widgetSettingsStore={this.props.widgetSettings}
+        formValidationsStore={this.context.root.validations}
+        links={this.linksStore}
+      >
         <>
-          {children}
+          {this.props.children}
           <RootToast />
         </>
-      </Web3Provider>
-    </Provider>
-  );
-};
-
-export default Modal;
+      </MobxProvider>
+    );
+  }
+}

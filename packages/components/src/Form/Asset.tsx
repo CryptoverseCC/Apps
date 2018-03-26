@@ -137,7 +137,7 @@ export default class Asset extends Component<IAssetProps, IAssetState> {
     this.setState({ dropdownTokenSelection: value });
     const isCustom = value === CUSTOM_TOKEN;
     const token = isCustom ? '' : value;
-    this.props.onChange({ network: this.props.asset.network, token, isCustom });
+    this.props.onChange({ network: this.props.asset.network, token });
 
     if (isCustom) {
       setTimeout(() => this.input.input.focus());

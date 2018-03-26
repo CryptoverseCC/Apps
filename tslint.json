@@ -5,6 +5,7 @@
   "rules": {
     "quotemark": [true, "single", "jsx-double"],
     "ordered-imports": [false],
+    "no-unused-variable":[true, { "ignore-pattern": "React" } ],
     "member-access": [false],
     "jsx-key": [false],
     "jsx-boolean-value": [true, "never"],

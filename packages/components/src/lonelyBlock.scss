@@ -1,0 +1,60 @@
+.LonelyBlock {
+  position: relative;
+  margin: 0 5px 15px 5px;
+  background-color: inherit;
+
+  .Block {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: #263fff;
+    animation: blockAnimation 1s linear infinite;
+    border-radius: 3px;
+    will-change: transform;
+
+    @keyframes blockAnimation {
+      25% {
+        transform: translateY(9px) rotate(22.5deg);
+      }
+      50% {
+        transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+      }
+      75% {
+        transform: translateY(9px) rotate(67.5deg);
+      }
+      100% {
+        transform: translateY(0) rotate(90deg);
+      }
+    }
+  }
+
+  .Shadow {
+    width: 50px;
+    height: 5px;
+    background: #e9ebff;
+    opacity: 1;
+    position: absolute;
+    bottom: -20px;
+    left: 0px;
+    border-radius: 50%;
+    animation: shadowAnimation 1s linear infinite;
+    will-change: transform;
+    z-index: 2;
+
+    @keyframes shadowAnimation {
+      50% {
+        transform: scale(1.2, 1);
+      }
+    }
+  }
+
+  .Bottom {
+    height: 5px;
+    background-color: inherit;
+    width: 50px;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    bottom: -25px;
+  }
+}

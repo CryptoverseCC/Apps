@@ -1,6 +1,8 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 
+import Icon from '@linkexchange/components/src/Icon';
+
 import IframePortal from './IframePortal';
 
 import * as style from './lazy.scss';
@@ -23,28 +25,37 @@ export const Intercom = Loadable({
 });
 
 export const WidgetDatails = Loadable({
-  loader: () => import('@linkexchange/details'),
+  loader: () => import('@linkexchange/new-details'),
   loading: Loading,
-  render: ({ Details, Header, Lists }, props) => {
-    const { onAddLink, ...restProps } = props;
+  render: ({ Details, Header, Lists, AddLinkButton }, props) => {
+    const { onAddLink, openInNewTab, ...restProps } = props;
     return (
       <IframePortal className={style.details}>
-        <Details {...restProps}>
-          <Header onAddClick={onAddLink} />
-          <Lists />
-        </Details>
+        <div className={style.openInNewTabContainer}>
+          <div className={style.openInNewTab} onClick={openInNewTab}>
+            <Icon name="external-link" className={style.icon} /> Open in a new tab
+          </div>
+        </div>
+        <div className={style.detailsComponent} style={{ backgroundColor: 'white' }}>
+          <Details {...restProps}>
+            <Header addLink={<AddLinkButton onClick={onAddLink} />} />
+            <Lists />
+          </Details>
+        </div>
       </IframePortal>
     );
   },
 });
 
 export const AddLink = Loadable({
-  loader: () => import('@linkexchange/add-link'),
+  loader: () => import('@linkexchange/new-add-link'),
   loading: Loading,
-  render: ({ AddLinkWithInjectedWeb3AndTokenDetails }, props) => {
+  render: ({ default: AddLink }, props) => {
     return (
       <IframePortal className={style.addLink}>
-        <AddLinkWithInjectedWeb3AndTokenDetails className={style.addLinkComponent} {...props} />
+        <div style={{ backgroundColor: 'white' }}>
+          <AddLink />
+        </div>
       </IframePortal>
     );
   },

@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "@linkexchange/widget-settings",
+  "version": "0.0.168",
+  "description": "",
+  "main": "index.tsx",
+  "keywords": [],
+  "dependencies": {
+    "@linkexchange/types": "^0.0.144",
+    "prop-types": "^15.6.0"
+  },
+  "peerDependencies": {
+    "mobx": "4.1.0",
+    "mobx-utils": "4.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,3 +1,33 @@
+@import '~@linkexchange/components/styles/colors';
+
+.open-in-new-tab-container {
+  display: flex;
+  justify-content: flex-end;
+  height: 30px;
+  box-sizing: border-box;
+  padding-bottom: 8px;
+  padding-right: 5px;
+
+  .open-in-new-tab {
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+
+    .icon {
+      padding-right: 5px;
+      display: inline-block;
+      transition: transform 0.3s;
+    }
+
+    &:hover {
+      .icon {
+        transform: translateY(-1.5px);
+      }
+    }
+  }
+}
+
 .details {
   width: 80vw;
   height: 90vh;
@@ -8,8 +38,32 @@
   }
 }
 
+.detailsComponent {
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 30px);
+  padding: 0 10px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: $aqua-haze;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba($black, 0.3);
+    border-radius: 10px;
+    background-color: $aqua-haze;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba($black, 0.3);
+    background-color: $dusty-gray;
+  }
+}
+
 .addLink {
-  width: 800px;
   height: 80vh;
 }
 

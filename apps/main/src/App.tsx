@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import RootToast from '@linkexchange/toast/RootToast';
+import RootToast from '@linkexchange/toast';
 import Intercom from '@linkexchange/components/src/Intercom';
 
 import Direct from './pages/Direct';

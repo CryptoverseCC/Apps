@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import classnames from 'classnames/bind';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import { ILink, IRemoteLink } from '@linkexchange/types/link';
-
-import Link from '@linkexchange/components/src/Link';
-import Label from '@linkexchange/components/src/Label';
 import Modal from '@linkexchange/components/src/Modal';
+import RootProvider from '@linkexchange/root-provider';
 import { IWidgetSettings } from '@linkexchange/types/widget';
-import TokenLogo from '@linkexchange/components/src/TokenLogo';
+import { ILink, IRemoteLink } from '@linkexchange/types/link';
+import calculateProbabilities from '@linkexchange/utils/links';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
-import calculateProbabilities from '@linkexchange/utils/links';
-import RootProvider from '@linkexchange/root-provider';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 import Menu from './components/Menu';
+import Link from './components/Link';
+import NoLinks from './components/NoLinks';
+import { ArrowLeft, ArrowRight } from './components/Arrows';
 import RandomLinkProvider from './containers/RandomLinkProvider';
 import { Provider, WidgetDatails, AddLink, Intercom } from './containers/Lazy';
 
@@ -34,64 +33,90 @@ interface IBannerState {
   links: ILink[];
   openedModal: 'none' | 'details' | 'addLink';
   currentLink?: ILink;
-  optionsOpen: boolean;
+  activeArrow?: string;
 }
+
+const transitionClassNames = {
+  enter: style.transitionEnter,
+  enterActive: style.transitionEnterActive,
+  exit: style.transitionLeave,
+  exitActive: style.transitionLeaveActive,
+};
+
+const transitionLeftClassNames = {
+  enter: style.transitionLeftEnter,
+  enterActive: style.transitionLeftEnterActive,
+  exit: style.transitionLeftLeave,
+  exitActive: style.transitionLeftLeaveActive,
+};
 
 export default class Banner extends Component<IBannerProps, IBannerState> {
   linkProvider: RandomLinkProvider;
+  menu: Menu;
+
   state: IBannerState = {
     fetched: false,
     links: [],
     openedModal: 'none',
-    optionsOpen: false,
   };
 
   constructor(props: IBannerProps) {
     super(props);
-    this._fetchLinks();
+    this.fetchLinks();
   }
 
   render() {
     const { widgetSettings } = this.props;
-    const { currentLink, optionsOpen, openedModal, links = [], fetched = true } = this.state;
+    const { currentLink, openedModal, links = [], fetched = true, activeArrow } = this.state;
     if (!fetched) {
       return <div />;
     }
 
     return (
       <RootProvider root={this.props.root}>
-        <div className={cx(['self', widgetSettings.size])} onMouseLeave={this._onInfoLeave}>
-          <div className={cx('options', { open: optionsOpen })}>
-            <Menu onClick={this._openDetails} />
-          </div>
-          <div className={cx('container', { clickable: !!currentLink })} onClick={this._openTargetUrl}>
-            <div className={style.info} onMouseEnter={this._onInfoEnter} onClick={this._onInfoEnter}>
-              <FormattedMessage id="banner.sponsoredWith" defaultMessage="Sponsored With" />{' '}
-              <TokenLogo className={style.icon} asset={widgetSettings.asset} />
-            </div>
-            <Switch expresion={fetched && !!currentLink}>
-              <Switch.Case condition>{currentLink && <Link link={currentLink} />}</Switch.Case>
-              <Switch.Case condition={false}>
-                <Label>
-                  <FormattedMessage id="banner.noLinks" defaultMessage="No links available" />
-                </Label>
-              </Switch.Case>
-            </Switch>
-          </div>
+        <div
+          className={cx(['self', widgetSettings.size, activeArrow])}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+        >
+          <Switch expresion={fetched && !!currentLink}>
+            <Switch.Case condition>
+              {currentLink && (
+                <TransitionGroup className={style.linkContainer}>
+                  <CSSTransition
+                    timeout={300}
+                    key={currentLink.id}
+                    classNames={activeArrow === 'left' ? transitionLeftClassNames : transitionClassNames}
+                  >
+                    <Link link={currentLink} className={style.link} />
+                  </CSSTransition>
+                </TransitionGroup>
+              )}
+            </Switch.Case>
+            <Switch.Case condition={false}>
+              <NoLinks className={style.noLinks} widgetSize={widgetSettings.size} />
+            </Switch.Case>
+          </Switch>
+          {widgetSettings.size === 'leaderboard' && this.renderArrows()}
+          <Menu ref={(ref: Menu) => (this.menu = ref)} onClick={this.openDetails} widgetSettings={widgetSettings}>
+            {widgetSettings.size === 'rectangle' && this.renderArrows()}
+          </Menu>
           <RandomLinkProvider
             ref={(ref: RandomLinkProvider) => (this.linkProvider = ref)}
             links={links}
             timeslot={widgetSettings.timeslot}
-            onLink={this._onLink}
+            onLink={this.onLink}
           />
-          <Modal isOpen={openedModal !== 'none'} onCloseRequest={this._closeModal}>
+          <Modal isOpen={openedModal !== 'none'} onCloseRequest={this.closeModal}>
             <Provider widgetSettings={widgetSettings}>
               <Switch expresion={openedModal}>
                 <Switch.Case condition="details">
-                  <WidgetDatails onAddLink={this._openModal('addLink')} />
+                  <WidgetDatails onAddLink={this.openModal('addLink')} openInNewTab={this.openInNewTab} />
                 </Switch.Case>
                 <Switch.Case condition="addLink">
-                  <AddLink loadBalance asset={widgetSettings.asset} openWidgetDetails={this._openDetails} />
+                  <div style={{ width: '500px' }}>
+                    <AddLink />
+                  </div>
                 </Switch.Case>
               </Switch>
               <Intercom settings={{ app_id: 'xdam3he4', ...widgetSettings }} />
@@ -102,7 +127,24 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
     );
   }
 
-  _fetchLinks = async () => {
+  private renderArrows = () => (
+    <div className={cx(style.arrows, { disabled: this.state.fetched && !this.state.currentLink })}>
+      <ArrowLeft
+        className={style.left}
+        onClick={this.onPrevClick}
+        onMouseEnter={this.onArrowEnter('left')}
+        onMouseLeave={this.onArrowLeave}
+      />
+      <ArrowRight
+        className={style.right}
+        onClick={this.onNextClick}
+        onMouseEnter={this.onArrowEnter('right')}
+        onMouseLeave={this.onArrowLeave}
+      />
+    </div>
+  );
+
+  private fetchLinks = async () => {
     const {
       apiUrl = 'https://api.userfeeds.io',
       recipientAddress,
@@ -126,66 +168,73 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
         .then<{ items: IRemoteLink[] }>((res) => res.json());
 
       const linksInSlots = links.slice(0, slots);
+      const linksTotalScore = linksInSlots.reduce((acc, { score }) => acc + score, 0);
+
       this.setState({
         fetched: true,
-        links: calculateProbabilities(linksInSlots),
+        links: calculateProbabilities(
+          linksTotalScore === 0 ? linksInSlots : linksInSlots.filter(({ score }) => score > 0),
+        ),
       });
-      this._preloadModals();
+      this.preloadModals();
     } catch (e) {
       console.info('Something went wrong 😞');
     }
   };
 
-  _openModal = (modalName: 'none' | 'details' | 'addLink') => () => {
+  private openModal = (modalName: 'none' | 'details' | 'addLink') => () => {
     this.setState({ openedModal: modalName });
   };
 
-  _openDetails = () => {
+  private openDetails = () => {
     if (this.props.openDetails === 'modal') {
       this.setState({ openedModal: 'details' });
       AddLink.preload();
     } else {
       openLinkexchangeUrl('/direct/details', this.props.widgetSettings);
-      this.setState({ optionsOpen: false });
     }
   };
 
-  _closeModal = () => {
-    this._openModal('none')();
-    this.setState({ optionsOpen: false });
+  private closeModal = () => {
+    this.openModal('none')();
   };
 
-  _onInfoEnter = (e) => {
-    this.setState({ optionsOpen: true });
-    e.stopPropagation();
+  private onMouseEnter = () => {
+    this.linkProvider.pause();
+    this.menu.pause();
   };
 
-  _onInfoLeave = () => {
-    setTimeout(() => this.setState({ optionsOpen: false }), 200);
+  private onMouseLeave = () => {
+    this.setState({ activeArrow: '' });
+    this.linkProvider.resume();
+    this.menu.resume();
   };
 
-  _openTargetUrl = () => {
-    if (this.state.currentLink) {
-      const linkWindow = window.open(this.state.currentLink.target, '_blank');
-      if (linkWindow) {
-        linkWindow.opener = null;
-      }
-    }
+  private onArrowEnter = (activeArrow) => () => this.setState({ activeArrow });
+  private onArrowLeave = () => this.setState({ activeArrow: '' });
+
+  private onPrevClick = () => {
+    this.setState({ activeArrow: 'left' }, () => {
+      this.linkProvider.prev();
+    });
   };
 
-  _onPrevClick = () => {
-    this.linkProvider.prev();
+  private onNextClick = () => {
+    this.setState({ activeArrow: 'right' }, () => {
+      this.linkProvider.next();
+    });
   };
 
-  _onNextClick = () => {
-    this.linkProvider.next();
+  private openInNewTab = () => {
+    openLinkexchangeUrl('/direct/details', this.props.widgetSettings);
   };
 
-  _onLink = (currentLink: ILink) => {
+  private onLink = (currentLink: ILink, startImmediately?: boolean) => {
     this.setState({ currentLink });
+    this.menu.restart(!startImmediately);
   };
 
-  _preloadModals = () => {
+  private preloadModals = () => {
     if (this.props.openDetails === 'modal') {
       Provider.preload();
       WidgetDatails.preload();

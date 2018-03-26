@@ -1,30 +1,22 @@
 import React, { Component } from 'react';
 import { match } from 'react-router-dom';
 import qs from 'qs';
-import Web3 from 'web3';
-import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
 import classnames from 'classnames';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-import core from '@userfeeds/core/src';
-import { withInjectedWeb3 } from '@linkexchange/utils/web3';
 import CopyFromMM from '@linkexchange/copy-from-mm';
-import { openToast } from '@linkexchange/toast/duck';
+import { toast } from '@linkexchange/toast';
 import Input from '@linkexchange/components/src/Form/Input';
 import Radio from '@linkexchange/components/src/Form/Radio';
 import { Input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
-import { Input as input } from '@linkexchange/components/src/Form/input.scss';
+import { InputContainer } from '@linkexchange/components/src/Form/input.scss';
 import { Field, Title, Description, RadioGroup, Error } from '@linkexchange/components/src/Form/Field';
 import Icon from '@linkexchange/components/src/Icon';
 import Dropdown from '@linkexchange/components/src/Dropdown';
-import web3 from '@linkexchange/utils/web3';
 import { R, validate, validateMultipe } from '@linkexchange/utils/validation';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 
@@ -33,6 +25,8 @@ import CreateWidget from '../components/CreateWidget';
 import { PictographRectangle, PictographLeaderboard } from '../components/Pictograph';
 
 import * as style from './configure.scss';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { observer, inject } from 'mobx-react';
 
 interface IState {
   recipientAddress: string;
@@ -56,6 +50,7 @@ interface IState {
     contactMethod?: string;
     asset?: string;
     tillDate?: string;
+    whitelist?: string;
   };
 }
 
@@ -79,6 +74,7 @@ const MIN_DATE = moment().add(1, 'day');
 
 const rules = {
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
+  whitelist: [R.value((v) => (v === '' ? true : isAddress(v)), 'Has to be valid eth address')],
   title: [R.required],
   description: [R.required],
   contactMethod: [R.required],
@@ -86,17 +82,15 @@ const rules = {
   asset: [R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address')],
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
+type TProps = IUpdateQueryParamProp & {
+  location: Location;
+  history: History;
+  match: match<any>;
+  web3Store?: IWeb3Store;
+};
 
-type TProps = typeof Dispatch2Props &
-  IUpdateQueryParamProp & {
-    web3: Web3;
-    location: Location;
-    history: History;
-    match: match<any>;
-  };
-
+@inject('web3Store')
+@observer
 class Configure extends Component<TProps, IState> {
   inputsRefs: {
     [key: string]: Input;
@@ -148,7 +142,7 @@ class Configure extends Component<TProps, IState> {
     const errors = this.validateAll();
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
-      this.props.toast('Validation error 😅');
+      toast.openToast('Validation error 😅');
       this.focusOnFirstError(errors);
       return;
     }
@@ -195,10 +189,10 @@ class Configure extends Component<TProps, IState> {
   };
 
   setAddressFromMM = (key) => async () => {
-    const [account = ''] = await web3.eth.getAccounts();
-
-    this.setState({ [key]: account });
-    this.props.updateQueryParam(key, account);
+    const { currentAccount } = this.props.web3Store!;
+    this.setState({ [key]: currentAccount });
+    this.props.updateQueryParam(key, currentAccount);
+    this.validate(key, currentAccount);
   };
 
   render() {
@@ -223,37 +217,39 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Ethereum address you'll use to receive payments for links</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={recipientAddress}
-              onChange={onChange('recipientAddress')}
-              ref={this.onRef('recipientAddress')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} />
-          </div>
-          {errors.recipientAddress && <Error>{errors.recipientAddress}</Error>}
+          <Input
+            type="text"
+            value={recipientAddress}
+            onChange={onChange('recipientAddress')}
+            ref={this.onRef('recipientAddress')}
+            error={errors.recipientAddress}
+            append={(className) => (
+              <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} className={className} />
+            )}
+          />
         </Field>
         <Field>
           <Title>Whitelist</Title>
           <Description>Address that you'll use for links approval</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              type="text"
-              className={style.input}
-              value={whitelist}
-              onChange={onChange('whitelist')}
-              ref={this.onRef('whitelist')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('whitelist')} />
-          </div>
+          <Input
+            type="text"
+            value={whitelist}
+            onChange={onChange('whitelist')}
+            ref={this.onRef('whitelist')}
+            error={errors.whitelist}
+            append={(className) => <CopyFromMM onClick={this.setAddressFromMM('whitelist')} className={className} />}
+          />
         </Field>
         <Field>
           <Title>Title</Title>
           <Description>Name of Your Widget</Description>
-          <Input type="text" value={title} onChange={onChange('title')} ref={this.onRef('title')} />
-          {errors.title && <Error>{errors.title}</Error>}
+          <Input
+            type="text"
+            value={title}
+            onChange={onChange('title')}
+            ref={this.onRef('title')}
+            error={errors.title}
+          />
         </Field>
         <Field>
           <Title>Description</Title>
@@ -264,8 +260,8 @@ class Configure extends Component<TProps, IState> {
             value={description}
             onChange={onChange('description')}
             ref={this.onRef('description')}
+            error={errors.description}
           />
-          {errors.description && <Error>{errors.description}</Error>}
         </Field>
         <Field>
           <Title>Preferred Contact Method</Title>
@@ -274,20 +270,20 @@ class Configure extends Component<TProps, IState> {
             value={contactMethod}
             onChange={onChange('contactMethod')}
             ref={this.onRef('contactMethod')}
+            error={errors.contactMethod}
           />
-          {errors.contactMethod && <Error>{errors.contactMethod}</Error>}
         </Field>
         <Field>
           <Title>Expiration date</Title>
           <Description>How long are you willing to host the widget? (expiration date)</Description>
           <DatePicker
-            className={classnames(input, style.DatePicker)}
+            className={classnames(style.DatePicker, InputContainer)}
             minDate={MIN_DATE}
             selected={this.state.tillDate}
             onChange={this.onTillDateChange}
             ref={this.onRef('tillDate')}
+            error={errors.tillDate}
           />
-          {errors.tillDate && <Error>{errors.tillDate}</Error>}
         </Field>
         <Field>
           <Title>Expected Traffic (Optional)</Title>
@@ -356,4 +352,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default flowRight(withInjectedWeb3, updateQueryParam, connect(null, mapDispatchToProps))(Configure);
+export default updateQueryParam(Configure);

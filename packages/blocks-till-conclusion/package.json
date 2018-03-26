@@ -8,7 +8,6 @@
   "dependencies": {
     "@linkexchange/components": "^0.0.182",
     "@linkexchange/utils": "^0.0.182",
-    "@linkexchange/web3-state-provider": "^0.0.182",
     "@userfeeds/core": "^0.0.182"
   },
   "keywords": [],

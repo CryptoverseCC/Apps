@@ -1,49 +1,56 @@
 import { render } from 'react-dom';
 import React from 'react';
-import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
+import { Provider } from 'mobx-react';
 import qs from 'qs';
 import Raven from 'raven-js';
 import ReactGA from 'react-ga';
 
-import web3, { Web3Provider, getInfura } from '@linkexchange/utils/web3';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import web3 from '@linkexchange/utils/web3';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 
-import getStore from './store';
+import BlocksStore from './stores/blocks';
+import LinksStore from '@linkexchange/links-store';
 import App from './App';
 
 import '../styles/all.scss';
+import Web3Store from '@linkexchange/web3-store';
+import Erc20 from '@linkexchange/web3-store/erc20';
 
 const [, searchParams] = document.location.href.split('?');
-const { startBlock, endBlock, ...widgetSettings } = qs.parse(searchParams);
+const { startBlock, endBlock, ...widgetSettingsFromParams } = qs.parse(searchParams);
 
 const DEFAULT_WIDGET_SETTINGS = {
   apiUrl: 'https://api.userfeeds.io',
   title: 'Title',
   description: 'Description',
   slots: 5,
-  timeslot: 20,
+  timeslot: 60,
   location: window.location.href,
   algorithm: 'links',
+  whitelist: '',
+  asset: 'ethereum',
 };
 
-const store = getStore(
-  { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettings },
-  { startBlock: parseInt(startBlock, 10), endBlock: parseInt(endBlock, 10) },
-);
+const widgetSettings: IWidgetSettings = { ...DEFAULT_WIDGET_SETTINGS, ...widgetSettingsFromParams };
+const blocksStore = new BlocksStore(parseInt(startBlock, 10), parseInt(endBlock, 10));
 
-let infuraWeb3;
-if (widgetSettings.asset) {
-  const [network] = widgetSettings.asset.split(':');
-  infuraWeb3 = getInfura(network);
-}
+const web3Store = new Web3Store(web3, Erc20, widgetSettings);
+const widgetSettingsStore = new WidgetSettings(widgetSettings);
+const linksStore = new LinksStore(widgetSettingsStore);
 
 const startApp = () => {
   render(
-    <Provider store={store}>
+    <Provider
+      blocks={blocksStore}
+      links={linksStore}
+      widgetSettingsStore={widgetSettingsStore}
+      web3Store={web3Store}
+      formValidationsStore={{ 'add-link': {} }}
+    >
       <IntlProvider locale="en">
-        <Web3Provider injectedWeb3={web3} infuraWeb3={infuraWeb3}>
-          <App />
-        </Web3Provider>
+        <App />
       </IntlProvider>
     </Provider>,
     document.querySelector('.root'),

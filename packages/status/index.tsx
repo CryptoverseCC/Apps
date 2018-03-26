@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
-import MetaFox from '@linkexchange/images/metafox.png';
-import { withInjectedWeb3AndWeb3State } from '@linkexchange/web3-state-provider';
+import { inject, observer } from 'mobx-react';
 
-export class Status extends Component<any, any> {
+import { mobileOrTablet } from '@linkexchange/utils/userAgent';
+import Web3Store from '@linkexchange/web3-store';
+import MetaFox from '@linkexchange/images/metafox.png';
+
+interface IProps {
+  mobile?: boolean;
+  web3Store?: Web3Store;
+}
+
+export class Status extends Component<IProps> {
+  static defaultProps = {
+    mobile: mobileOrTablet(),
+  };
+
   render() {
-    return this.props.web3State.enabled ? null : (
+    return this.props.mobile || !this.props.web3Store!.reason ? null : (
       <div
         style={{
+          zIndex: Number.MAX_SAFE_INTEGER,
           position: 'fixed',
           bottom: '15px',
           left: '15px',
@@ -21,10 +34,10 @@ export class Status extends Component<any, any> {
         }}
       >
         <img src={MetaFox} style={{ height: '2em' }} />
-        <span style={{ marginLeft: '15px', color: '#814718' }}>{this.props.web3State.reason}</span>
+        <span style={{ marginLeft: '15px', color: '#814718' }}>{this.props.web3Store!.reason}</span>
       </div>
     );
   }
 }
 
-export default withInjectedWeb3AndWeb3State(Status);
+export default inject('web3Store')(observer(Status));

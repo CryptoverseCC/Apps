@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Label from './Label';
-
 import * as style from './radioButtonGroup.scss';
 
 interface IOption {
@@ -20,7 +18,6 @@ interface IRadioButtonGroupProps {
 }
 
 export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
-
   render() {
     const { name, value, onChange, options } = this.props;
 
@@ -37,9 +34,7 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
               checked={option.value === value}
               onChange={onChange}
             />
-            <label htmlFor={`${name}control_${index}`}>
-              {this._renderLabel(option)}
-            </label>
+            <label htmlFor={`${name}control_${index}`}>{this._renderLabel(option)}</label>
           </div>
         ))}
       </div>
@@ -53,7 +48,7 @@ export class RadioButtonGroup extends Component<IRadioButtonGroupProps, {}> {
     }
 
     return option.label;
-  }
+  };
 }
 
 export default RadioButtonGroup;

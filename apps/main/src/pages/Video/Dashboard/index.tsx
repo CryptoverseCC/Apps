@@ -1,52 +1,30 @@
 import React, { Component } from 'react';
-import flowRight from 'lodash/flowRight';
-import { returntypeof } from 'react-redux-typescript';
-import { connect } from 'react-redux';
-import Web3 from 'web3';
-import sigUtil from 'eth-sig-util';
+import { inject, observer } from 'mobx-react';
 
-import core from '@userfeeds/core/src';
-import { IWidgetState } from '@linkexchange/ducks/widget';
+// import sigUtil from 'eth-sig-util';
+
+import { WidgetSettings } from '@linkexchange/widget-settings';
 import Loader from '@linkexchange/components/src/Loader';
 import Button from '@linkexchange/components/src/NewButton';
 import Switch from '@linkexchange/components/src/utils/Switch';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
-import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
 
 import * as style from './dashboard.scss';
 
-const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
-  asset: widget.asset,
-  widgetSettings: widget,
-});
-
-const State2Props = returntypeof(mapStateToProps);
-
-type TProps = typeof State2Props & {
-  web3State: IWeb3State;
-  web3: Web3;
-};
+interface IProps {
+  widgetSettingsStore: WidgetSettings;
+}
 
 interface IState {
   stage: 'notstarted' | 'inprogress' | 'success' | 'failure';
 }
 
-class Dashboard extends Component<TProps, IState> {
+@inject('widgetSettingsStore')
+@observer
+export default class Dashboard extends Component<IProps, IState> {
   state: IState = {
-    stage: 'notstarted',
+    stage: 'success',
   };
-
-  componentDidMount() {
-    if (this.props.web3State.enabled) {
-      this._login();
-    }
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.web3State.enabled && this.state.stage === 'notstarted') {
-      this._login();
-    }
-  }
 
   render() {
     const { stage } = this.state;
@@ -64,11 +42,11 @@ class Dashboard extends Component<TProps, IState> {
             <h4>You shouldn't be here</h4>
           </Switch.Case>
           <Switch.Case condition="success">
-            <Button color="primary" onClick={this._goToWhitelist}>
+            <Button color="primary" onClick={this.goToWhitelist}>
               Go to whitelist
             </Button>
 
-            <Button color="primary" onClick={this._goToObsUrl}>
+            <Button color="primary" onClick={this.goToObsUrl}>
               Go to obs link
             </Button>
           </Switch.Case>
@@ -77,44 +55,42 @@ class Dashboard extends Component<TProps, IState> {
     );
   }
 
-  _goToWhitelist = () => {
-    openLinkexchangeUrl('/direct/whitelist', this.props.widgetSettings);
+  private goToWhitelist = () => {
+    openLinkexchangeUrl('/direct/whitelist', this.props.widgetSettingsStore);
   };
 
-  _goToObsUrl = () => {
-    openLinkexchangeUrl('/video/widget', this.props.widgetSettings);
+  private goToObsUrl = () => {
+    openLinkexchangeUrl('/video/widget', this.props.widgetSettingsStore);
   };
 
-  _login = async () => {
-    // ToDo temporaty disable login
-    this.setState({ stage: 'success' });
-    return;
+  // ToDo temporaty disable login
+  // private login = async () => {
+  //   this.setState({ stage: 'success' });
+  //   return;
 
-    // this.setState({ stage: 'inprogress' });
-    // const typedData = [
-    //   {
-    //     type: 'string',
-    //     name: 'Message',
-    //     value: `Prove you are the owner`,
-    //   },
-    //   {
-    //     type: 'uint32',
-    //     name: 'Salt',
-    //     value: Math.floor(Math.random() * (Math.pow(2, 32) - 1)).toString(),
-    //   },
-    // ];
+  // this.setState({ stage: 'inprogress' });
+  // const typedData = [
+  //   {
+  //     type: 'string',
+  //     name: 'Message',
+  //     value: `Prove you are the owner`,
+  //   },
+  //   {
+  //     type: 'uint32',
+  //     name: 'Salt',
+  //     value: Math.floor(Math.random() * (Math.pow(2, 32) - 1)).toString(),
+  //   },
+  // ];
 
-    // try {
-    //   const [address] = await this.props.web3.eth.getAccounts();
-    //   const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
-    //   const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
-    //   if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
-    //     this.setState({ stage: 'success' });
-    //   }
-    // } catch (e) {
-    //   this.setState({ stage: 'failure' });
-    // }
-  };
+  // try {
+  //   const [address] = await this.props.web3.eth.getAccounts();
+  //   const signature = await core.utils.signTypedData(this.props.web3, typedData, address);
+  //   const recovered: string = sigUtil.recoverTypedSignature({ data: typedData, sig: signature });
+  //   if (recovered.toLowerCase() === this.props.widgetSettings.recipientAddress.toLowerCase()) {
+  //     this.setState({ stage: 'success' });
+  //   }
+  // } catch (e) {
+  //   this.setState({ stage: 'failure' });
+  // }
+  // };
 }
-
-export default flowRight(connect(mapStateToProps), withInjectedWeb3AndWeb3State)(Dashboard);

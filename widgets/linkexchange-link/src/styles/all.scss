@@ -2,10 +2,13 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
 .root {
-  @import './flex';
-
   all: initial;
-  @import '~@linkexchange/scss-unset';
+
+  * {
+    font-family: 'PT Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
   ::selection {
     color: $white;

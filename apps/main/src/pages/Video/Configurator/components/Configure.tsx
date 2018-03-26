@@ -4,32 +4,23 @@ import qs from 'qs';
 import Web3 from 'web3';
 import flowRight from 'lodash/flowRight';
 import { isAddress } from 'web3-utils';
-import classnames from 'classnames';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { returntypeof } from 'react-redux-typescript';
 import { History, Location } from 'history';
 import moment from 'moment';
 
 import core from '@userfeeds/core/src';
 import CopyFromMM from '@linkexchange/copy-from-mm';
 import { getAverageBlockTime } from '@linkexchange/utils/ethereum';
-import { withInjectedWeb3, getInfura, TNetwork } from '@linkexchange/utils/web3';
-import { openToast } from '@linkexchange/toast/duck';
+import { getInfura, TNetwork } from '@linkexchange/utils/web3';
+import { toast } from '@linkexchange/toast';
 import Button from '@linkexchange/components/src/NewButton';
 import Input from '@linkexchange/components/src/Form/Input';
-import Radio from '@linkexchange/components/src/Form/Radio';
 import { Input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
-import { Input as input } from '@linkexchange/components/src/Form/input.scss';
-import { Field, Title, Description, RadioGroup, Error } from '@linkexchange/components/src/Form/Field';
-import Icon from '@linkexchange/components/src/Icon';
+import { Field, Title, Description, Error } from '@linkexchange/components/src/Form/Field';
 import Dropdown from '@linkexchange/components/src/Dropdown';
 import web3 from '@linkexchange/utils/web3';
 import { R, validate, validateMultipe } from '@linkexchange/utils/validation';
 import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
-
-import * as style from './configure.scss';
 
 interface IState {
   title: string;
@@ -52,6 +43,7 @@ interface IState {
     slots?: string;
     startBlock?: string;
     endBlock?: string;
+    whitelist?: string;
   };
   blockNumber?: number;
   averageBlockTime: number;
@@ -63,7 +55,7 @@ const initialState = {
   description: '',
   startBlock: '',
   endBlock: '',
-  algorithm: 'links',
+  algorithm: 'betweenblocks',
   asset: {
     token: WIDGET_NETWORKS[0].tokens[0].value,
     network: WIDGET_NETWORKS[0].value,
@@ -74,6 +66,7 @@ const initialState = {
 
 const rules = {
   title: [R.required],
+  whitelist: [R.value((v) => (v === '' ? true : isAddress(v)), 'Has to be valid eth address')],
   description: [R.required],
   recipientAddress: [R.required, R.value((v) => isAddress(v), 'Has to be valid eth address')],
   asset: [R.value(({ network, token, isCustom }) => !isCustom || isAddress(token), 'Has to be valid eth address')],
@@ -82,16 +75,12 @@ const rules = {
   endBlock: [R.required, R.number],
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ toast: openToast }, dispatch);
-const Dispatch2Props = returntypeof(mapDispatchToProps);
-
-type TProps = typeof Dispatch2Props &
-  IUpdateQueryParamProp & {
-    web3: Web3;
-    location: Location;
-    history: History;
-    match: match<any>;
-  };
+type TProps = IUpdateQueryParamProp & {
+  web3: Web3;
+  location: Location;
+  history: History;
+  match: match<any>;
+};
 
 class Configure extends Component<TProps, IState> {
   infura: Web3;
@@ -141,7 +130,7 @@ class Configure extends Component<TProps, IState> {
     const errors = this.validateAll();
     if (Object.keys(errors).length !== 0) {
       this.setState({ errors });
-      this.props.toast('Validation error 😅');
+      toast.openToast('Validation error 😅');
       this.focusOnFirstError(errors);
       return;
     }
@@ -163,7 +152,7 @@ class Configure extends Component<TProps, IState> {
         title,
         description,
         slots,
-        algorithm,
+        algorithm: `${algorithm};minBlockNumber=${startBlock};maxBlockNumber=${endBlock}`,
         recipientAddress,
         whitelist,
         asset: asset.token ? `${asset.network}:${asset.token}` : asset.network,
@@ -214,6 +203,7 @@ class Configure extends Component<TProps, IState> {
 
     this.setState({ [key]: account });
     this.props.updateQueryParam(key, account);
+    this.validate(key, account);
   };
 
   setBlockNumberFromMM = (key) => async () => {
@@ -269,43 +259,50 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Userfeed Address</Title>
           <Description>Ethereum address you'll use to receive payments for links</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={recipientAddress}
-              onChange={onChange('recipientAddress')}
-              ref={this.onRef('recipientAddress')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} />
-          </div>
-          {errors.recipientAddress && <Error>{errors.recipientAddress}</Error>}
+          <Input
+            type="text"
+            value={recipientAddress}
+            onChange={onChange('recipientAddress')}
+            ref={this.onRef('recipientAddress')}
+            error={errors.recipientAddress}
+            append={(className) => (
+              <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} className={className} />
+            )}
+          />
         </Field>
         <Field>
           <Title>Whitelist</Title>
           <Description>Address that you'll use for links approval</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={whitelist}
-              onChange={onChange('whitelist')}
-              ref={this.onRef('whitelist')}
-            />
-            <CopyFromMM onClick={this.setAddressFromMM('whitelist')} />
-          </div>
+          <Input
+            type="text"
+            value={whitelist}
+            onChange={onChange('whitelist')}
+            ref={this.onRef('whitelist')}
+            error={errors.whitelist}
+            append={(className) => <CopyFromMM onClick={this.setAddressFromMM('whitelist')} className={className} />}
+          />
         </Field>
         <Field>
           <Title>Title</Title>
           <Description>Name of Your Widget</Description>
-          <Input type="text" value={title} onChange={onChange('title')} ref={this.onRef('title')} />
-          {errors.title && <Error>{errors.title}</Error>}
+          <Input
+            type="text"
+            value={title}
+            onChange={onChange('title')}
+            ref={this.onRef('title')}
+            error={errors.title}
+          />
         </Field>
         <Field>
           <Title>Description</Title>
           <Description>Short Description of Your Widget (describing links you want to receive etc)</Description>
-          <Input type="text" value={description} onChange={onChange('description')} ref={this.onRef('description')} />
-          {errors.description && <Error>{errors.description}</Error>}
+          <Input
+            type="text"
+            value={description}
+            onChange={onChange('description')}
+            ref={this.onRef('description')}
+            error={errors.description}
+          />
         </Field>
         <Field>
           <Title>Choose token</Title>
@@ -318,42 +315,43 @@ class Configure extends Component<TProps, IState> {
         <Field>
           <Title>Slots</Title>
           <Description>Number of links qualified to display</Description>
-          <Input type="text" value={slots} onChange={onChange('slots')} ref={this.onRef('slots')} />
-          {errors.slots && <Error>{errors.slots}</Error>}
+          <Input
+            type="text"
+            value={slots}
+            onChange={onChange('slots')}
+            ref={this.onRef('slots')}
+            error={errors.slots}
+          />
         </Field>
         <Field>
           <Title>Start block</Title>
           <Description>Block number after which adding and boosting links will be allowed</Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={startBlock}
-              onChange={onChange('startBlock')}
-              ref={this.onRef('startBlock')}
-            />
-            <CopyFromMM onClick={this.setBlockNumberFromMM('startBlock')} />
-          </div>
+          <Input
+            type="text"
+            value={startBlock}
+            onChange={onChange('startBlock')}
+            ref={this.onRef('startBlock')}
+            error={errors.startBlock}
+            append={(className) => (
+              <CopyFromMM onClick={this.setBlockNumberFromMM('startBlock')} className={className} />
+            )}
+          />
           {this.getEstimatedDate(startBlock)}
-          {errors.startBlock && <Error>{errors.startBlock}</Error>}
         </Field>
         <Field>
           <Title>End block</Title>
           <Description>
             Block number after which adding and boosting links will be <b>not</b> allowed
           </Description>
-          <div className={style.fieldWithButton}>
-            <Input
-              className={style.input}
-              type="text"
-              value={endBlock}
-              onChange={onChange('endBlock')}
-              ref={this.onRef('endBlock')}
-            />
-            <CopyFromMM onClick={this.setBlockNumberFromMM('endBlock')} />
-          </div>
+          <Input
+            type="text"
+            value={endBlock}
+            onChange={onChange('endBlock')}
+            ref={this.onRef('endBlock')}
+            error={errors.endBlock}
+            append={(className) => <CopyFromMM onClick={this.setBlockNumberFromMM('endBlock')} className={className} />}
+          />
           {this.getEstimatedDate(endBlock)}
-          {errors.endBlock && <Error>{errors.endBlock}</Error>}
         </Field>
         <Field>
           <Title>Choose algorithm</Title>
@@ -376,4 +374,4 @@ class Configure extends Component<TProps, IState> {
   }
 }
 
-export default flowRight(withInjectedWeb3, updateQueryParam, connect(null, mapDispatchToProps))(Configure);
+export default flowRight(updateQueryParam)(Configure);

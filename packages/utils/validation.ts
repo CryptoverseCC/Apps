@@ -1,3 +1,6 @@
+import BigNumber from 'bignumber.js';
+import { toWei, fromWeiToString } from '@linkexchange/utils/balance';
+
 export const R = {
   required: (name, value) => (value && value.toString().trim() ? '' : `Field ${name} is required`),
   maxLength: (n: number) => (name, value: string) =>
@@ -8,8 +11,19 @@ export const R = {
   link: (name, value) =>
     R.value((v: string) => httpRegExp.test(v), 'Has to start with http(s)://')(name, value) ||
     R.value((v: string) => urlRegExp.test(v), 'Has to be valid url')(name, value),
+  email: (value) => (emailRegExp.test(value) ? '' : 'Has to be valid email address'),
   greaterThan: (minValue: number) =>
-    R.value((v: string) => parseInt(v, 10) >= minValue, `Has to be greater than minimal value: ${minValue}`),
+    R.value((v: string) => new BigNumber(v).gte(minValue), `Has to be greater than minimal value: ${minValue}`),
+  lessThen: (maxValue: number) =>
+    R.value(
+      (v: string) => new BigNumber(v).lte(new BigNumber(maxValue)),
+      `Has to be less then minimal value: ${maxValue}`,
+    ),
+  lessThenCurrency: (maxValue: number, decimals: number, message?: string) =>
+    R.value(
+      (v: string) => new BigNumber(toWei(v, decimals)).lte(new BigNumber(maxValue)),
+      !message ? `Has to be less then minimal value: ${fromWeiToString(maxValue, decimals, decimals)}` : message,
+    ),
   currencyDecimals: (decimals: number) =>
     R.value((v: string) => {
       const dotIndex = v.indexOf('.');
@@ -42,3 +56,5 @@ export const validateMultipe = (rules: { [key: string]: TValidationFunc[] }, val
 
 const httpRegExp = /^https?:\/\//;
 const urlRegExp = /^https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+/* tslint:disable */
+const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

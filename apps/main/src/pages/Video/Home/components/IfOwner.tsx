@@ -1,62 +1,20 @@
-import React, { Component } from 'react';
-import Web3 from 'web3';
-import { connect } from 'react-redux';
-import flowRight from 'lodash/flowRight';
-import { returntypeof } from 'react-redux-typescript';
+import React from 'react';
+import { inject, observer } from 'mobx-react';
 
-import { IWidgetState } from '@linkexchange/ducks/widget';
-import { withInjectedWeb3AndWeb3State, IWeb3State } from '@linkexchange/web3-state-provider';
+import Web3Store from '@linkexchange/web3-store';
+import { WidgetSettings } from '@linkexchange/widget-settings';
 
-const mapStateToProps = ({ widget }: { widget: IWidgetState }) => ({
-  asset: widget.asset,
-  recipientAddress: widget.recipientAddress,
- });
+interface IProps {
+  web3Store?: Web3Store;
+  widgetSettingsStore?: WidgetSettings;
+  children: JSX.Element;
+}
 
-const State2Props = returntypeof(mapStateToProps);
-type TProps = typeof State2Props & {
-  web3: Web3;
-  web3State: IWeb3State;
+const IfOwner = ({ web3Store, widgetSettingsStore, children }: IProps) => {
+  if (web3Store!.currentAccount === widgetSettingsStore!.recipientAddress) {
+    return children;
+  }
+  return null;
 };
 
-interface IState {
-  enabled: boolean;
-}
-
-class IfOwner extends Component<TProps, IState> {
-  state = {
-    enabled: false,
-  };
-
-  constructor(props: TProps) {
-    super(props);
-    if (props.web3State.enabled) {
-      this._getAddress();
-    }
-  }
-
-  componentWillReceiveProps(nextProps: TProps) {
-    if (nextProps.web3State.enabled) {
-      this._getAddress();
-    }
-  }
-
-  render() {
-    if (this.state.enabled) {
-      return this.props.children;
-    }
-
-    return null;
-  }
-
-  _getAddress = async () => {
-    const [account] = await this.props.web3.eth.getAccounts();
-    this.setState({
-      enabled: account === this.props.recipientAddress,
-    });
-  }
-}
-
-export default flowRight(
-  connect(mapStateToProps),
-  withInjectedWeb3AndWeb3State,
-)(IfOwner);
+export default inject('web3Store', 'widgetSettingsStore')(observer(IfOwner));

@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
 import classnames from 'classnames/bind';
-import { PromiEvent, TransactionReceipt } from 'web3/types';
 
 import Icon from '@linkexchange/components/src/Icon';
-import { ITokenDetails } from '@linkexchange/token-details-provider';
-import TranscactionProvider from '@linkexchange/transaction-provider';
 
 import * as style from './askForAllowance.scss';
 const cx = classnames.bind(style);
 
 interface IProps {
   goBack(): void;
-  startTransaction(unlimitedApproval: boolean): Promise<{ promiEvent: PromiEvent<TransactionReceipt> }>;
+  startTransaction(unlimitedApproval: boolean): Promise<any>;
 }
 
 interface IState {
   unlimited: boolean;
 }
 
-export default class AskForAllowance extends Component<IProps> {
+export default class AskForAllowance extends Component<IProps, IState> {
   state = {
     unlimited: false,
   };

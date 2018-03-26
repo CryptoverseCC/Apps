@@ -1,99 +1,133 @@
 import React, { Component } from 'react';
-import debounce from 'lodash.debounce';
-import qs from 'qs';
-import Web3 from 'web3';
 import { History, Location } from 'history';
+import debounce from 'lodash/debounce';
 
-import core from '@userfeeds/core/src';
-import web3, { getInfura } from '@linkexchange/utils/web3';
 import CopyFromMM from '@linkexchange/copy-from-mm';
-import wait from '@linkexchange/utils/wait';
-import Link from '@linkexchange/components/src/Link';
 import Icon from '@linkexchange/components/src/Icon';
 import Paper from '@linkexchange/components/src/Paper';
 import Loader from '@linkexchange/components/src/Loader';
-import { IRemoteLink } from '@linkexchange/types/link';
 import Pill from '@linkexchange/components/src/Pill';
 import updateQueryParam, { IUpdateQueryParamProp } from '@linkexchange/components/src/containers/updateQueryParam';
 
-import { Field, Title, Description, RadioGroup } from '@linkexchange/components/src/Form/Field';
+import { Field, Title } from '@linkexchange/components/src/Form/Field';
 import { Input as fieldInput } from '@linkexchange/components/src/Form/field.scss';
 import Input from '@linkexchange/components/src/Form/Input';
-import Asset, { WIDGET_NETWORKS } from '@linkexchange/components/src/Form/Asset';
+import Asset from '@linkexchange/components/src/Form/Asset';
 
 import LinksList from './components/LinksList';
 
 import * as style from './whitelist.scss';
-
-export type TWhitelistableClickableLink = IRemoteLink & {
-  whitelisted: boolean;
-};
+import { observer, inject } from 'mobx-react';
+import LinksStore from '@linkexchange/links-store';
+import differenceBy from 'lodash/differenceBy';
+import { IWeb3Store } from '@linkexchange/web3-store';
+import { IWidgetSettings } from '@linkexchange/types/widget';
+import { action } from 'mobx';
 
 interface IState {
-  links: TWhitelistableClickableLink[];
   fetching: boolean;
-  apiUrl: string;
-  recipientAddress: string;
-  recipientAddressFromParams: boolean;
-  whitelist: string;
-  whitelistFromParams: boolean;
   asset: {
     token: string;
     network: string;
   };
-  assetFromParams: boolean;
-  algorithm: string;
+  recipientAddress: string;
+  whitelist: string;
 }
 
 type TProps = IUpdateQueryParamProp & {
   history: History;
   location: Location;
+  links: LinksStore;
+  web3Store: IWeb3Store;
+  widgetSettingsStore: IWidgetSettings;
 };
 
+@inject('links', 'web3Store', 'widgetSettingsStore')
+@observer
 class Whitelist extends Component<TProps, IState> {
-  web3: Web3;
-  fetchInterval: number | null = null;
+  intervalId: number | null = null;
 
   constructor(props: TProps) {
     super(props);
+    const { network, token } = this.props.web3Store!;
+    const { recipientAddress, whitelist } = this.props.widgetSettingsStore!;
 
-    const params = qs.parse(props.location.search.replace('?', ''));
-    const paramsAsset = params.asset;
-    let asset;
-    if (paramsAsset && typeof paramsAsset === 'string') {
-      const [network, token = ''] = paramsAsset.split(':');
-      asset = { network, token };
-    } else {
-      asset = {
-        token: WIDGET_NETWORKS[0].tokens[0].value,
-        network: WIDGET_NETWORKS[0].value,
-      };
-    }
-
-    this.web3 = getInfura(asset.network);
+    const asset = {
+      token: token || '',
+      network,
+    };
 
     this.state = {
-      links: [],
       fetching: false,
-      apiUrl: params.apiUrl || 'https://api.userfeeds.io',
       asset,
-      recipientAddress: params.recipientAddress || '',
-      algorithm: params.algorithm || 'links',
-      whitelist: params.whitelist || '',
-      recipientAddressFromParams: !!params.recipientAddress,
-      whitelistFromParams: !!params.whitelist,
-      assetFromParams: !!params.asset,
+      recipientAddress,
+      whitelist: whitelist!,
     };
   }
 
   componentWillMount() {
-    if (this.state.recipientAddressFromParams) {
-      this._fetchLinksAndShowLoader();
-    }
+    this.observeLinks();
   }
 
+  private linksWaitingForApproval = () =>
+    differenceBy(this.props.links!.allLinks, this.props.links!.whitelistedLinks, (l) => l.id);
+
+  private linksApproved = () => this.props.links!.whitelistedLinks;
+
+  private observeLinks = () => {
+    this.intervalId = window.setInterval(() => {
+      this.props.links!.refetch();
+    }, 5000);
+  };
+
+  private setAddressFromMM = (key) => () => {
+    const { changeRecipientAddress, changeWhitelist } = this.props.widgetSettingsStore!;
+    const { currentAccount } = this.props.web3Store!;
+    this.setState({ [key]: currentAccount }, () => {
+      switch (key) {
+        case 'recipientAddress':
+          changeRecipientAddress!(currentAccount!);
+          break;
+        case 'whitelist':
+          changeWhitelist!(currentAccount!);
+          break;
+      }
+      this.props.updateQueryParam(key, currentAccount);
+    });
+  };
+
+  private onAssetChange = (value) => {
+    this.setState({ asset: value }, () => {
+      if (value.isCustom) {
+        this.debouncedUpdateWidgetSettings();
+      } else {
+        this.props.widgetSettingsStore!.changeAssetTo!(`${value.network}${value.token ? `:${value.token}` : ''}`);
+      }
+      this.props.updateQueryParam('asset', this.props.widgetSettingsStore.asset);
+    });
+  };
+
+  private onChange = (key) => (e) => {
+    const { value } = e.target;
+    this.setState({ [key]: value }, () => {
+      this.debouncedUpdateWidgetSettings();
+    });
+    this.props.updateQueryParam(key, value);
+  };
+
+  @action.bound
+  private updateWidgetSettings() {
+    const { changeAssetTo, changeRecipientAddress, changeWhitelist } = this.props.widgetSettingsStore!;
+    const { recipientAddress, whitelist, asset: { token, network } } = this.state;
+    changeAssetTo!(`${network}${token ? `:${token}` : ''}`);
+    changeRecipientAddress!(recipientAddress);
+    changeWhitelist!(whitelist);
+  }
+
+  private debouncedUpdateWidgetSettings = debounce(this.updateWidgetSettings, 500);
+
   render() {
-    const { asset } = this.state;
+    const { asset, recipientAddress, whitelist } = this.state;
     return (
       <div className={style.self}>
         <Paper className={style.container}>
@@ -103,32 +137,30 @@ class Whitelist extends Component<TProps, IState> {
           <div className={style.body} style={{ padding: '20px' }}>
             <Field>
               <Title>Recipient Address</Title>
-              <div className={style.fieldWithButton}>
-                <Input
-                  className={style.input}
-                  type="text"
-                  value={this.state.recipientAddress}
-                  onChange={this._onChange('recipientAddress')}
-                />
-                <CopyFromMM onClick={this._setAddressFromMM('recipientAddress')} />
-              </div>
+              <Input
+                type="text"
+                value={recipientAddress}
+                onChange={this.onChange('recipientAddress')}
+                append={(className) => (
+                  <CopyFromMM onClick={this.setAddressFromMM('recipientAddress')} className={className} />
+                )}
+              />
             </Field>
             <Field>
               <Title>Whitelist Address</Title>
-              <div className={style.fieldWithButton}>
-                <Input
-                  className={style.input}
-                  type="text"
-                  value={this.state.whitelist}
-                  onChange={this._onChange('whitelist')}
-                />
-                <CopyFromMM onClick={this._setAddressFromMM('whitelist')} />
-              </div>
+              <Input
+                type="text"
+                value={whitelist}
+                onChange={this.onChange('whitelist')}
+                append={(className) => (
+                  <CopyFromMM onClick={this.setAddressFromMM('whitelist')} className={className} />
+                )}
+              />
             </Field>
             <Field>
               <Title>Choose token</Title>
               <div className={fieldInput}>
-                <Asset asset={this.state.asset} onChange={this._onAssetChange} />
+                <Asset asset={asset} onChange={this.onAssetChange} />
               </div>
             </Field>
           </div>
@@ -137,8 +169,8 @@ class Whitelist extends Component<TProps, IState> {
           <div className={style.head}>
             <h2 className={style.header}>
               Waiting for approval
-              {this._linksWaitingForApproval().length > 0 && (
-                <Pill className={style.counter}>{this._linksWaitingForApproval().length}</Pill>
+              {this.linksWaitingForApproval().length > 0 && (
+                <Pill className={style.counter}>{this.linksWaitingForApproval().length}</Pill>
               )}
             </h2>
           </div>
@@ -149,12 +181,8 @@ class Whitelist extends Component<TProps, IState> {
                   margin: '20px auto',
                 }}
               />
-            ) : this._linksWaitingForApproval().length > 0 ? (
-              <LinksList
-                web3={this.web3}
-                asset={`${asset.network}:${asset.token}`}
-                links={this._linksWaitingForApproval()}
-              />
+            ) : this.linksWaitingForApproval().length > 0 ? (
+              <LinksList links={this.linksWaitingForApproval()} waitingForApproval />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
@@ -167,9 +195,7 @@ class Whitelist extends Component<TProps, IState> {
           <div className={style.head}>
             <h2 className={style.header}>
               Approved
-              {this._linksApproved().length > 0 && (
-                <Pill className={style.counter}>{this._linksApproved().length}</Pill>
-              )}
+              {this.linksApproved().length > 0 && <Pill className={style.counter}>{this.linksApproved().length}</Pill>}
             </h2>
           </div>
           <div className={style.body}>
@@ -179,8 +205,8 @@ class Whitelist extends Component<TProps, IState> {
                   margin: '20px auto',
                 }}
               />
-            ) : this._linksApproved().length > 0 ? (
-              <LinksList web3={this.web3} asset={`${asset.network}:${asset.token}`} links={this._linksApproved()} />
+            ) : this.linksApproved().length > 0 ? (
+              <LinksList links={this.linksApproved()} />
             ) : (
               <div style={{ textAlign: 'center', color: '#1b2437', padding: '20px' }}>
                 <Icon name="link-broken" style={{ fontSize: '50px', opacity: 0.5 }} />
@@ -192,101 +218,6 @@ class Whitelist extends Component<TProps, IState> {
       </div>
     );
   }
-
-  _linksWaitingForApproval = () => this.state.links.filter((link) => !link.whitelisted);
-  _linksApproved = () => this.state.links.filter((link) => link.whitelisted);
-
-  _setAddressFromMM = (key) => async () => {
-    const [account = ''] = await web3.eth.getAccounts();
-
-    this.setState({ [key]: account });
-    this.props.updateQueryParam(key, account);
-    this._fetchLinksAndShowLoader();
-  };
-
-  _onChange = (key) => (e) => {
-    const { value } = e.target;
-    this.setState({ [key]: value }, () => {
-      this._debouncedFetchLinks();
-    });
-    this.props.updateQueryParam(key, value);
-  };
-
-  _onAssetChange = (value) => {
-    this.web3 = getInfura(value.network);
-    this.setState({ asset: value }, () => {
-      this._fetchLinksAndShowLoader();
-    });
-    this.props.updateQueryParam('asset', `${value.network}:${value.token}`);
-  };
-
-  _fetchLinks = async () => {
-    if (this.fetchInterval !== null) {
-      window.clearInterval(this.fetchInterval);
-    }
-
-    try {
-      const [allLinks, whitelistedLinks] = await Promise.all([this._fetchAllLinks(), this._fetchWhitelistedLinks()]);
-
-      const links = allLinks.items.map((link) => {
-        const whitelisted = !!whitelistedLinks.items.find((a) => link.id === a.id);
-        const parsedLink = {
-          ...link,
-          id: link.id,
-          whitelisted,
-          title: link.title,
-          summary: link.summary,
-          target: link.target,
-          total: link.total,
-        };
-        return parsedLink;
-      });
-      this.setState({ links });
-    } catch (_) {
-      // ToDo Show error toast?
-    }
-
-    this.fetchInterval = window.setInterval(this._fetchLinks, 2000);
-  };
-
-  _fetchLinksAndShowLoader = async () => {
-    this.setState({ fetching: true, links: [] });
-
-    const startTime = Date.now();
-    this._fetchLinks();
-
-    const totalTime = Date.now() - startTime;
-    if (totalTime < 1000) {
-      await wait(1000 - totalTime);
-    }
-
-    this.setState({ fetching: false });
-  };
-
-  _fetchLinksImpl = async (whitelistFilterAlgorithm: string) => {
-    const { apiUrl, recipientAddress, algorithm, asset } = this.state;
-    const assetString = asset.token ? `${asset.network}:${asset.token.toLowerCase()}` : asset.network;
-    const context = recipientAddress.toLowerCase();
-    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${assetString};context=${context}/`;
-    const timedecayFilterAlgorithm = algorithm === 'links' ? 'filter_timedecay/' : '';
-    const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';
-    return fetch(`${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`).then<{
-      items: IRemoteLink[];
-    }>((res) => res.json());
-  };
-
-  _fetchAllLinks = async () => {
-    const whitelistFilterAlgorithm = '';
-    return this._fetchLinksImpl(whitelistFilterAlgorithm);
-  };
-
-  _fetchWhitelistedLinks = async () => {
-    const { whitelist } = this.state;
-    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
-    return this._fetchLinksImpl(whitelistFilterAlgorithm);
-  };
-
-  _debouncedFetchLinks = debounce(this._fetchLinksAndShowLoader, 500);
 }
 
 export default updateQueryParam(Whitelist);

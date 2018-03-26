@@ -5,5 +5,6 @@ const devConfig = require('./webpack.config');
 const baseProdConfig = require('../../config/webpack.base.prod');
 
 module.exports = merge(devConfig, baseProdConfig, {
+  mode: 'production',
   plugins: [new CopyWebpackPlugin([{ from: 'favicon.ico' }])],
 });
