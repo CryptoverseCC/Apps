@@ -22,17 +22,20 @@ interface ILinksListProps {
 @inject('web3Store')
 @observer
 export default class LinksList extends Component<ILinksListProps> {
-  private whitelistLink = async (linkId: string) => {
+  private whitelistLink = (linkId: string) => {
     const claim = { claim: { target: linkId } };
-    const claimRequest = await this.props.web3Store!.sendClaim(claim);
-    claimRequest.promiEvent
-      .on('transactionHash', (transactionHash) => {
-        sessionStorage.setItem(linkId, `${transactionHash}:pending`);
-      })
-      .on('receipt', (receipt) => {
-        sessionStorage.setItem(linkId, `${receipt.transactionHash}:success`);
-      });
-    return claimRequest;
+
+    return this.props.web3Store!.sendClaim(claim).then((claimRequest) => {
+      claimRequest.promiEvent
+        .on('transactionHash', (transactionHash) => {
+          sessionStorage.setItem(linkId, `${transactionHash}:pending`);
+        })
+        .on('receipt', (receipt) => {
+          sessionStorage.setItem(linkId, `${receipt.transactionHash}:success`);
+        });
+
+      return claimRequest;
+    });
   };
 
   private getInitialStatus = (linkId: string): TStatus => {
