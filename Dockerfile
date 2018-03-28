@@ -9,7 +9,7 @@ COPY . /apps
 
 WORKDIR /apps
 
-RUN yarn
+RUN yarn install --pure-lockfile
 
 RUN yarn test
 
