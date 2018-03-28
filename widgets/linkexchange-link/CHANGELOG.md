@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/Userfeeds/Apps/compare/v0.1.0...v0.1.1) (2018-03-28)
+
+
+### Update
+
+* use RankingRequestBuilder in @linkexchange/widgets ([d96886d97d242f6d086ee0b6d4e67cb267272213](https://github.com/Userfeeds/Apps/commit/d96886d97d242f6d086ee0b6d4e67cb267272213))
+
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/Userfeeds/Apps/compare/v0.0.182...v0.1.0) (2018-03-26)
 
