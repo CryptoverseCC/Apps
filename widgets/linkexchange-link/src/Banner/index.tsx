@@ -5,10 +5,10 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Modal from '@linkexchange/components/src/Modal';
 import RootProvider from '@linkexchange/root-provider';
 import { IWidgetSettings } from '@linkexchange/types/widget';
-import { ILink, IRemoteLink } from '@linkexchange/types/link';
+import { ILink } from '@linkexchange/types/link';
 import calculateProbabilities from '@linkexchange/utils/links';
 import Switch from '@linkexchange/components/src/utils/Switch';
-import { throwErrorOnNotOkResponse } from '@linkexchange/utils/fetch';
+import RankingRequestBuilder from '@linkexchange/ranking-request-builder';
 import { openLinkexchangeUrl } from '@linkexchange/utils/openLinkexchangeUrl';
 
 import Menu from './components/Menu';
@@ -145,28 +145,12 @@ export default class Banner extends Component<IBannerProps, IBannerState> {
   );
 
   private fetchLinks = async () => {
-    const {
-      apiUrl = 'https://api.userfeeds.io',
-      recipientAddress,
-      asset,
-      algorithm,
-      whitelist,
-      slots,
-    } = this.props.widgetSettings;
-    const recipientAddressLower = recipientAddress.toLowerCase();
-    const assetLower = asset.toLowerCase();
-    const rankingApiUrl = `${apiUrl}/ranking/${algorithm};asset=${assetLower};context=${recipientAddressLower}/`;
-    const timedecayFilterAlgorithm = algorithm === 'links' ? 'filter_timedecay/' : '';
-    const whitelistFilterAlgorithm = whitelist ? `filter_whitelist;whitelist=${whitelist.toLowerCase()}/` : '';
-    const groupFilterAlgorithm = 'filter_group;sum_keys=score;sum_keys=total/';
-    try {
-      // tslint:disable-next-line max-line-length
-      const { items: links = [] } = await fetch(
-        `${rankingApiUrl}${timedecayFilterAlgorithm}${whitelistFilterAlgorithm}${groupFilterAlgorithm}`,
-      )
-        .then(throwErrorOnNotOkResponse)
-        .then<{ items: IRemoteLink[] }>((res) => res.json());
+    const { slots } = this.props.widgetSettings;
+    const rankingRequestBuilder = new RankingRequestBuilder(this.props.widgetSettings);
 
+    try {
+      const response = await rankingRequestBuilder.whitelistedLinksFetch(0);
+      const links = response.items;
       const linksInSlots = links.slice(0, slots);
       const linksTotalScore = linksInSlots.reduce((acc, { score }) => acc + score, 0);
 

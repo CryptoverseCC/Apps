@@ -14,6 +14,7 @@
     "@linkexchange/components": "^0.1.0",
     "@linkexchange/new-add-link": "^0.1.0",
     "@linkexchange/new-details": "^0.1.0",
+    "@linkexchange/ranking-request-builder": "^0.1.0",
     "@linkexchange/root-provider": "^0.1.0",
     "@linkexchange/scss-unset": "^0.1.0",
     "@linkexchange/toast": "^0.1.0",
