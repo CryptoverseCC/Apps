@@ -9,7 +9,7 @@
   .title {
     color: #000000;
     font-weight: 700;
-    font-size: 32px;
+    font-size: 24px;
     line-height: 1;
     flex-shrink: 0;
     padding-bottom: 10px;
@@ -23,5 +23,14 @@
     color: #000000;
     font-size: 16px;
     overflow: hidden;
+  }
+
+  .target {
+    flex-shrink: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #263fff;
   }
 }
