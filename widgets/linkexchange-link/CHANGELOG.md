@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/Userfeeds/Apps/compare/v0.1.1...v0.1.2) (2018-03-28)
+
+
+### Update
+
+* display link target ([355a90d737e35f80f17c5ac8217bb0cc154d7c08](https://github.com/Userfeeds/Apps/commit/355a90d737e35f80f17c5ac8217bb0cc154d7c08))
+
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/Userfeeds/Apps/compare/v0.1.0...v0.1.1) (2018-03-28)
 
