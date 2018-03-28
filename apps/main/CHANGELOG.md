@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/Userfeeds/Apps/compare/v0.1.2...v0.1.3) (2018-03-28)
+
+
+### Fix
+
+* whitelisting ([09b96fcc19875f34220cda467035d2caed7aac3d](https://github.com/Userfeeds/Apps/commit/09b96fcc19875f34220cda467035d2caed7aac3d))
+
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/Userfeeds/Apps/compare/v0.0.182...v0.1.0) (2018-03-26)
 
