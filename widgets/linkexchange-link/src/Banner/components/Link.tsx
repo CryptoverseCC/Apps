@@ -22,6 +22,7 @@ const Link = ({ className, link }: ILinkProps) => {
     <div className={classnames(style.self, className)} onClick={() => openUrl(link.target)}>
       <div className={style.title}>{link.title}</div>
       <div className={style.summary}>{link.summary}</div>
+      <div className={style.target}>{link.target}</div>
     </div>
   );
 };
