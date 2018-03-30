@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/Userfeeds/Apps/compare/v0.1.4...v0.1.5) (2018-03-30)
+
+
+### Update
+
+* use default period in time decay algo ([70b94e5d2382d62fab722615fbf79ef5e4760b28](https://github.com/Userfeeds/Apps/commit/70b94e5d2382d62fab722615fbf79ef5e4760b28))
+
+
+
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/Userfeeds/Apps/compare/v0.1.3...v0.1.4) (2018-03-28)
 
