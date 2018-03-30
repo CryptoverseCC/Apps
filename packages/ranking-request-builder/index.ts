@@ -66,7 +66,7 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
           {
             algorithm: 'filter_timedecay',
             params: {
-              period: 28,
+              // period: 28,
             },
           },
         ]

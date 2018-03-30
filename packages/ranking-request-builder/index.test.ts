@@ -24,7 +24,7 @@ describe('LinksStore', () => {
       {
         algorithm: 'filter_timedecay',
         params: {
-          period: 28,
+          // period: 28,
         },
       },
       {
@@ -65,7 +65,7 @@ describe('LinksStore', () => {
       {
         algorithm: 'filter_timedecay',
         params: {
-          period: 28,
+          // period: 28,
         },
       },
       {
@@ -99,7 +99,7 @@ describe('LinksStore', () => {
       {
         algorithm: 'filter_timedecay',
         params: {
-          period: 28,
+          // period: 28,
         },
       },
       {
