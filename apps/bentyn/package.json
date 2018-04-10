@@ -8,7 +8,8 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --open --host 0.0.0.0",
     "build-test": "cross-env NODE_ENV=stagging webpack --config webpack.config.prod.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
-    "deploy-test": "firebase deploy -P default --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
+    "deploy-test":
+      "firebase deploy -P default --token $FIREBASE_TOKEN --message \"Release $CI_COMMIT_MESSAGE $CI_COMMIT_ID\"",
     "deploy": "firebase deploy -P prod --token $FIREBASE_TOKEN "
   },
   "author": "",
@@ -56,13 +57,13 @@
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
     "svg-inline-loader": "^0.8.0",
-    "ts-loader": "^4.0.1",
-    "typescript": "^2.7.2",
+    "ts-loader": "^4.2.0",
+    "typescript": "2.7.2",
     "typings-for-css-modules-loader": "^1.7.0",
     "uglifyjs-webpack-plugin": "^1.2.3",
     "url-loader": "^1.0.1",
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.12",
-    "webpack-dev-server": "^3.1.1"
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
+    "webpack-dev-server": "^3.1.3"
   }
 }
