@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/Userfeeds/Apps/compare/v0.1.5...v0.1.6) (2018-04-10)
+
+
+### Fix
+
+* webpack config for @userfeeds/widgets ([e521b16f360f860cf26dd76cdb2dddd42b339954](https://github.com/Userfeeds/Apps/commit/e521b16f360f860cf26dd76cdb2dddd42b339954))
+
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/Userfeeds/Apps/compare/v0.1.4...v0.1.5) (2018-03-30)
 
