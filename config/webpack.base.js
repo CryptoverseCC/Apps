@@ -9,6 +9,7 @@ module.exports = {
     path: path.resolve(process.cwd(), 'build'),
     publicPath: '/',
     filename: 'bundle.js',
+    library: 'UserfeedsWidgets',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
@@ -81,7 +82,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || 'development',
       VERSION: JSON.stringify(require(process.cwd() + '/package.json').version),
     }),
-    new webpack.NamedModulesPlugin(),
+    // new webpack.NamedModulesPlugin(),
     // new webpack.optimize.ModuleConcatenationPlugin(), // ToDo read about this.
   ],
   devServer: {
