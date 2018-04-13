@@ -37,6 +37,14 @@ export const WIDGET_NETWORKS = [
     ],
   },
   {
+    value: 'kovan',
+    label: 'Kovan',
+    tokens: [
+      { value: ETHER, label: 'ETH (kovan)' },
+      OTHER_ERC20_TOKEN,
+    ],
+  },
+  {
     value: 'ropsten',
     label: 'Ropsten',
     tokens: [
