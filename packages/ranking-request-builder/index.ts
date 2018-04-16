@@ -19,7 +19,7 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
   }
 
   private linksAlgorithm() {
-    const { algorithm } = this.widgetSettings;
+    const { algorithm, recipientAddress, asset } = this.widgetSettings;
     const [algorithmName, ...restParams] = algorithm.split(';');
     const params = restParams.reduce(
       (acc, restParam) => {
@@ -27,8 +27,8 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
         return { ...acc, [key]: value };
       },
       {
-        context: this.widgetSettings.recipientAddress.toLowerCase(),
-        asset: this.widgetSettings.asset,
+        asset,
+        context: recipientAddress.toLowerCase(),
       },
     );
     return {
@@ -100,15 +100,23 @@ export default class RankingRequestBuilder implements IRankingRequestBuilder {
   }
 
   allLinksFetch = (nonce) => {
-    const { allLinksFlow, rankingApiUrl, flowToString } = this;
-    const whitelistedLinksFetch = flowToString(allLinksFlow());
-    return fetch(`${rankingApiUrl}/${whitelistedLinksFetch}`)
+    const { allLinksFlow, rankingApiUrl, flowToString, widgetSettings } = this;
+    if (!widgetSettings.recipientAddress) {
+      return Promise.resolve({ items: [] });
+    }
+
+    const allLinksFetch = flowToString(allLinksFlow());
+    return fetch(`${rankingApiUrl}/${allLinksFetch}`)
       .then(throwErrorOnNotOkResponse)
       .then<{ items: IRemoteLink[] }>((res) => res.json());
   };
 
   whitelistedLinksFetch = (nonce) => {
-    const { whitelistedLinksFlow, rankingApiUrl, flowToString } = this;
+    const { whitelistedLinksFlow, rankingApiUrl, flowToString, widgetSettings } = this;
+    if (!widgetSettings.recipientAddress) {
+      return Promise.resolve({ items: [] });
+    }
+
     const whitelistedLinksFetch = flowToString(whitelistedLinksFlow());
     return fetch(`${rankingApiUrl}/${whitelistedLinksFetch}`)
       .then(throwErrorOnNotOkResponse)
