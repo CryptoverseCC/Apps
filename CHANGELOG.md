@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/Userfeeds/Apps/compare/v0.1.6...v0.1.7) (2018-04-16)
+
+
+### Fix
+
+* whitelist fetching links ([5c02468d94edfeb2ae4e2566a858fb02fe5bc46e](https://github.com/Userfeeds/Apps/commit/5c02468d94edfeb2ae4e2566a858fb02fe5bc46e))
+
+
+
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/Userfeeds/Apps/compare/v0.1.5...v0.1.6) (2018-04-10)
 
