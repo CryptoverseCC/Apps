@@ -35,7 +35,7 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
 
   render() {
     const { widgetSettings, onCopy } = this.props;
-    const whitelistProperty = widgetSettings.whitelistId ? `userfeeds:whitelist="${widgetSettings.whitelistId}"` : '';
+    const whitelistProperty = widgetSettings.whitelist ? `userfeeds:whitelist="${widgetSettings.whitelist}"` : '';
 
     const code = `<io.userfeeds.widget.LinksViewPager
     xmlns:userfeeds="http://schemas.android.com/apk/res-auto"
@@ -47,7 +47,7 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
     userfeeds:title="${widgetSettings.title}"
     userfeeds:description="${widgetSettings.description}"
     userfeeds:contactMethod="${widgetSettings.contactMethod}"
-    userfeeds:impressions="${widgetSettings.impression}"`;
+    userfeeds:impressions="${widgetSettings.impression}" />`;
 
     const dependencyCode = `dependencies {
     compile 'io.userfeeds.widget:core:${this.state.latestVersion}'
