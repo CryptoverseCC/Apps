@@ -35,7 +35,8 @@ export default class AndroidSnippet extends Component<IAndroidSnippetProps, IAnd
 
   render() {
     const { widgetSettings, onCopy } = this.props;
-    const whitelistProperty = widgetSettings.whitelist ? `userfeeds:whitelist="${widgetSettings.whitelist}"` : '';
+    const whitelistProperty = widgetSettings.whitelist ? `
+    userfeeds:whitelist="${widgetSettings.whitelist}"` : '';
 
     const code = `<io.userfeeds.widget.LinksViewPager
     xmlns:userfeeds="http://schemas.android.com/apk/res-auto"
