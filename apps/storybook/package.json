@@ -1,6 +1,6 @@
 {
   "name": "@linkexchange/storybook",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -8,10 +8,10 @@
     "start": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
-    "@linkexchange/components": "^0.1.0",
-    "@linkexchange/copy-from-mm": "^0.1.0",
+    "@linkexchange/components": "^0.1.8",
+    "@linkexchange/copy-from-mm": "^0.1.8",
     "@linkexchange/images": "^0.1.0",
-    "@linkexchange/new-add-link": "^0.1.0",
+    "@linkexchange/new-add-link": "^0.1.8",
     "@linkexchange/web3-store": "^0.1.0",
     "mobx": "4.1.0",
     "mobx-react": "5.0.0",

@@ -1,13 +1,13 @@
 {
   "private": true,
   "name": "@linkexchange/new-details",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "description": "",
   "main": "index.tsx",
   "scripts": {},
   "dependencies": {
-    "@linkexchange/boost-link": "^0.1.0",
-    "@linkexchange/components": "^0.1.0",
+    "@linkexchange/boost-link": "^0.1.8",
+    "@linkexchange/components": "^0.1.8",
     "@linkexchange/types": "^0.1.0",
     "@linkexchange/utils": "^0.1.0",
     "@userfeeds/core": "^0.1.0",
