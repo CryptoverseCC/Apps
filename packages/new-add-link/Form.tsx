@@ -57,7 +57,7 @@ const AddLinkForm = inject(
         </Modal.Header>
         <Form
           initialValues={{
-            target: 'http://',
+            target: 'https://',
             value: '0' || '',
             ...initialValues,
           }}
