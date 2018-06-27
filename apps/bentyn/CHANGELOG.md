@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.10"></a>
+## [0.1.10](https://github.com/Userfeeds/Apps/compare/v0.1.9...v0.1.10) (2018-06-27)
+
+
+### Fix
+
+* Update Bentyn blocks ([33240dfc2222338a95e5c3c28213cb0c96832712](https://github.com/Userfeeds/Apps/commit/33240dfc2222338a95e5c3c28213cb0c96832712))
+
+
+
+
 <a name="0.1.9"></a>
 ## [0.1.9](https://github.com/Userfeeds/Apps/compare/v0.1.8...v0.1.9) (2018-05-15)
 
