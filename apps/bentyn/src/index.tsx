@@ -23,8 +23,8 @@ const [, searchParams] = document.location.href.split('?');
 const { startBlock, endBlock, ...widgetSettingsFromParams } = qs.parse(searchParams);
 
 const BENTYN_CONFIG = {
-  startBlock: parseInt(startBlock, 10) || 5617530,
-  endBlock: parseInt(endBlock, 10) || 5817530,
+  startBlock: parseInt(startBlock, 10) || 5857009,
+  endBlock: parseInt(endBlock, 10) || 5966997,
 };
 
 const BENTYN_WIDGET_CONFIG: IWidgetSettings = {
